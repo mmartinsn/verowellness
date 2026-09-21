@@ -1,0 +1,602 @@
+---
+/**
+ * "Cinco Layers. Un solo mapa." — the organic overlapping-territories illustration (hover or tap
+ * separates the shapes) and the five expandable Layer cards. Content from data/layers.
+ */
+import { layers, type Layer } from '../../data/layers';
+
+// Card colours follow Mari's page (Layer 01 sits on charcoal there, not clay).
+const cardColor: Record<Layer['num'], string> = {
+  '01': 'charcoal',
+  '02': 'clay',
+  '03': 'sage-deep',
+  '04': 'rose',
+  '05': 'olive',
+};
+const oscuro = (num: Layer['num']) => num === '01' || num === '05';
+---
+
+<section id="layers">
+  <div class="wrap">
+    <span class="eyebrow">The Layer Method™</span>
+    <h2 class="layers-intro">Cinco Layers. Un solo mapa.</h2>
+    <p class="lede">
+      Cada Layer observa una parte distinta de tu bienestar — pero ninguna existe aislada de las
+      demás. Lo que ocurre en una puede sentirse en otra. Por eso no se recorren en orden: se
+      exploran como territorios de un mismo terreno.
+    </p>
+
+    <div class="layers-legend">
+      <div class="organic-layers" id="organicLayers">
+        <svg
+          class="organic-svg"
+          viewBox="0 0 680 500"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-label="Representación gráfica de las cinco Layers como territorios orgánicos que se superponen e interconectan"
+        >
+          <g class="lg lg-vias">
+            <g class="lg-drift lg-drift-1">
+              <path
+                class="lg-shape"
+                d="M 365.2,242.9 Q 338.3,274.4 289.3,296.6 Q 240.3,318.8 210.4,288.1 Q 180.5,257.5 163.7,207.2 Q 146.9,157.0 178.0,130.0 Q 209.1,103.0 247.8,79.2 Q 286.5,55.3 326.8,91.2 Q 367.0,127.0 379.5,169.3 Q 392.0,211.5 365.2,242.9 Z"
+                fill="var(--color-clay)"></path>
+              <path
+                class="lg-contour"
+                d="M 334.7,226.0 Q 316.5,247.4 283.1,262.5 Q 249.8,277.6 229.5,256.7 Q 209.1,235.9 197.7,201.7 Q 186.3,167.6 207.4,149.2 Q 228.6,130.8 254.9,114.6 Q 281.2,98.4 308.6,122.8 Q 335.9,147.2 344.5,175.9 Q 353.0,204.6 334.7,226.0 Z"
+              ></path>
+              <path
+                class="lg-contour"
+                d="M 308.1,211.2 Q 297.3,223.7 277.7,232.6 Q 258.1,241.5 246.1,229.2 Q 234.2,217.0 227.5,196.9 Q 220.8,176.8 233.2,166.0 Q 245.6,155.2 261.1,145.7 Q 276.6,136.1 292.7,150.5 Q 308.8,164.8 313.8,181.7 Q 318.8,198.6 308.1,211.2 Z"
+              ></path>
+            </g>
+          </g>
+          <g class="lg lg-terreno">
+            <g class="lg-drift lg-drift-2">
+              <path
+                class="lg-shape"
+                d="M 467.2,242.4 Q 463.4,284.1 424.7,296.4 Q 386.0,308.6 335.0,309.3 Q 283.9,310.1 273.5,267.2 Q 263.0,224.3 265.2,184.3 Q 267.5,144.2 312.8,128.0 Q 358.1,111.7 398.4,110.1 Q 438.7,108.5 454.9,154.6 Q 471.0,200.7 467.2,242.4 Z"
+                fill="var(--color-sage-deep)"></path>
+            </g>
+          </g>
+          <g class="lg lg-celula">
+            <g class="lg-drift lg-drift-3">
+              <path
+                class="lg-shape"
+                d="M 406.9,371.9 Q 366.8,400.8 326.0,414.5 Q 285.2,428.2 261.3,391.2 Q 237.4,354.2 225.6,306.1 Q 213.7,258.0 250.7,236.1 Q 287.6,214.1 325.3,202.0 Q 363.0,189.9 396.7,227.2 Q 430.4,264.4 438.8,303.7 Q 447.1,343.0 406.9,371.9 Z"
+                fill="var(--color-rose)"></path>
+              <path
+                class="lg-contour"
+                d="M 372.3,341.8 Q 350.2,357.7 327.8,365.2 Q 305.3,372.8 292.2,352.4 Q 279.1,332.1 272.6,305.6 Q 266.1,279.2 286.4,267.1 Q 306.7,255.0 327.4,248.4 Q 348.1,241.7 366.7,262.2 Q 385.2,282.7 389.8,304.3 Q 394.4,325.9 372.3,341.8 Z"
+              ></path>
+            </g>
+          </g>
+          <g class="lg lg-nutricion">
+            <g class="lg-drift lg-drift-4">
+              <path
+                class="lg-shape"
+                d="M 329.6,302.5 Q 333.9,337.6 293.6,354.3 Q 253.3,371.1 216.6,375.7 Q 180.0,380.3 162.3,347.3 Q 144.6,314.4 144.0,271.1 Q 143.4,227.8 177.6,212.9 Q 211.7,198.1 248.6,189.9 Q 285.4,181.6 305.4,224.5 Q 325.3,267.4 329.6,302.5 Z"
+                fill="var(--color-charcoal)"></path>
+            </g>
+          </g>
+          <g class="lg lg-habitos">
+            <g class="lg-drift lg-drift-5">
+              <path
+                class="lg-shape"
+                d="M 347.4,320.7 Q 310.1,332.1 277.4,333.6 Q 244.7,335.1 230.3,297.0 Q 215.9,258.8 213.1,224.2 Q 210.4,189.6 247.7,177.2 Q 285.0,164.8 322.9,168.5 Q 360.8,172.2 374.1,201.8 Q 387.3,231.4 386.0,270.4 Q 384.7,309.3 347.4,320.7 Z"
+                fill="var(--color-olive)"></path>
+            </g>
+          </g>
+
+          <g class="lg-label">
+            <circle class="lg-label-dot" cx="95" cy="418" r="5" fill="var(--color-charcoal)"
+            ></circle>
+            <text class="lg-label-text" x="108" y="423" text-anchor="start">01 · NUTRICIÓN</text>
+          </g>
+          <g class="lg-label">
+            <circle class="lg-label-dot" cx="205" cy="38" r="5" fill="var(--color-clay-deep)"
+            ></circle>
+            <text class="lg-label-text" x="218" y="43" text-anchor="start"
+              >02 · VÍAS DE ELIMINACIÓN</text
+            >
+          </g>
+          <g class="lg-label">
+            <circle class="lg-label-dot" cx="558" cy="92" r="5" fill="var(--color-sage-deep)"
+            ></circle>
+            <text class="lg-label-text" x="545" y="97" text-anchor="end">03 · TERRENO</text>
+          </g>
+          <g class="lg-label">
+            <circle class="lg-label-dot" cx="558" cy="402" r="5" fill="var(--color-rose-deep)"
+            ></circle>
+            <text class="lg-label-text" x="545" y="407" text-anchor="end">04 · CÉLULA</text>
+          </g>
+          <g class="lg-label">
+            <circle class="lg-label-dot" cx="95" cy="200" r="5" fill="var(--color-olive)"></circle>
+            <text class="lg-label-text" x="108" y="205" text-anchor="start">05 · HÁBITOS</text>
+          </g>
+        </svg>
+      </div>
+      <p class="legend-note">
+        Cinco territorios que se superponen y se leen en conjunto — no una secuencia de pasos. Toca
+        o pasa el cursor para separarlos suavemente.
+      </p>
+    </div>
+
+    <div class="map-note">
+      <svg
+        width="20"
+        height="16"
+        viewBox="0 0 28 22"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.4"
+        aria-hidden="true"
+      >
+        <path d="M14 2 L26 8 L14 14 L2 8 Z"></path><path d="M14 8 L26 14 L14 20 L2 14 Z"></path>
+      </svg>
+      Toca cualquier Layer para explorarla. No hay un orden correcto para empezar.
+    </div>
+
+    <div class="layer-map" id="layerMap">
+      {
+        layers.map((l) => (
+          <article
+            class:list={['layer-card', { oscuro: oscuro(l.num) }]}
+            style={`background:var(--color-${cardColor[l.num]});`}
+            data-open="false"
+          >
+            <button
+              type="button"
+              class="lc-toggle-btn"
+              aria-expanded="false"
+              aria-label={`Expandir Layer ${l.num} ${l.nombre}`}
+            />
+            <span class="lc-num">{l.num}</span>
+            <h3 class="lc-title">{l.nombre}</h3>
+            <p class="lc-q">{l.pregunta}</p>
+            <div class="lc-toggle" aria-hidden="true">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+            </div>
+            <div class="lc-detail">
+              <div class="lc-detail-inner">
+                <div>
+                  <p class="lc-quote">"{l.cita}"</p>
+                  <div class="lc-connects">
+                    <span class="lc-connects-lbl">Se conecta con</span>
+                    {l.conecta.map((c) => (
+                      <span class="lc-tag">{c}</span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div class="lc-detail-label">Qué observa esta Layer</div>
+                  <ul class="lc-bullets">
+                    {l.observa.map((o) => (
+                      <li>{o}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    padding: 64px 0;
+  }
+  @media (max-width: 640px) {
+    section {
+      padding: 36px 0;
+    }
+  }
+  .eyebrow {
+    margin-bottom: 16px;
+  }
+  .layers-intro {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4.4vw, 46px);
+    line-height: 1.1;
+    max-width: 680px;
+    margin-bottom: 8px;
+  }
+  .lede {
+    font-size: 19px;
+    line-height: 1.65;
+    color: rgb(48 47 42 / 0.72);
+    max-width: 620px;
+    font-weight: 500;
+    margin-top: 18px;
+  }
+
+  .layers-legend {
+    background: var(--color-ivory);
+    border-radius: var(--radius-lg);
+    padding: 44px 40px 34px;
+    margin: 36px 0 44px;
+  }
+  @media (max-width: 640px) {
+    .layers-legend {
+      padding: 28px 18px 24px;
+    }
+  }
+  .organic-layers {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    cursor: pointer;
+  }
+  .organic-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+  .lg-shape {
+    fill-opacity: 0.5;
+    mix-blend-mode: multiply;
+  }
+  .lg-contour {
+    fill: none;
+    stroke: var(--color-charcoal);
+    stroke-width: 0.7;
+    opacity: 0.08;
+  }
+  .lg-label-text {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    fill: var(--color-charcoal);
+  }
+  @media (max-width: 560px) {
+    .lg-label-text {
+      font-size: 12.5px;
+    }
+  }
+  .lg {
+    transition: transform 1.15s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .organic-layers:hover .lg-vias,
+  .organic-layers.is-open .lg-vias {
+    transform: translate(-15px, -11px);
+  }
+  .organic-layers:hover .lg-terreno,
+  .organic-layers.is-open .lg-terreno {
+    transform: translate(17px, -9px);
+  }
+  .organic-layers:hover .lg-celula,
+  .organic-layers.is-open .lg-celula {
+    transform: translate(11px, 15px);
+  }
+  .organic-layers:hover .lg-nutricion,
+  .organic-layers.is-open .lg-nutricion {
+    transform: translate(-17px, 11px);
+  }
+  .organic-layers:hover .lg-habitos,
+  .organic-layers.is-open .lg-habitos {
+    transform: translate(2px, -16px);
+  }
+  .lg-drift {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .lg-drift-1 {
+    animation: driftA 12s ease-in-out infinite alternate;
+  }
+  .lg-drift-2 {
+    animation: driftB 14.5s ease-in-out infinite alternate;
+  }
+  .lg-drift-3 {
+    animation: driftC 16s ease-in-out infinite alternate;
+  }
+  .lg-drift-4 {
+    animation: driftD 13.2s ease-in-out infinite alternate;
+  }
+  .lg-drift-5 {
+    animation: driftE 15.4s ease-in-out infinite alternate;
+  }
+  @keyframes driftA {
+    0% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(4px, -3px);
+    }
+    100% {
+      transform: translate(-3px, 2px);
+    }
+  }
+  @keyframes driftB {
+    0% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(-4px, 3px);
+    }
+    100% {
+      transform: translate(3px, -2px);
+    }
+  }
+  @keyframes driftC {
+    0% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(3px, 4px);
+    }
+    100% {
+      transform: translate(-2px, -3px);
+    }
+  }
+  @keyframes driftD {
+    0% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(-3px, -4px);
+    }
+    100% {
+      transform: translate(4px, 2px);
+    }
+  }
+  @keyframes driftE {
+    0% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(2px, -4px);
+    }
+    100% {
+      transform: translate(-4px, 3px);
+    }
+  }
+  .legend-note {
+    font-size: 13px;
+    color: rgb(48 47 42 / 0.45);
+    margin-top: 22px;
+    text-align: center;
+  }
+
+  .map-note {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    color: rgb(48 47 42 / 0.72);
+    margin-bottom: 28px;
+  }
+  .map-note svg {
+    flex-shrink: 0;
+  }
+
+  .layer-map {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 640px) {
+    .layer-map {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+  }
+  .layer-card {
+    position: relative;
+    border-radius: var(--radius-lg);
+    padding: 28px 26px;
+    color: var(--color-charcoal);
+    transition: transform 0.2s ease;
+  }
+  .layer-card:hover {
+    transform: translateY(-3px);
+  }
+  .layer-card[data-open='true'] {
+    grid-column: 1 / -1;
+    transform: none;
+  }
+  .layer-card.oscuro {
+    color: var(--color-bone);
+  }
+  .lc-toggle-btn {
+    all: unset;
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    border-radius: inherit;
+  }
+  .lc-toggle-btn:focus-visible {
+    outline: 2px solid var(--color-clay-deep);
+    outline-offset: 3px;
+  }
+  .lc-num {
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    opacity: 0.72;
+    display: block;
+  }
+  .lc-title {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 26px;
+    margin-top: 6px;
+  }
+  .lc-q {
+    font-weight: 600;
+    font-size: 16px;
+    opacity: 0.8;
+    margin-top: 10px;
+    line-height: 1.5;
+    padding-right: 44px;
+  }
+  .lc-toggle {
+    position: absolute;
+    top: 26px;
+    right: 24px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgb(251 250 246 / 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-charcoal);
+    pointer-events: none;
+  }
+  .lc-toggle svg {
+    transition: transform 0.2s ease;
+  }
+  .layer-card[data-open='true'] .lc-toggle svg {
+    transform: rotate(45deg);
+  }
+  .lc-detail {
+    display: none;
+    margin-top: 26px;
+    padding-top: 26px;
+    border-top: 1px solid rgb(48 47 42 / 0.16);
+  }
+  .oscuro .lc-detail {
+    border-top-color: rgb(251 250 246 / 0.25);
+  }
+  .layer-card[data-open='true'] .lc-detail {
+    display: block;
+  }
+  .lc-detail-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    align-items: start;
+  }
+  @media (max-width: 760px) {
+    .lc-detail-inner {
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+  }
+  .lc-quote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 27px;
+    line-height: 1.45;
+  }
+  .lc-detail-label {
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 18px;
+  }
+  .lc-bullets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .lc-bullets li {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.35;
+    padding: 15px 22px;
+    border-radius: var(--radius-pill);
+    background: rgb(251 250 246 / 0.6);
+  }
+  .oscuro .lc-bullets li {
+    background: rgb(251 250 246 / 0.16);
+  }
+  .lc-connects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-top: 26px;
+  }
+  .lc-connects-lbl {
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-right: 4px;
+  }
+  .lc-tag {
+    font-weight: 700;
+    font-size: 16px;
+    padding: 9px 18px;
+    border-radius: var(--radius-pill);
+    background: rgb(48 47 42 / 0.12);
+  }
+  .oscuro .lc-tag {
+    background: rgb(251 250 246 / 0.22);
+  }
+</style>
+
+<script>
+  // Layer cards: exclusive accordion, tap to toggle.
+  const cards = document.querySelectorAll<HTMLElement>('#layerMap .layer-card');
+  cards.forEach((card) => {
+    const btn = card.querySelector<HTMLButtonElement>('.lc-toggle-btn');
+    btn?.addEventListener('click', () => {
+      const wasOpen = card.dataset.open === 'true';
+      cards.forEach((c) => {
+        c.dataset.open = 'false';
+        c.querySelector('.lc-toggle-btn')?.setAttribute('aria-expanded', 'false');
+      });
+      if (!wasOpen) {
+        card.dataset.open = 'true';
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // Organic illustration: separate the territories once on first view, and on tap (no hover
+  // on touch screens).
+  const organic = document.getElementById('organicLayers');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (organic) {
+    let timer: number | undefined;
+    const pulse = (ms: number) => {
+      organic.classList.add('is-open');
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => organic.classList.remove('is-open'), ms);
+    };
+    organic.addEventListener('click', () => pulse(1500));
+    if (!reduced && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              pulse(1600);
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+      io.observe(organic);
+    }
+  }
+</script>

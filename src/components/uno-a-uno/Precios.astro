@@ -1,0 +1,49 @@
+---
+/**
+ * "La oferta completa — Tu ciclo, a tu ritmo." Both price cards from data/oferta.
+ */
+import PriceCard from '../PriceCard.astro';
+import { listaCiclos } from '../../data/oferta';
+---
+
+<section class="reveal">
+  <div class="wrap">
+    <span class="eyebrow">La oferta completa</span>
+    <h2>Tu ciclo, a tu ritmo.</h2>
+    <div class="pricing-columns">
+      {listaCiclos.map((c, i) => <PriceCard ciclo={c} featured={i === 0} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    padding: 64px 0;
+  }
+  @media (max-width: 760px) {
+    section {
+      padding: 36px 0;
+    }
+  }
+  .eyebrow {
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4.2vw, 46px);
+    line-height: 1.1;
+  }
+  .pricing-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 40px;
+    align-items: stretch;
+  }
+  @media (max-width: 860px) {
+    .pricing-columns {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

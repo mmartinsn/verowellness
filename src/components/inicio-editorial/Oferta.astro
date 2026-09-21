@@ -1,0 +1,250 @@
+---
+/**
+ * "The Layer Method™ 1:1" on the home: how the process works (four steps), the two price cards,
+ * the continuity flow and a closing CTA.
+ */
+import SectionHead from '../SectionHead.astro';
+import PriceCard from '../PriceCard.astro';
+import { listaCiclos } from '../../data/oferta';
+import { href } from '../../lib/url';
+import { cta } from '../../data/site';
+
+const pasos = [
+  {
+    word: 'Antes de tu Cita 1',
+    brand: 'The Layer Assessment™',
+    cap: 'Historia, objetivos, alimentación, lifestyle, síntomas y laboratorios.',
+  },
+  {
+    word: 'Cita 1 · Mapear + Priorizar',
+    duracion: '90 min',
+    brand: 'The Layer Map™ · Top 3 Priorities · The Layer Plan™',
+    cap: 'Mapeas tus Layers, conectas la información y defines qué merece atención primero.',
+  },
+  {
+    word: 'Entre Citas · Implementar',
+    cap: 'Pones en práctica tu Layer Plan™ y observamos respuesta y obstáculos.',
+  },
+  {
+    word: 'Cita 2 · Revisar + Ajustar',
+    duracion: '90 min',
+    cap: 'Revisamos qué mejoró, qué falta, y actualizamos tu Layer Plan™.',
+  },
+];
+
+const flujo = [
+  {
+    nombre: 'Initial Layer Cycle',
+    texto: 'Mapeamos el panorama y construimos la estrategia inicial.',
+  },
+  {
+    nombre: 'Next Layer Cycle',
+    texto: 'Seguimos evolucionando el plan y profundizamos en la siguiente prioridad.',
+  },
+  { nombre: 'Next Layer Cycle', texto: 'Cuando sea necesario.' },
+];
+---
+
+<section class="offer" id="oferta">
+  <div class="wrap">
+    <SectionHead class="reveal" eyebrow="La oferta" title="The Layer Method™ 1:1" caps>
+      <p>
+        Deja de adivinar qué hacer con tu salud. Aquí conectas todas las piezas y sales con un plan
+        claro: qué priorizar, en qué orden, y por qué.
+      </p>
+      <p class="p-sm">Asesorías 100% online, adaptadas a los horarios de todas partes del mundo.</p>
+    </SectionHead>
+
+    <div class="reveal">
+      <p class="framework-intro">Así funciona el proceso:</p>
+      <div class="framework-steps">
+        {
+          pasos.map((p, i) => (
+            <div class="fw-step">
+              <span class="fw-num">{i + 1}</span>
+              <div class="fw-word">
+                {p.word}
+                {p.duracion && <span class="fw-duration">{p.duracion}</span>}
+              </div>
+              <div class="fw-brand">{p.brand ?? ' '}</div>
+              <div class="fw-cap">{p.cap}</div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="price-row reveal">
+      {listaCiclos.map((c, i) => <PriceCard ciclo={c} featured={i === 0} />)}
+    </div>
+
+    <div class="continuity-quote reveal">
+      <p class="pull">Completaste tu primer ciclo. Ahora decidimos cuál es tu Next Layer.</p>
+      <div class="cycle-flow">
+        {
+          flujo.map((f, i) => (
+            <>
+              {i > 0 && (
+                <div class="cycle-arrow" aria-hidden="true">
+                  ↓
+                </div>
+              )}
+              <div class="cycle-step">
+                <strong>{f.nombre}</strong>
+                <span>{f.texto}</span>
+              </div>
+            </>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="offer-closing reveal">
+      <a href={href(cta.path)} class="btn btn-primary">{cta.label}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .offer {
+    background: var(--color-ivory);
+    border-radius: var(--radius-xl);
+    max-width: calc(var(--container-site) + 48px);
+    margin: 36px auto;
+    padding: 36px 0;
+  }
+  @media (min-width: 768px) {
+    .offer {
+      padding: 56px 0;
+      margin: 56px auto;
+    }
+  }
+  .offer :global(.p-sm) {
+    font-size: clamp(15px, 1.6vw, 17px);
+    font-weight: 600;
+  }
+  .framework-intro {
+    font-weight: 700;
+    font-size: clamp(17px, 1.8vw, 20px);
+    color: var(--color-charcoal);
+    margin-bottom: 22px;
+  }
+  .framework-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 0 0 46px;
+  }
+  .fw-step {
+    flex: 1 1 220px;
+    background: var(--color-bone);
+    border-radius: var(--radius-md);
+    padding: 22px 20px;
+  }
+  .fw-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--color-clay);
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--color-charcoal);
+    margin-bottom: 10px;
+  }
+  .fw-word {
+    font-weight: 800;
+    font-size: 17px;
+    color: var(--color-charcoal);
+    margin-bottom: 4px;
+  }
+  .fw-duration {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--color-sand);
+    color: rgb(48 47 42 / 0.85);
+    padding: 3px 9px;
+    border-radius: var(--radius-pill);
+    vertical-align: middle;
+    margin-left: 6px;
+  }
+  .fw-brand {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    color: var(--color-clay-deep);
+    margin-bottom: 8px;
+    min-height: 16px;
+    line-height: 1.4;
+  }
+  .fw-cap {
+    font-size: 15px;
+    color: rgb(48 47 42 / 0.85);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .price-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  @media (min-width: 768px) {
+    .price-row {
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+  }
+  .continuity-quote {
+    margin: 44px auto 0;
+    text-align: center;
+    max-width: 640px;
+  }
+  .pull {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(21px, 3.1vw, 27px);
+    line-height: 1.28;
+    color: var(--color-charcoal);
+  }
+  .cycle-flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin: 38px auto 0;
+    max-width: 420px;
+  }
+  .cycle-step {
+    text-align: center;
+  }
+  .cycle-step strong {
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-charcoal);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .cycle-step span {
+    font-size: 14.5px;
+    color: rgb(48 47 42 / 0.72);
+    font-weight: 600;
+  }
+  .cycle-arrow {
+    color: var(--color-clay-deep);
+    font-size: 15px;
+    line-height: 1;
+    margin: 2px 0;
+  }
+  .offer-closing {
+    text-align: center;
+    margin-top: 48px;
+  }
+</style>

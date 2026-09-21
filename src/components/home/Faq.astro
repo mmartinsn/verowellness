@@ -1,0 +1,57 @@
+---
+/**
+ * Three-question FAQ accordion. Uses native <details> so it works without JS; the script only
+ * closes the others when one opens, as in the original.
+ */
+import Icon from '../Icon.astro';
+import { faq } from '../../data/faq';
+---
+
+<section class="py-20 border-t border-black/[0.06]" id="faq">
+  <div class="max-w-4xl mx-auto px-6 lg:px-12">
+    <div class="text-center mb-12">
+      <span class="text-clay-deep text-[11px] font-bold tracking-[0.2em] uppercase"
+        >Preguntas clave</span
+      >
+      <h2 class="font-serif text-3xl sm:text-4xl font-light text-charcoal mt-1">
+        Preguntas frecuentes
+      </h2>
+    </div>
+    <div class="space-y-4" id="faqAccordion">
+      {
+        faq.map((item) => (
+          <details class="faq-card bg-white rounded-2xl border border-black/[0.06] overflow-hidden">
+            <summary class="w-full p-6 text-left flex items-center justify-between gap-4 cursor-pointer list-none">
+              <span class="font-serif text-lg text-charcoal font-medium">{item.q}</span>
+              <Icon
+                name="chevron-down"
+                size={22}
+                class="text-clay-deep faq-icon transition-transform duration-300 shrink-0"
+              />
+            </summary>
+            <div class="px-6 pb-6 text-sm text-black/60 leading-relaxed">{item.a}</div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  details[open] .faq-icon {
+    transform: rotate(180deg);
+  }
+</style>
+
+<script>
+  // Exclusive accordion: opening one question closes the rest.
+  const cards = document.querySelectorAll<HTMLDetailsElement>('#faqAccordion details');
+  cards.forEach((card) => {
+    card.addEventListener('toggle', () => {
+      if (card.open) cards.forEach((c) => c !== card && (c.open = false));
+    });
+  });
+</script>

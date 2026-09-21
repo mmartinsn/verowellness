@@ -1,0 +1,97 @@
+---
+/**
+ * Home, variant B — Mari's editorial version (Cormorant Garamond + Nunito, nine sections).
+ * Kept alongside the Stitch home so both can be shown to Verónica; see docs/DECISIONES.md.
+ */
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Hero from '../components/inicio-editorial/Hero.astro';
+import Problema from '../components/inicio-editorial/Problema.astro';
+import Bubble from '../components/inicio-editorial/Bubble.astro';
+import CincoLayers from '../components/inicio-editorial/CincoLayers.astro';
+import Herramientas from '../components/inicio-editorial/Herramientas.astro';
+import Oferta from '../components/inicio-editorial/Oferta.astro';
+import SobreVeronica from '../components/inicio-editorial/SobreVeronica.astro';
+import { href } from '../lib/url';
+import { cta } from '../data/site';
+
+const miradas = [
+  'Antes de añadir, hay que entender.',
+  'El orden también importa.',
+  'No necesitas hacer más. Necesitas saber qué priorizar.',
+];
+---
+
+<SiteLayout
+  title="THE LAYER METHOD™ — by Veronica Wellness"
+  description="THE LAYER METHOD™ by Veronica Wellness. Salud por capas. Del terreno a la célula. Deja de perseguir cada síntoma por separado y entiende qué priorizar."
+  noindex
+>
+  <Hero />
+  <Problema />
+
+  <Bubble eyebrow="La premisa">
+    <p class="pull">La salud celular empieza mucho antes de llegar a la célula.</p>
+  </Bubble>
+
+  <CincoLayers />
+
+  <Bubble eyebrow="Otra mirada" tone="rose" align="left">
+    <p class="pull">No todo empieza donde aparece el síntoma.</p>
+    <div class="tag-row">
+      {miradas.map((m) => <span class="tag">{m}</span>)}
+    </div>
+  </Bubble>
+
+  <Herramientas />
+  <Oferta />
+  <SobreVeronica />
+
+  <Bubble eyebrow="Empieza aquí" id="empieza">
+    <h2 class="closing-punch">
+      Entiende tu cuerpo.<br />Conecta tus capas.<br />Aprende por dónde empezar.
+    </h2>
+    <p class="closing-text">
+      Deja de perseguir cada síntoma. Prioriza lo que realmente importa y ten un plan que conecte
+      todas tus capas.
+    </p>
+    <div class="cta-row">
+      <a href={href(cta.path)} class="btn btn-primary">{cta.label}</a>
+    </div>
+  </Bubble>
+</SiteLayout>
+
+<style>
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .tag {
+    font-weight: 700;
+    font-size: 14.5px;
+    color: var(--color-charcoal);
+    padding: 11px 19px;
+    border-radius: var(--radius-pill);
+    background: rgb(251 250 246 / 0.7);
+  }
+  .closing-punch {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(30px, 5.2vw, 56px);
+    line-height: 1.18;
+    color: var(--color-bone);
+  }
+  .closing-text {
+    color: rgb(251 250 246 / 0.82);
+    max-width: 540px;
+    font-size: clamp(17px, 1.8vw, 20px);
+    font-weight: 500;
+    line-height: 1.7;
+  }
+  .cta-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+  }
+</style>

@@ -1,0 +1,116 @@
+---
+/**
+ * "Herramientas ≠ estrategia." — the cloud of wellness tools and the uncomfortable truth.
+ */
+import SectionHead from '../SectionHead.astro';
+
+const herramientas = [
+  'Ayuno intermitente',
+  'Péptidos',
+  'Análogos de GLP-1',
+  'Suplementos virales',
+  'Meditación',
+  'Sauna infrarrojo',
+  'Baños de hielo',
+  'Sueros de vitaminas',
+  'Pediluvio',
+  'Cámara hiperbárica',
+  'Terapias de ozono',
+];
+---
+
+<section class="tools">
+  <div class="wrap">
+    <p class="cloud-label reveal">Esto son herramientas</p>
+    <div class="tools-cloud reveal" aria-hidden="true">
+      {herramientas.map((h) => <span class="bubble">{h}</span>)}
+    </div>
+    <p class="cloud-label subtle reveal">Ninguna, por sí sola, es una estrategia.</p>
+
+    <div class="tools-content">
+      <SectionHead
+        class="reveal tools-head"
+        eyebrow="La verdad incómoda"
+        title="Herramientas ≠ estrategia."
+      />
+      <div class="reveal">
+        <p>
+          Cada semana aparece una herramienta nueva — y cada semana sientes que deberías estar
+          usándola. Pero una herramienta sin estrategia es solo una cosa más que probar. Un
+          suplemento, un ayuno o un protocolo pueden tener sentido, pero solo dentro de un mapa que
+          entienda tu cuerpo completo. Fuera de él, es ruido.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tools {
+    padding: 36px 0;
+  }
+  @media (min-width: 768px) {
+    .tools {
+      padding: 56px 0;
+    }
+  }
+  .cloud-label {
+    text-align: center;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-clay-deep);
+    margin-bottom: 16px;
+  }
+  .cloud-label.subtle {
+    margin: 16px 0 44px;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 19px;
+    color: rgb(48 47 42 / 0.85);
+  }
+  .tools-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    max-width: 760px;
+    margin: 0 auto 8px;
+  }
+  .bubble {
+    font-weight: 700;
+    font-size: 14.5px;
+    color: rgb(48 47 42 / 0.85);
+    background: var(--color-ivory);
+    border: 1px solid rgb(48 47 42 / 0.1);
+    padding: 10px 18px;
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+  }
+  .tools-content {
+    display: grid;
+    gap: 30px;
+    align-items: start;
+  }
+  @media (min-width: 768px) {
+    .tools-content {
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+  }
+  .tools-head {
+    margin-bottom: 0;
+    max-width: 440px;
+  }
+  .tools-content p {
+    font-size: clamp(17px, 1.8vw, 20px);
+    font-weight: 500;
+    line-height: 1.7;
+    color: rgb(48 47 42 / 0.85);
+  }
+</style>

@@ -1,0 +1,85 @@
+---
+/**
+ * Minimal shell for the checkout: brand + "Volver" on top, trust line at the bottom, no site
+ * navigation (nothing should pull the buyer away). Always noindex.
+ */
+import BaseLayout from './BaseLayout.astro';
+import BrandMark from '../components/BrandMark.astro';
+import { href } from '../lib/url';
+import { marca, legal } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} noindex>
+  <header class="checkout-header">
+    <a class="brand" href={href('/')}>
+      <BrandMark size={22} class="brand-symbol" />
+      <span class="brand-wordmark">{marca.nombre}</span>
+    </a>
+    <a class="back-link" href={href('/1-1')}>&larr; Volver</a>
+  </header>
+
+  <slot />
+
+  <footer class="checkout-footer">
+    Pago seguro · Tus datos están protegidos. Veronica Wellness no almacena datos de tarjeta.
+    &middot;
+    <a href={href(legal.avisoMedico)} target="_blank" rel="noopener">Aviso médico</a>
+  </footer>
+</BaseLayout>
+
+<style>
+  .checkout-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background: var(--color-bone);
+    border-bottom: 1px solid rgb(48 47 42 / 0.08);
+  }
+  @media (max-width: 900px) {
+    .checkout-header {
+      padding: 16px 22px;
+    }
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-charcoal);
+  }
+  .brand-symbol {
+    flex-shrink: 0;
+  }
+  .brand-wordmark {
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .back-link {
+    font-weight: 700;
+    font-size: 14px;
+    color: rgb(48 47 42 / 0.7);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .back-link:hover {
+    color: var(--color-charcoal);
+  }
+  .checkout-footer {
+    text-align: center;
+    padding: 30px 20px 50px;
+    font-size: 12px;
+    color: rgb(48 47 42 / 0.45);
+  }
+  .checkout-footer a {
+    text-decoration: underline;
+  }
+</style>

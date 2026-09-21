@@ -1,0 +1,172 @@
+---
+/**
+ * Sesión 01 · Mapear + Priorizar — the five Layer bars and the four objectives of the session.
+ */
+import { layers } from '../../data/layers';
+
+// Bar lengths and fills as drawn on Mari's page (a visual, not a measurement).
+const barras = [
+  { color: 'charcoal', width: '100%' },
+  { color: 'clay-deep', width: '86%' },
+  { color: 'sage-deep', width: '72%' },
+  { color: 'rose-deep', width: '58%' },
+  { color: 'olive', width: '44%' },
+];
+
+const objetivos = [
+  'Qué merece atención ahora',
+  'Qué puede estar conectado',
+  'Qué información importa',
+  'Qué debería priorizarse',
+];
+---
+
+<section class="reveal">
+  <div class="wrap">
+    <div class="session-head">
+      <span class="eyebrow">Sesión 01 · 90 min</span>
+      <h2>Mapear + Priorizar</h2>
+    </div>
+    <p class="lead">
+      Revisamos tu contexto a través de las cinco Layers. El objetivo no es abordar todo a la vez —
+      es determinar qué merece atención ahora, qué puede estar conectado, qué información importa y
+      qué debería priorizarse.
+    </p>
+
+    <div class="session1-grid">
+      <div class="layer-callout">Estas son las cinco Layers que mapeamos juntas:</div>
+      <div class="layer-bars">
+        {
+          layers.map((l, i) => (
+            <div class="lb-row">
+              <div class="lb-label">{l.nombre}</div>
+              <div
+                class="lb-bar"
+                style={`background:var(--color-${barras[i].color});width:${barras[i].width};`}
+              />
+            </div>
+          ))
+        }
+        <div class="layer-note">
+          No es una jerarquía ni un orden fijo — es el mapa completo de tu contexto. En la sesión 01
+          identificamos cuáles de estas Layers son tu prioridad actual.
+        </div>
+      </div>
+    </div>
+
+    <div class="obj-grid">
+      {objetivos.map((o) => <div class="obj-card">{o}</div>)}
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    padding: 64px 0;
+  }
+  @media (max-width: 760px) {
+    section {
+      padding: 36px 0;
+    }
+  }
+  .session-head {
+    margin-bottom: 28px;
+  }
+  .eyebrow {
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4.2vw, 46px);
+    line-height: 1.1;
+  }
+  .lead {
+    font-size: 19px;
+    line-height: 1.65;
+    font-weight: 500;
+    color: rgb(48 47 42 / 0.72);
+    max-width: 620px;
+  }
+  .session1-grid {
+    margin-top: 34px;
+    max-width: 760px;
+  }
+  .layer-callout {
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--color-charcoal);
+    margin-bottom: 18px;
+  }
+  .layer-bars {
+    background: var(--color-ivory);
+    border-radius: var(--radius-lg);
+    padding: 40px 36px;
+  }
+  @media (max-width: 640px) {
+    .layer-bars {
+      padding: 28px 22px;
+    }
+  }
+  .lb-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 16px;
+  }
+  .lb-label {
+    width: 160px;
+    flex: 0 0 auto;
+    font-weight: 800;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  @media (max-width: 640px) {
+    .lb-label {
+      width: 96px;
+      font-size: 10.5px;
+    }
+  }
+  .lb-bar {
+    height: 14px;
+    border-radius: 8px;
+  }
+  .layer-note {
+    margin-top: 20px;
+    font-size: 14px;
+    color: rgb(48 47 42 / 0.45);
+    max-width: 560px;
+    font-weight: 500;
+  }
+  .obj-grid {
+    margin-top: 26px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 640px) {
+    .obj-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .obj-card {
+    background: var(--color-ivory);
+    border-radius: var(--radius-md);
+    padding: 16px 18px 16px 38px;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--color-charcoal);
+    position: relative;
+  }
+  .obj-card::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 19px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-clay-deep);
+  }
+</style>

@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Astro / Vite build output
+dist/
+.astro/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.log
+
+# Local agent tooling, brain and doctrine — never ship (they name the client and the designer)
+.claude/
+cerebro/
+CLAUDE.md
+STARTUP.md
+graphify-out/
+
+# Raw material received from Mari (zips, audio, screenshots, full photo shoot).
+# The processed photos the site uses live under src/assets/ and ARE tracked.
+fuentes/
+
+# Screenshots produced by scripts/capturas.mjs (regenerate, do not commit)
+capturas/

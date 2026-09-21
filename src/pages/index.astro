@@ -1,0 +1,65 @@
+---
+/**
+ * Home — the Stitch design Mari preferred (voice note, 2026-09-21). The editorial alternative
+ * lives at /inicio-editorial/ for comparison; see docs/DECISIONES.md.
+ *
+ * This route alone loads the Stitch type pairing (Bodoni Moda + Plus Jakarta Sans).
+ */
+import '@fontsource-variable/bodoni-moda/wght.css';
+import '@fontsource-variable/bodoni-moda/wght-italic.css';
+import '@fontsource-variable/plus-jakarta-sans';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import HeroStitch from '../components/home/HeroStitch.astro';
+import LayersShowcase from '../components/home/LayersShowcase.astro';
+import TresPasos from '../components/home/TresPasos.astro';
+import Reframe from '../components/home/Reframe.astro';
+import OfertaCard from '../components/home/OfertaCard.astro';
+import Faq from '../components/home/Faq.astro';
+---
+
+<SiteLayout
+  title="THE LAYER METHOD™ — by Veronica Wellness"
+  description="THE LAYER METHOD™ by Veronica Wellness. Salud por capas. Del terreno a la célula."
+  theme="stitch"
+  mobileCta={false}
+>
+  <div id="scrollProgress" aria-hidden="true"></div>
+  <HeroStitch />
+  <LayersShowcase />
+  <TresPasos />
+  <Reframe />
+  <OfertaCard />
+  <Faq />
+</SiteLayout>
+
+<style>
+  /* Thin reading-progress line along the top, from the Stitch design. */
+  #scrollProgress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 2.5px;
+    background: linear-gradient(
+      90deg,
+      var(--color-clay-deep),
+      var(--color-sage-deep),
+      var(--color-charcoal)
+    );
+    z-index: 9999;
+    pointer-events: none;
+    transition: width 0.1s ease-out;
+  }
+</style>
+
+<script>
+  const bar = document.getElementById('scrollProgress');
+  if (bar) {
+    const update = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = max > 0 ? `${(window.scrollY / max) * 100}%` : '0%';
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+</script>

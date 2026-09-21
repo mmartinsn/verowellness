@@ -1,0 +1,69 @@
+---
+/**
+ * Layout for the public pages: header, <main>, footer, optional sticky mobile CTA, and the
+ * one-time scroll-reveal observer that powers `.reveal` / `.reveal-stagger`.
+ */
+import BaseLayout from './BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import MobileCta from '../components/MobileCta.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  theme?: 'editorial' | 'stitch';
+  /** Show the sticky bottom CTA on small screens (label/path default to "Trabaja conmigo"). */
+  mobileCta?: { label?: string; path?: string } | false;
+}
+
+const { title, description, noindex, theme = 'editorial', mobileCta = {} } = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  noindex={noindex}
+  theme={theme}
+  bodyClass={mobileCta ? 'has-mobile-cta' : undefined}
+>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+  <SiteHeader />
+  <main id="main">
+    <slot />
+  </main>
+  <SiteFooter />
+  {mobileCta && <MobileCta {...mobileCta} />}
+</BaseLayout>
+
+<style is:global>
+  body.has-mobile-cta {
+    padding-bottom: 78px;
+  }
+  @media (min-width: 1024px) {
+    body.has-mobile-cta {
+      padding-bottom: 0;
+    }
+  }
+</style>
+
+<script>
+  // Reveal-on-scroll: add `.in` the first time an element enters the viewport.
+  const els = document.querySelectorAll<HTMLElement>('.reveal, .reveal-stagger');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+    els.forEach((el) => io.observe(el));
+  } else {
+    els.forEach((el) => el.classList.add('in'));
+  }
+</script>

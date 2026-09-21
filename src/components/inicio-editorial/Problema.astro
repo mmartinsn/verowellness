@@ -1,0 +1,78 @@
+---
+/**
+ * "Haces mucho por tu salud. Pero no sabes qué priorizar." — the advice fragments and the payoff.
+ */
+import SectionHead from '../SectionHead.astro';
+
+const fragmentos = [
+  '"Toma esto para el cortisol."',
+  '"Esto desintoxica."',
+  '"Esto mejora tu mitocondria."',
+  '"Esto balancea tus hormonas."',
+  '"Esto repara tu intestino."',
+];
+---
+
+<section id="problema">
+  <div class="wrap">
+    <SectionHead
+      class="reveal"
+      eyebrow="El problema"
+      title="Haces mucho por tu salud.<br />Pero no sabes qué priorizar."
+    />
+
+    <div class="fragments reveal">
+      {fragmentos.map((f) => <span class="fragment">{f}</span>)}
+    </div>
+
+    <div class="payoff reveal">
+      <p class="pull">El resultado: muchas herramientas, poca estrategia.</p>
+      <p>No es que te falte información. Es que te falta un mapa.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    padding: 36px 0;
+  }
+  @media (min-width: 768px) {
+    section {
+      padding: 56px 0;
+    }
+  }
+  .fragments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 28px 0 34px;
+  }
+  .fragment {
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--color-charcoal);
+    background: var(--color-sand);
+    border: 1px solid rgb(48 47 42 / 0.1);
+    padding: 12px 20px;
+    border-radius: var(--radius-pill);
+  }
+  .payoff {
+    border-left: 3px solid var(--color-clay);
+    padding-left: 22px;
+  }
+  .pull {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(28px, 4.2vw, 42px);
+    line-height: 1.28;
+    color: var(--color-charcoal);
+    margin-bottom: 8px;
+  }
+  .payoff p:not(.pull) {
+    font-size: clamp(17px, 1.8vw, 20px);
+    font-weight: 700;
+    color: var(--color-charcoal);
+    line-height: 1.7;
+  }
+</style>

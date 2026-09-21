@@ -1,0 +1,1097 @@
+---
+/**
+ * Five-step checkout for one cycle: datos → resumen → pago → consentimiento → confirmar, then the
+ * confirmation screen with the booking embed.
+ *
+ * This is the presentation prototype Mari designed. Payment providers, the CRM calls and the
+ * Calendly widget are NOT wired: every place where a real integration mounts is marked
+ * `INTEGRATION POINT` in the markup or the script, and the "payment" is simulated client-side.
+ *
+ * Amounts are rendered on the server from data/oferta so the page is correct without JS; the
+ * script re-reads them from `data-config` for the dynamic bits (button label, Zelle total).
+ */
+import { precios, zelle, type Ciclo } from '../../data/oferta';
+import { usd } from '../../lib/precio';
+import { href } from '../../lib/url';
+import { legal, marca } from '../../data/site';
+
+interface Props {
+  ciclo: Ciclo;
+}
+const { ciclo } = Astro.props;
+const p = precios(ciclo);
+const impuestoPct = Math.round(p.taxRate * 100);
+
+const config = {
+  cycle_type: ciclo.id,
+  cycle_label: ciclo.nombre,
+  subtotal: p.subtotal,
+  tax_rate: p.taxRate,
+  tax_amount: p.impuesto,
+  total: p.total,
+  currency: 'USD',
+};
+
+const pasos = [
+  { n: 1, label: 'Tus datos' },
+  { n: 2, label: 'Resumen' },
+  { n: 3, label: 'Pago' },
+  { n: 4, label: 'Consentimiento' },
+  { n: 5, label: 'Confirmar' },
+];
+
+const codigosPais = ['+1', '+52', '+34', '+57', '+54', '+56', '+51', '+593', '+58'];
+const paises = [
+  'Estados Unidos',
+  'México',
+  'España',
+  'Colombia',
+  'Argentina',
+  'Chile',
+  'Perú',
+  'Ecuador',
+  'Venezuela',
+  'República Dominicana',
+  'Otro',
+];
+const fuentes = ['Instagram', 'Referido', 'Google', 'Cliente anterior', 'Otro'];
+
+const metodos = [
+  { id: 'stripe', label: 'Tarjeta', sub: 'Pago seguro procesado por Stripe', icon: 'STRIPE' },
+  { id: 'apple_pay', label: 'Apple Pay', sub: 'Pago rápido con tu wallet de Apple', icon: '' },
+  { id: 'paypal', label: 'PayPal', sub: 'Paga con tu cuenta de PayPal', icon: 'PAYPAL' },
+  { id: 'zelle', label: 'Zelle', sub: 'Verificación manual · 24–48h', icon: 'ZELLE' },
+];
+---
+
+<div class="checkout-shell" id="checkout" data-config={JSON.stringify(config)}>
+  <main class="checkout-main" id="main">
+    <div class="mobile-progress" id="mobile-progress">
+      <div class="mobile-progress-label" id="mobile-progress-label">Paso 1 de 5 · Tus datos</div>
+      <div class="mobile-progress-track">
+        <div class="mobile-progress-fill" id="mobile-progress-fill"></div>
+      </div>
+    </div>
+
+    <ol class="stepper" id="stepper">
+      {
+        pasos.map((s) => (
+          <li data-step={s.n} class:list={{ active: s.n === 1 }}>
+            <span>{String(s.n).padStart(2, '0')}</span>
+            {s.label}
+          </li>
+        ))
+      }
+    </ol>
+
+    <!-- STEP 1 — TUS DATOS -->
+    <section class="step active" id="step-1">
+      <p class="step-eyebrow">Paso 1</p>
+      <h1 class="step-title">Tus datos</h1>
+      <p class="step-subtitle">
+        Esta información crea tu perfil como cliente de {marca.nombre} y nos permite prepararte antes
+        de tu primera sesión.
+      </p>
+
+      <form id="form-datos" novalidate>
+        <div class="form-grid">
+          <div class="field">
+            <label for="nombre">Nombre *</label>
+            <input type="text" id="nombre" name="nombre" required autocomplete="given-name" />
+            <span class="field-error">Ingresa tu nombre.</span>
+          </div>
+          <div class="field">
+            <label for="apellido">Apellido *</label>
+            <input type="text" id="apellido" name="apellido" required autocomplete="family-name" />
+            <span class="field-error">Ingresa tu apellido.</span>
+          </div>
+          <div class="field full">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required autocomplete="email" />
+            <span class="field-error">Ingresa un email válido.</span>
+          </div>
+          <div class="field full">
+            <label for="telefono">Teléfono *</label>
+            <div class="phone-row">
+              <select id="cod_pais" name="cod_pais" aria-label="Código de país">
+                {codigosPais.map((c) => <option value={c}>{c}</option>)}
+                <option value="+other">+ otro</option>
+              </select>
+              <input
+                type="tel"
+                id="telefono"
+                name="telefono"
+                required
+                placeholder="809 555 0101"
+                autocomplete="tel-national"
+              />
+            </div>
+            <span class="field-error">Ingresa un número de teléfono válido.</span>
+          </div>
+          <div class="field full">
+            <label for="pais">País *</label>
+            <select id="pais" name="pais" required>
+              <option value="">Selecciona tu país</option>
+              {paises.map((c) => <option>{c}</option>)}
+            </select>
+            <span class="field-error">Selecciona tu país.</span>
+          </div>
+          <div class="field full">
+            <label for="fuente">¿Cómo conociste a {marca.nombre}? *</label>
+            <select id="fuente" name="fuente" required>
+              <option value="">Selecciona una opción</option>
+              {fuentes.map((f) => <option>{f}</option>)}
+            </select>
+            <span class="field-error">Selecciona una opción.</span>
+          </div>
+        </div>
+
+        <div class="step-actions">
+          <span></span>
+          <button type="submit" class="btn btn-primary">Continuar</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- STEP 2 — RESUMEN -->
+    <section class="step" id="step-2">
+      <p class="step-eyebrow">Paso 2</p>
+      <h1 class="step-title">Resumen de tu compra</h1>
+      <p class="step-subtitle">
+        Revisa los detalles de tu {ciclo.nombre} antes de continuar al pago.
+      </p>
+
+      <div class="review-card">
+        <div class="review-row"><span>Programa</span><span>{ciclo.nombre}</span></div>
+        <p class="review-note">{ciclo.descripcionCorta}</p>
+        <div class="review-row"><span>Subtotal</span><span>{usd(p.subtotal)}</span></div>
+        <div class="review-row">
+          <span>Impuesto ({impuestoPct}%)</span><span>{usd(p.impuesto)}</span>
+        </div>
+        <div class="review-row"><span>Total</span><span>{usd(p.total)}</span></div>
+      </div>
+
+      <div class="step-actions">
+        <button type="button" class="link-btn" data-goto="1">&larr; Editar mis datos</button>
+        <button type="button" class="btn btn-primary" data-goto="3"
+          >Continuar a método de pago</button
+        >
+      </div>
+    </section>
+
+    <!-- STEP 3 — MÉTODO DE PAGO -->
+    <section class="step" id="step-3">
+      <p class="step-eyebrow">Paso 3</p>
+      <h1 class="step-title">Método de pago</h1>
+      <p class="step-subtitle">Elige cómo prefieres completar tu pago.</p>
+
+      <div class="pay-methods" id="pay-methods">
+        {
+          metodos.map((m) => (
+            <label class="pay-method" data-method={m.id} id={`option-${m.id}`}>
+              <input type="radio" name="metodo_pago" value={m.id} />
+              <span>
+                <span class="pay-method-label">{m.label}</span>
+                <br />
+                <span class="pay-method-sub">{m.sub}</span>
+              </span>
+              <span class="pay-method-icon">{m.icon}</span>
+            </label>
+          ))
+        }
+      </div>
+
+      <!-- Panels: real integrations mount here -->
+      <div class="pay-panel" id="panel-stripe">
+        <div class="integration-placeholder">
+          INTEGRATION POINT: Stripe Elements / Payment Element<br />
+          stripe.elements().create('payment').mount('#panel-stripe')
+        </div>
+      </div>
+      <div class="pay-panel" id="panel-apple_pay">
+        <div class="integration-placeholder">
+          INTEGRATION POINT: Stripe Payment Request Button (Apple Pay)<br />
+          paymentRequestButton.mount('#panel-apple_pay')
+        </div>
+      </div>
+      <div class="pay-panel" id="panel-paypal">
+        <div class="integration-placeholder">
+          INTEGRATION POINT: PayPal Buttons SDK<br />
+          paypal.Buttons().render('#panel-paypal')
+        </div>
+      </div>
+      <div class="pay-panel" id="panel-zelle">
+        <div class="zelle-box">
+          Envía tu pago por Zelle a:
+          <strong class="addr-line">{zelle.titular}</strong>
+          <strong class="addr-line">{zelle.correo}</strong>
+          <div class="zelle-note">
+            Monto exacto a enviar: <strong class="amount" data-total>{usd(p.total)}</strong>.<br
+            /><br />
+            Tu reserva quedará marcada como <em>pendiente de verificación</em> hasta que confirmemos tu
+            pago manualmente (24–48h). Te contactaremos por email para agendar en cuanto se verifique.
+          </div>
+        </div>
+      </div>
+
+      <div class="step-actions">
+        <button type="button" class="link-btn" data-goto="2">&larr; Atrás</button>
+        <button type="button" class="btn btn-primary" id="btn-to-step4" data-goto="4" disabled>
+          Continuar
+        </button>
+      </div>
+    </section>
+
+    <!-- STEP 4 — CONSENTIMIENTO -->
+    <section class="step" id="step-4">
+      <p class="step-eyebrow">Paso 4</p>
+      <h1 class="step-title">Consentimiento</h1>
+      <p class="step-subtitle">Un último paso antes de confirmar tu reserva.</p>
+
+      <div class="consent-box">
+        <div class="consent-check">
+          <input type="checkbox" id="consent-terms" />
+          <label for="consent-terms">
+            He leído y acepto los <a href={href(legal.terminos)} target="_blank" rel="noopener"
+              >Términos de Servicio</a
+            > y la <a href={href(legal.privacidad)} target="_blank" rel="noopener"
+              >Política de Privacidad</a
+            > de {marca.nombre}.
+          </label>
+        </div>
+        <div class="consent-check">
+          <input type="checkbox" id="consent-policy" />
+          <label for="consent-policy">
+            Entiendo la política de reactivación de 6 meses y las condiciones de reprogramación de
+            sesiones.
+          </label>
+        </div>
+        <p class="medical-disclaimer">
+          {marca.nombre} ofrece orientación en nutrición funcional y bienestar celular. Esto no sustituye
+          atención médica, diagnóstico ni tratamiento. Consulta siempre a tu médico para cualquier condición
+          de salud. Ver <a href={href(legal.avisoMedico)} target="_blank" rel="noopener"
+            >aviso médico completo</a
+          >.
+        </p>
+      </div>
+
+      <div class="step-actions">
+        <button type="button" class="link-btn" data-goto="3">&larr; Atrás</button>
+        <button type="button" class="btn btn-primary" id="btn-to-step5" data-goto="5" disabled>
+          Continuar
+        </button>
+      </div>
+    </section>
+
+    <!-- STEP 5 — CONFIRMAR Y PAGAR -->
+    <section class="step" id="step-5">
+      <p class="step-eyebrow">Paso 5</p>
+      <h1 class="step-title">Confirmar y pagar</h1>
+      <p class="step-subtitle">Revisa una última vez antes de confirmar.</p>
+
+      <div class="review-card" id="step5-review">
+        <div class="review-row"><span>Programa</span><span>{ciclo.nombre}</span></div>
+        <div class="review-row"><span>Método de pago</span><span id="final-method">—</span></div>
+        <div class="review-row">
+          <span>Total a pagar</span><span data-total>{usd(p.total)}</span>
+        </div>
+      </div>
+
+      <div class="step-actions" id="step5-actions">
+        <button type="button" class="link-btn" data-goto="4">&larr; Atrás</button>
+        <button type="button" class="btn btn-primary" id="btn-pay"
+          >Confirmar y pagar {usd(p.total)}</button
+        >
+      </div>
+
+      <div class="review-card pay-success" id="step5-success" hidden>
+        <svg viewBox="0 0 40 40" fill="none" width="40" height="40" aria-hidden="true">
+          <circle cx="20" cy="20" r="19" stroke="currentColor" stroke-width="1.4"></circle>
+          <path
+            d="M12 21l5 5 11-12"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+        <h2 class="pay-success-title" id="step5-success-title">Pago recibido</h2>
+        <p class="pay-success-sub" id="step5-success-sub">Tu pago fue procesado correctamente.</p>
+      </div>
+      <div class="step-actions" id="step5-continue-actions" hidden>
+        <span></span>
+        <button type="button" class="btn btn-primary" id="btn-continue-after-pay">Continuar</button>
+      </div>
+    </section>
+
+    <!-- CONFIRMACIÓN -->
+    <section class="step" id="step-confirmation">
+      <div class="confirm-wrap">
+        <svg class="confirm-icon" viewBox="0 0 56 56" fill="none" aria-hidden="true">
+          <circle cx="28" cy="28" r="27" stroke="currentColor" stroke-width="1.5"></circle>
+          <path
+            d="M17 29l7 7 15-16"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+        <h1 class="confirm-title" id="confirm-title">{ciclo.confirmacion.titulo}</h1>
+        <p class="confirm-sub" id="confirm-sub">{ciclo.confirmacion.texto}</p>
+
+        <div id="zelle-pending-note" class="zelle-pending-note" hidden>
+          Tu pago por Zelle está <strong>pendiente de verificación</strong>. En cuanto lo
+          confirmemos (24–48h) te enviaremos el enlace para agendar tu primera sesión.
+        </div>
+
+        <div class="integration-placeholder calendly-embed" id="calendly-embed">
+          INTEGRATION POINT: Calendly / Acuity inline widget<br />
+          Calendly.initInlineWidget({'{'} url: '{ciclo.confirmacion.calendlyUrl}' {'}'})<br /><br />
+          [ {ciclo.confirmacion.calendlyEtiqueta} ]
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- RESUMEN (sticky) -->
+  <aside class="summary-card" id="summary-card">
+    <span class="summary-tag">{ciclo.etiqueta}</span>
+    <h2 class="summary-title">{ciclo.nombre}</h2>
+    <p class="summary-desc">{ciclo.descripcionCorta}</p>
+    <div class="summary-line"><span>Subtotal</span><span>{usd(p.subtotal)}</span></div>
+    <div class="summary-line">
+      <span>Impuesto ({impuestoPct}%)</span><span>{usd(p.impuesto)}</span>
+    </div>
+    <div class="summary-line total"><span>Total</span><span data-total>{usd(p.total)}</span></div>
+    <ul class="summary-includes">
+      {ciclo.incluyeCheckout.map((i) => <li>{i}</li>)}
+    </ul>
+  </aside>
+</div>
+
+<style>
+  .checkout-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 40px 40px 120px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 64px;
+    align-items: start;
+    font-size: 17px;
+  }
+
+  /* Stepper */
+  .stepper {
+    display: flex;
+    margin: 0 0 40px;
+    list-style: none;
+    padding: 0;
+    border-bottom: 1px solid rgb(48 47 42 / 0.1);
+  }
+  .stepper li {
+    flex: 1;
+    text-align: center;
+    padding-bottom: 14px;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(48 47 42 / 0.45);
+    border-bottom: 2px solid transparent;
+    position: relative;
+    top: 1px;
+  }
+  .stepper li span {
+    display: block;
+    font-size: 10px;
+    opacity: 0.7;
+    margin-bottom: 3px;
+  }
+  .stepper li.done {
+    color: var(--color-olive);
+    border-color: var(--color-olive);
+  }
+  .stepper li.active {
+    color: var(--color-charcoal);
+    border-color: var(--color-clay);
+  }
+
+  /* Steps */
+  .step {
+    display: none;
+    animation: fadeIn 0.35s ease;
+  }
+  .step.active {
+    display: block;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .step-eyebrow {
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-clay-deep);
+    margin: 0 0 8px;
+  }
+  .step-title {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(28px, 3.4vw, 38px);
+    margin: 0 0 8px;
+    line-height: 1.08;
+  }
+  .step-subtitle {
+    color: rgb(48 47 42 / 0.7);
+    margin: 0 0 32px;
+    font-size: 16px;
+    max-width: 520px;
+  }
+
+  /* Form */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field.full {
+    grid-column: 1 / -1;
+  }
+  .field label {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--color-charcoal);
+  }
+  input,
+  select {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: var(--color-charcoal);
+    background: var(--color-ivory);
+    border: 1.5px solid rgb(48 47 42 / 0.12);
+    border-radius: var(--radius-md);
+    padding: 13px 16px;
+    outline: none;
+    transition:
+      border-color 0.15s ease,
+      background 0.15s ease;
+    width: 100%;
+  }
+  input:focus,
+  select:focus {
+    border-color: var(--color-clay-deep);
+    background: var(--color-white);
+  }
+  input.invalid,
+  select.invalid {
+    border-color: var(--color-error);
+  }
+  .field-error {
+    font-size: 12px;
+    color: var(--color-error);
+    font-weight: 600;
+    display: none;
+  }
+  .field-error.show {
+    display: block;
+  }
+  .phone-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 10px;
+  }
+
+  /* Buttons */
+  .checkout-shell .btn {
+    font-weight: 700;
+    font-size: 15px;
+    padding: 15px 30px;
+    border: none;
+  }
+  .checkout-shell .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .step-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 36px;
+    gap: 16px;
+  }
+  .link-btn {
+    background: none;
+    border: none;
+    font-weight: 700;
+    font-size: 14px;
+    color: rgb(48 47 42 / 0.7);
+    padding: 8px 0;
+  }
+  .link-btn:hover {
+    color: var(--color-charcoal);
+  }
+
+  /* Summary card */
+  .summary-card {
+    background: var(--color-ivory);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    position: sticky;
+    top: 28px;
+  }
+  .summary-tag {
+    display: inline-block;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-clay-deep);
+    background: rgb(231 183 160 / 0.35);
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    margin-bottom: 14px;
+  }
+  .summary-title {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 26px;
+    margin: 0 0 6px;
+  }
+  .summary-desc {
+    font-size: 14.5px;
+    color: rgb(48 47 42 / 0.7);
+    margin: 0 0 20px;
+    line-height: 1.55;
+  }
+  .summary-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    padding: 8px 0;
+    color: rgb(48 47 42 / 0.7);
+  }
+  .summary-line.total {
+    border-top: 1px solid rgb(48 47 42 / 0.15);
+    margin-top: 8px;
+    padding-top: 14px;
+    font-weight: 800;
+    color: var(--color-charcoal);
+    font-size: 17px;
+  }
+  .summary-includes {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0 0;
+  }
+  .summary-includes li {
+    font-size: 13.5px;
+    color: rgb(48 47 42 / 0.7);
+    padding: 5px 0 5px 20px;
+    position: relative;
+  }
+  .summary-includes li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-olive);
+  }
+
+  /* Payment methods */
+  .pay-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .pay-method {
+    border: 1.5px solid rgb(48 47 42 / 0.12);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    cursor: pointer;
+    background: var(--color-ivory);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition:
+      border-color 0.15s ease,
+      background 0.15s ease;
+  }
+  .pay-method:hover {
+    border-color: var(--color-clay-deep);
+  }
+  .pay-method.selected {
+    border-color: var(--color-clay-deep);
+    background: var(--color-white);
+    box-shadow: 0 0 0 1px var(--color-clay-deep) inset;
+  }
+  .pay-method input {
+    width: auto;
+    accent-color: var(--color-clay-deep);
+  }
+  #option-apple_pay {
+    display: none; /* shown by the script only when the device supports Apple Pay */
+  }
+  .pay-method-label {
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .pay-method-sub {
+    font-size: 12.5px;
+    color: rgb(48 47 42 / 0.45);
+    font-weight: 500;
+  }
+  .pay-method-icon {
+    margin-left: auto;
+    font-size: 12px;
+    color: rgb(48 47 42 / 0.45);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .pay-panel {
+    display: none;
+    background: var(--color-ivory);
+    border-radius: var(--radius-md);
+    padding: 22px;
+    margin: -4px 0 24px;
+  }
+  .pay-panel.show {
+    display: block;
+  }
+  .integration-placeholder {
+    background: var(--color-white);
+    border: 1px dashed rgb(48 47 42 / 0.25);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    font-size: 13px;
+    color: rgb(48 47 42 / 0.45);
+    text-align: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    line-height: 1.6;
+  }
+  .zelle-box {
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    font-size: 14.5px;
+  }
+  .zelle-box .addr-line {
+    display: block;
+    margin-top: 4px;
+  }
+  .zelle-box .amount {
+    font-weight: 800;
+  }
+  .zelle-note {
+    font-size: 13px;
+    color: rgb(48 47 42 / 0.7);
+    margin-top: 14px;
+    line-height: 1.55;
+  }
+
+  /* Consent */
+  .consent-box {
+    background: var(--color-ivory);
+    border-radius: var(--radius-md);
+    padding: 22px;
+    margin-bottom: 20px;
+  }
+  .consent-check {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 0;
+  }
+  .consent-check input {
+    width: auto;
+    margin-top: 3px;
+    accent-color: var(--color-clay-deep);
+  }
+  .consent-check label {
+    font-size: 14px;
+    color: rgb(48 47 42 / 0.7);
+    font-weight: 500;
+    line-height: 1.55;
+  }
+  .consent-check a {
+    color: var(--color-charcoal);
+    font-weight: 700;
+    text-decoration: underline;
+  }
+  .medical-disclaimer {
+    font-size: 12px;
+    color: rgb(48 47 42 / 0.45);
+    line-height: 1.6;
+    padding-top: 14px;
+    border-top: 1px solid rgb(48 47 42 / 0.1);
+    margin-top: 4px;
+  }
+  .medical-disclaimer a {
+    text-decoration: underline;
+  }
+
+  /* Review / pay */
+  .review-card {
+    background: var(--color-ivory);
+    border-radius: var(--radius-lg);
+    padding: 26px 28px;
+    margin-bottom: 28px;
+  }
+  .review-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0;
+    font-size: 14.5px;
+    border-bottom: 1px solid rgb(48 47 42 / 0.08);
+  }
+  .review-row:last-child {
+    border-bottom: none;
+  }
+  .review-row span:first-child {
+    color: rgb(48 47 42 / 0.7);
+  }
+  .review-row span:last-child {
+    font-weight: 700;
+  }
+  .review-note {
+    font-size: 13.5px;
+    color: rgb(48 47 42 / 0.7);
+    line-height: 1.55;
+    margin: 2px 0 14px;
+  }
+  .pay-success {
+    text-align: center;
+    padding: 36px 28px;
+    color: var(--color-olive);
+  }
+  .pay-success svg {
+    margin: 0 auto 16px;
+  }
+  .pay-success-title {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 24px;
+    margin: 0 0 8px;
+    color: var(--color-charcoal);
+  }
+  .pay-success-sub {
+    font-size: 14.5px;
+    color: rgb(48 47 42 / 0.7);
+    margin: 0;
+    line-height: 1.55;
+  }
+  [hidden] {
+    display: none !important;
+  }
+
+  /* Confirmation */
+  .confirm-wrap {
+    text-align: center;
+    padding: 20px 0 40px;
+  }
+  .confirm-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 24px;
+    color: var(--color-olive);
+  }
+  .confirm-title {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4vw, 42px);
+    margin: 0 0 14px;
+  }
+  .confirm-sub {
+    color: rgb(48 47 42 / 0.7);
+    max-width: 480px;
+    margin: 0 auto 36px;
+    font-size: 16px;
+  }
+  .calendly-embed {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--color-ivory);
+    padding: 60px 30px;
+  }
+  .zelle-pending-note {
+    max-width: 480px;
+    margin: 0 auto 30px;
+    background: var(--color-sand);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+    font-size: 14px;
+    color: rgb(48 47 42 / 0.7);
+    text-align: left;
+  }
+
+  /* Mobile */
+  .mobile-progress {
+    display: none;
+    margin-bottom: 32px;
+  }
+  .mobile-progress-label {
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgb(48 47 42 / 0.7);
+    margin-bottom: 10px;
+  }
+  .mobile-progress-track {
+    height: 4px;
+    background: rgb(48 47 42 / 0.1);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+  }
+  .mobile-progress-fill {
+    height: 100%;
+    background: var(--color-clay);
+    border-radius: var(--radius-pill);
+    transition: width 0.3s ease;
+    width: 20%;
+  }
+  @media (max-width: 900px) {
+    .checkout-shell {
+      grid-template-columns: 1fr;
+      padding: 24px 22px 100px;
+      gap: 0;
+    }
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+    .phone-row {
+      grid-template-columns: 96px 1fr;
+    }
+    .summary-card {
+      position: static;
+      margin-bottom: 28px;
+      order: -1;
+    }
+    .stepper {
+      display: none;
+    }
+    .mobile-progress {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  /*
+   * Checkout behaviour — a client-side prototype. Every `INTEGRATION POINT` comment marks where a
+   * real system (CRM, Stripe, PayPal, Zelle verification, Calendly) plugs in.
+   */
+  type Config = {
+    cycle_type: string;
+    cycle_label: string;
+    subtotal: number;
+    tax_rate: number;
+    tax_amount: number;
+    total: number;
+    currency: string;
+  };
+  type Metodo = 'stripe' | 'apple_pay' | 'paypal' | 'zelle';
+
+  const root = document.getElementById('checkout');
+  if (root) {
+    const config: Config = JSON.parse(root.dataset.config ?? '{}');
+    const usd = (n: number) => `$${n.toFixed(2)}`;
+    const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
+
+    // In-memory state. In production: client_id / order_id returned by the CRM API, kept in a
+    // signed session, not client-side state.
+    const state: {
+      client: Record<string, string> | null;
+      order: Record<string, unknown> | null;
+      payment_method: Metodo | null;
+    } = { client: null, order: null, payment_method: null };
+
+    /* ── Step navigation ── */
+    const stepLabels: Record<number, string> = {
+      1: 'Tus datos',
+      2: 'Resumen',
+      3: 'Pago',
+      4: 'Consentimiento',
+      5: 'Confirmar',
+    };
+    function goToStep(n: number | 'confirmation') {
+      root!.querySelectorAll('.step').forEach((s) => s.classList.remove('active'));
+      $(`step-${n}`)?.classList.add('active');
+      root!.querySelectorAll<HTMLLIElement>('#stepper li').forEach((li) => {
+        const s = Number(li.dataset.step);
+        li.classList.remove('active', 'done');
+        if (typeof n === 'number') {
+          if (s < n) li.classList.add('done');
+          if (s === n) li.classList.add('active');
+        }
+      });
+      const progress = $('mobile-progress');
+      if (typeof n === 'number') {
+        $('mobile-progress-label')!.textContent = `Paso ${n} de 5 · ${stepLabels[n]}`;
+        $('mobile-progress-fill')!.style.width = `${(n / 5) * 100}%`;
+        progress?.removeAttribute('hidden');
+      } else {
+        progress?.setAttribute('hidden', '');
+      }
+      if (n === 5) prepareStep5();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    root.querySelectorAll<HTMLButtonElement>('[data-goto]').forEach((btn) => {
+      btn.addEventListener('click', () => goToStep(Number(btn.dataset.goto)));
+    });
+
+    /* ── Step 1: validate and (INTEGRATION POINT) upsert the CRM client ── */
+    $('form-datos')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const required = ['nombre', 'apellido', 'email', 'telefono', 'pais', 'fuente'];
+      let valid = true;
+      for (const id of required) {
+        const el = $<HTMLInputElement | HTMLSelectElement>(id)!;
+        const empty = !el.value.trim();
+        const badEmail =
+          id === 'email' && !!el.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value);
+        const bad = empty || badEmail;
+        el.classList.toggle('invalid', bad);
+        el.closest('.field')?.querySelector('.field-error')?.classList.toggle('show', bad);
+        if (bad) valid = false;
+      }
+      if (!valid) return;
+
+      state.client = {
+        first_name: $<HTMLInputElement>('nombre')!.value.trim(),
+        last_name: $<HTMLInputElement>('apellido')!.value.trim(),
+        email: $<HTMLInputElement>('email')!.value.trim().toLowerCase(),
+        phone: `${$<HTMLSelectElement>('cod_pais')!.value} ${$<HTMLInputElement>('telefono')!.value.trim()}`,
+        country: $<HTMLSelectElement>('pais')!.value,
+        acquisition_source: $<HTMLSelectElement>('fuente')!.value,
+      };
+      // INTEGRATION POINT: CRM_API.createOrUpdateClient(state.client) → client_id (upsert on email)
+      console.info('[CRM] createOrUpdateClient', state.client);
+
+      // The order is created as soon as the summary is reached ("checkout started").
+      // INTEGRATION POINT: CRM_API.createOrder(state.order) → order_id
+      state.order = {
+        client_id: null,
+        cycle_type: config.cycle_type,
+        subtotal: config.subtotal,
+        tax_rate: config.tax_rate,
+        tax_amount: config.tax_amount,
+        total: config.total,
+        currency: config.currency,
+        payment_method: null,
+        payment_status: 'STARTED',
+      };
+      console.info('[CRM] createOrder (STARTED)', state.order);
+      goToStep(2);
+    });
+
+    /* ── Step 3: payment method ── */
+    // Apple Pay only when the device can use it.
+    // INTEGRATION POINT: replace with stripe.paymentRequest({...}).canMakePayment()
+    try {
+      const w = window as unknown as { ApplePaySession?: { canMakePayments?: () => boolean } };
+      if (w.ApplePaySession?.canMakePayments?.()) $('option-apple_pay')!.style.display = 'flex';
+    } catch {
+      // Sandboxed contexts may throw when the API is touched; Apple Pay simply stays hidden.
+    }
+    root.querySelectorAll<HTMLLabelElement>('.pay-method').forEach((label) => {
+      label.addEventListener('click', () => {
+        const method = label.dataset.method as Metodo;
+        root!.querySelectorAll('.pay-method').forEach((l) => l.classList.remove('selected'));
+        root!.querySelectorAll('.pay-panel').forEach((p) => p.classList.remove('show'));
+        label.classList.add('selected');
+        label.querySelector('input')!.checked = true;
+        $(`panel-${method}`)?.classList.add('show');
+        state.payment_method = method;
+        $<HTMLButtonElement>('btn-to-step4')!.disabled = false;
+      });
+    });
+
+    /* ── Step 4: consent ── */
+    const checkConsent = () => {
+      const ok =
+        $<HTMLInputElement>('consent-terms')!.checked &&
+        $<HTMLInputElement>('consent-policy')!.checked;
+      $<HTMLButtonElement>('btn-to-step5')!.disabled = !ok;
+    };
+    $('consent-terms')?.addEventListener('change', checkConsent);
+    $('consent-policy')?.addEventListener('change', checkConsent);
+
+    /* ── Step 5: confirm and pay (simulated) ── */
+    const methodLabels: Record<Metodo, string> = {
+      stripe: 'Tarjeta (Stripe)',
+      apple_pay: 'Apple Pay',
+      paypal: 'PayPal',
+      zelle: 'Zelle (verificación manual)',
+    };
+    let lastOutcome: 'paid' | 'pending' | null = null;
+
+    function prepareStep5() {
+      $('final-method')!.textContent = state.payment_method
+        ? methodLabels[state.payment_method]
+        : '—';
+      $('step5-review')?.removeAttribute('hidden');
+      $('step5-actions')?.removeAttribute('hidden');
+      $('step5-success')?.setAttribute('hidden', '');
+      $('step5-continue-actions')?.setAttribute('hidden', '');
+      const btn = $<HTMLButtonElement>('btn-pay')!;
+      btn.disabled = false;
+      btn.textContent = `Confirmar y pagar ${usd(config.total)}`;
+    }
+
+    $('btn-pay')?.addEventListener('click', () => {
+      const btn = $<HTMLButtonElement>('btn-pay')!;
+      btn.disabled = true;
+      btn.textContent = 'Procesando...';
+      if (state.order) state.order.payment_method = state.payment_method;
+
+      // INTEGRATION POINT — branch by provider:
+      //   stripe / apple_pay → confirm PaymentIntent client-side, verify server-side via webhook
+      //   paypal             → capture order via PayPal SDK, confirm via webhook
+      //   zelle              → no live confirmation; order stays PENDING until verified by hand
+      window.setTimeout(() => {
+        if (state.payment_method === 'zelle') {
+          if (state.order) state.order.payment_status = 'PENDING';
+          lastOutcome = 'pending';
+          $('step5-success-title')!.textContent = 'Solicitud registrada';
+          $('step5-success-sub')!.textContent =
+            'Verificaremos tu pago por Zelle en las próximas 24–48h y te contactaremos por email.';
+        } else {
+          if (state.order) state.order.payment_status = 'PAID';
+          lastOutcome = 'paid';
+          $('step5-success-title')!.textContent = 'Pago recibido';
+          $('step5-success-sub')!.textContent = 'Tu pago fue procesado correctamente.';
+        }
+        console.info('[CRM] updateOrder', state.order);
+        // The buyer sees the payment result before moving on — never auto-advance.
+        $('step5-review')?.setAttribute('hidden', '');
+        $('step5-actions')?.setAttribute('hidden', '');
+        $('step5-success')?.removeAttribute('hidden');
+        $('step5-continue-actions')?.removeAttribute('hidden');
+      }, 900);
+    });
+
+    $('btn-continue-after-pay')?.addEventListener('click', () => {
+      if (lastOutcome === 'pending') {
+        $('confirm-title')!.textContent = 'Reserva recibida';
+        $('confirm-sub')!.textContent =
+          `Registramos tu ${config.cycle_label}. Verificaremos tu pago por Zelle en las próximas 24–48h.`;
+        $('zelle-pending-note')?.removeAttribute('hidden');
+        $('calendly-embed')?.setAttribute('hidden', '');
+      }
+      goToStep('confirmation');
+    });
+  }
+</script>

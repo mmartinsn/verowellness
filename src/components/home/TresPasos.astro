@@ -1,0 +1,63 @@
+---
+/**
+ * "Sin recetas al azar. Tres pasos." — Mapear · Priorizar · Actuar con estrategia.
+ */
+const pasos = [
+  {
+    num: '01',
+    color: 'text-clay-deep/60 group-hover:text-clay-deep',
+    titulo: 'Mapear',
+    claim: 'Ver el sistema completo antes de decidir.',
+    texto:
+      'Analizamos tu historial clínico, biomarcadores y sintomatología sin compartimentar tu organismo.',
+  },
+  {
+    num: '02',
+    color: 'text-sage-deep/90 group-hover:text-olive',
+    titulo: 'Priorizar',
+    claim: 'Definir qué Layer merece atención primero.',
+    texto:
+      'Identificamos la Layer primaria que, al desbloquearse, potencia la respuesta de todas las demás.',
+  },
+  {
+    num: '03',
+    color: 'text-rose-deep/80 group-hover:text-rose-deep',
+    titulo: 'Actuar con estrategia',
+    claim: 'Intervenir con intención, no por ensayo y error.',
+    texto: 'Protocolo preciso de micronutrición, drenaje y hábitos con estrategia personalizada.',
+  },
+];
+---
+
+<section class="py-24" id="tres-pasos">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+      <div>
+        <span class="text-clay-deep text-[11px] font-bold tracking-[0.2em] uppercase"
+          >El principio</span
+        >
+        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-charcoal mt-1.5">
+          Sin recetas al azar. Tres pasos.
+        </h2>
+      </div>
+      <p class="text-sm text-black/60 max-w-sm">
+        Dejamos de acumular suplementos inconexos. Diagnosticamos la compuerta biológica
+        prioritaria.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {
+        pasos.map((p) => (
+          <div class="group bg-white p-8 rounded-3xl border border-black/[0.06] hover:border-clay-deep/40 transition-all duration-300 shadow-sm hover:shadow-xl">
+            <span class:list={['font-serif text-5xl font-light transition-colors', p.color]}>
+              {p.num}
+            </span>
+            <h3 class="font-serif text-2xl text-charcoal font-medium mt-4">{p.titulo}</h3>
+            <p class="text-xs sm:text-sm font-medium text-charcoal/80 mt-1">{p.claim}</p>
+            <p class="text-xs sm:text-sm text-black/60 mt-2 leading-relaxed">{p.texto}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

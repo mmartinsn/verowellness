@@ -1,0 +1,119 @@
+---
+/**
+ * "La creadora de The Layer Method™" — portrait, bio and signature quote.
+ */
+import { Image } from 'astro:assets';
+import SectionHead from '../SectionHead.astro';
+import retrato from '../../assets/fotos/veronica-retrato-recorte.jpg';
+import { href } from '../../lib/url';
+import { marca } from '../../data/site';
+---
+
+<section class="about" id="sobre-mi">
+  <div class="wrap">
+    <div class="photo-frame reveal">
+      <Image
+        src={retrato}
+        alt={`Retrato editorial de ${marca.creadora}`}
+        widths={[260, 520]}
+        sizes="260px"
+      />
+      <span class="photo-tag">{marca.creadora}</span>
+    </div>
+    <div class="reveal">
+      <SectionHead
+        class="about-head"
+        eyebrow={`Sobre ${marca.creadora}`}
+        title="La creadora de The Layer Method™"
+      />
+      <p>
+        Verónica trabaja la nutrición funcional y la salud celular sin fragmentar el cuerpo en
+        departamentos. The Layer Method™ nace de traducir años de trabajo 1:1 en un sistema claro:
+        mapear antes de intervenir, priorizar antes de añadir.
+      </p>
+      <p class="p-sm">
+        Ofrece asesorías 100% online, adaptadas a los horarios de todas partes del mundo.
+      </p>
+      <p class="signature">"No persigas cada síntoma. Entiende las capas."</p>
+      <div class="cta-row">
+        <a href={href('/el-metodo')} class="btn btn-primary">Conoce The Layer Method™</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding: 36px 0;
+  }
+  @media (min-width: 768px) {
+    .about {
+      padding: 56px 0;
+    }
+  }
+  .about .wrap {
+    display: grid;
+    gap: 28px;
+    align-items: center;
+  }
+  @media (min-width: 768px) {
+    .about .wrap {
+      grid-template-columns: 1fr 1fr;
+      gap: 52px;
+    }
+  }
+  .photo-frame {
+    border-radius: var(--radius-md);
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    background: var(--color-sand);
+    position: relative;
+    max-width: 230px;
+    filter: saturate(0.92);
+    justify-self: start;
+  }
+  @media (min-width: 768px) {
+    .photo-frame {
+      max-width: 260px;
+    }
+  }
+  .photo-frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .photo-tag {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    background: rgb(251 250 246 / 0.9);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    color: rgb(48 47 42 / 0.85);
+  }
+  .about-head {
+    margin-bottom: 18px;
+  }
+  .about p {
+    font-size: clamp(17px, 1.8vw, 20px);
+    font-weight: 500;
+    line-height: 1.7;
+    color: rgb(48 47 42 / 0.85);
+  }
+  .about .p-sm {
+    margin-top: 12px;
+    font-size: clamp(15px, 1.6vw, 17px);
+    font-weight: 600;
+  }
+  .signature {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 21px;
+    margin-top: 22px;
+  }
+  .cta-row {
+    margin-top: 26px;
+  }
+</style>

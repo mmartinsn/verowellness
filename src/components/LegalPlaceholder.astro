@@ -1,0 +1,58 @@
+---
+/**
+ * Placeholder for the legal pages the checkout links to. The copy has to come from Verónica
+ * (or her lawyer); nothing is invented here. The page exists so no link is broken.
+ */
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+---
+
+<SiteLayout
+  title={`${title} — Veronica Wellness`}
+  description={description}
+  noindex
+  mobileCta={false}
+>
+  <section class="legal">
+    <div class="wrap">
+      <span class="eyebrow">Legal</span>
+      <h1>{title}</h1>
+      <div class="pendiente">
+        <strong>Contenido pendiente.</strong> Este texto lo redacta Verónica Wellness antes de la publicación.
+        La página existe para que el checkout no enlace a ningún lugar roto.
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .legal {
+    padding: 64px 0 96px;
+    min-height: 50vh;
+  }
+  .eyebrow {
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(34px, 5vw, 56px);
+    line-height: 1.05;
+  }
+  .pendiente {
+    margin-top: 32px;
+    max-width: 620px;
+    background: var(--color-ivory);
+    border-left: 4px solid var(--color-clay);
+    border-radius: var(--radius-md);
+    padding: 22px 26px;
+    font-size: 16px;
+    line-height: 1.65;
+    color: rgb(48 47 42 / 0.85);
+  }
+</style>

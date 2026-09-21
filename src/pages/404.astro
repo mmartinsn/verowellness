@@ -1,0 +1,43 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { href } from '../lib/url';
+---
+
+<SiteLayout
+  title="Página no encontrada — Veronica Wellness"
+  description="Esta página no existe."
+  noindex
+  mobileCta={false}
+>
+  <section class="nf">
+    <div class="wrap">
+      <span class="eyebrow">404</span>
+      <h1>Esta capa no existe.</h1>
+      <p>La página que buscas no está aquí. Vuelve al inicio y empieza por el mapa.</p>
+      <a class="btn btn-primary" href={href('/')}>Ir al inicio</a>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .nf {
+    padding: 96px 0 128px;
+    text-align: center;
+  }
+  .eyebrow {
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(34px, 5vw, 56px);
+    line-height: 1.05;
+  }
+  p {
+    margin: 18px auto 32px;
+    max-width: 480px;
+    font-size: 17px;
+    line-height: 1.65;
+    color: rgb(48 47 42 / 0.72);
+  }
+</style>

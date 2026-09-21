@@ -1,0 +1,61 @@
+---
+/**
+ * Document shell: <head>, fonts, global styles. Every page renders through here, either
+ * directly (checkout, legal) or via SiteLayout (header + footer).
+ *
+ * Fonts are self-hosted with @fontsource. The editorial pairing (Cormorant Garamond + Nunito)
+ * loads for every page; the Stitch home imports its own pairing in its page file, so only that
+ * route pays for Bodoni Moda and Plus Jakarta Sans.
+ */
+import '@fontsource/cormorant-garamond/400.css';
+import '@fontsource/cormorant-garamond/500.css';
+import '@fontsource/cormorant-garamond/600.css';
+import '@fontsource/cormorant-garamond/400-italic.css';
+import '@fontsource/cormorant-garamond/500-italic.css';
+import '@fontsource-variable/nunito';
+import '../styles/global.css';
+import { href } from '../lib/url';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Keep search engines out (checkout, legal placeholders, presentation index). */
+  noindex?: boolean;
+  /** Visual system for this page; `stitch` swaps type and canvas tokens in global.css. */
+  theme?: 'editorial' | 'stitch';
+  /** Extra class on <body> (pages that need bottom padding for a sticky bar, etc.). */
+  bodyClass?: string;
+}
+
+const { title, description, noindex = false, theme = 'editorial', bodyClass } = Astro.props;
+
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="es" class="no-js" data-theme={theme}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
+    <meta name="color-scheme" content="light only" />
+    <meta name="theme-color" content={theme === 'stitch' ? '#FDF9F2' : '#FBFAF6'} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_VE" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="Veronica Wellness" />
+    <script is:inline>
+      // `.no-js` keeps reveal animations disabled when scripts do not run; drop it as early as
+      // possible so the first paint already knows JS is available.
+      document.documentElement.classList.remove('no-js');
+    </script>
+  </head>
+  <body class={bodyClass}>
+    <slot />
+  </body>
+</html>

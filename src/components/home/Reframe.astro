@@ -1,0 +1,47 @@
+---
+/**
+ * "No persigas cada síntoma. Entiende las capas." — the change of perspective, with the two
+ * distinctions: the order changes; the method decides.
+ */
+import Icon from '../Icon.astro';
+---
+
+<section class="py-16 bg-surface-warm border-y border-black/5" id="reframe">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="max-w-3xl mx-auto text-center">
+      <span class="text-clay-deep text-[11px] font-bold tracking-[0.2em] uppercase"
+        >Cambio de perspectiva</span
+      >
+      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-charcoal mt-2">
+        No persigas cada síntoma. Entiende las capas.
+      </h2>
+      <p class="text-sm sm:text-base text-black/65 font-light leading-relaxed mt-4">
+        Cuando cada síntoma se trata por separado, terminas con muchas herramientas y poca
+        estrategia. The Layer Method™ propone lo contrario: mapear primero, entender qué Layer
+        merece atención y recién entonces actuar — con intención, no por ensayo y error.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 text-left">
+        <div class="bg-white p-6 rounded-2xl border border-black/[0.06] shadow-sm">
+          <div class="flex items-center gap-2 text-clay-deep mb-2">
+            <Icon name="sync" size={18} />
+            <h3 class="font-serif text-lg font-medium text-charcoal">El orden cambia</h3>
+          </div>
+          <p class="text-xs sm:text-sm text-black/65 leading-relaxed">
+            Dos personas pueden tener síntomas parecidos y necesitar prioridades completamente
+            distintas.
+          </p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-black/[0.06] shadow-sm">
+          <div class="flex items-center gap-2 text-olive mb-2">
+            <Icon name="architecture" size={18} />
+            <h3 class="font-serif text-lg font-medium text-charcoal">El método decide</h3>
+          </div>
+          <p class="text-xs sm:text-sm text-black/65 leading-relaxed">
+            Las herramientas informan, el método decide. Cada suplemento o intervención tiene su
+            tiempo y su capa.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

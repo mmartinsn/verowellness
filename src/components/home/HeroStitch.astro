@@ -1,0 +1,119 @@
+---
+/**
+ * Home hero (Stitch design): kicker, THE LAYER METHOD™ display title, signature line, the
+ * cellular-health quote, the intro paragraph and two CTAs, next to Verónica's portrait with
+ * two floating "vellum" badges.
+ */
+import { Image } from 'astro:assets';
+import Icon from '../Icon.astro';
+import retrato from '../../assets/fotos/veronica-bata-mano-bolsillo.jpg';
+import { href } from '../../lib/url';
+import { marca } from '../../data/site';
+---
+
+<section class="pt-8 pb-20 lg:pt-14 lg:pb-28 overflow-hidden" id="the-method">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 py-6 lg:py-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      <div class="lg:col-span-7 flex flex-col items-start gap-6">
+        <div
+          class="text-clay-deep text-xs font-bold tracking-[0.2em] uppercase flex items-center gap-2"
+        >
+          <span class="w-1.5 h-1.5 rounded-full bg-clay-deep inline-block"></span>THE METHOD
+        </div>
+        <h1
+          class="font-serif text-5xl sm:text-6xl lg:text-[72px] font-normal leading-[1.05] text-charcoal tracking-tight uppercase"
+        >
+          THE LAYER<br />METHOD<span
+            class="text-2xl sm:text-3xl text-clay-deep align-super font-sans font-bold ml-1">™</span
+          >
+        </h1>
+        <p class="font-serif italic text-2xl sm:text-3xl text-charcoal/80 -mt-1">{marca.firma}</p>
+        <div class="w-full bg-surface-quote rounded-2xl p-5 border-l-4 border-clay-deep shadow-sm">
+          <p class="font-serif italic text-lg sm:text-xl text-charcoal/90 leading-relaxed">
+            “La salud celular empieza mucho antes de llegar a la célula.”
+          </p>
+        </div>
+        <p class="text-sm sm:text-base text-black/65 font-normal leading-relaxed max-w-xl">
+          Un síntoma puede aparecer en un solo lugar mientras que el contexto que realmente merece
+          atención vive en otra Layer por completo. Por eso perseguir cada síntoma de forma aislada
+          rara vez da respuestas duraderas — y por eso, muchas veces, sumar herramienta tras
+          herramienta se siente como mucho esfuerzo sin mucha claridad. El objetivo de The Layer
+          Method™ no es reaccionar a cada señal por separado. Es entender el mapa completo antes de
+          decidir dónde intervenir.
+        </p>
+        <div class="flex flex-wrap items-center gap-6 pt-3">
+          <a
+            class="px-8 py-3.5 rounded-full bg-clay-deep text-white text-xs font-bold uppercase tracking-[0.14em] hover:bg-charcoal transition-all duration-300 shadow-lg shadow-clay-deep/20 hover:-translate-y-0.5"
+            href={href('/1-1')}>Conoce el proceso 1:1</a
+          >
+          <a
+            class="inline-flex items-center gap-2 text-xs font-bold text-charcoal hover:text-clay-deep transition-colors group tracking-wider"
+            href="#cartografia"
+          >
+            <span>Explorar la metodología</span>
+            <Icon
+              name="arrow-down"
+              size={16}
+              class="transition-transform group-hover:translate-y-0.5"
+            />
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 relative flex justify-center">
+        <div class="relative w-full max-w-md">
+          <div
+            class="absolute -inset-4 bg-sand/50 rounded-[40px] transform translate-x-3 translate-y-3 -z-10"
+          >
+          </div>
+          <div
+            class="relative bg-surface-warm rounded-[36px] overflow-hidden shadow-2xl border border-black/5"
+          >
+            <Image
+              src={retrato}
+              alt={`${marca.creadora}, creadora de The Layer Method™`}
+              widths={[480, 720, 960]}
+              sizes="(min-width: 1024px) 448px, 90vw"
+              class="w-full h-auto object-cover object-top aspect-[4/5]"
+              loading="eager"
+            />
+          </div>
+          <div
+            class="absolute top-8 -left-6 bg-white/95 backdrop-blur-md rounded-2xl px-4 py-3 shadow-xl border border-black/5 flex items-center gap-3 z-10"
+          >
+            <div
+              class="w-9 h-9 rounded-xl bg-sand/60 flex items-center justify-center text-charcoal"
+            >
+              <Icon name="biotech" size={18} />
+            </div>
+            <div>
+              <p class="font-serif text-xs font-bold text-charcoal leading-tight">
+                Salud Funcional Celular
+              </p>
+              <p class="text-[10px] text-black/55 mt-0.5 font-sans">
+                Enfoque integrativo sistémico
+              </p>
+            </div>
+          </div>
+          <div
+            class="absolute bottom-8 -right-4 sm:-right-6 bg-white/95 backdrop-blur-md rounded-2xl px-4 py-3 shadow-xl border border-black/5 flex items-center gap-3 z-10"
+          >
+            <div
+              class="w-9 h-9 rounded-xl bg-clay-deep/20 flex items-center justify-center text-clay-deep"
+            >
+              <Icon name="layers" size={18} />
+            </div>
+            <div>
+              <p class="font-serif text-xs font-bold text-charcoal leading-tight">
+                5 Layers Interconectadas
+              </p>
+              <p class="text-[10px] text-black/55 mt-0.5 font-sans">
+                En diálogo biológico continuo
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

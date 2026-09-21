@@ -1,0 +1,120 @@
+---
+/**
+ * Site footer: wordmark and tagline, the same navigation as the header, the brand line
+ * "Health has layers.™" and the copyright.
+ */
+import Wordmark from './Wordmark.astro';
+import { nav, marca, copyright } from '../data/site';
+import { href } from '../lib/url';
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <Wordmark link={false} />
+        <p class="footer-tagline">{marca.metodo} — salud por capas, del terreno a la célula.</p>
+      </div>
+      <nav class="footer-links" aria-label="Navegación de pie de página">
+        {nav.map((item) => <a href={href(item.path)}>{item.label}</a>)}
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-quote">{marca.lema}</p>
+      <span class="footer-legal">{copyright}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding: 52px 0 40px;
+  }
+  .footer-top {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgb(48 47 42 / 0.1);
+  }
+  @media (min-width: 768px) {
+    .footer-top {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+  }
+  .footer-tagline {
+    margin-top: 10px;
+    max-width: 320px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: rgb(48 47 42 / 0.85);
+  }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+  }
+  .footer-links a {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: rgb(48 47 42 / 0.85);
+  }
+  .footer-links a:hover {
+    color: var(--color-clay-deep);
+  }
+  .footer-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 26px;
+    text-align: center;
+  }
+  @media (min-width: 768px) {
+    .footer-bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+      text-align: left;
+    }
+  }
+  .footer-quote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 18px;
+    color: rgb(48 47 42 / 0.72);
+  }
+  .footer-legal {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgb(48 47 42 / 0.72);
+  }
+
+  :global(html[data-theme='stitch']) .site-footer {
+    border-top: 1px solid rgb(0 0 0 / 0.08);
+    padding: 56px 0;
+  }
+  :global(html[data-theme='stitch']) .footer-links a {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(0 0 0 / 0.6);
+  }
+  :global(html[data-theme='stitch']) .footer-links a:hover {
+    color: var(--color-charcoal);
+  }
+  :global(html[data-theme='stitch']) .footer-tagline {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgb(0 0 0 / 0.5);
+  }
+  :global(html[data-theme='stitch']) .footer-legal {
+    font-size: 11px;
+    font-weight: 400;
+    color: rgb(0 0 0 / 0.4);
+  }
+</style>

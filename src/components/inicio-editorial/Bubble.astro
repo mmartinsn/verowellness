@@ -1,0 +1,79 @@
+---
+/**
+ * Rounded full-width panel with an eyebrow and a pull quote — used for "La premisa" (charcoal),
+ * "Otra mirada" (rose) and the closing block (charcoal). Extra content goes in the slot.
+ */
+interface Props {
+  eyebrow: string;
+  tone?: 'charcoal' | 'rose';
+  align?: 'center' | 'left';
+  id?: string;
+  class?: string;
+}
+const { eyebrow, tone = 'charcoal', align = 'center', id, class: className } = Astro.props;
+---
+
+<section id={id} class:list={['bubble-section', `align-${align}`, className]}>
+  <div class="wrap">
+    <div class:list={['bubble-panel', `tone-${tone}`, 'reveal']}>
+      <span class="eyebrow">{eyebrow}</span>
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .bubble-section {
+    padding: 36px 0;
+  }
+  @media (min-width: 768px) {
+    .bubble-section {
+      padding: 56px 0;
+    }
+  }
+  .align-center {
+    text-align: center;
+  }
+  .bubble-panel {
+    border-radius: var(--radius-xl);
+    padding: 52px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .align-center .bubble-panel {
+    align-items: center;
+  }
+  @media (min-width: 768px) {
+    .bubble-panel {
+      padding: 72px 56px;
+    }
+  }
+  .tone-charcoal {
+    background: var(--color-charcoal);
+    color: var(--color-bone);
+  }
+  .tone-charcoal .eyebrow {
+    color: var(--color-clay);
+  }
+  .tone-rose {
+    background: var(--color-rose);
+    color: var(--color-charcoal);
+  }
+  .tone-rose .eyebrow {
+    color: rgb(48 47 42 / 0.85);
+  }
+  .bubble-panel :global(.pull) {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(30px, 5.4vw, 54px);
+    line-height: 1.28;
+    max-width: 840px;
+    color: inherit;
+  }
+  .tone-rose :global(.pull) {
+    font-size: clamp(30px, 5.2vw, 48px);
+    max-width: 780px;
+  }
+</style>

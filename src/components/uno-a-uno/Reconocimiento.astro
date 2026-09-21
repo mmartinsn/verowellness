@@ -1,0 +1,57 @@
+---
+/**
+ * Four recognition questions and the landing line: "No necesitas necesariamente hacer más.
+ * Necesitas saber qué priorizar."
+ */
+const preguntas = [
+  '¿Tienes muchos datos pero poca claridad?',
+  '¿Has probado diferentes estrategias sin saber cuál debería ser la prioridad?',
+  '¿Tomas suplementos pero no sabes qué necesitas realmente?',
+  '¿Tus síntomas parecen desconectados, como si cada profesional viera solo una pieza?',
+];
+---
+
+<section class="reveal-stagger reveal">
+  <div class="wrap">
+    {preguntas.map((q) => <p class="recognition-q">{q}</p>)}
+    <div class="recognition-land">
+      <h2>No necesitas necesariamente hacer más.<br /><em>Necesitas saber qué priorizar.</em></h2>
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    padding: 64px 0;
+  }
+  @media (max-width: 760px) {
+    section {
+      padding: 36px 0;
+    }
+  }
+  .recognition-q {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(20px, 2.6vw, 26px);
+    line-height: 1.6;
+    color: rgb(48 47 42 / 0.72);
+    max-width: 720px;
+  }
+  .recognition-q + .recognition-q {
+    margin-top: 14px;
+  }
+  .recognition-land {
+    margin-top: 44px;
+  }
+  .recognition-land h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4.2vw, 46px);
+    line-height: 1.1;
+    max-width: 680px;
+  }
+  .recognition-land em {
+    font-style: italic;
+    color: var(--color-clay-deep);
+  }
+</style>

@@ -1,0 +1,278 @@
+@import 'tailwindcss';
+
+/*
+  Veronica Wellness — design tokens and shared primitives.
+  Astro 7 static + Tailwind 4 CSS-first (@tailwindcss/vite).
+
+  Two visual systems coexist by design, both authored by Mari:
+    · the editorial pages (home B, The Method, 1:1, checkout) — Cormorant Garamond + Nunito,
+      hand-written CSS ported into scoped component styles that read these tokens;
+    · the home page from Stitch — Bodoni Moda + Plus Jakarta Sans, utility classes.
+  `[data-theme="stitch"]` on <html> swaps the few tokens that differ. Everything else is shared.
+
+  Palette: the hex values are the ones Mari's pages use. They are close relatives of the seven
+  brand-book colours, not the same values — see docs/DECISIONES.md before "fixing" them.
+  Fonts are self-hosted through @fontsource (imported in the layouts), never loaded from Google.
+*/
+
+@theme {
+  /* Tailwind's default palette is switched off: if a colour is not here, it is not a utility. */
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* ── Palette (names as in Mari's CSS variables) ── */
+  --color-bone: #fbfaf6;
+  --color-ivory: #f8f6f1;
+  --color-sand: #efe7d9;
+  --color-sage: #cfd7c4;
+  --color-sage-deep: #aeb89e;
+  --color-olive: #8e9480;
+  --color-clay: #e7b7a0;
+  --color-clay-deep: #d69a7c;
+  --color-rose: #d8aba6;
+  --color-rose-deep: #c98c86;
+  --color-charcoal: #302f2a;
+  --color-error: #b5544a;
+
+  /* Stitch-only surfaces (used by the home page) */
+  --color-surface-low: #f7f3ec;
+  --color-surface-warm: #faf6ef;
+  --color-surface-quote: #faf4ea;
+
+  /* ── Type ── */
+  --font-serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-sans: 'Nunito Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* ── Shape ── */
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 36px;
+  --radius-pill: 999px;
+
+  /* ── Layout ── */
+  --container-site: 1180px;
+}
+
+/* The Stitch home: same palette family, its own type pairing and a slightly warmer canvas. */
+:root[data-theme='stitch'] {
+  --color-bone: #fdf9f2;
+  --color-charcoal: #23221e;
+  --color-olive: #7b816d;
+  --font-serif: 'Bodoni Moda Variable', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-bone);
+    color-scheme: light only;
+  }
+  body {
+    background: var(--color-bone);
+    color: var(--color-charcoal);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img {
+    max-width: 100%;
+    display: block;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-clay-deep);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  /* The site is light-only; do not let the OS dark scheme repaint it. */
+  @media (prefers-color-scheme: dark) {
+    html,
+    body {
+      background: var(--color-bone);
+      color: var(--color-charcoal);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Content column shared by every editorial page. */
+  .wrap {
+    max-width: var(--container-site);
+    margin: 0 auto;
+    padding: 0 22px;
+  }
+  @media (min-width: 768px) {
+    .wrap {
+      padding: 0 40px;
+    }
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    background: var(--color-charcoal);
+    color: var(--color-bone);
+    padding: 12px 20px;
+    z-index: 200;
+    border-radius: 0 0 8px 0;
+  }
+  .skip-link:focus {
+    left: 0;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  /* Small uppercase label above headings. */
+  .eyebrow {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-clay-deep);
+  }
+
+  /* Buttons — pill shaped, three variants, as in Mari's pages. */
+  .btn {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    padding: 16px 32px;
+    border-radius: var(--radius-pill);
+    border: 2px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      transform 0.15s ease;
+  }
+  .btn:active {
+    transform: scale(0.98);
+  }
+  .btn-primary {
+    background: var(--color-clay);
+    color: var(--color-charcoal);
+  }
+  .btn-primary:hover {
+    background: var(--color-clay-deep);
+  }
+  .btn-secondary {
+    background: var(--color-sage);
+    color: var(--color-charcoal);
+  }
+  .btn-secondary:hover {
+    background: var(--color-sage-deep);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--color-charcoal);
+    border-color: var(--color-charcoal);
+  }
+  .btn-outline:hover {
+    background: var(--color-charcoal);
+    color: var(--color-bone);
+  }
+  .btn-block {
+    width: 100%;
+  }
+  .btn-sm {
+    padding: 12px 24px;
+    font-size: 13px;
+  }
+
+  /* Scroll reveal: elements start hidden and fade in once (see SiteLayout script). */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.75s cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 0.75s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s ease;
+  }
+  .reveal-stagger.in > * {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-stagger.in > *:nth-child(2) {
+    transition-delay: 0.08s;
+  }
+  .reveal-stagger.in > *:nth-child(3) {
+    transition-delay: 0.16s;
+  }
+  .reveal-stagger.in > *:nth-child(4) {
+    transition-delay: 0.24s;
+  }
+  .reveal-stagger.in > *:nth-child(5) {
+    transition-delay: 0.32s;
+  }
+  .reveal-stagger.in > *:nth-child(6) {
+    transition-delay: 0.4s;
+  }
+  .reveal-stagger.in > *:nth-child(7) {
+    transition-delay: 0.48s;
+  }
+  .reveal-stagger.in > *:nth-child(8) {
+    transition-delay: 0.56s;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .reveal-stagger > * {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+  /* Without JS nothing should stay invisible. */
+  html.no-js .reveal,
+  html.no-js .reveal-stagger > * {
+    opacity: 1;
+    transform: none;
+  }
+}

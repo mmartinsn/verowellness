@@ -1,0 +1,118 @@
+---
+/**
+ * Closing dark block with the Initial Layer Cycle summary line and the "Agenda conmigo" button,
+ * which leads to that cycle's checkout.
+ */
+import { ciclos, checkoutPath, precioCard } from '../../data/oferta';
+import { href } from '../../lib/url';
+
+const ciclo = ciclos.INITIAL_LAYER_CYCLE;
+---
+
+<section id="final-cta-section" class="reveal">
+  <div class="wrap" id="cta">
+    <div class="final-cta">
+      <h2>Deja de perseguir cada pieza por separado.</h2>
+      <p>
+        Empieza por entender tu mapa, definir tus prioridades y construir una estrategia con
+        dirección.
+      </p>
+      <div class="fc-divider" aria-hidden="true"></div>
+      <div class="fc-bottom">
+        <div class="fc-offer-block">
+          <span class="fc-offer-label">{ciclo.nombre}</span>
+          <span class="fc-offer-meta">2 × 90 min</span>
+          <span class="fc-offer-price">{precioCard(ciclo)}</span>
+        </div>
+        <a class="btn btn-primary" href={href(checkoutPath(ciclo))}>Agenda conmigo</a>
+      </div>
+      <small
+        >El siguiente paso te mostrará exactamente qué incluye tu ciclo antes de realizar el pago.</small
+      >
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    padding: 64px 0 0;
+  }
+  @media (max-width: 760px) {
+    section {
+      padding: 36px 0 0;
+    }
+  }
+  .final-cta {
+    background: var(--color-charcoal);
+    border-radius: var(--radius-lg);
+    padding: 64px 56px;
+    text-align: center;
+    color: var(--color-bone);
+  }
+  @media (max-width: 640px) {
+    .final-cta {
+      padding: 44px 26px;
+    }
+  }
+  h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4.2vw, 46px);
+    line-height: 1.1;
+    color: var(--color-bone);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  p {
+    color: rgb(251 250 246 / 0.72);
+    max-width: 480px;
+    margin: 16px auto 0;
+    font-size: 17px;
+    font-weight: 500;
+  }
+  .fc-divider {
+    height: 1px;
+    background: rgb(251 250 246 / 0.14);
+    max-width: 520px;
+    margin: 40px auto;
+  }
+  .fc-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 36px;
+    flex-wrap: wrap;
+  }
+  .fc-offer-block {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .fc-offer-label {
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-clay);
+  }
+  .fc-offer-meta {
+    font-weight: 700;
+    font-size: 14px;
+    color: rgb(251 250 246 / 0.55);
+  }
+  .fc-offer-price {
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--color-bone);
+  }
+  small {
+    display: block;
+    margin: 26px auto 0;
+    font-size: 12.5px;
+    color: rgb(251 250 246 / 0.5);
+    font-weight: 600;
+    max-width: 440px;
+  }
+</style>

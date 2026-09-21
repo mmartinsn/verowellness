@@ -1,0 +1,239 @@
+---
+/**
+ * "El cuerpo no funciona por departamentos." — the five floating slabs, how they connect, and
+ * the legend with each Layer's question. Content from data/layers.
+ */
+import SectionHead from '../SectionHead.astro';
+import { layers } from '../../data/layers';
+import { marca } from '../../data/site';
+---
+
+<section id="method">
+  <div class="wrap">
+    <SectionHead
+      class="reveal"
+      eyebrow="The Layer Method™"
+      title="El cuerpo no funciona por departamentos."
+    >
+      <p>
+        Cada capa de tu salud está conectada con las demás. No es una lista de pasos que sigues en
+        orden — es un mapa que se trabaja en conjunto, para que sepas en cuál capa enfocarte
+        primero.
+      </p>
+    </SectionHead>
+
+    <div class="tagline-stamp reveal">{marca.lema.replace('™', '')}</div>
+
+    <div class="layers-diagram-wrap reveal">
+      <div class="layer-stack">
+        {
+          layers.map((l) => (
+            <div
+              class:list={['layer-slab', { oscuro: l.oscuro }]}
+              style={`background:var(--color-${l.color});`}
+            >
+              <span class="slab-num">{l.num}</span>
+              <span class="slab-name">{l.nombre}</span>
+            </div>
+          ))
+        }
+      </div>
+      <p class="diagram-caption">
+        No es una lista de pasos — es un mapa que se trabaja en conjunto.
+      </p>
+
+      <div class="synthesis-box reveal">
+        <span class="eyebrow">Cómo se conectan</span>
+        <p class="synthesis-text">
+          <strong>Nutrición</strong> aporta las materias primas; <strong
+            >las vías de eliminación</strong
+          >
+          permiten procesar y eliminar; <strong>el terreno</strong> describe el entorno regulatorio;
+          <strong>la célula</strong> profundiza en energía y resiliencia; y <strong
+            >los hábitos</strong
+          >
+          determinan cuánto de la estrategia puede sostenerse en la vida real.
+          <em>Se mapean en conjunto, no una por una.</em>
+        </p>
+      </div>
+    </div>
+
+    <div class="layer-legend">
+      {
+        layers.map((l, i) => (
+          <div class="legend-item reveal" style={`--stagger:${i * 0.08}s`}>
+            <span class="legend-dot" style={`background:var(--color-${l.color});`} />
+            <div class="legend-text">
+              <h4>
+                Layer {l.num} · {l.nombre}
+              </h4>
+              <div class="legend-what">{l.observaTexto}</div>
+              <div class="legend-q">{l.pregunta}</div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    padding: 36px 0;
+  }
+  @media (min-width: 768px) {
+    section {
+      padding: 56px 0;
+    }
+  }
+  .tagline-stamp {
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: var(--color-clay-deep);
+    margin-bottom: 6px;
+  }
+  .layers-diagram-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 44px 0 20px;
+  }
+  .layer-stack {
+    width: 100%;
+    max-width: 460px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .layer-slab {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 26px;
+    border-radius: 16px;
+    color: var(--color-charcoal);
+    animation: slabFloat 6s ease-in-out infinite;
+  }
+  .layer-slab.oscuro {
+    color: var(--color-bone);
+  }
+  .layer-slab:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+  .layer-slab:nth-child(3) {
+    animation-delay: 0.6s;
+  }
+  .layer-slab:nth-child(4) {
+    animation-delay: 0.9s;
+  }
+  .layer-slab:nth-child(5) {
+    animation-delay: 1.2s;
+  }
+  @keyframes slabFloat {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(4px);
+    }
+  }
+  .slab-num {
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+  .slab-name {
+    font-weight: 800;
+    font-size: 17px;
+  }
+  @media (min-width: 768px) {
+    .layer-slab {
+      padding: 22px 32px;
+    }
+    .slab-name {
+      font-size: 19px;
+    }
+  }
+  .diagram-caption {
+    margin-top: 18px;
+    font-weight: 700;
+    font-size: 14px;
+    color: rgb(48 47 42 / 0.72);
+    text-align: center;
+  }
+  .synthesis-box {
+    background: var(--color-ivory);
+    border-left: 4px solid var(--color-clay);
+    border-radius: var(--radius-md);
+    padding: 28px 30px;
+    margin: 32px auto 8px;
+    max-width: 720px;
+  }
+  .synthesis-box .eyebrow {
+    margin-bottom: 12px;
+  }
+  .synthesis-text {
+    font-size: 17px;
+    color: var(--color-charcoal);
+    font-weight: 600;
+    line-height: 1.7;
+  }
+  .synthesis-text strong {
+    color: var(--color-clay-deep);
+    font-weight: 800;
+  }
+  .synthesis-text em {
+    font-style: italic;
+    font-family: var(--font-serif);
+    font-size: 19px;
+    display: inline-block;
+    margin-top: 4px;
+  }
+  .layer-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 40px;
+  }
+  .legend-item {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    background: var(--color-ivory);
+    border-radius: var(--radius-md);
+    padding: 22px 24px;
+    transition-delay: var(--stagger, 0s);
+  }
+  .legend-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .legend-text h4 {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--color-charcoal);
+    margin-bottom: 6px;
+  }
+  .legend-what {
+    font-size: 17px;
+    color: rgb(48 47 42 / 0.72);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .legend-q {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 23px;
+    line-height: 1.4;
+    color: var(--color-charcoal);
+  }
+</style>

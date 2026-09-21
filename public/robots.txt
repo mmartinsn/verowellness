@@ -1,0 +1,3 @@
+# Preview build: nothing here is meant to be indexed until the site goes to its real domain.
+User-agent: *
+Disallow: /

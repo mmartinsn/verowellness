@@ -1,0 +1,78 @@
+---
+/**
+ * Eyebrow + heading (+ optional lede in the slot) that opens most editorial sections.
+ */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  /** Heading level; sections use h2, nested blocks h3. */
+  as?: 'h1' | 'h2' | 'h3';
+  /** Uppercase, brand-caps treatment for titles like THE LAYER METHOD™ 1:1. */
+  caps?: boolean;
+  align?: 'left' | 'center';
+  class?: string;
+}
+const {
+  eyebrow,
+  title,
+  as: Tag = 'h2',
+  caps = false,
+  align = 'left',
+  class: className,
+} = Astro.props;
+---
+
+<div class:list={['section-head', `align-${align}`, className]}>
+  {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+  <Tag class:list={['section-title', { caps }]} set:html={title} />
+  <slot />
+</div>
+
+<style>
+  .section-head {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  @media (min-width: 768px) {
+    .section-head {
+      margin-bottom: 56px;
+    }
+  }
+  .align-center {
+    text-align: center;
+    align-items: center;
+  }
+  .section-title {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--color-charcoal);
+    font-size: clamp(32px, 4.6vw, 50px);
+    line-height: 1.1;
+  }
+  h1.section-title {
+    font-size: clamp(44px, 7.4vw, 88px);
+    line-height: 1.02;
+  }
+  h3.section-title {
+    font-size: clamp(24px, 3vw, 32px);
+    line-height: 1.18;
+    font-weight: 600;
+  }
+  .caps {
+    text-transform: uppercase;
+  }
+  .section-head :global(p) {
+    font-size: clamp(17px, 1.8vw, 20px);
+    font-weight: 500;
+    line-height: 1.7;
+    color: rgb(48 47 42 / 0.85);
+    max-width: 680px;
+  }
+  .align-center :global(p) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>

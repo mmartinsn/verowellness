@@ -1,0 +1,40 @@
+---
+/**
+ * Brand mark + "Veronica Wellness" in the editorial serif, uppercase and tracked, linking home.
+ * The mark takes the clay colour; the word inherits the surrounding text colour.
+ */
+import BrandMark from './BrandMark.astro';
+import { marca } from '../data/site';
+import { href } from '../lib/url';
+
+interface Props {
+  /** Render as a link to the home page (default) or as plain text (footer, checkout header). */
+  link?: boolean;
+  class?: string;
+}
+const { link = true, class: className } = Astro.props;
+const Tag = link ? 'a' : 'span';
+---
+
+<Tag class:list={['wordmark', className]} href={link ? href('/') : undefined}>
+  <BrandMark class="wordmark-mark" size={18} />
+  <span>{marca.nombre}</span>
+</Tag>
+
+<style>
+  .wordmark {
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+  }
+  .wordmark-mark {
+    color: var(--color-clay-deep);
+    flex-shrink: 0;
+  }
+</style>

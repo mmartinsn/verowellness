@@ -1,0 +1,135 @@
+---
+/**
+ * Presentation index — for Mari and Santiago, not for visitors (noindex, not linked from the
+ * site). Lists every page of the prototype and the two home variants side by side.
+ */
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { href } from '../lib/url';
+
+const paginas = [
+  {
+    path: '/',
+    titulo: 'Inicio — variante A (Stitch)',
+    nota: 'La que Mari prefirió (audio del 21-sep). Bodoni Moda + Plus Jakarta Sans. Incluye las 5 Layers, tres pasos, oferta y FAQ.',
+  },
+  {
+    path: '/inicio-editorial',
+    titulo: 'Inicio — variante B (editorial)',
+    nota: 'Cormorant Garamond + Nunito. Nueve secciones: problema, premisa, 5 Layers, herramientas ≠ estrategia, oferta, sobre Verónica, cierre.',
+  },
+  {
+    path: '/el-metodo',
+    titulo: 'The Method',
+    nota: 'La metodología: principio, tres pasos, mapa de las cinco Layers, idea central, puente al 1:1.',
+  },
+  {
+    path: '/1-1',
+    titulo: 'The Layer Method™ 1:1',
+    nota: 'La oferta sesión por sesión, entregables, precios, para quién es.',
+  },
+  {
+    path: '/checkout/initial-layer-cycle',
+    titulo: 'Checkout — Initial Layer Cycle',
+    nota: '5 pasos, pago simulado, confirmación con hueco para Calendly.',
+  },
+  {
+    path: '/checkout/next-layer-cycle',
+    titulo: 'Checkout — Next Layer Cycle',
+    nota: 'Mismo flujo con la tarifa de continuidad.',
+  },
+  {
+    path: '/legal/terminos',
+    titulo: 'Legal — Términos',
+    nota: 'Marcador: el texto lo redacta Verónica.',
+  },
+  { path: '/legal/privacidad', titulo: 'Legal — Privacidad', nota: 'Marcador.' },
+  { path: '/legal/aviso-medico', titulo: 'Legal — Aviso médico', nota: 'Marcador.' },
+];
+---
+
+<SiteLayout
+  title="Variantes y páginas — prototipo"
+  description="Índice interno del prototipo de veronicawellness.com."
+  noindex
+  mobileCta={false}
+>
+  <section class="variantes">
+    <div class="wrap">
+      <span class="eyebrow">Prototipo · índice interno</span>
+      <h1>Todas las páginas</h1>
+      <p class="intro">
+        Para presentar. Las dos variantes de inicio conviven a propósito: la que se apruebe pasa a
+        ser la única.
+      </p>
+      <ul class="lista">
+        {
+          paginas.map((p) => (
+            <li>
+              <a href={href(p.path)}>
+                <span class="titulo">{p.titulo}</span>
+                <span class="ruta">{href(p.path)}</span>
+                <span class="nota">{p.nota}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .variantes {
+    padding: 64px 0 96px;
+  }
+  .eyebrow {
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(34px, 5vw, 56px);
+    line-height: 1.05;
+  }
+  .intro {
+    margin-top: 16px;
+    max-width: 620px;
+    font-size: 17px;
+    line-height: 1.65;
+    color: rgb(48 47 42 / 0.72);
+  }
+  .lista {
+    list-style: none;
+    padding: 0;
+    margin: 40px 0 0;
+    display: grid;
+    gap: 14px;
+  }
+  .lista a {
+    display: grid;
+    gap: 6px;
+    background: var(--color-ivory);
+    border-radius: var(--radius-md);
+    padding: 22px 24px;
+    transition: transform 0.2s ease;
+  }
+  .lista a:hover {
+    transform: translateY(-2px);
+    background: var(--color-sand);
+  }
+  .titulo {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 24px;
+  }
+  .ruta {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px;
+    color: var(--color-clay-deep);
+  }
+  .nota {
+    font-size: 15px;
+    line-height: 1.55;
+    color: rgb(48 47 42 / 0.72);
+  }
+</style>

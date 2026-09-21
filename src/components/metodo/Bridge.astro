@@ -1,0 +1,106 @@
+---
+/**
+ * Dark bridge from the methodology to the 1:1 process: the four-piece chain and the CTA.
+ */
+import { href } from '../../lib/url';
+
+const proceso = ['THE LAYER ASSESSMENT™', 'THE LAYER MAP™', 'TOP 3 PRIORITIES', 'THE LAYER PLAN™'];
+---
+
+<section id="bridge">
+  <div class="wrap">
+    <div class="bridge">
+      <span class="eyebrow">De la metodología a tu proceso</span>
+      <h2>THE LAYER METHOD™ 1:1</h2>
+      <p class="lede">
+        El proceso personalizado comienza mapeando tu contexto individual — no una plantilla, no un
+        protocolo genérico.
+      </p>
+
+      <div class="process-row" aria-label="Proceso del Layer Method 1:1">
+        {
+          proceso.map((p, i) => (
+            <>
+              {i > 0 && (
+                <span class="process-arrow" aria-hidden="true">
+                  →
+                </span>
+              )}
+              <span class="process-step">{p}</span>
+            </>
+          ))
+        }
+      </div>
+
+      <div class="bridge-actions">
+        <a class="btn btn-primary" href={href('/1-1')}>Conoce el proceso 1:1</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    padding: 0 0 64px;
+  }
+  .bridge {
+    background: var(--color-charcoal);
+    color: var(--color-bone);
+    border-radius: var(--radius-lg);
+    padding: 64px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  @media (max-width: 640px) {
+    .bridge {
+      padding: 44px 26px;
+    }
+  }
+  .bridge .eyebrow {
+    color: var(--color-clay);
+    margin-bottom: 16px;
+  }
+  .bridge h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4.4vw, 46px);
+    line-height: 1.1;
+    color: var(--color-bone);
+  }
+  .lede {
+    font-size: 19px;
+    line-height: 1.65;
+    color: rgb(251 250 246 / 0.72);
+    max-width: 620px;
+    margin-top: 18px;
+    font-weight: 500;
+  }
+  .process-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 36px 0;
+  }
+  .process-step {
+    font-weight: 800;
+    font-size: 14px;
+    padding: 12px 20px;
+    border-radius: var(--radius-pill);
+    background: rgb(251 250 246 / 0.1);
+    white-space: nowrap;
+  }
+  .process-arrow {
+    color: rgb(251 250 246 / 0.45);
+    font-family: var(--font-serif);
+    font-size: 18px;
+  }
+  .bridge-actions {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+  }
+</style>

@@ -1,0 +1,191 @@
+---
+/**
+ * "Tres piezas, construidas para ti." — The Layer Map™, Top 3 Priorities, The Layer Plan™.
+ */
+const tiers = ['Alta prioridad', 'Prioridad secundaria', 'Mantenimiento'];
+const planTags = [
+  'Nutrición',
+  'Hábitos',
+  'Lifestyle',
+  'Suplementación',
+  'Educación',
+  'Laboratorios',
+];
+const planExtra = [
+  '+1 guía adicional según el caso',
+  'Estrategias nuevas y vanguardistas para optimizar tu salud',
+];
+---
+
+<section class="reveal">
+  <div class="wrap">
+    <span class="eyebrow">Lo que recibes al salir de la sesión 01</span>
+    <h2>Tres piezas, construidas para ti.</h2>
+
+    <div class="list">
+      <div class="deliverable">
+        <div class="dnum" aria-hidden="true">01</div>
+        <div class="dbody">
+          <span class="dtag">Propietario</span>
+          <h3>The Layer Map™</h3>
+          <p>
+            La organización personalizada de tus Layers relevantes y de cómo se conectan las
+            diferentes piezas de tu contexto de bienestar.
+          </p>
+          <div class="priority-tiers">
+            {tiers.map((t) => <span class="tier">{t}</span>)}
+          </div>
+        </div>
+      </div>
+
+      <div class="deliverable d-sage">
+        <div class="dnum" aria-hidden="true">02</div>
+        <div class="dbody">
+          <span class="dtag">Enfoque</span>
+          <h3>Top 3 Priorities</h3>
+          <p>
+            Tres prioridades claramente definidas para tu etapa actual. No veinte cosas que cambiar
+            al mismo tiempo — las que realmente mueven la aguja ahora.
+          </p>
+        </div>
+      </div>
+
+      <div class="deliverable d-rose">
+        <div class="dnum" aria-hidden="true">03</div>
+        <div class="dbody">
+          <span class="dtag">Estrategia</span>
+          <h3>The Layer Plan™</h3>
+          <p>La estrategia personalizada construida alrededor de esas prioridades.</p>
+          <div class="plan-tags">
+            {planTags.map((t) => <span>{t}</span>)}
+            {planExtra.map((t) => <span class="hl">{t}</span>)}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    padding: 64px 0;
+  }
+  @media (max-width: 760px) {
+    section {
+      padding: 36px 0;
+    }
+  }
+  .eyebrow {
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4.2vw, 46px);
+    line-height: 1.1;
+  }
+  .list {
+    margin-top: 40px;
+  }
+  .deliverable {
+    display: flex;
+    gap: 32px;
+    background: var(--color-ivory);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    border-left: 5px solid var(--color-clay-deep);
+    margin-bottom: 18px;
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  .deliverable:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 34px rgb(48 47 42 / 0.08);
+  }
+  .deliverable:last-child {
+    margin-bottom: 0;
+  }
+  .d-sage {
+    border-left-color: var(--color-sage-deep);
+  }
+  .d-rose {
+    border-left-color: var(--color-rose-deep);
+  }
+  @media (max-width: 700px) {
+    .deliverable {
+      flex-direction: column;
+      gap: 14px;
+      padding: 28px 24px;
+    }
+  }
+  .dnum {
+    font-family: var(--font-serif);
+    font-size: 52px;
+    font-weight: 500;
+    color: rgb(48 47 42 / 0.12);
+    line-height: 1;
+    flex: 0 0 auto;
+    width: 70px;
+  }
+  @media (max-width: 700px) {
+    .dnum {
+      font-size: 36px;
+      width: auto;
+    }
+  }
+  .dtag {
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-clay-deep);
+    margin-bottom: 8px;
+    display: block;
+  }
+  .d-sage .dtag {
+    color: var(--color-sage-deep);
+  }
+  .d-rose .dtag {
+    color: var(--color-rose-deep);
+  }
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(24px, 3vw, 32px);
+    line-height: 1.18;
+    margin-bottom: 10px;
+  }
+  .dbody p {
+    font-size: 15px;
+    font-weight: 500;
+    color: rgb(48 47 42 / 0.72);
+    max-width: 560px;
+  }
+  .priority-tiers,
+  .plan-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .tier,
+  .plan-tags span {
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--color-bone);
+    color: rgb(48 47 42 / 0.72);
+  }
+  .plan-tags span {
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+  .plan-tags span.hl {
+    background: var(--color-rose-deep);
+    color: var(--color-bone);
+  }
+</style>
