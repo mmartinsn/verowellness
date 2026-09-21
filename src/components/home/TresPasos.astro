@@ -31,7 +31,7 @@ const pasos = [
 
 <section class="py-24" id="tres-pasos">
   <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 reveal-stagger">
       <div>
         <span class="text-clay-deep text-[11px] font-bold tracking-[0.2em] uppercase"
           >El principio</span
@@ -45,11 +45,20 @@ const pasos = [
         prioritaria.
       </p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal-stagger">
       {
         pasos.map((p) => (
-          <div class="group bg-white p-8 rounded-3xl border border-black/[0.06] hover:border-clay-deep/40 transition-all duration-300 shadow-sm hover:shadow-xl">
-            <span class:list={['font-serif text-5xl font-light transition-colors', p.color]}>
+          <div class="group relative overflow-hidden bg-white p-8 rounded-3xl border border-black/[0.06] hover:border-clay-deep/40 transition-all duration-500 shadow-sm hover:shadow-xl hover:-translate-y-1.5">
+            <span
+              class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-clay-deep to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              aria-hidden="true"
+            />
+            <span
+              class:list={[
+                'font-serif text-5xl font-light transition-all duration-500 inline-block group-hover:-translate-y-1',
+                p.color,
+              ]}
+            >
               {p.num}
             </span>
             <h3 class="font-serif text-2xl text-charcoal font-medium mt-4">{p.titulo}</h3>

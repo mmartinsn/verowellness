@@ -127,6 +127,20 @@ const planExtra = [
     line-height: 1;
     flex: 0 0 auto;
     width: 70px;
+    transition:
+      color 0.45s ease,
+      transform 0.45s var(--ease-out-soft);
+  }
+  /* The faint numeral takes the card's accent colour when hovered. */
+  .deliverable:hover .dnum {
+    color: var(--color-clay-deep);
+    transform: translateY(-3px);
+  }
+  .d-sage:hover .dnum {
+    color: var(--color-sage-deep);
+  }
+  .d-rose:hover .dnum {
+    color: var(--color-rose-deep);
   }
   @media (max-width: 700px) {
     .dnum {

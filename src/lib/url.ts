@@ -17,6 +17,11 @@ export function href(path: string): string {
   return hash ? `${withSlash}#${hash}` : withSlash;
 }
 
+/** A file under `public/` (no trailing slash — a file, not a route). */
+export function asset(file: string): string {
+  return `${BASE}/${file.replace(/^\/+/, '')}`;
+}
+
 /** True when `current` (Astro.url.pathname) is the page `path` points at. */
 export function isCurrent(current: string, path: string): boolean {
   const target = href(path).split('#')[0];

@@ -49,7 +49,9 @@ const { title, description, noindex, theme = 'editorial', mobileCta = {} } = Ast
 
 <script>
   // Reveal-on-scroll: add `.in` the first time an element enters the viewport.
-  const els = document.querySelectorAll<HTMLElement>('.reveal, .reveal-stagger');
+  const els = document.querySelectorAll<HTMLElement>(
+    '.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-stagger'
+  );
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(
       (entries) => {

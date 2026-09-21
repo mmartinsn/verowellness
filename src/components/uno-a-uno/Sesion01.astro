@@ -38,11 +38,11 @@ const objetivos = [
       <div class="layer-bars">
         {
           layers.map((l, i) => (
-            <div class="lb-row">
+            <div class="lb-row" style={`--i:${i}`}>
               <div class="lb-label">{l.nombre}</div>
               <div
                 class="lb-bar"
-                style={`background:var(--color-${barras[i].color});width:${barras[i].width};`}
+                style={`background:var(--color-${barras[i].color});--w:${barras[i].width};`}
               />
             </div>
           ))
@@ -128,9 +128,26 @@ const objetivos = [
       font-size: 10.5px;
     }
   }
+  /* Bars grow from zero to their width when the section scrolls into view, one after another. */
   .lb-bar {
     height: 14px;
     border-radius: 8px;
+    width: 0;
+    transition: width 1.1s var(--ease-out-soft);
+    transition-delay: calc(0.15s + var(--i, 0) * 0.12s);
+  }
+  section.in .lb-bar,
+  :global(html.no-js) .lb-bar {
+    width: var(--w);
+  }
+  .obj-card {
+    transition:
+      transform 0.35s var(--ease-out-soft),
+      background 0.3s ease;
+  }
+  .obj-card:hover {
+    transform: translateX(4px);
+    background: var(--color-sand);
   }
   .layer-note {
     margin-top: 20px;

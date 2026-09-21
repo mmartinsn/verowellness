@@ -13,6 +13,10 @@
   Palette: the hex values are the ones Mari's pages use. They are close relatives of the seven
   brand-book colours, not the same values — see docs/DECISIONES.md before "fixing" them.
   Fonts are self-hosted through @fontsource (imported in the layouts), never loaded from Google.
+
+  Motion: restrained and editorial. Everything is CSS (transitions, a few keyframes); the only
+  JS is the IntersectionObserver that adds `.in` to `.reveal` blocks. All of it collapses to
+  nothing under `prefers-reduced-motion`.
 */
 
 @theme {
@@ -52,6 +56,13 @@
 
   /* ── Layout ── */
   --container-site: 1180px;
+
+  /* ── Motion ── */
+  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --shadow-lift: 0 26px 48px -26px rgb(48 47 42 / 0.28), 0 8px 18px -12px rgb(48 47 42 / 0.12);
+  --shadow-lift-warm:
+    0 26px 48px -22px rgb(214 154 124 / 0.5), 0 8px 18px -12px rgb(48 47 42 / 0.1);
 }
 
 /* The Stitch home: same palette family, its own type pairing and a slightly warmer canvas. */
@@ -64,6 +75,10 @@
 }
 
 @layer base {
+  :root {
+    /* Lets <details> animate to `height: auto` where the browser supports it (Chrome 129+). */
+    interpolate-size: allow-keywords;
+  }
   html {
     scroll-behavior: smooth;
     background: var(--color-bone);
@@ -76,6 +91,15 @@
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    animation: page-in 0.5s ease-out both;
+  }
+  @keyframes page-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
   img {
     max-width: 100%;
@@ -93,6 +117,10 @@
     outline: 2px solid var(--color-clay-deep);
     outline-offset: 3px;
     border-radius: 4px;
+  }
+  ::selection {
+    background: var(--color-clay);
+    color: var(--color-charcoal);
   }
   /* The site is light-only; do not let the OS dark scheme repaint it. */
   @media (prefers-color-scheme: dark) {
@@ -162,8 +190,12 @@
     color: var(--color-clay-deep);
   }
 
-  /* Buttons — pill shaped, three variants, as in Mari's pages. */
+  /* Buttons — pill shaped, three variants, as in Mari's pages. Hover lifts the pill, casts a
+     warm shadow and sweeps a soft sheen across it; press squashes it slightly. */
   .btn {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
     font-family: var(--font-sans);
     font-size: 14px;
     font-weight: 800;
@@ -179,12 +211,36 @@
     white-space: nowrap;
     cursor: pointer;
     transition:
-      background 0.2s ease,
-      color 0.2s ease,
-      transform 0.15s ease;
+      background 0.25s ease,
+      color 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.35s var(--ease-out-soft),
+      transform 0.35s var(--ease-out-soft);
+  }
+  .btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      115deg,
+      transparent 35%,
+      rgb(255 255 255 / 0.35) 50%,
+      transparent 65%
+    );
+    transform: translateX(-130%);
+    transition: transform 0.7s var(--ease-out-soft);
+    pointer-events: none;
+  }
+  .btn:hover::after {
+    transform: translateX(130%);
+  }
+  .btn:hover {
+    transform: translateY(-2px);
   }
   .btn:active {
-    transform: scale(0.98);
+    transform: translateY(0) scale(0.98);
+    transition-duration: 0.1s;
   }
   .btn-primary {
     background: var(--color-clay);
@@ -192,6 +248,7 @@
   }
   .btn-primary:hover {
     background: var(--color-clay-deep);
+    box-shadow: var(--shadow-lift-warm);
   }
   .btn-secondary {
     background: var(--color-sage);
@@ -199,6 +256,7 @@
   }
   .btn-secondary:hover {
     background: var(--color-sage-deep);
+    box-shadow: var(--shadow-lift);
   }
   .btn-outline {
     background: transparent;
@@ -208,6 +266,7 @@
   .btn-outline:hover {
     background: var(--color-charcoal);
     color: var(--color-bone);
+    box-shadow: var(--shadow-lift);
   }
   .btn-block {
     width: 100%;
@@ -217,62 +276,126 @@
     font-size: 13px;
   }
 
-  /* Scroll reveal: elements start hidden and fade in once (see SiteLayout script). */
-  .reveal {
-    opacity: 0;
-    transform: translateY(24px);
+  /* Hover lift for cards and tiles. */
+  .lift {
     transition:
-      opacity 0.75s cubic-bezier(0.2, 0.7, 0.2, 1),
-      transform 0.75s cubic-bezier(0.2, 0.7, 0.2, 1);
+      transform 0.4s var(--ease-out-soft),
+      box-shadow 0.4s var(--ease-out-soft);
   }
-  .reveal.in {
+  .lift:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  /* Gentle floating for badges, pills and decorative cards. `--float-delay` staggers siblings. */
+  .float {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: var(--float-delay, 0s);
+  }
+  .float-slow {
+    animation: float 9s ease-in-out infinite;
+    animation-delay: var(--float-delay, 0s);
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  /* Scroll reveal: elements start hidden and ease in once (see SiteLayout script).
+     Variants: .reveal (rise) · .reveal-scale (settle) · .reveal-left / .reveal-right (slide) ·
+     .reveal-stagger (children one after another, with a soft focus). */
+  .reveal,
+  .reveal-scale,
+  .reveal-left,
+  .reveal-right {
+    opacity: 0;
+    transition:
+      opacity 0.9s var(--ease-out-soft),
+      transform 0.9s var(--ease-out-soft),
+      filter 0.9s var(--ease-out-soft);
+  }
+  .reveal {
+    transform: translateY(26px);
+  }
+  .reveal-scale {
+    transform: scale(0.96) translateY(12px);
+  }
+  .reveal-left {
+    transform: translateX(-32px);
+  }
+  .reveal-right {
+    transform: translateX(32px);
+  }
+  .reveal.in,
+  .reveal-scale.in,
+  .reveal-left.in,
+  .reveal-right.in {
     opacity: 1;
     transform: none;
   }
   .reveal-stagger > * {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(22px);
+    filter: blur(4px);
     transition:
-      opacity 0.7s ease,
-      transform 0.7s ease;
+      opacity 0.8s var(--ease-out-soft),
+      transform 0.8s var(--ease-out-soft),
+      filter 0.8s var(--ease-out-soft);
   }
   .reveal-stagger.in > * {
     opacity: 1;
     transform: none;
+    filter: blur(0);
   }
   .reveal-stagger.in > *:nth-child(2) {
-    transition-delay: 0.08s;
+    transition-delay: 0.09s;
   }
   .reveal-stagger.in > *:nth-child(3) {
-    transition-delay: 0.16s;
+    transition-delay: 0.18s;
   }
   .reveal-stagger.in > *:nth-child(4) {
-    transition-delay: 0.24s;
+    transition-delay: 0.27s;
   }
   .reveal-stagger.in > *:nth-child(5) {
-    transition-delay: 0.32s;
+    transition-delay: 0.36s;
   }
   .reveal-stagger.in > *:nth-child(6) {
-    transition-delay: 0.4s;
+    transition-delay: 0.45s;
   }
   .reveal-stagger.in > *:nth-child(7) {
-    transition-delay: 0.48s;
+    transition-delay: 0.54s;
   }
   .reveal-stagger.in > *:nth-child(8) {
-    transition-delay: 0.56s;
+    transition-delay: 0.63s;
+  }
+  .reveal-stagger.in > *:nth-child(n + 9) {
+    transition-delay: 0.7s;
   }
   @media (prefers-reduced-motion: reduce) {
     .reveal,
+    .reveal-scale,
+    .reveal-left,
+    .reveal-right,
     .reveal-stagger > * {
       opacity: 1;
       transform: none;
+      filter: none;
       transition: none;
     }
   }
   /* Without JS nothing should stay invisible. */
   html.no-js .reveal,
+  html.no-js .reveal-scale,
+  html.no-js .reveal-left,
+  html.no-js .reveal-right,
   html.no-js .reveal-stagger > * {
     opacity: 1;
     transform: none;
+    filter: none;
   }
 }

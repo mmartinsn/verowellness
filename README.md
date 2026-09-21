@@ -34,10 +34,17 @@ npm run preview    # sirve dist/ en http://127.0.0.1:4321/verowellness/
 npm run verify     # lint + prettier --check + astro check + build  (lo mismo que corre CI)
 npm run capturas   # screenshots de cada ruta (escritorio y teléfono) + recorrido del checkout → capturas/
 npm run capturas -- --base https://santilanzb.github.io/verowellness   # contra el sitio publicado
+npm run entrega    # build + empaquetar + verificar: UN .html autocontenido en entregas/, probado desde disco
 ```
 
-Node 24 (`.nvmrc`). `capturas` usa el Chrome instalado en la máquina vía `puppeteer-core`; no
-descarga navegador.
+Node 24 (`.nvmrc`). `capturas`, `empaquetar` y `verificar:entrega` usan el Chrome instalado en la
+máquina vía `puppeteer-core`; no descargan navegador.
+
+**El entregable para Mari es `entregas/<fecha>_Veronica_Wellness_prototipo.html`**: las once páginas
+en un solo archivo (~1 MB) que se abre desde el disco, sin servidor ni enlace con nombre de cuenta.
+CSS, scripts e imágenes van incrustados; las tipografías se cargan de Google Fonts, así que la primera
+apertura necesita conexión. Se navega con los enlaces del sitio o con el hash: `#el-metodo`, `#1-1`,
+`#inicio-editorial`, `#variantes`, `#checkout/initial-layer-cycle`, `#inicio~faq`.
 
 ## Cómo está hecho
 

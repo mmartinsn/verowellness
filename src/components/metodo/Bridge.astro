@@ -89,6 +89,13 @@ const proceso = ['THE LAYER ASSESSMENT™', 'THE LAYER MAP™', 'TOP 3 PRIORITIE
     border-radius: var(--radius-pill);
     background: rgb(251 250 246 / 0.1);
     white-space: nowrap;
+    transition:
+      background 0.3s ease,
+      transform 0.3s var(--ease-out-soft);
+  }
+  .process-step:hover {
+    background: rgb(251 250 246 / 0.22);
+    transform: translateY(-2px);
   }
   .process-arrow {
     color: rgb(251 250 246 / 0.45);

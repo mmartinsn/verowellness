@@ -17,12 +17,14 @@ import { faq } from '../../data/faq';
         Preguntas frecuentes
       </h2>
     </div>
-    <div class="space-y-4" id="faqAccordion">
+    <div class="space-y-4 reveal-stagger" id="faqAccordion">
       {
         faq.map((item) => (
-          <details class="faq-card bg-white rounded-2xl border border-black/[0.06] overflow-hidden">
-            <summary class="w-full p-6 text-left flex items-center justify-between gap-4 cursor-pointer list-none">
-              <span class="font-serif text-lg text-charcoal font-medium">{item.q}</span>
+          <details class="faq-card bg-white rounded-2xl border border-black/[0.06] overflow-hidden transition-all duration-300 hover:border-clay-deep/40 hover:shadow-lg open:shadow-lg open:border-clay-deep/40">
+            <summary class="group w-full p-6 text-left flex items-center justify-between gap-4 cursor-pointer list-none">
+              <span class="font-serif text-lg text-charcoal font-medium transition-colors group-hover:text-clay-deep">
+                {item.q}
+              </span>
               <Icon
                 name="chevron-down"
                 size={22}
@@ -43,6 +45,17 @@ import { faq } from '../../data/faq';
   }
   details[open] .faq-icon {
     transform: rotate(180deg);
+  }
+  /* Answers unfold instead of snapping open (browsers without ::details-content just snap). */
+  details::details-content {
+    height: 0;
+    overflow: clip;
+    transition:
+      height 0.4s var(--ease-out-soft),
+      content-visibility 0.4s allow-discrete;
+  }
+  details[open]::details-content {
+    height: auto;
   }
 </style>
 

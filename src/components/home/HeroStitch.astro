@@ -14,11 +14,11 @@ import { marca } from '../../data/site';
 <section class="pt-8 pb-20 lg:pt-14 lg:pb-28 overflow-hidden" id="the-method">
   <div class="max-w-7xl mx-auto px-6 lg:px-12 py-6 lg:py-10">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-      <div class="lg:col-span-7 flex flex-col items-start gap-6">
+      <div class="lg:col-span-7 flex flex-col items-start gap-6 reveal-stagger">
         <div
           class="text-clay-deep text-xs font-bold tracking-[0.2em] uppercase flex items-center gap-2"
         >
-          <span class="w-1.5 h-1.5 rounded-full bg-clay-deep inline-block"></span>THE METHOD
+          <span class="w-1.5 h-1.5 rounded-full bg-clay-deep inline-block pulse"></span>THE METHOD
         </div>
         <h1
           class="font-serif text-5xl sm:text-6xl lg:text-[72px] font-normal leading-[1.05] text-charcoal tracking-tight uppercase"
@@ -60,10 +60,10 @@ import { marca } from '../../data/site';
         </div>
       </div>
 
-      <div class="lg:col-span-5 relative flex justify-center">
-        <div class="relative w-full max-w-md">
+      <div class="lg:col-span-5 relative flex justify-center reveal-scale">
+        <div class="relative w-full max-w-md group">
           <div
-            class="absolute -inset-4 bg-sand/50 rounded-[40px] transform translate-x-3 translate-y-3 -z-10"
+            class="absolute -inset-4 bg-sand/50 rounded-[40px] transform translate-x-3 translate-y-3 -z-10 transition-transform duration-700 ease-out group-hover:translate-x-5 group-hover:translate-y-5"
           >
           </div>
           <div
@@ -74,12 +74,13 @@ import { marca } from '../../data/site';
               alt={`${marca.creadora}, creadora de The Layer Method™`}
               widths={[480, 720, 960]}
               sizes="(min-width: 1024px) 448px, 90vw"
-              class="w-full h-auto object-cover object-top aspect-[4/5]"
+              class="w-full h-auto object-cover object-top aspect-[4/5] hero-photo transition-transform duration-[1.2s] ease-out group-hover:scale-[1.03]"
               loading="eager"
             />
           </div>
           <div
-            class="absolute top-8 -left-6 bg-white/95 backdrop-blur-md rounded-2xl px-4 py-3 shadow-xl border border-black/5 flex items-center gap-3 z-10"
+            class="absolute top-8 -left-6 bg-white/95 backdrop-blur-md rounded-2xl px-4 py-3 shadow-xl border border-black/5 flex items-center gap-3 z-10 float"
+            style="--float-delay: -1.5s"
           >
             <div
               class="w-9 h-9 rounded-xl bg-sand/60 flex items-center justify-center text-charcoal"
@@ -96,7 +97,8 @@ import { marca } from '../../data/site';
             </div>
           </div>
           <div
-            class="absolute bottom-8 -right-4 sm:-right-6 bg-white/95 backdrop-blur-md rounded-2xl px-4 py-3 shadow-xl border border-black/5 flex items-center gap-3 z-10"
+            class="absolute bottom-8 -right-4 sm:-right-6 bg-white/95 backdrop-blur-md rounded-2xl px-4 py-3 shadow-xl border border-black/5 flex items-center gap-3 z-10 float"
+            style="--float-delay: -4s"
           >
             <div
               class="w-9 h-9 rounded-xl bg-clay-deep/20 flex items-center justify-center text-clay-deep"
@@ -117,3 +119,30 @@ import { marca } from '../../data/site';
     </div>
   </div>
 </section>
+
+<style>
+  /* The portrait settles in with a slow zoom-out on load. */
+  .hero-photo {
+    animation: photo-settle 1.6s var(--ease-out-soft) both;
+  }
+  @keyframes photo-settle {
+    from {
+      transform: scale(1.06);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  .pulse {
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgb(214 154 124 / 0.55);
+    }
+    60% {
+      box-shadow: 0 0 0 7px rgb(214 154 124 / 0);
+    }
+  }
+</style>

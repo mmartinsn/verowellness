@@ -33,19 +33,20 @@ const pill: Record<string, string> = {
   '04': 'bg-rose-deep/15 text-rose-deep',
   '05': 'bg-olive/15 text-olive',
 };
+// Pins over the render, top-down like the slices; `num` ties each pin to its stack card.
 const pins = [
-  { label: 'L5', cls: 'bg-olive text-white', side: 'justify-end' },
-  { label: 'L4', cls: 'bg-clay-deep text-white', side: 'justify-start' },
-  { label: 'L3', cls: 'bg-sage-deep text-charcoal', side: 'justify-end' },
-  { label: 'L2', cls: 'bg-rose-deep text-white', side: 'justify-start' },
-  { label: 'L1', cls: 'bg-charcoal text-white', side: 'justify-end' },
+  { num: '05', label: 'L5', cls: 'bg-olive text-white', side: 'justify-end' },
+  { num: '04', label: 'L4', cls: 'bg-clay-deep text-white', side: 'justify-start' },
+  { num: '03', label: 'L3', cls: 'bg-sage-deep text-charcoal', side: 'justify-end' },
+  { num: '02', label: 'L2', cls: 'bg-rose-deep text-white', side: 'justify-start' },
+  { num: '01', label: 'L1', cls: 'bg-charcoal text-white', side: 'justify-end' },
 ];
 void badge;
 ---
 
 <section class="py-24 bg-surface-low border-y border-black/5" id="cartografia">
   <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <div class="max-w-2xl mx-auto text-center mb-16">
+    <div class="max-w-2xl mx-auto text-center mb-16 reveal-stagger">
       <span class="text-clay-deep text-[11px] font-bold tracking-[0.2em] uppercase"
         >The Layer Method™</span
       >
@@ -60,9 +61,9 @@ void badge;
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-      <div class="lg:col-span-5 relative flex justify-center">
+      <div class="lg:col-span-5 relative flex justify-center reveal-scale">
         <div
-          class="relative w-full max-w-md bg-white rounded-[32px] p-6 shadow-xl border border-black/5"
+          class="relative w-full max-w-md bg-white rounded-[32px] p-6 shadow-xl border border-black/5 float-slow"
         >
           <div class="overflow-hidden rounded-2xl relative">
             <Image
@@ -81,9 +82,11 @@ void badge;
                   <div class:list={['flex', p.side]}>
                     <span
                       class:list={[
-                        'text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md',
+                        'pin text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md',
                         p.cls,
+                        { 'pin-active': p.num === '02' },
                       ]}
+                      data-pin={p.num}
                     >
                       {p.label}
                     </span>
@@ -98,15 +101,16 @@ void badge;
         </div>
       </div>
 
-      <div class="lg:col-span-7 flex flex-col gap-3" id="layersStack">
+      <div class="lg:col-span-7 flex flex-col gap-3 reveal-stagger" id="layersStack">
         {
           stack.map((layer) => (
             <button
               type="button"
               class:list={[
-                'layer-item text-left p-5 sm:p-6 rounded-2xl bg-white/70 border border-black/[0.07] transition-all duration-300 cursor-pointer hover:border-black/20',
+                'layer-item text-left p-5 sm:p-6 rounded-2xl bg-white/70 border border-black/[0.07] cursor-pointer',
                 { active: layer.num === '02' },
               ]}
+              data-layer={layer.num}
               aria-pressed={layer.num === '02' ? 'true' : 'false'}
             >
               <div class="flex items-start justify-between gap-4">
@@ -157,22 +161,51 @@ void badge;
 </section>
 
 <style>
+  .layer-item {
+    transition:
+      transform 0.4s var(--ease-out-soft),
+      box-shadow 0.4s var(--ease-out-soft),
+      background-color 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .layer-item:hover {
+    transform: translateX(4px);
+    border-color: rgb(35 34 30 / 0.18);
+    background-color: rgb(255 255 255 / 0.9);
+  }
   .layer-item.active {
     background-color: var(--color-white);
     border-color: rgb(35 34 30 / 0.22);
     box-shadow: 0 16px 36px rgb(35 34 30 / 0.08);
-    transform: translateX(6px);
+    transform: translateX(8px);
   }
   @media (max-width: 768px) {
+    .layer-item:hover,
     .layer-item.active {
       transform: translateY(-2px);
     }
   }
+  /* The pin of the selected Layer grows and glows on the render. */
+  .pin {
+    transition:
+      transform 0.45s var(--ease-spring),
+      box-shadow 0.45s ease,
+      opacity 0.3s ease;
+    opacity: 0.75;
+  }
+  .pin.pin-active {
+    opacity: 1;
+    transform: scale(1.3);
+    box-shadow:
+      0 0 0 4px rgb(255 255 255 / 0.9),
+      0 10px 24px -8px rgb(35 34 30 / 0.4);
+  }
 </style>
 
 <script>
-  // One card highlighted at a time.
+  // One card highlighted at a time; its pin lights up on the render.
   const items = document.querySelectorAll<HTMLButtonElement>('#layersStack .layer-item');
+  const pins = document.querySelectorAll<HTMLElement>('#cartografia .pin');
   items.forEach((item) => {
     item.addEventListener('click', () => {
       items.forEach((i) => {
@@ -181,6 +214,7 @@ void badge;
       });
       item.classList.add('active');
       item.setAttribute('aria-pressed', 'true');
+      pins.forEach((p) => p.classList.toggle('pin-active', p.dataset.pin === item.dataset.layer));
     });
   });
 </script>

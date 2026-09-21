@@ -120,6 +120,17 @@ import { marca } from '../../data/site';
   .layer-slab.oscuro {
     color: var(--color-bone);
   }
+  /* The float animation owns `transform`, so hover speaks through light and shadow instead. */
+  .layer-slab {
+    transition:
+      filter 0.35s ease,
+      box-shadow 0.35s ease;
+    cursor: default;
+  }
+  .layer-slab:hover {
+    filter: brightness(1.05) saturate(1.08);
+    box-shadow: var(--shadow-lift);
+  }
   .layer-slab:nth-child(2) {
     animation-delay: 0.3s;
   }
@@ -194,6 +205,22 @@ import { marca } from '../../data/site';
     font-size: 19px;
     display: inline-block;
     margin-top: 4px;
+  }
+  /* Once revealed, legend rows answer the pointer quickly (the reveal transition is slower). */
+  .layer-legend .legend-item.in {
+    transition:
+      transform 0.35s var(--ease-out-soft),
+      background 0.3s ease;
+  }
+  .layer-legend .legend-item.in:hover {
+    transform: translateX(6px);
+    background: var(--color-sand);
+  }
+  .legend-dot {
+    transition: transform 0.35s var(--ease-spring);
+  }
+  .legend-item:hover .legend-dot {
+    transform: scale(1.35);
   }
   .layer-legend {
     display: flex;

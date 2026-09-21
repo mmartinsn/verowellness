@@ -55,17 +55,25 @@ const VIEWPORTS = {
 const slug = (ruta) => (ruta === '/' ? 'inicio' : ruta.replace(/^\/|\/$/g, '').replace(/\//g, '-'));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-/** Scroll the whole page once so every `.reveal` block has been observed and shown. */
+/**
+ * Scroll the whole page once, then force every reveal block to its shown state and wait for the
+ * transitions (0.9 s plus up to 0.7 s of stagger). Headless Chrome delivers IntersectionObserver
+ * callbacks late under programmatic scrolling, so a full-page capture taken right after the scroll
+ * used to come out blank below the fold; the explicit `.in` makes the capture deterministic.
+ */
 async function revelarTodo(page) {
   await page.evaluate(async () => {
     const step = window.innerHeight * 0.8;
-    for (let y = 0; y < document.body.scrollHeight; y += step) {
+    for (let y = 0; y < document.documentElement.scrollHeight; y += step) {
       window.scrollTo(0, y);
-      await new Promise((r) => setTimeout(r, 60));
+      await new Promise((r) => setTimeout(r, 80));
     }
     window.scrollTo(0, 0);
+    document
+      .querySelectorAll('.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-stagger')
+      .forEach((el) => el.classList.add('in'));
   });
-  await sleep(900); // let the last transitions finish
+  await sleep(1900);
 }
 
 async function capturaRuta(browser, ruta, nombreVp, vp) {

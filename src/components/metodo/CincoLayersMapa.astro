@@ -249,6 +249,10 @@ const oscuro = (num: Layer['num']) => num === '01' || num === '05';
   .lg-shape {
     fill-opacity: 0.5;
     mix-blend-mode: multiply;
+    transition: fill-opacity 0.5s ease;
+  }
+  .lg:hover .lg-shape {
+    fill-opacity: 0.72;
   }
   .lg-contour {
     fill: none;
@@ -405,10 +409,25 @@ const oscuro = (num: Layer['num']) => num === '01' || num === '05';
     border-radius: var(--radius-lg);
     padding: 28px 26px;
     color: var(--color-charcoal);
-    transition: transform 0.2s ease;
+    transition:
+      transform 0.4s var(--ease-out-soft),
+      box-shadow 0.4s var(--ease-out-soft);
   }
   .layer-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+  }
+  .layer-card[data-open='true'] {
+    box-shadow: var(--shadow-lift);
+  }
+  .lc-toggle {
+    transition:
+      background 0.3s ease,
+      transform 0.3s var(--ease-spring);
+  }
+  .layer-card:hover .lc-toggle {
+    background: rgb(251 250 246 / 0.95);
+    transform: scale(1.08);
   }
   .layer-card[data-open='true'] {
     grid-column: 1 / -1;
@@ -464,28 +483,45 @@ const oscuro = (num: Layer['num']) => num === '01' || num === '05';
     pointer-events: none;
   }
   .lc-toggle svg {
-    transition: transform 0.2s ease;
+    transition: transform 0.35s var(--ease-spring);
   }
   .layer-card[data-open='true'] .lc-toggle svg {
     transform: rotate(45deg);
   }
+  /* The detail unfolds: a 0fr → 1fr grid row animates height without knowing it in advance. */
   .lc-detail {
-    display: none;
-    margin-top: 26px;
-    padding-top: 26px;
-    border-top: 1px solid rgb(48 47 42 / 0.16);
-  }
-  .oscuro .lc-detail {
-    border-top-color: rgb(251 250 246 / 0.25);
+    display: grid;
+    grid-template-rows: 0fr;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 1px solid transparent;
+    transition:
+      grid-template-rows 0.5s var(--ease-out-soft),
+      margin-top 0.5s var(--ease-out-soft),
+      padding-top 0.5s var(--ease-out-soft),
+      border-color 0.5s ease;
   }
   .layer-card[data-open='true'] .lc-detail {
-    display: block;
+    grid-template-rows: 1fr;
+    margin-top: 26px;
+    padding-top: 26px;
+    border-top-color: rgb(48 47 42 / 0.16);
+  }
+  .oscuro[data-open='true'] .lc-detail {
+    border-top-color: rgb(251 250 246 / 0.25);
   }
   .lc-detail-inner {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 36px;
     align-items: start;
+    min-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.4s ease 0.1s;
+  }
+  .layer-card[data-open='true'] .lc-detail-inner {
+    opacity: 1;
   }
   @media (max-width: 760px) {
     .lc-detail-inner {

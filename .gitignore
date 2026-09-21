@@ -31,3 +31,6 @@ fuentes/
 
 # Screenshots produced by scripts/capturas.mjs (regenerate, do not commit)
 capturas/
+
+# Self-contained deliverables built by scripts/empaquetar.mjs (regenerate, do not commit)
+entregas/

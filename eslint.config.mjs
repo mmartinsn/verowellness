@@ -28,6 +28,7 @@ export default [
         setTimeout: 'readonly',
         window: 'readonly',
         document: 'readonly',
+        location: 'readonly',
       },
     },
     rules: { 'no-console': 'off' },

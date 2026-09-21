@@ -51,13 +51,17 @@ const current = Astro.url.pathname;
 
 <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil">
   {
-    nav.map((item) => (
-      <a href={href(item.path)} class="mobile-link">
+    nav.map((item, i) => (
+      <a href={href(item.path)} class="mobile-link" style={`--i:${i}`}>
         {item.label}
       </a>
     ))
   }
-  <a href={href(cta.path)} class="btn btn-primary mobile-link mobile-cta">{cta.label}</a>
+  <a
+    href={href(cta.path)}
+    class="btn btn-primary mobile-link mobile-cta"
+    style={`--i:${nav.length}`}>{cta.label}</a
+  >
 </nav>
 
 <style>
@@ -70,9 +74,16 @@ const current = Astro.url.pathname;
     height: 76px;
     display: flex;
     align-items: center;
-    transition: box-shadow 0.25s ease;
+    transition:
+      box-shadow 0.3s ease,
+      height 0.3s var(--ease-out-soft),
+      background 0.3s ease;
   }
+  /* Once the page scrolls the bar gets lower and translucent, and casts a soft shadow. */
   .site-header.scrolled {
+    height: 64px;
+    background: rgb(239 231 217 / 0.86);
+    backdrop-filter: blur(12px);
     box-shadow: 0 2px 18px rgb(48 47 42 / 0.08);
   }
   .header-inner {
@@ -188,6 +199,19 @@ const current = Astro.url.pathname;
     font-family: var(--font-sans);
     font-weight: 800;
     font-size: 26px;
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  /* Links enter one after another once the panel has slid in. */
+  .mobile-menu.open .mobile-link {
+    animation: menu-link-in 0.55s var(--ease-out-soft) forwards;
+    animation-delay: calc(0.18s + var(--i, 0) * 70ms);
+  }
+  @keyframes menu-link-in {
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
   .mobile-menu .mobile-cta {
     margin-top: 10px;
@@ -203,7 +227,9 @@ const current = Astro.url.pathname;
     border-bottom: 1px solid rgb(0 0 0 / 0.06);
   }
   :global(html[data-theme='stitch']) .site-header.scrolled {
-    box-shadow: none;
+    height: 66px;
+    background: rgb(253 249 242 / 0.82);
+    box-shadow: 0 8px 30px -18px rgb(35 34 30 / 0.25);
   }
   :global(html[data-theme='stitch']) .header-wordmark {
     font-size: 20px;

@@ -146,6 +146,18 @@ const ciclos = ['Initial Layer Cycle', 'Next Layer Cycle', 'Next Layer Cycle'];
     background: var(--color-ivory);
     padding: 16px 26px;
     border-radius: var(--radius-pill);
+    transition:
+      transform 0.35s var(--ease-out-soft),
+      box-shadow 0.35s var(--ease-out-soft),
+      background 0.3s ease;
+  }
+  .eq-node:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+    background: var(--color-sand);
+  }
+  .eq-node.plan:hover {
+    background: var(--color-clay-deep);
   }
   .eq-node.plan {
     background: var(--color-clay);

@@ -57,7 +57,7 @@ const flujo = [
 
     <div class="reveal">
       <p class="framework-intro">Así funciona el proceso:</p>
-      <div class="framework-steps">
+      <div class="framework-steps reveal-stagger">
         {
           pasos.map((p, i) => (
             <div class="fw-step">
@@ -140,6 +140,16 @@ const flujo = [
     background: var(--color-bone);
     border-radius: var(--radius-md);
     padding: 22px 20px;
+  }
+  /* After the staggered entrance, the process tiles lift on hover. */
+  .framework-steps.in .fw-step {
+    transition:
+      transform 0.35s var(--ease-out-soft),
+      box-shadow 0.35s var(--ease-out-soft);
+  }
+  .framework-steps.in .fw-step:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
   }
   .fw-num {
     display: inline-flex;

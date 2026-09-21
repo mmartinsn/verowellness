@@ -166,6 +166,7 @@ const pasos = [
   .s3 .num {
     background: var(--color-rose-deep);
   }
+  /* The dashed connectors flow downward, hinting at the order of the steps. */
   .flow-connector {
     width: 2px;
     height: 30px;
@@ -174,7 +175,23 @@ const pasos = [
       rgb(48 47 42 / 0.45) 0 4px,
       transparent 4px 9px
     );
+    background-size: 2px 9px;
     margin-left: 41px;
     margin-bottom: 0;
+    animation: dash-flow 1.4s linear infinite;
+  }
+  @keyframes dash-flow {
+    to {
+      background-position: 0 9px;
+    }
+  }
+  .flow-step {
+    transition:
+      transform 0.35s var(--ease-out-soft),
+      box-shadow 0.35s var(--ease-out-soft);
+  }
+  .flow-step:hover {
+    transform: translateX(6px);
+    box-shadow: var(--shadow-lift);
   }
 </style>

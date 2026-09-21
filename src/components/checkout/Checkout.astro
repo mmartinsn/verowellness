@@ -427,12 +427,20 @@ const metodos = [
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(6px);
+      transform: translateY(14px);
     }
     to {
       opacity: 1;
       transform: none;
     }
+  }
+  .stepper li {
+    transition:
+      color 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .mobile-progress-fill {
+    transition: width 0.5s var(--ease-out-soft);
   }
   .step-eyebrow {
     font-weight: 800;
@@ -494,6 +502,7 @@ const metodos = [
   select:focus {
     border-color: var(--color-clay-deep);
     background: var(--color-white);
+    box-shadow: 0 0 0 4px rgb(214 154 124 / 0.18);
   }
   input.invalid,
   select.invalid {
@@ -631,6 +640,7 @@ const metodos = [
   }
   .pay-method:hover {
     border-color: var(--color-clay-deep);
+    transform: translateX(3px);
   }
   .pay-method.selected {
     border-color: var(--color-clay-deep);

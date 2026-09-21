@@ -51,6 +51,13 @@ const { ciclo, featured = false, ctaLabel = 'Reservar' } = Astro.props;
     display: flex;
     flex-direction: column;
     gap: 14px;
+    transition:
+      transform 0.45s var(--ease-out-soft),
+      box-shadow 0.45s var(--ease-out-soft);
+  }
+  .price-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lift);
   }
   @media (max-width: 640px) {
     .price-card {
@@ -59,6 +66,27 @@ const { ciclo, featured = false, ctaLabel = 'Reservar' } = Astro.props;
   }
   .price-card.featured {
     background: var(--color-clay);
+  }
+  .price-card.featured:hover {
+    box-shadow: var(--shadow-lift-warm);
+  }
+  .pchecklist li {
+    transition: transform 0.3s var(--ease-out-soft);
+  }
+  .price-card:hover .pchecklist li {
+    transform: translateX(3px);
+  }
+  .price-card:hover .pchecklist li:nth-child(2) {
+    transition-delay: 0.04s;
+  }
+  .price-card:hover .pchecklist li:nth-child(3) {
+    transition-delay: 0.08s;
+  }
+  .price-card:hover .pchecklist li:nth-child(4) {
+    transition-delay: 0.12s;
+  }
+  .price-card:hover .pchecklist li:nth-child(5) {
+    transition-delay: 0.16s;
   }
   .ptag {
     font-family: var(--font-sans);
