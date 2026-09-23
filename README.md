@@ -5,7 +5,7 @@ El frontend de `veronicawellness.com`, ensamblado a partir de las páginas que d
 todas las páginas, navegables y desplegadas, con el checkout funcionando en modo simulado. Tras la
 aprobación se le conecta la infraestructura real (pagos, CRM, agenda, legal, dominio).
 
-**Vista previa:** <https://santilanzb.github.io/verowellness/> · índice interno de páginas en
+**Vista previa:** <https://mmartinsn.github.io/verowellness/> · índice interno de páginas en
 `/variantes/`.
 
 ## Rutas
@@ -33,7 +33,7 @@ npm run build      # dist/
 npm run preview    # sirve dist/ en http://127.0.0.1:4321/verowellness/
 npm run verify     # lint + prettier --check + astro check + build  (lo mismo que corre CI)
 npm run capturas   # screenshots de cada ruta (escritorio y teléfono) + recorrido del checkout → capturas/
-npm run capturas -- --base https://santilanzb.github.io/verowellness   # contra el sitio publicado
+npm run capturas -- --base https://mmartinsn.github.io/verowellness   # contra el sitio publicado
 npm run entrega    # build + empaquetar + verificar: UN .html autocontenido en entregas/, probado desde disco
 ```
 

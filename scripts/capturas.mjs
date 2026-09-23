@@ -6,7 +6,7 @@
  *
  * Usage (with `npm run preview` running, or against any base URL):
  *   npm run capturas                       # http://127.0.0.1:4321/verowellness
- *   npm run capturas -- --base https://santilanzb.github.io/verowellness
+ *   npm run capturas -- --base https://mmartinsn.github.io/verowellness
  *
  * Output: capturas/<route>-<viewport>.png and capturas/checkout-paso-N.png (folder is gitignored).
  */

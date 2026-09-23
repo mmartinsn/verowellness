@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 // Every internal link goes through `href()` in `src/lib/url.ts`, which reads `BASE_URL`, so
 // moving to a custom domain later is: set `site`, delete `base`, done.
 export default defineConfig({
-  site: 'https://santilanzb.github.io',
+  site: 'https://mmartinsn.github.io',
   base: '/verowellness',
   trailingSlash: 'always',
   output: 'static',

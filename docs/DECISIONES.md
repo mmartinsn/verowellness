@@ -69,6 +69,8 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
 11. **Hosting de la vista previa: GitHub Pages como project site, repo privado.** La cuenta
     `santilanzb` permite Pages en repos privados (comprobado al crear el repo por API). El sitio
     está bajo `/verowellness/`; pasar a dominio propio es quitar `base` en `astro.config.mjs`.
+    El 23-sep el repo se transfirió a `mmartinsn` para que la vista previa lleve el nombre de Mari
+    (`mmartinsn.github.io/verowellness/`). Si su cuenta es Free, Pages no sirve repos privados.
 
 12. **Las páginas de Claude Design (`.dc.html`) no se usaron como fuente.** Su texto coincide con
     los HTML de Mari en más del 95 % (medido por palabras); solo cambian la tipografía (Instrument
