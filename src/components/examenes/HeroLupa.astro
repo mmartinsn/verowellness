@@ -1,8 +1,10 @@
 ---
 /**
  * Exámenes · hero «la lupa que revela» (Mari, 2026-09-24): a dark screen with the headline; the
- * pointer is a round lens that shows what lies underneath — a slow microscopic world (cells,
- * bacteria, small colonies) in the Layer colours, drawn on a canvas and masked to the lens. On
+ * pointer is a round lens that shows what lies underneath — a slow microscopic world in darkfield
+ * style (cells with nucleus and organelles, glassy bacteria with pili and flagella, diatom-like
+ * spores, drifting specks, some out of focus), in the Layer colours, magnified a little and read
+ * through a fine microscope reticle; drawn on a canvas clipped to the lens. On
  * touch screens, or when the pointer rests, the lens wanders on its own. The idea it carries is
  * the page's: what a routine check-up does not usually look at.
  * Reduced motion: the world stands still and the lens rests off-centre.
@@ -177,22 +179,36 @@ import { examenes } from '../../data/examenes';
       (t) => css.getPropertyValue(`--color-${t}`).trim() || '#d69a7c'
     );
 
+    // Colour tokens as rgb triplets, so each organism can be drawn at any opacity.
+    const rgb = (hex: string) => {
+      const h = hex.replace('#', '');
+      const n = parseInt(h.length === 3 ? h.replace(/./g, '$&$&') : h, 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255].join(',');
+    };
+    const paleta = tonos.map(rgb);
+
+    /** 0 cell · 1 bacterium · 2 spore (diatom-like ring) · 3 drifting speck */
     type Ser = {
-      tipo: 0 | 1 | 2;
+      tipo: 0 | 1 | 2 | 3;
       x: number;
       y: number;
       r: number;
+      /** depth: 1 in focus, lower = further away (fainter, smaller) */
+      z: number;
       a: number;
       va: number;
       vx: number;
       vy: number;
-      color: string;
+      c: string;
       fase: number;
+      organulos: [number, number, number][];
+      pelos: number;
     };
     let W = 0;
     let H = 0;
     let seres: Ser[] = [];
     let R = 130;
+    const M = 1.28; // the lens magnifies a little
     const azar = (a: number, b: number) => a + Math.random() * (b - a);
 
     const medir = () => {
@@ -202,23 +218,197 @@ import { examenes } from '../../data/examenes';
       canvas.width = W * dpr;
       canvas.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.round((W * H) / 4200);
       R = parseFloat(getComputedStyle(lupa).getPropertyValue('--lr')) || 130;
+      // dense enough that the magnified lens always holds a dozen or more
+      const n = Math.round((W * H) / 1700);
       seres = Array.from({ length: n }, () => {
-        const tipo = (Math.random() < 0.38 ? 0 : Math.random() < 0.6 ? 1 : 2) as 0 | 1 | 2;
+        const q = Math.random();
+        const tipo = (q < 0.3 ? 0 : q < 0.58 ? 1 : q < 0.72 ? 2 : 3) as Ser['tipo'];
+        const r =
+          tipo === 0
+            ? azar(16, 34)
+            : tipo === 1
+              ? azar(5, 8)
+              : tipo === 2
+                ? azar(7, 12)
+                : azar(0.8, 1.8);
         return {
           tipo,
           x: azar(0, W),
           y: azar(0, H),
-          r: tipo === 0 ? azar(18, 42) : tipo === 1 ? azar(10, 17) : azar(3.5, 7.5),
+          r,
+          z: tipo === 3 ? azar(0.4, 1) : Math.random() < 0.3 ? azar(0.45, 0.7) : azar(0.85, 1),
           a: azar(0, Math.PI * 2),
-          va: azar(-0.004, 0.004),
-          vx: azar(-0.18, 0.18),
-          vy: azar(-0.14, 0.14),
-          color: tonos[Math.floor(Math.random() * tonos.length)],
+          va: azar(-0.003, 0.003),
+          vx: azar(-0.16, 0.16),
+          vy: azar(-0.12, 0.12),
+          c: paleta[Math.floor(Math.random() * paleta.length)],
           fase: azar(0, Math.PI * 2),
+          organulos: Array.from({ length: 5 }, () => [
+            azar(-0.55, 0.55),
+            azar(-0.5, 0.5),
+            azar(0.05, 0.1),
+          ]),
+          pelos: Math.floor(azar(10, 18)),
         };
       });
+    };
+
+    /* ── One organism, darkfield style: luminous edges, translucent bodies ── */
+    const celula = (s: Ser, r: number, t: number) => {
+      const late = 1 + Math.sin(t * 0.0012 + s.fase) * 0.035;
+      const rx = r * late;
+      const ry = r * 0.88 * (2 - late);
+      const cuerpo = ctx.createRadialGradient(-rx * 0.3, -ry * 0.35, r * 0.1, 0, 0, r * 1.05);
+      cuerpo.addColorStop(0, `rgba(${s.c},0.34)`);
+      cuerpo.addColorStop(0.7, `rgba(${s.c},0.14)`);
+      cuerpo.addColorStop(1, `rgba(${s.c},0.03)`);
+      ctx.fillStyle = cuerpo;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // double membrane, glowing
+      ctx.shadowColor = `rgba(${s.c},0.9)`;
+      ctx.shadowBlur = 10;
+      ctx.strokeStyle = `rgba(${s.c},0.95)`;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = `rgba(255,250,242,0.28)`;
+      ctx.lineWidth = 0.6;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, rx * 0.9, ry * 0.9, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      // organelles
+      for (const [ox, oy, orr] of s.organulos) {
+        ctx.fillStyle = `rgba(255,248,238,0.35)`;
+        ctx.beginPath();
+        ctx.arc(ox * rx, oy * ry, orr * r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      // nucleus with its nucleolus
+      const nx = rx * 0.16;
+      const ny = -ry * 0.08;
+      const nucleo = ctx.createRadialGradient(nx - r * 0.08, ny - r * 0.08, 0, nx, ny, r * 0.36);
+      nucleo.addColorStop(0, `rgba(255,246,236,0.7)`);
+      nucleo.addColorStop(0.55, `rgba(${s.c},0.55)`);
+      nucleo.addColorStop(1, `rgba(${s.c},0.15)`);
+      ctx.fillStyle = nucleo;
+      ctx.beginPath();
+      ctx.arc(nx, ny, r * 0.34, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = `rgba(${s.c},0.8)`;
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+      ctx.fillStyle = `rgba(255,252,246,0.85)`;
+      ctx.beginPath();
+      ctx.arc(nx + r * 0.08, ny - r * 0.06, r * 0.07, 0, Math.PI * 2);
+      ctx.fill();
+    };
+
+    const bacteria = (s: Ser, r: number, t: number) => {
+      const l = r * 3.4;
+      // fine pili around the body
+      ctx.strokeStyle = `rgba(${s.c},0.35)`;
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      for (let k = 0; k < s.pelos; k++) {
+        const u = (k / s.pelos) * Math.PI * 2;
+        const px = Math.cos(u) * (l / 2);
+        const py = Math.sin(u) * (r * 0.95);
+        ctx.moveTo(px, py);
+        ctx.lineTo(px * 1.18, py * 1.5);
+      }
+      ctx.stroke();
+      // the glassy capsule
+      const cuerpo = ctx.createLinearGradient(0, -r, 0, r);
+      cuerpo.addColorStop(0, `rgba(255,248,238,0.55)`);
+      cuerpo.addColorStop(0.35, `rgba(${s.c},0.6)`);
+      cuerpo.addColorStop(1, `rgba(${s.c},0.25)`);
+      ctx.fillStyle = cuerpo;
+      ctx.shadowColor = `rgba(${s.c},0.85)`;
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.roundRect(-l / 2, -r, l, r * 2, r);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = `rgba(${s.c},0.95)`;
+      ctx.lineWidth = 0.9;
+      ctx.stroke();
+      // inner highlight
+      ctx.strokeStyle = `rgba(255,252,246,0.55)`;
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(-l / 2 + r, -r * 0.45);
+      ctx.lineTo(l / 2 - r, -r * 0.45);
+      ctx.stroke();
+      // a long, slow flagellum
+      ctx.strokeStyle = `rgba(${s.c},0.55)`;
+      ctx.lineWidth = 0.7;
+      ctx.beginPath();
+      ctx.moveTo(l / 2, 0);
+      for (let k = 1; k <= 22; k++) {
+        const fx = l / 2 + k * 1.9;
+        ctx.lineTo(fx, Math.sin(k * 0.55 - t * 0.004 + s.fase) * (1.2 + k * 0.18));
+      }
+      ctx.stroke();
+    };
+
+    const espora = (s: Ser, r: number, t: number) => {
+      // a diatom-like ring with a crown of beads
+      ctx.shadowColor = `rgba(${s.c},0.8)`;
+      ctx.shadowBlur = 6;
+      ctx.strokeStyle = `rgba(${s.c},0.85)`;
+      ctx.lineWidth = 0.9;
+      ctx.beginPath();
+      ctx.arc(0, 0, r, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = `rgba(${s.c},0.4)`;
+      ctx.beginPath();
+      ctx.arc(0, 0, r * 0.62, 0, Math.PI * 2);
+      ctx.stroke();
+      const n = 14;
+      ctx.fillStyle = `rgba(255,248,238,0.6)`;
+      for (let k = 0; k < n; k++) {
+        const u = (k / n) * Math.PI * 2 + t * 0.0002;
+        ctx.beginPath();
+        ctx.arc(Math.cos(u) * r * 0.81, Math.sin(u) * r * 0.81, r * 0.07, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = `rgba(${s.c},0.35)`;
+      ctx.beginPath();
+      ctx.arc(0, 0, r * 0.3, 0, Math.PI * 2);
+      ctx.fill();
+    };
+
+    /* The fine reticle of a microscope, inside the lens rim. */
+    const reticula = (cx: number, cy: number) => {
+      ctx.strokeStyle = 'rgba(248,246,241,0.22)';
+      ctx.lineWidth = 0.7;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R - 12, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      for (let k = 0; k < 72; k++) {
+        const u = (k / 72) * Math.PI * 2;
+        const largo = k % 6 === 0 ? 7 : 3;
+        ctx.moveTo(cx + Math.cos(u) * (R - 12), cy + Math.sin(u) * (R - 12));
+        ctx.lineTo(cx + Math.cos(u) * (R - 12 - largo), cy + Math.sin(u) * (R - 12 - largo));
+      }
+      ctx.stroke();
+      // a faint crosshair that fades toward the centre
+      ctx.strokeStyle = 'rgba(248,246,241,0.1)';
+      ctx.beginPath();
+      ctx.moveTo(cx - R + 20, cy);
+      ctx.lineTo(cx - 14, cy);
+      ctx.moveTo(cx + 14, cy);
+      ctx.lineTo(cx + R - 20, cy);
+      ctx.moveTo(cx, cy - R + 20);
+      ctx.lineTo(cx, cy - 14);
+      ctx.moveTo(cx, cy + 14);
+      ctx.lineTo(cx, cy + R - 20);
+      ctx.stroke();
     };
 
     const dibujar = (t: number, cx: number, cy: number) => {
@@ -227,82 +417,42 @@ import { examenes } from '../../data/examenes';
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
       ctx.clip();
-      // the medium itself: a warm, lit wash inside the lens
-      const luz = ctx.createRadialGradient(cx - R * 0.3, cy - R * 0.35, R * 0.1, cx, cy, R);
-      luz.addColorStop(0, 'rgba(240,214,196,0.22)');
-      luz.addColorStop(1, 'rgba(214,154,124,0.08)');
-      ctx.fillStyle = luz;
+      // darkfield: a deep ground with a warm light from the upper left
+      const fondo = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.05, cx, cy, R);
+      fondo.addColorStop(0, 'rgba(58,50,44,0.95)');
+      fondo.addColorStop(0.6, 'rgba(30,27,24,0.96)');
+      fondo.addColorStop(1, 'rgba(16,15,13,0.98)');
+      ctx.fillStyle = fondo;
       ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
-      for (const s of seres) {
+      // far things first, so near ones sit on top
+      const orden = [...seres].sort((p, q) => p.z - q.z);
+      for (const s of orden) {
         if (!calm) {
-          s.x = (s.x + s.vx + W + 80) % (W + 80);
-          s.y = (s.y + s.vy + H + 80) % (H + 80);
+          s.x = (s.x + s.vx * s.z + W + 80) % (W + 80);
+          s.y = (s.y + s.vy * s.z + H + 80) % (H + 80);
           s.a += s.va;
         }
-        const x = s.x - 40;
-        const y = s.y - 40;
-        // only what the lens can see is drawn
-        if (Math.abs(x - cx) > R + 60 || Math.abs(y - cy) > R + 60) continue;
-        const pulso = 1 + Math.sin(t * 0.0015 + s.fase) * 0.04;
+        // magnified position inside the lens
+        const x = cx + (s.x - 40 - cx) * M;
+        const y = cy + (s.y - 40 - cy) * M;
+        const r = s.r * M * (0.55 + s.z * 0.45);
+        if (Math.abs(x - cx) > R + r * 4 || Math.abs(y - cy) > R + r * 4) continue;
         ctx.save();
+        ctx.globalAlpha = 0.35 + s.z * 0.65;
         ctx.translate(x, y);
         ctx.rotate(s.a);
-        if (s.tipo === 0) {
-          // a cell: membrane, cytoplasm, nucleus
-          const r = s.r * pulso;
-          ctx.globalAlpha = 0.38;
-          ctx.fillStyle = s.color;
+        if (s.tipo === 0) celula(s, r, t);
+        else if (s.tipo === 1) bacteria(s, r, t);
+        else if (s.tipo === 2) espora(s, r, t);
+        else {
+          ctx.fillStyle = `rgba(255,246,236,${0.25 + s.z * 0.4})`;
           ctx.beginPath();
-          ctx.ellipse(0, 0, r, r * 0.86, 0, 0, Math.PI * 2);
+          ctx.arc(0, 0, r, 0, Math.PI * 2);
           ctx.fill();
-          ctx.globalAlpha = 0.85;
-          ctx.strokeStyle = s.color;
-          ctx.lineWidth = 1.6;
-          ctx.stroke();
-          ctx.globalAlpha = 0.75;
-          ctx.beginPath();
-          ctx.arc(r * 0.18, -r * 0.1, r * 0.34, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 0.9;
-          ctx.fillStyle = 'rgba(255,250,240,0.8)';
-          ctx.beginPath();
-          ctx.arc(r * 0.26, -r * 0.18, r * 0.08, 0, Math.PI * 2);
-          ctx.fill();
-        } else if (s.tipo === 1) {
-          // a bacterium: a capsule with a wavy flagellum
-          const l = s.r * 2.2;
-          ctx.globalAlpha = 0.92;
-          ctx.fillStyle = s.color;
-          ctx.beginPath();
-          ctx.roundRect(-l / 2, -s.r / 2, l, s.r, s.r / 2);
-          ctx.fill();
-          ctx.globalAlpha = 0.6;
-          ctx.strokeStyle = s.color;
-          ctx.lineWidth = 1.2;
-          ctx.beginPath();
-          ctx.moveTo(l / 2, 0);
-          for (let k = 1; k <= 10; k++) {
-            ctx.lineTo(l / 2 + k * 2.4, Math.sin(k * 0.9 + t * 0.006 + s.fase) * 3);
-          }
-          ctx.stroke();
-        } else {
-          // a small colony
-          ctx.fillStyle = s.color;
-          for (let k = 0; k < 5; k++) {
-            ctx.globalAlpha = 0.55 + (k % 2) * 0.3;
-            ctx.beginPath();
-            ctx.arc(
-              Math.cos(k * 1.3) * s.r * 1.6,
-              Math.sin(k * 1.7) * s.r * 1.6,
-              s.r,
-              0,
-              Math.PI * 2
-            );
-            ctx.fill();
-          }
         }
         ctx.restore();
       }
+      reticula(cx, cy);
       ctx.restore();
       ctx.globalAlpha = 1;
     };
