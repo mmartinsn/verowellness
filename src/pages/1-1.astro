@@ -1,39 +1,35 @@
 ---
 /**
- * The Layer Method™ 1:1 — the offer page: what the Initial Layer Cycle is, session by session,
- * what you leave with, the two prices, who it is for, and the CTA into the checkout.
+ * The Layer Method™ 1:1 — the offer page: what the Initial Layer Cycle is (told once, in four
+ * steps), what you leave with, the two prices, what it is not, and the CTA into the checkout.
+ * Shortened from ~11 screens to about half (Mari, 2026-09-23).
  */
 import SiteLayout from '../layouts/SiteLayout.astro';
 import Hero11 from '../components/uno-a-uno/Hero11.astro';
 import Reconocimiento from '../components/uno-a-uno/Reconocimiento.astro';
-import Ciclo from '../components/uno-a-uno/Ciclo.astro';
-import Flecha from '../components/uno-a-uno/Flecha.astro';
-import Sesion01 from '../components/uno-a-uno/Sesion01.astro';
+import Insight from '../components/Insight.astro';
+import Proceso from '../components/uno-a-uno/Proceso.astro';
 import Entregables from '../components/uno-a-uno/Entregables.astro';
-import Sesiones from '../components/uno-a-uno/Sesiones.astro';
 import Precios from '../components/uno-a-uno/Precios.astro';
-import ParaQuien from '../components/uno-a-uno/ParaQuien.astro';
+import LoQueNoEs from '../components/uno-a-uno/LoQueNoEs.astro';
 import CtaFinal from '../components/uno-a-uno/CtaFinal.astro';
 import { marca } from '../data/site';
+import { grafoSitio, grafoServicio } from '../lib/schema';
 ---
 
 <SiteLayout
-  title="The Layer Method™ 1:1 — Veronica Wellness"
+  title="Asesoría 1:1 de nutrición funcional online — The Layer Method™ | Veronica Wellness"
+  jsonLd={[...grafoSitio(Astro.site), grafoServicio(Astro.site)]}
   description="Un proceso 1:1 para organizar tu contexto, identificar prioridades y construir una estrategia personalizada con The Layer Method™. Initial Layer Cycle: dos sesiones privadas de 90 minutos."
   mobileCta={{ label: 'Agenda conmigo', path: '/1-1#cta' }}
 >
   <Hero11 />
   <Reconocimiento />
-  <Ciclo />
-  <Flecha />
-  <Sesion01 />
-  <Flecha />
+  <Insight a="No necesitas necesariamente hacer más." b="Necesitas saber qué priorizar." />
+  <Proceso />
   <Entregables />
-  <Flecha />
-  <Sesiones />
-  <Flecha size={28} />
   <Precios />
-  <ParaQuien />
+  <LoQueNoEs />
   <CtaFinal />
   <p class="lema">{marca.lema}</p>
 </SiteLayout>

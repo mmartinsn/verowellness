@@ -1,0 +1,349 @@
+---
+/**
+ * Exámenes · hero «la lupa que revela» (Mari, 2026-09-24): a dark screen with the headline; the
+ * pointer is a round lens that shows what lies underneath — a slow microscopic world (cells,
+ * bacteria, small colonies) in the Layer colours, drawn on a canvas and masked to the lens. On
+ * touch screens, or when the pointer rests, the lens wanders on its own. The idea it carries is
+ * the page's: what a routine check-up does not usually look at.
+ * Reduced motion: the world stands still and the lens rests off-centre.
+ */
+import { examenes } from '../../data/examenes';
+---
+
+<section class="lupa" data-lupa aria-labelledby="lupa-titulo">
+  <div class="puntos" aria-hidden="true"></div>
+  <canvas class="mundo" aria-hidden="true"></canvas>
+  <div class="lente" aria-hidden="true"></div>
+
+  <div class="wrap lupa-copy">
+    <span class="eyebrow">Exámenes funcionales · Empieza por lo que sientes</span>
+    <h1 id="lupa-titulo" class="lupa-h1">
+      Tu bienestar empieza por <em class="grad-text on-dark">escucharte.</em>
+    </h1>
+    <p class="lupa-lede">
+      Selecciona lo que más se parece a lo que sientes. Explora los exámenes disponibles, qué mide
+      cada uno y cómo se toma la muestra.
+    </p>
+    <a class="lupa-cta" href="#sintomas">
+      Elige lo que sientes <span aria-hidden="true">↓</span>
+    </a>
+    <p class="lupa-pista" aria-hidden="true">
+      <span class="pista-fino">Mueve el cursor: mira lo que no se ve</span>
+      <span class="pista-tactil">{examenes.length} exámenes · laboratorios especializados</span>
+    </p>
+  </div>
+</section>
+
+<style>
+  .lupa {
+    --lr: 130px;
+    position: relative;
+    min-height: min(88vh, 860px);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: radial-gradient(ellipse 70% 60% at 50% 45%, #25241f 0%, #1b1a17 60%, #141412 100%);
+    color: var(--color-bone);
+    isolation: isolate;
+  }
+  /* The resting surface: a faint dot field, the world only hinted at. */
+  .puntos {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgb(248 246 241 / 0.07) 1px, transparent 1.5px);
+    background-size: 26px 26px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, #000 40%, transparent 100%);
+    z-index: 0;
+  }
+  /* The hidden world: the canvas draws it only inside the lens (a clip, not a CSS mask, so
+     moving the lens does not repaint the whole layer). */
+  .mundo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  /* The glass rim of the lens. */
+  /* Moved with transform (set in px by the script), so it rides on the compositor. */
+  .lente {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(var(--lr) * 2);
+    height: calc(var(--lr) * 2);
+    transform: translate3d(calc(70vw - var(--lr)), calc(50% - var(--lr)), 0);
+    will-change: transform;
+    border-radius: 50%;
+    z-index: 2;
+    pointer-events: none;
+    box-shadow:
+      inset 0 0 0 1.5px rgb(248 246 241 / 0.45),
+      inset 0 0 40px rgb(248 246 241 / 0.08),
+      0 0 0 1px rgb(0 0 0 / 0.4),
+      0 30px 80px -20px rgb(214 154 124 / 0.35);
+    background: radial-gradient(circle at 32% 26%, rgb(255 255 255 / 0.16), transparent 38%);
+  }
+  .lupa-copy {
+    position: relative;
+    z-index: 3;
+    max-width: 900px;
+    text-align: center;
+    pointer-events: none;
+  }
+  .lupa-copy a {
+    pointer-events: auto;
+  }
+  .lupa .eyebrow {
+    color: var(--color-clay);
+  }
+  .lupa-h1 {
+    margin-top: 16px;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(46px, 7vw, 104px);
+    line-height: 0.96;
+    letter-spacing: -0.02em;
+    color: var(--color-bone);
+    text-shadow: 0 2px 30px rgb(0 0 0 / 0.55);
+  }
+  .lupa-h1 em {
+    font-style: italic;
+  }
+  .lupa-lede {
+    margin: 22px auto 0;
+    max-width: 580px;
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.65;
+    color: rgb(248 246 241 / 0.78);
+    text-shadow: 0 1px 16px rgb(0 0 0 / 0.6);
+  }
+  .lupa-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    min-height: 54px;
+    padding: 0 28px;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(135deg, #f0c4ae, var(--color-clay-deep));
+    color: var(--color-charcoal);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background 0.35s ease;
+  }
+  .lupa-cta:hover {
+    background: var(--color-white);
+  }
+  .lupa-pista {
+    margin-top: 22px;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgb(248 246 241 / 0.42);
+  }
+  .pista-tactil {
+    display: none;
+  }
+  @media (hover: none), (pointer: coarse) {
+    .pista-fino {
+      display: none;
+    }
+    .pista-tactil {
+      display: inline;
+    }
+  }
+  @media (max-width: 640px) {
+    .lupa {
+      --lr: 96px;
+      min-height: 80vh;
+    }
+  }
+</style>
+
+<script>
+  const lupa = document.querySelector<HTMLElement>('[data-lupa]');
+  if (lupa) {
+    const canvas = lupa.querySelector<HTMLCanvasElement>('.mundo')!;
+    const lente = lupa.querySelector<HTMLElement>('.lente')!;
+    const ctx = canvas.getContext('2d')!;
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fino = matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const css = getComputedStyle(document.documentElement);
+    const tonos = ['clay', 'sage', 'sage-deep', 'rose', 'olive', 'clay-rich', 'sand'].map(
+      (t) => css.getPropertyValue(`--color-${t}`).trim() || '#d69a7c'
+    );
+
+    type Ser = {
+      tipo: 0 | 1 | 2;
+      x: number;
+      y: number;
+      r: number;
+      a: number;
+      va: number;
+      vx: number;
+      vy: number;
+      color: string;
+      fase: number;
+    };
+    let W = 0;
+    let H = 0;
+    let seres: Ser[] = [];
+    let R = 130;
+    const azar = (a: number, b: number) => a + Math.random() * (b - a);
+
+    const medir = () => {
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      W = lupa.clientWidth;
+      H = lupa.clientHeight;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = Math.round((W * H) / 4200);
+      R = parseFloat(getComputedStyle(lupa).getPropertyValue('--lr')) || 130;
+      seres = Array.from({ length: n }, () => {
+        const tipo = (Math.random() < 0.38 ? 0 : Math.random() < 0.6 ? 1 : 2) as 0 | 1 | 2;
+        return {
+          tipo,
+          x: azar(0, W),
+          y: azar(0, H),
+          r: tipo === 0 ? azar(18, 42) : tipo === 1 ? azar(10, 17) : azar(3.5, 7.5),
+          a: azar(0, Math.PI * 2),
+          va: azar(-0.004, 0.004),
+          vx: azar(-0.18, 0.18),
+          vy: azar(-0.14, 0.14),
+          color: tonos[Math.floor(Math.random() * tonos.length)],
+          fase: azar(0, Math.PI * 2),
+        };
+      });
+    };
+
+    const dibujar = (t: number, cx: number, cy: number) => {
+      ctx.clearRect(0, 0, W, H);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.clip();
+      // the medium itself: a warm, lit wash inside the lens
+      const luz = ctx.createRadialGradient(cx - R * 0.3, cy - R * 0.35, R * 0.1, cx, cy, R);
+      luz.addColorStop(0, 'rgba(240,214,196,0.22)');
+      luz.addColorStop(1, 'rgba(214,154,124,0.08)');
+      ctx.fillStyle = luz;
+      ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
+      for (const s of seres) {
+        if (!calm) {
+          s.x = (s.x + s.vx + W + 80) % (W + 80);
+          s.y = (s.y + s.vy + H + 80) % (H + 80);
+          s.a += s.va;
+        }
+        const x = s.x - 40;
+        const y = s.y - 40;
+        // only what the lens can see is drawn
+        if (Math.abs(x - cx) > R + 60 || Math.abs(y - cy) > R + 60) continue;
+        const pulso = 1 + Math.sin(t * 0.0015 + s.fase) * 0.04;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(s.a);
+        if (s.tipo === 0) {
+          // a cell: membrane, cytoplasm, nucleus
+          const r = s.r * pulso;
+          ctx.globalAlpha = 0.38;
+          ctx.fillStyle = s.color;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, r, r * 0.86, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 0.85;
+          ctx.strokeStyle = s.color;
+          ctx.lineWidth = 1.6;
+          ctx.stroke();
+          ctx.globalAlpha = 0.75;
+          ctx.beginPath();
+          ctx.arc(r * 0.18, -r * 0.1, r * 0.34, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 0.9;
+          ctx.fillStyle = 'rgba(255,250,240,0.8)';
+          ctx.beginPath();
+          ctx.arc(r * 0.26, -r * 0.18, r * 0.08, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (s.tipo === 1) {
+          // a bacterium: a capsule with a wavy flagellum
+          const l = s.r * 2.2;
+          ctx.globalAlpha = 0.92;
+          ctx.fillStyle = s.color;
+          ctx.beginPath();
+          ctx.roundRect(-l / 2, -s.r / 2, l, s.r, s.r / 2);
+          ctx.fill();
+          ctx.globalAlpha = 0.6;
+          ctx.strokeStyle = s.color;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.moveTo(l / 2, 0);
+          for (let k = 1; k <= 10; k++) {
+            ctx.lineTo(l / 2 + k * 2.4, Math.sin(k * 0.9 + t * 0.006 + s.fase) * 3);
+          }
+          ctx.stroke();
+        } else {
+          // a small colony
+          ctx.fillStyle = s.color;
+          for (let k = 0; k < 5; k++) {
+            ctx.globalAlpha = 0.55 + (k % 2) * 0.3;
+            ctx.beginPath();
+            ctx.arc(
+              Math.cos(k * 1.3) * s.r * 1.6,
+              Math.sin(k * 1.7) * s.r * 1.6,
+              s.r,
+              0,
+              Math.PI * 2
+            );
+            ctx.fill();
+          }
+        }
+        ctx.restore();
+      }
+      ctx.restore();
+      ctx.globalAlpha = 1;
+    };
+
+    // The lens: follows the pointer smoothly, wanders by itself when idle or on touch.
+    let lx = 0.7;
+    let ly = 0.55;
+    let tx = lx;
+    let ty = ly;
+    let ultimoMovimiento = -1e9;
+    let visible = false;
+    lupa.addEventListener('pointermove', (e) => {
+      if (!fino) return;
+      const r = lupa.getBoundingClientRect();
+      tx = (e.clientX - r.left) / r.width;
+      ty = (e.clientY - r.top) / r.height;
+      ultimoMovimiento = performance.now();
+    });
+
+    const cuadro = (t: number) => {
+      if (!visible) return;
+      if (!calm && t - ultimoMovimiento > 2500) {
+        // an unhurried figure-of-eight around the headline
+        tx = 0.5 + Math.sin(t * 0.00032) * 0.3;
+        ty = 0.52 + Math.sin(t * 0.00064) * 0.22;
+      }
+      lx += (tx - lx) * (calm ? 1 : 0.1);
+      ly += (ty - ly) * (calm ? 1 : 0.1);
+      const cx = lx * W;
+      const cy = ly * H;
+      lente.style.transform = `translate3d(${(cx - R).toFixed(1)}px, ${(cy - R).toFixed(1)}px, 0)`;
+      dibujar(t, cx, cy);
+      if (!calm) requestAnimationFrame(cuadro);
+    };
+
+    medir();
+    addEventListener('resize', medir);
+    new IntersectionObserver((e) => {
+      const antes = visible;
+      visible = e[0].isIntersecting;
+      if (visible && !antes) requestAnimationFrame(cuadro);
+    }).observe(lupa);
+  }
+</script>

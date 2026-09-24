@@ -33,7 +33,8 @@ const Tag = link ? 'a' : 'span';
     gap: 10px;
     white-space: nowrap;
   }
-  .wordmark-mark {
+  /* BrandMark is a child component, so its <svg> does not carry this file's scope. */
+  .wordmark :global(.wordmark-mark) {
     color: var(--color-clay-deep);
     flex-shrink: 0;
   }

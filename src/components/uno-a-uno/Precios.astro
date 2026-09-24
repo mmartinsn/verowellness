@@ -10,6 +10,10 @@ import { listaCiclos } from '../../data/oferta';
   <div class="wrap">
     <span class="eyebrow">La oferta completa</span>
     <h2>Tu ciclo, a tu ritmo.</h2>
+    <p class="lead">
+      Tu primer ciclo te da el mapa; el siguiente te permite seguir avanzando. No empezamos desde
+      cero — usamos el contexto ya construido, a tu ritmo, sin membresía ni programa a largo plazo.
+    </p>
     <div class="pricing-columns">
       {listaCiclos.map((c, i) => <PriceCard ciclo={c} featured={i === 0} />)}
     </div>
@@ -33,6 +37,14 @@ import { listaCiclos } from '../../data/oferta';
     font-weight: 500;
     font-size: clamp(30px, 4.2vw, 46px);
     line-height: 1.1;
+  }
+  .lead {
+    font-size: 18px;
+    line-height: 1.6;
+    font-weight: 500;
+    color: rgb(48 47 42 / 0.72);
+    max-width: 640px;
+    margin-top: 14px;
   }
   .pricing-columns {
     display: grid;

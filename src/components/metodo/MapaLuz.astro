@@ -1,0 +1,536 @@
+---
+/**
+ * «Cinco capas, un solo mapa» — the five Layers as translucent glass sheets stacked in 3D on a
+ * dark panel (Mari, 2026-09-23: "que se vea por capas", after the lights version).
+ *
+ * With a mouse, hovering the stack opens it a little (an exploded view); hovering a sheet or its
+ * name lifts it, dims the Layers it does not connect with (data/layers `conecta`), keeps its
+ * connections lit and shows only its key question (the cards below explain the rest). On touch screens a tap does the
+ * same. A light passes slowly up through the stack while nothing is chosen. Under reduced motion
+ * nothing moves; without JS the five Layers are listed under the panel.
+ */
+import { layers } from '../../data/layers';
+
+const porNombre = new Map(layers.map((l) => [l.nombre, l.num]));
+// Symmetric neighbours: A connects with B if either lists the other.
+const vecinos = new Map<string, Set<string>>(layers.map((l) => [l.num, new Set<string>()]));
+for (const l of layers) {
+  for (const n of l.conecta) {
+    const otro = porNombre.get(n);
+    if (!otro) continue;
+    vecinos.get(l.num)!.add(otro);
+    vecinos.get(otro)!.add(l.num);
+  }
+}
+const conexiones = Object.fromEntries([...vecinos].map(([k, v]) => [k, [...v]]));
+---
+
+<div class="mapa-capas" id="mapaCapas" data-conexiones={JSON.stringify(conexiones)}>
+  <div class="mc-panel" id="mcPanel">
+    <div class="mc-escena">
+      <!-- Fixed hover zones over the stack (top band = top sheet). They do not move with the
+           animation, so a sheet that lifts never steals the pointer from the next one. -->
+      <div class="mc-zonas" id="mcZonas" aria-hidden="true">
+        {[...layers].reverse().map((l) => <span class="mc-zona" data-num={l.num} />)}
+      </div>
+      <div class="mc-pila" id="mcPila">
+        <div class="mc-escaner" aria-hidden="true"></div>
+        {
+          layers.map((l, i) => (
+            <div
+              class="mc-capa"
+              data-num={l.num}
+              aria-hidden="true"
+              style={`--i:${i}; --tono: var(--color-${l.color})`}
+            >
+              <span class="mc-vidrio" />
+            </div>
+          ))
+        }
+      </div>
+
+      <!-- The index: one row per Layer, top of the stack first. These are the controls. -->
+      <ol class="mc-indice" role="list">
+        {
+          [...layers].reverse().map((l) => (
+            <li>
+              <button
+                type="button"
+                class="mc-fila"
+                data-num={l.num}
+                aria-pressed="false"
+                aria-describedby="mcLeyenda"
+                style={`--tono: var(--color-${l.color})`}
+              >
+                <span class="mc-guia" aria-hidden="true" />
+                <span class="mc-num">{l.num}</span>
+                <span class="mc-nombre">{l.nombre}</span>
+              </button>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <div class="mc-leyenda" id="mcLeyenda" aria-live="polite">
+      {
+        layers.map((l) => (
+          <p class="mc-ficha mc-f-q" data-ficha={l.num}>
+            {l.pregunta}
+          </p>
+        ))
+      }
+    </div>
+  </div>
+
+  <ol class="mc-sinjs">
+    {
+      layers.map((l) => (
+        <li>
+          <strong>
+            {l.num} · {l.nombre}
+          </strong>{' '}
+          — {l.pregunta}
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  .mapa-capas {
+    --px: 0;
+    --py: 0;
+  }
+  /* No box of its own: the map sits straight on the section's dark ground. */
+  .mc-panel {
+    position: relative;
+    color: var(--color-bone);
+  }
+  .mc-escena {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    align-items: center;
+    gap: 8px;
+    perspective: 1800px;
+    perspective-origin: 50% 30%;
+  }
+  @media (min-width: 900px) {
+    .mc-escena {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+      justify-items: start;
+      padding-inline: 4%;
+    }
+    .mc-pila {
+      justify-self: center;
+    }
+  }
+
+  /* ── The stack ── */
+  .mc-pila {
+    --gap: clamp(30px, 4.4vw, 50px);
+    position: relative;
+    margin-block: clamp(70px, 9vw, 120px) clamp(36px, 5vw, 70px);
+    width: clamp(200px, 32vw, 330px);
+    aspect-ratio: 1;
+    transform-style: preserve-3d;
+    transform: rotateX(calc(58deg + var(--py) * -6deg)) rotateZ(calc(-42deg + var(--px) * 8deg));
+    /* Fixed offset: the stack no longer drops when it opens, so it never reaches the question. */
+    translate: 0 clamp(48px, 7vw, 80px);
+    transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  /* Open the stack (exploded view) while the pointer is over the map. */
+  @media (hover: hover) {
+    .mc-escena:hover .mc-pila,
+    .mc-pila.medir {
+      --gap: clamp(40px, 6vw, 66px);
+    }
+  }
+  /* Measuring pass for the hover zones: the open stack, with no transition in the way. */
+  .mc-pila.medir,
+  .mc-pila.medir .mc-capa {
+    transition: none !important;
+  }
+  .mc-zonas {
+    position: absolute;
+    z-index: 5;
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+  }
+  .mc-zona {
+    cursor: pointer;
+  }
+  .mc-capa {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: 28px;
+    transform-style: preserve-3d;
+    transform: translateZ(calc(var(--i) * var(--gap)));
+    transition:
+      transform 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+      opacity 0.5s ease,
+      filter 0.5s ease;
+    animation: mc-flota 7s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * -1.3s);
+  }
+  @keyframes mc-flota {
+    to {
+      translate: 0 0 8px;
+    }
+  }
+  .mc-vidrio {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--tono) 78%, white 12%) 0%,
+      color-mix(in srgb, var(--tono) 42%, transparent) 55%,
+      color-mix(in srgb, var(--tono) 22%, transparent) 100%
+    );
+    border: 1px solid rgb(255 255 255 / 0.34);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.06),
+      0 0 40px color-mix(in srgb, var(--tono) 30%, transparent);
+    opacity: 0.82;
+    transition:
+      opacity 0.5s ease,
+      box-shadow 0.5s ease,
+      border-color 0.5s ease;
+  }
+  /* A soft sheen that sits on each sheet. */
+  .mc-vidrio::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(115deg, rgb(255 255 255 / 0.32) 0%, transparent 38%);
+  }
+  /* ── The index ── */
+  .mc-indice {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .mc-fila {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 14px 10px 0;
+    border: 0;
+    background: none;
+    color: rgb(255 250 245 / 0.72);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      color 0.4s ease,
+      opacity 0.4s ease,
+      transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .mc-guia {
+    align-self: center;
+    flex: 0 0 56px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--tono) 80%, white));
+    transform-origin: right;
+    transform: scaleX(0.55);
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .mc-num {
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 2.4vw, 30px);
+    line-height: 1;
+    color: color-mix(in srgb, var(--tono) 55%, white);
+  }
+  .mc-nombre {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  @media (hover: hover) {
+    .mc-fila:hover .mc-guia {
+      transform: scaleX(1);
+    }
+  }
+  .mc-fila:focus-visible {
+    outline: 1.5px solid rgb(243 211 194 / 0.9);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+
+  /* The light that travels up the stack while nothing is chosen. */
+  .mc-escaner {
+    position: absolute;
+    inset: -2%;
+    border-radius: 30px;
+    border: 1.5px solid rgb(255 236 224 / 0.75);
+    box-shadow:
+      0 0 24px rgb(243 211 194 / 0.55),
+      inset 0 0 24px rgb(243 211 194 / 0.25);
+    pointer-events: none;
+    animation: mc-escanea 6.5s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+  }
+  @keyframes mc-escanea {
+    0% {
+      transform: translateZ(-10px);
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 0.9;
+    }
+    100% {
+      transform: translateZ(calc(var(--gap) * 4.6));
+      opacity: 0;
+    }
+  }
+  .mapa-capas.enfocada .mc-escaner {
+    opacity: 0;
+    animation-play-state: paused;
+  }
+
+  /* ── Focus ── */
+  .mapa-capas.enfocada .mc-capa {
+    opacity: 0.22;
+    filter: saturate(0.5);
+  }
+  .mapa-capas.enfocada .mc-fila {
+    opacity: 0.4;
+  }
+  .mapa-capas.enfocada .mc-capa.conectada {
+    opacity: 0.8;
+    filter: none;
+  }
+  .mapa-capas.enfocada .mc-fila.conectada {
+    opacity: 0.85;
+  }
+  .mapa-capas.enfocada .mc-capa.conectada .mc-vidrio {
+    border-color: rgb(243 211 194 / 0.7);
+  }
+  .mapa-capas.enfocada .mc-capa.activa {
+    opacity: 1;
+    filter: none;
+    transform: translateZ(calc(var(--i) * var(--gap) + var(--gap) * 0.9));
+    animation-play-state: paused;
+  }
+  .mapa-capas.enfocada .mc-fila[aria-pressed='true'] {
+    opacity: 1;
+    color: #fffaf5;
+    transform: translateX(-6px);
+  }
+  .mapa-capas.enfocada .mc-fila[aria-pressed='true'] .mc-guia {
+    transform: scaleX(1.25);
+  }
+  .mapa-capas.enfocada .mc-capa.activa .mc-vidrio {
+    opacity: 1;
+    border-color: rgb(255 244 236 / 0.95);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.12),
+      0 0 70px color-mix(in srgb, var(--tono) 60%, transparent),
+      0 0 0 1px rgb(255 244 236 / 0.4);
+  }
+
+  /* ── Caption ── */
+  /* Every question sits in the same cell: the box is as tall as the longest, and switching
+     is a crossfade in place — nothing below moves and no two questions show at once. */
+  .mc-leyenda {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .mc-ficha {
+    grid-area: 1 / 1;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    filter: blur(4px);
+    transition:
+      opacity 0.35s ease,
+      transform 0.45s cubic-bezier(0.19, 1, 0.22, 1),
+      filter 0.35s ease,
+      visibility 0s linear 0.35s;
+  }
+  .mc-ficha.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    filter: none;
+    transition:
+      opacity 0.35s ease 0.08s,
+      transform 0.45s cubic-bezier(0.19, 1, 0.22, 1) 0.08s,
+      filter 0.35s ease 0.08s,
+      visibility 0s;
+  }
+  .mc-f-q {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(22px, 2.6vw, 32px);
+    line-height: 1.35;
+    color: rgb(248 246 241 / 0.92);
+    max-width: 720px;
+    margin: 0 auto;
+    text-wrap: balance;
+  }
+
+  .mc-sinjs {
+    display: none;
+  }
+  :global(html.no-js) .mc-sinjs {
+    display: grid;
+    gap: 8px;
+    margin-top: 18px;
+    padding-left: 18px;
+    font-size: 15px;
+  }
+  :global(html.no-js) .mc-leyenda {
+    display: none;
+  }
+
+  /* Phones: the index becomes a row of chips under the stack. */
+  @media (max-width: 899px) {
+    .mc-indice {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .mc-fila {
+      width: auto;
+      min-height: 44px;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgb(255 255 255 / 0.14);
+    }
+    .mc-guia {
+      display: none;
+    }
+    .mc-num {
+      font-size: 18px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mc-capa,
+    .mc-escaner {
+      animation: none;
+    }
+    .mc-escaner {
+      display: none;
+    }
+    .mc-pila,
+    .mc-capa {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const mapa = document.getElementById('mapaCapas');
+  if (mapa) {
+    const conexiones: Record<string, string[]> = JSON.parse(mapa.dataset.conexiones ?? '{}');
+    const capas = [...mapa.querySelectorAll<HTMLElement>('.mc-capa')];
+    const filas = [...mapa.querySelectorAll<HTMLButtonElement>('.mc-fila')];
+    const fichas = [...mapa.querySelectorAll<HTMLElement>('.mc-ficha')];
+    const escena = mapa.querySelector<HTMLElement>('.mc-escena')!;
+    const panel = document.getElementById('mcPanel')!;
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let activa: string | null = null;
+
+    const enfocar = (num: string | null) => {
+      if (num === activa) return;
+      activa = num;
+      mapa.classList.toggle('enfocada', !!num);
+      const vec = new Set(num ? (conexiones[num] ?? []) : []);
+      capas.forEach((c) => {
+        c.classList.toggle('activa', c.dataset.num === num);
+        c.classList.toggle('conectada', vec.has(c.dataset.num!));
+      });
+      filas.forEach((f) => {
+        f.setAttribute('aria-pressed', String(f.dataset.num === num));
+        f.classList.toggle('conectada', vec.has(f.dataset.num!));
+      });
+      fichas.forEach((f) => f.classList.toggle('visible', f.dataset.ficha === num));
+    };
+
+    // Mouse: hover a sheet or an index row. Touch: tap a row. Keyboard: focus a row.
+    if (fine) {
+      mapa
+        .querySelectorAll<HTMLElement>('.mc-zona')
+        .forEach((z) => z.addEventListener('pointerenter', () => enfocar(z.dataset.num!)));
+      filas.forEach((f) => f.addEventListener('pointerenter', () => enfocar(f.dataset.num!)));
+      escena.addEventListener('pointerleave', () => enfocar(null));
+    }
+    filas.forEach((f) => {
+      // Keyboard focus only: a tap also focuses, and the click below handles taps.
+      f.addEventListener('focus', () => {
+        if (f.matches(':focus-visible')) enfocar(f.dataset.num!);
+      });
+      f.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!fine) enfocar(activa === f.dataset.num ? null : f.dataset.num!);
+      });
+    });
+    panel.addEventListener('click', () => enfocar(null));
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') enfocar(null);
+    });
+
+    // Place the hover zones over the open stack (union of the five sheets, measured untilted).
+    const zonas = document.getElementById('mcZonas')!;
+    const pila = document.getElementById('mcPila')!;
+    const ubicarZonas = () => {
+      if (activa) return;
+      const base = escena.getBoundingClientRect();
+      const px = mapa.style.getPropertyValue('--px');
+      const py = mapa.style.getPropertyValue('--py');
+      mapa.style.setProperty('--px', '0');
+      mapa.style.setProperty('--py', '0');
+      pila.classList.add('medir');
+      const rects = capas.map((c) => c.querySelector('.mc-vidrio')!.getBoundingClientRect());
+      pila.classList.remove('medir');
+      mapa.style.setProperty('--px', px || '0');
+      mapa.style.setProperty('--py', py || '0');
+      const top = Math.min(...rects.map((r) => r.top));
+      const bottom = Math.max(...rects.map((r) => r.bottom));
+      const left = Math.min(...rects.map((r) => r.left));
+      const right = Math.max(...rects.map((r) => r.right));
+      Object.assign(zonas.style, {
+        top: `${top - base.top}px`,
+        left: `${left - base.left}px`,
+        width: `${right - left}px`,
+        height: `${bottom - top}px`,
+      });
+    };
+    ubicarZonas();
+    window.addEventListener('resize', ubicarZonas);
+    window.addEventListener('load', ubicarZonas);
+
+    // A slight turn of the whole stack toward the pointer.
+    if (fine && !calm) {
+      panel.addEventListener('pointermove', (e) => {
+        const r = panel.getBoundingClientRect();
+        mapa.style.setProperty('--px', (((e.clientX - r.left) / r.width) * 2 - 1).toFixed(3));
+        mapa.style.setProperty('--py', (((e.clientY - r.top) / r.height) * 2 - 1).toFixed(3));
+      });
+      panel.addEventListener('pointerleave', () => {
+        mapa.style.setProperty('--px', '0');
+        mapa.style.setProperty('--py', '0');
+      });
+    }
+  }
+</script>

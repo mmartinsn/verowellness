@@ -1,3 +1,8 @@
 # Preview build: nothing here is meant to be indexed until the site goes to its real domain.
 User-agent: *
 Disallow: /
+
+# NOTE: crawlers only read /robots.txt at the root of the host, so on GitHub Pages this file does not
+# apply; the prototype is kept out of search by `noindex` on every page (src/data/site.ts). On the
+# real domain replace it with: `Allow: /`, `Disallow: /checkout/`, `Disallow: /variantes/` and
+# `Sitemap: https://veronicawellness.com/sitemap.xml`.

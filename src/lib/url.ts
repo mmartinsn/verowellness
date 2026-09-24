@@ -22,8 +22,12 @@ export function asset(file: string): string {
   return `${BASE}/${file.replace(/^\/+/, '')}`;
 }
 
-/** True when `current` (Astro.url.pathname) is the page `path` points at. */
+/**
+ * True when `current` (Astro.url.pathname) is the page `path` points at. A link to a section
+ * (`/#faq`) is never "the current page", or every section link on the home would light up.
+ */
 export function isCurrent(current: string, path: string): boolean {
+  if (path.includes('#')) return false;
   const target = href(path).split('#')[0];
   return current.replace(/\/$/, '') === target.replace(/\/$/, '');
 }

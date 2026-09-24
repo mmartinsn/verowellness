@@ -1,0 +1,263 @@
+---
+/**
+ * 09 · Cierre — the closing "portal": a full-width dark band (boxed until 2026-09-23) with slow
+ * concentric rings, a warm glow, four small brand pills at the corners of the site column (wide
+ * screens) and the final call to action.
+ */
+import { checkoutPrincipal } from '../../data/oferta';
+import { href } from '../../lib/url';
+import { marca } from '../../data/site';
+
+const esquinas = [
+  { cls: 'tl', texto: 'VERONICA WELLNESS' },
+  { cls: 'tr', texto: marca.lema.toUpperCase() },
+  { cls: 'bl', texto: 'ASESORÍAS 100% ONLINE' },
+  { cls: 'br', texto: 'ENFOQUE INTEGRAL' },
+];
+---
+
+<section class="cierre" id="empieza">
+  <div class="wrap">
+    <div class="portal aurora">
+      <div class="anillos" aria-hidden="true">
+        <div class="anillo anillo-1"></div>
+        <div class="anillo anillo-2"></div>
+        <div class="anillo anillo-3"></div>
+        <div class="anillo anillo-4"></div>
+      </div>
+      <div class="brillo" aria-hidden="true"></div>
+      {
+        esquinas.map((e) => (
+          <div class:list={['esquina', e.cls]} aria-hidden="true">
+            {e.texto}
+          </div>
+        ))
+      }
+      <div class="portal-badge">
+        <span class="eyebrow">Empieza aquí</span>
+      </div>
+      <h2 class="portal-title">
+        Entiende tu cuerpo.<br />Conecta tus capas.<br /><span class="grad-text on-dark"
+          >Aprende por dónde empezar.</span
+        >
+      </h2>
+      <p class="portal-body">
+        Deja de perseguir cada síntoma. Prioriza lo que realmente importa y ten un plan que conecte
+        todas tus capas.
+      </p>
+      <div class="portal-cta">
+        <a class="portal-btn" href={href(checkoutPrincipal)} data-magnet="0.3">Trabaja conmigo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cierre {
+    padding: 0;
+  }
+  .portal {
+    position: relative;
+    overflow: hidden;
+    margin-inline: calc(50% - 50vw);
+    padding: clamp(120px, 15vw, 220px) 24px;
+    text-align: center;
+    background: radial-gradient(ellipse 80% 90% at 50% 20%, #3e3d36 0%, #1f1e1b 100%);
+  }
+  .anillos {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 900px;
+    height: 900px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.55;
+  }
+  .anillo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border: 1px dashed rgb(231 183 160 / 0.22);
+    animation: orbit 60s linear infinite;
+  }
+  .anillo-1 {
+    width: 340px;
+    height: 340px;
+    border-style: solid;
+    border-color: rgb(231 183 160 / 0.18);
+  }
+  .anillo-2 {
+    width: 500px;
+    height: 500px;
+    animation-duration: 80s;
+    animation-direction: reverse;
+  }
+  .anillo-3 {
+    width: 680px;
+    height: 680px;
+    border-color: rgb(207 215 196 / 0.16);
+    animation-duration: 100s;
+  }
+  .anillo-4 {
+    width: 860px;
+    height: 860px;
+    animation-duration: 120s;
+    animation-direction: reverse;
+  }
+  @keyframes orbit {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+  .brillo {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    width: 580px;
+    height: 580px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+      circle,
+      rgb(214 154 124 / 0.28) 0%,
+      rgb(201 140 134 / 0.1) 45%,
+      transparent 75%
+    );
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 1;
+    animation: portal-pulse 9s ease-in-out infinite alternate;
+  }
+  @keyframes portal-pulse {
+    0% {
+      transform: translate(-50%, -50%) scale(0.9);
+      opacity: 0.6;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1.12);
+      opacity: 0.95;
+    }
+  }
+  .esquina {
+    display: none;
+    position: absolute;
+    z-index: 3;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: rgb(251 250 246 / 0.65);
+    padding: 8px 18px;
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 0.04);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    backdrop-filter: blur(8px);
+  }
+  @media (min-width: 900px) {
+    .esquina {
+      display: block;
+    }
+    /* Pinned to the corners of the site column, not of the screen. */
+    .tl {
+      top: 56px;
+      left: max(48px, calc(50% - 566px));
+    }
+    .tr {
+      top: 56px;
+      right: max(48px, calc(50% - 566px));
+    }
+    .bl {
+      bottom: 56px;
+      left: max(48px, calc(50% - 566px));
+    }
+    .br {
+      bottom: 56px;
+      right: max(48px, calc(50% - 566px));
+    }
+  }
+  .portal-badge {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 6px 18px;
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 0.06);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    backdrop-filter: blur(10px);
+  }
+  .portal-badge .eyebrow {
+    color: var(--color-clay);
+  }
+  .portal .portal-title {
+    position: relative;
+    z-index: 2;
+    color: var(--color-bone);
+    font-size: clamp(40px, 6.2vw, 84px);
+    line-height: 1.05;
+    font-weight: 400;
+    max-width: 960px;
+    margin: 0 auto 28px;
+  }
+  .portal .portal-body {
+    position: relative;
+    z-index: 2;
+    color: rgb(251 250 246 / 0.85);
+    max-width: 620px;
+    margin: 0 auto 44px;
+    font-size: 19px;
+    line-height: 1.65;
+  }
+  .portal-cta {
+    position: relative;
+    z-index: 3;
+    display: inline-block;
+  }
+  .portal-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #f0c4ae 0%, var(--color-clay-deep) 100%);
+    color: var(--color-charcoal);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 22px 52px;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 16px 40px rgb(214 154 124 / 0.35);
+    transition:
+      background 0.4s var(--ease-out-soft),
+      transform 0.4s var(--ease-out-soft),
+      box-shadow 0.4s var(--ease-out-soft);
+    animation: btn-breathe 4s infinite alternate ease-in-out;
+  }
+  @keyframes btn-breathe {
+    0% {
+      box-shadow: 0 16px 40px rgb(214 154 124 / 0.35);
+    }
+    100% {
+      box-shadow:
+        0 20px 60px rgb(214 154 124 / 0.7),
+        0 0 24px rgb(255 255 255 / 0.4);
+    }
+  }
+  .portal-btn:hover {
+    background: var(--color-white);
+    transform: translateY(-3px) scale(1.02);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .anillo,
+    .brillo,
+    .portal-btn {
+      animation: none;
+    }
+  }
+</style>

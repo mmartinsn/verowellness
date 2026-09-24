@@ -15,6 +15,7 @@ import '@fontsource/cormorant-garamond/500-italic.css';
 import '@fontsource-variable/nunito';
 import '../styles/global.css';
 import { asset } from '../lib/url';
+import { prototipo, imagenSocial, marca } from '../data/site';
 
 interface Props {
   title: string;
@@ -22,14 +23,19 @@ interface Props {
   /** Keep search engines out (checkout, legal placeholders, presentation index). */
   noindex?: boolean;
   /** Visual system for this page; `stitch` swaps type and canvas tokens in global.css. */
-  theme?: 'editorial' | 'stitch';
+  theme?: 'editorial' | 'stitch' | 'inicio';
   /** Extra class on <body> (pages that need bottom padding for a sticky bar, etc.). */
   bodyClass?: string;
+  /** Structured data (schema.org objects), emitted as one JSON-LD graph. */
+  jsonLd?: Record<string, unknown>[];
 }
 
-const { title, description, noindex = false, theme = 'editorial', bodyClass } = Astro.props;
+const { title, description, noindex = false, theme = 'editorial', bodyClass, jsonLd } = Astro.props;
 
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
+const absoluto = (path: string) => (Astro.site ? new URL(path, Astro.site).href : path);
+const ogImage = absoluto(asset(imagenSocial.archivo));
+const robots = noindex || prototipo;
 ---
 
 <!doctype html>
@@ -43,12 +49,30 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : As
     <link rel="icon" href={asset('favicon.svg')} type="image/svg+xml" />
     <meta name="color-scheme" content="light only" />
     <meta name="theme-color" content={theme === 'stitch' ? '#FDF9F2' : '#FBFAF6'} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {robots && <meta name="robots" content="noindex, nofollow" />}
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_VE" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:site_name" content="Veronica Wellness" />
+    <meta property="og:site_name" content={marca.nombre} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content={String(imagenSocial.ancho)} />
+    <meta property="og:image:height" content={String(imagenSocial.alto)} />
+    <meta property="og:image:alt" content={imagenSocial.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={imagenSocial.alt} />
+    {
+      jsonLd && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': jsonLd })}
+        />
+      )
+    }
     <script is:inline>
       // `.no-js` keeps reveal animations disabled when scripts do not run; drop it as early as
       // possible so the first paint already knows JS is available.

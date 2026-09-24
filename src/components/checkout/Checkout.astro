@@ -1,7 +1,9 @@
 ---
 /**
- * Five-step checkout for one cycle: datos → resumen → pago → consentimiento → confirmar, then the
- * confirmation screen with the booking embed.
+ * Five-step checkout: datos → resumen → pago → consentimiento → confirmar, then the confirmation
+ * screen. It sells either one cycle (fixed price, booking embed on confirmation) or, with
+ * `carrito`, the lab tests the visitor picked on /examenes/: the script then reads the selection
+ * from localStorage and rewrites the summary and every amount on the page.
  *
  * This is the presentation prototype Mari designed. Payment providers, the CRM calls and the
  * Calendly widget are NOT wired: every place where a real integration mounts is marked
@@ -10,16 +12,48 @@
  * Amounts are rendered on the server from data/oferta so the page is correct without JS; the
  * script re-reads them from `data-config` for the dynamic bits (button label, Zelle total).
  */
-import { precios, zelle, type Ciclo } from '../../data/oferta';
-import { usd } from '../../lib/precio';
+import { zelle } from '../../data/oferta';
+import { desglose, usd } from '../../lib/precio';
 import { href } from '../../lib/url';
 import { legal, marca } from '../../data/site';
 
-interface Props {
-  ciclo: Ciclo;
+/** What the checkout sells. A `Ciclo` from data/oferta satisfies it as is. */
+export interface ProductoCheckout {
+  id: string;
+  nombre: string;
+  etiqueta: string;
+  descripcionCorta: string;
+  subtotal: number;
+  incluyeCheckout: string[];
+  confirmacion: { titulo: string; texto: string; calendlyUrl?: string; calendlyEtiqueta?: string };
 }
-const { ciclo } = Astro.props;
-const p = precios(ciclo);
+
+/** Lab-test mode: the catalogue (id → name, price) and where to send an empty cart. */
+export interface CarritoCheckout {
+  clave: string;
+  volver: string;
+  catalogo: { id: string; nombre: string; precio: number }[];
+}
+
+/** Copy that depends on what is sold; defaults are the cycles' (sessions, booking). */
+export interface TextosCheckout {
+  /** Subtitle of step 1. */
+  datos?: string;
+  /** Note on the confirmation screen when Zelle is pending. */
+  zellePendiente?: string;
+  /** How the order is named in the Zelle confirmation («tu …»). */
+  pedido?: string;
+}
+
+interface Props {
+  ciclo: ProductoCheckout;
+  carrito?: CarritoCheckout;
+  textos?: TextosCheckout;
+  /** Label of the product row in the reviews ("Programa" for cycles). */
+  etiquetaProducto?: string;
+}
+const { ciclo, carrito, textos = {}, etiquetaProducto = 'Programa' } = Astro.props;
+const p = desglose(ciclo.subtotal);
 const impuestoPct = Math.round(p.taxRate * 100);
 
 const config = {
@@ -64,7 +98,13 @@ const metodos = [
 ];
 ---
 
-<div class="checkout-shell" id="checkout" data-config={JSON.stringify(config)}>
+<div
+  class="checkout-shell"
+  id="checkout"
+  data-config={JSON.stringify(config)}
+  data-carrito={carrito ? JSON.stringify(carrito) : undefined}
+  data-pedido={textos.pedido}
+>
   <main class="checkout-main" id="main">
     <div class="mobile-progress" id="mobile-progress">
       <div class="mobile-progress-label" id="mobile-progress-label">Paso 1 de 5 · Tus datos</div>
@@ -89,8 +129,10 @@ const metodos = [
       <p class="step-eyebrow">Paso 1</p>
       <h1 class="step-title">Tus datos</h1>
       <p class="step-subtitle">
-        Esta información crea tu perfil como cliente de {marca.nombre} y nos permite prepararte antes
-        de tu primera sesión.
+        {
+          textos.datos ??
+            `Esta información crea tu perfil como cliente de ${marca.nombre} y nos permite prepararte antes de tu primera sesión.`
+        }
       </p>
 
       <form id="form-datos" novalidate>
@@ -162,13 +204,15 @@ const metodos = [
       </p>
 
       <div class="review-card">
-        <div class="review-row"><span>Programa</span><span>{ciclo.nombre}</span></div>
-        <p class="review-note">{ciclo.descripcionCorta}</p>
-        <div class="review-row"><span>Subtotal</span><span>{usd(p.subtotal)}</span></div>
+        <div class="review-row"><span>{etiquetaProducto}</span><span>{ciclo.nombre}</span></div>
+        <p class="review-note" data-desc-corta>{ciclo.descripcionCorta}</p>
         <div class="review-row">
-          <span>Impuesto ({impuestoPct}%)</span><span>{usd(p.impuesto)}</span>
+          <span>Subtotal</span><span data-subtotal>{usd(p.subtotal)}</span>
         </div>
-        <div class="review-row"><span>Total</span><span>{usd(p.total)}</span></div>
+        <div class="review-row">
+          <span>Impuesto ({impuestoPct}%)</span><span data-impuesto>{usd(p.impuesto)}</span>
+        </div>
+        <div class="review-row"><span>Total</span><span data-total>{usd(p.total)}</span></div>
       </div>
 
       <div class="step-actions">
@@ -290,7 +334,7 @@ const metodos = [
       <p class="step-subtitle">Revisa una última vez antes de confirmar.</p>
 
       <div class="review-card" id="step5-review">
-        <div class="review-row"><span>Programa</span><span>{ciclo.nombre}</span></div>
+        <div class="review-row"><span>{etiquetaProducto}</span><span>{ciclo.nombre}</span></div>
         <div class="review-row"><span>Método de pago</span><span id="final-method">—</span></div>
         <div class="review-row">
           <span>Total a pagar</span><span data-total>{usd(p.total)}</span>
@@ -339,15 +383,23 @@ const metodos = [
         <p class="confirm-sub" id="confirm-sub">{ciclo.confirmacion.texto}</p>
 
         <div id="zelle-pending-note" class="zelle-pending-note" hidden>
-          Tu pago por Zelle está <strong>pendiente de verificación</strong>. En cuanto lo
-          confirmemos (24–48h) te enviaremos el enlace para agendar tu primera sesión.
+          Tu pago por Zelle está <strong>pendiente de verificación</strong>. {
+            textos.zellePendiente ??
+              'En cuanto lo confirmemos (24–48h) te enviaremos el enlace para agendar tu primera sesión.'
+          }
         </div>
 
-        <div class="integration-placeholder calendly-embed" id="calendly-embed">
-          INTEGRATION POINT: Calendly / Acuity inline widget<br />
-          Calendly.initInlineWidget({'{'} url: '{ciclo.confirmacion.calendlyUrl}' {'}'})<br /><br />
-          [ {ciclo.confirmacion.calendlyEtiqueta} ]
-        </div>
+        {
+          ciclo.confirmacion.calendlyUrl && (
+            <div class="integration-placeholder calendly-embed" id="calendly-embed">
+              INTEGRATION POINT: Calendly / Acuity inline widget
+              <br />
+              Calendly.initInlineWidget({'{'} url: '{ciclo.confirmacion.calendlyUrl}' {'}'})
+              <br />
+              <br />[ {ciclo.confirmacion.calendlyEtiqueta} ]
+            </div>
+          )
+        }
       </div>
     </section>
   </main>
@@ -357,14 +409,23 @@ const metodos = [
     <span class="summary-tag">{ciclo.etiqueta}</span>
     <h2 class="summary-title">{ciclo.nombre}</h2>
     <p class="summary-desc">{ciclo.descripcionCorta}</p>
-    <div class="summary-line"><span>Subtotal</span><span>{usd(p.subtotal)}</span></div>
     <div class="summary-line">
-      <span>Impuesto ({impuestoPct}%)</span><span>{usd(p.impuesto)}</span>
+      <span>Subtotal</span><span data-subtotal>{usd(p.subtotal)}</span>
+    </div>
+    <div class="summary-line">
+      <span>Impuesto ({impuestoPct}%)</span><span data-impuesto>{usd(p.impuesto)}</span>
     </div>
     <div class="summary-line total"><span>Total</span><span data-total>{usd(p.total)}</span></div>
-    <ul class="summary-includes">
+    <ul class="summary-includes" data-incluye>
       {ciclo.incluyeCheckout.map((i) => <li>{i}</li>)}
     </ul>
+    {
+      carrito && (
+        <p class="summary-empty" data-carrito-vacio hidden>
+          Tu selección está vacía. <a href={carrito.volver}>Elige tus exámenes</a>
+        </p>
+      )
+    }
   </aside>
 </div>
 
@@ -599,6 +660,17 @@ const metodos = [
     font-weight: 800;
     color: var(--color-charcoal);
     font-size: 17px;
+  }
+  .summary-empty {
+    margin-top: 14px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .summary-empty a {
+    color: var(--color-charcoal);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 800;
   }
   .summary-includes {
     list-style: none;
@@ -920,6 +992,52 @@ const metodos = [
     const usd = (n: number) => `$${n.toFixed(2)}`;
     const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
 
+    /* ── Lab-test mode: the order is whatever the visitor picked on /examenes/ ── */
+    let items: { id: string; nombre: string; precio: number }[] = [];
+    if (root.dataset.carrito) {
+      const carrito: {
+        clave: string;
+        volver: string;
+        catalogo: { id: string; nombre: string; precio: number }[];
+      } = JSON.parse(root.dataset.carrito);
+      const porId = new Map(carrito.catalogo.map((i) => [i.id, i]));
+      let ids: string[] = [];
+      try {
+        const v = JSON.parse(localStorage.getItem(carrito.clave) ?? '[]');
+        ids = Array.isArray(v) ? v : [];
+      } catch {
+        // Storage unavailable: the cart reads as empty and the page says so.
+      }
+      items = ids.map((id) => porId.get(id)).filter((i): i is NonNullable<typeof i> => !!i);
+      const round = (n: number) => Math.round(n * 100) / 100;
+      config.subtotal = round(items.reduce((sum, i) => sum + i.precio, 0));
+      config.tax_amount = round(config.subtotal * config.tax_rate);
+      config.total = round(config.subtotal + config.tax_amount);
+      root
+        .querySelectorAll('[data-subtotal]')
+        .forEach((el) => (el.textContent = usd(config.subtotal)));
+      root
+        .querySelectorAll('[data-impuesto]')
+        .forEach((el) => (el.textContent = usd(config.tax_amount)));
+      root.querySelectorAll('[data-total]').forEach((el) => (el.textContent = usd(config.total)));
+      const lista = root.querySelector('[data-incluye]');
+      lista?.replaceChildren(
+        ...items.map((i) => {
+          const li = document.createElement('li');
+          li.textContent = `${i.nombre} · ${usd(i.precio)}`;
+          return li;
+        })
+      );
+      const n = items.length;
+      root
+        .querySelectorAll('[data-desc-corta]')
+        .forEach((el) => (el.textContent = `${n} ${n === 1 ? 'examen' : 'exámenes'}`));
+      const vacio = root.querySelector<HTMLElement>('[data-carrito-vacio]');
+      if (vacio) vacio.hidden = n > 0;
+      const enviar = root.querySelector<HTMLButtonElement>('#form-datos button[type="submit"]');
+      if (enviar) enviar.disabled = n === 0;
+    }
+
     // In-memory state. In production: client_id / order_id returned by the CRM API, kept in a
     // signed session, not client-side state.
     const state: {
@@ -995,6 +1113,7 @@ const metodos = [
       state.order = {
         client_id: null,
         cycle_type: config.cycle_type,
+        items: items.map((i) => ({ id: i.id, price: i.precio })),
         subtotal: config.subtotal,
         tax_rate: config.tax_rate,
         tax_amount: config.tax_amount,
@@ -1097,7 +1216,7 @@ const metodos = [
       if (lastOutcome === 'pending') {
         $('confirm-title')!.textContent = 'Reserva recibida';
         $('confirm-sub')!.textContent =
-          `Registramos tu ${config.cycle_label}. Verificaremos tu pago por Zelle en las próximas 24–48h.`;
+          `Registramos tu ${root!.dataset.pedido ?? config.cycle_label}. Verificaremos tu pago por Zelle en las próximas 24–48h.`;
         $('zelle-pending-note')?.removeAttribute('hidden');
         $('calendly-embed')?.setAttribute('hidden', '');
       }

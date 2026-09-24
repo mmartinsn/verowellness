@@ -1,0 +1,186 @@
+---
+/**
+ * «Información del criterio» — a Supplement Facts label turned inside out: instead of nutrients it
+ * lists what goes into each of Verónica's recommendations (100%) and what never does (0%). The
+ * bars fill when the label enters the viewport; it tilts slightly toward the pointer.
+ */
+import { etiqueta } from '../../data/suplementos';
+---
+
+<figure class="etiqueta" data-etiqueta aria-labelledby="etq-titulo">
+  <div class="etq-cuerpo">
+    <p class="etq-titulo" id="etq-titulo">Información del criterio</p>
+    <p class="etq-linea"><strong>Porción:</strong> 1 recomendación personalizada</p>
+    <p class="etq-linea"><strong>Porciones por envase:</strong> las que tu contexto necesite</p>
+    <div class="etq-regla gruesa" aria-hidden="true"></div>
+    <p class="etq-cabecera"><span>Contiene</span><span>% del criterio</span></p>
+    <div class="etq-regla" aria-hidden="true"></div>
+    <ul class="etq-filas">
+      {
+        etiqueta.si.map((t, i) => (
+          <li class="etq-fila" style={`--i:${i}`}>
+            <span class="etq-nombre">{t}</span>
+            <span class="etq-valor">100%</span>
+            <span class="etq-barra" aria-hidden="true" />
+          </li>
+        ))
+      }
+    </ul>
+    <div class="etq-regla media" aria-hidden="true"></div>
+    <ul class="etq-filas etq-no">
+      {
+        etiqueta.no.map((t) => (
+          <li class="etq-fila">
+            <span class="etq-nombre">{t}</span>
+            <span class="etq-valor">0%</span>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="etq-regla gruesa" aria-hidden="true"></div>
+    <p class="etq-nota">
+      * No se establece un valor diario: se ajusta a ti.<br />
+      <strong>Ingredientes:</strong> criterio, contexto y seguimiento.
+    </p>
+  </div>
+</figure>
+
+<style>
+  .etiqueta {
+    --tx: 0deg;
+    --ty: 0deg;
+    margin: 0;
+    width: min(420px, 92%);
+    justify-self: center;
+    rotate: -3deg;
+    transform: perspective(1200px) rotateX(var(--ty)) rotateY(var(--tx));
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    filter: drop-shadow(0 34px 50px rgb(35 34 30 / 0.22));
+  }
+  .etq-cuerpo {
+    background: #fffdf8;
+    color: var(--color-charcoal);
+    border: 2px solid var(--color-charcoal);
+    padding: 22px 22px 18px;
+    font-family: var(--font-sans);
+  }
+  .etq-titulo {
+    font-weight: 800;
+    font-size: clamp(30px, 3.2vw, 40px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+  .etq-linea {
+    font-size: 14px;
+    margin-top: 6px;
+  }
+  .etq-linea:first-of-type {
+    margin-top: 10px;
+  }
+  .etq-regla {
+    height: 1px;
+    background: var(--color-charcoal);
+    margin: 8px 0;
+  }
+  .etq-regla.media {
+    height: 5px;
+  }
+  .etq-regla.gruesa {
+    height: 11px;
+  }
+  .etq-cabecera {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+  .etq-filas {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .etq-fila {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgb(35 34 30 / 0.3);
+    font-size: 14.5px;
+  }
+  .etq-fila:last-child {
+    border-bottom: 0;
+  }
+  .etq-nombre {
+    font-weight: 600;
+  }
+  .etq-valor {
+    font-weight: 800;
+  }
+  .etq-no .etq-nombre {
+    text-decoration: line-through;
+    text-decoration-color: var(--color-clay-deep);
+    text-decoration-thickness: 2px;
+    color: rgb(35 34 30 / 0.55);
+  }
+  .etq-no .etq-valor {
+    color: var(--color-clay-deep);
+  }
+  /* A thin clay bar under each 100% row, filling from left once the label is seen. */
+  .etq-barra {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 3px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--color-clay), var(--color-sage-deep));
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 1.1s cubic-bezier(0.19, 1, 0.22, 1) calc(0.25s + var(--i) * 0.14s);
+  }
+  .etiqueta.vista .etq-barra {
+    transform: scaleX(1);
+  }
+  .etq-nota {
+    font-size: 12px;
+    line-height: 1.5;
+    color: rgb(35 34 30 / 0.78);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .etiqueta {
+      transition: none;
+    }
+    .etq-barra {
+      transition: none;
+      transform: scaleX(1);
+    }
+  }
+</style>
+
+<script>
+  const etq = document.querySelector<HTMLElement>('[data-etiqueta]');
+  if (etq) {
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    new IntersectionObserver(
+      (entradas, obs) => {
+        if (entradas.some((e) => e.isIntersecting)) {
+          etq.classList.add('vista');
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.35 }
+    ).observe(etq);
+    if (!calm && matchMedia('(pointer: fine)').matches) {
+      etq.addEventListener('pointermove', (e) => {
+        const r = etq.getBoundingClientRect();
+        etq.style.setProperty('--tx', `${((e.clientX - r.left) / r.width - 0.5) * 10}deg`);
+        etq.style.setProperty('--ty', `${(0.5 - (e.clientY - r.top) / r.height) * 8}deg`);
+      });
+      etq.addEventListener('pointerleave', () => {
+        etq.style.setProperty('--tx', '0deg');
+        etq.style.setProperty('--ty', '0deg');
+      });
+    }
+  }
+</script>

@@ -1,0 +1,632 @@
+---
+/**
+ * 01 · Hero — The Layer Method™ title, hook and lede on the left; Verónica's portrait on a
+ * tilted sand frame with two floating badges on the right. Behind it, the design's WebGL
+ * "cellular aura" shader plus three breathing orbs.
+ *
+ * The shader is the one Stitch exported, with three changes: it pauses while the hero is off
+ * screen, it paints a single still frame under `prefers-reduced-motion`, and without WebGL the
+ * orbs and gradient carry the background alone.
+ */
+import { Image } from 'astro:assets';
+import retrato from '../../assets/fotos/veronica-bata-laptop.jpg';
+import { marca } from '../../data/site';
+import { checkoutPrincipal } from '../../data/oferta';
+import { href } from '../../lib/url';
+---
+
+<section class="hero" id="inicio">
+  <div class="hero-shader" aria-hidden="true">
+    <canvas id="heroShader"></canvas>
+  </div>
+  <div class="hero-blobs" aria-hidden="true">
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-orb orb-3"></div>
+  </div>
+
+  <div class="wrap hero-grid">
+    <div class="hero-content">
+      <div class="hero-tagline">
+        <span class="eyebrow">Salud celular &amp; nutrición funcional</span>
+        <span class="tagline-pill">{marca.lema}</span>
+      </div>
+      <h1 class="hero-title">The Layer Method<span class="tm">™</span></h1>
+      <div class="hero-byline">by <span>VERONICA WELLNESS</span></div>
+      <p class="hero-hook" data-split>
+        Tu cuerpo no necesita más cosas. Necesita <span class="grad-text">el orden correcto.</span>
+      </p>
+      <div class="hero-lede">
+        <p>
+          Si has probado suplementos, dietas y protocolos sin entender por qué sigues sin sentirte
+          bien, quizá el problema sea por dónde estás empezando.
+        </p>
+        <p>
+          The Layer Method™ ordena tu salud por capas para identificar qué necesita atención
+          primero.
+        </p>
+        <p class="hero-lede-strong">Energía. Digestión. Piel. Hormonas. Todo está conectado.</p>
+      </div>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href={href(checkoutPrincipal)} data-magnet="0.25"
+          >Trabaja conmigo</a
+        >
+        <a class="link-arrow" href="#method">
+          <span>Descubre The Layer Method™</span>
+          <span class="arrow-circle" aria-hidden="true">→</span>
+        </a>
+      </div>
+      <p class="hero-note">
+        Asesorías 100% online · Adaptadas a tu horario, en cualquier parte del mundo
+      </p>
+    </div>
+
+    <div class="hero-visual sd-parallax">
+      <div class="hero-stack tilt-card">
+        <div class="hero-frame-bg"></div>
+        <div class="floating-pill fp-top">
+          <div class="fp-icon">01</div>
+          <div class="fp-text">
+            <strong>Del terreno a la célula</strong>
+            <span>Estrategia integral</span>
+          </div>
+        </div>
+        <div class="floating-pill fp-bottom">
+          <div class="fp-icon fp-icon-sage" aria-hidden="true">✓</div>
+          <div class="fp-text">
+            <strong>5 Layers interconectadas</strong>
+            <span>Sin recetas genéricas</span>
+          </div>
+        </div>
+        <div class="hero-portrait">
+          <Image
+            src={retrato}
+            alt={`${marca.creadora}, creadora de ${marca.metodo}, con bata y laptop`}
+            widths={[440, 660, 880]}
+            sizes="(min-width: 992px) 440px, min(90vw, 440px)"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: calc(100vh - 84px);
+    display: flex;
+    align-items: center;
+    padding: 60px 0 80px;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 70% 60% at 85% 35%, rgb(231 183 160 / 0.22) 0%, transparent 70%),
+      radial-gradient(ellipse 55% 45% at 15% 75%, rgb(207 215 196 / 0.25) 0%, transparent 65%),
+      var(--color-bone);
+  }
+  .hero-shader {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.65;
+    mix-blend-mode: multiply;
+  }
+  .hero-shader canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .hero-blobs {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    animation: orb-pulse 16s ease-in-out infinite alternate;
+  }
+  .orb-1 {
+    width: 540px;
+    height: 540px;
+    background: var(--color-clay);
+    top: -120px;
+    right: -90px;
+  }
+  .orb-2 {
+    width: 460px;
+    height: 460px;
+    background: var(--color-rose);
+    bottom: -80px;
+    right: 22%;
+    animation-delay: -5s;
+  }
+  .orb-3 {
+    width: 500px;
+    height: 500px;
+    background: var(--color-sage);
+    top: 25%;
+    left: -140px;
+    animation-delay: -9s;
+  }
+  @keyframes orb-pulse {
+    0% {
+      transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    50% {
+      transform: translate(35px, -30px) scale(1.08) rotate(6deg);
+    }
+    100% {
+      transform: translate(-25px, 35px) scale(0.96) rotate(-6deg);
+    }
+  }
+
+  .hero-grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: center;
+    width: 100%;
+  }
+  @media (min-width: 992px) {
+    .hero-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 72px;
+    }
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .hero-tagline {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+  .tagline-pill {
+    background: rgb(255 255 255 / 0.85);
+    border: 1px solid rgb(35 34 30 / 0.12);
+    padding: 6px 16px;
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgb(35 34 30 / 0.85);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 14px rgb(35 34 30 / 0.04);
+  }
+  .hero-title {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(48px, 6.8vw, 92px);
+    line-height: 0.98;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-charcoal);
+  }
+  .hero-title .tm {
+    font-size: 0.35em;
+    vertical-align: super;
+    font-weight: 400;
+    color: var(--color-clay-deep);
+  }
+  .hero-byline {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgb(35 34 30 / 0.7);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-byline span {
+    color: var(--color-clay-deep);
+    font-weight: 800;
+    letter-spacing: 0.14em;
+  }
+  .hero-hook {
+    font-family: var(--font-serif);
+    font-size: clamp(26px, 3.4vw, 38px);
+    font-style: italic;
+    color: var(--color-charcoal);
+    line-height: 1.25;
+    max-width: 640px;
+  }
+  .hero-lede {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 580px;
+  }
+  .hero-lede p {
+    font-size: clamp(16px, 1.25vw, 18.5px);
+    font-weight: 450;
+    line-height: 1.7;
+    color: rgb(35 34 30 / 0.85);
+  }
+  .hero-lede .hero-lede-strong {
+    font-weight: 600;
+    color: var(--color-charcoal);
+  }
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 18px;
+    margin-top: 8px;
+  }
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: var(--color-charcoal);
+    padding: 10px 0;
+    transition: color 0.25s ease;
+  }
+  .arrow-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgb(35 34 30 / 0.12);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      transform 0.3s var(--ease-out-soft),
+      background 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .link-arrow:hover {
+    color: var(--color-clay-deep);
+  }
+  .link-arrow:hover .arrow-circle {
+    transform: translateX(5px);
+    border-color: var(--color-clay-deep);
+    background: var(--color-clay-deep);
+    color: var(--color-white);
+  }
+  .hero-note {
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(35 34 30 / 0.7);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  /* The design's dot is a blue (#60A5FA) outside the palette; sage keeps the "live" glow. */
+  .hero-note::before {
+    content: '';
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-sage-deep);
+    box-shadow: 0 0 10px var(--color-sage-deep);
+  }
+
+  .hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .hero-stack {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    transform-style: preserve-3d;
+    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+  }
+  .hero-frame-bg {
+    position: absolute;
+    inset: -16px -16px 20px 20px;
+    background: var(--color-sand);
+    border-radius: 36px;
+    z-index: 1;
+    transform: rotate(2deg);
+    transition: transform 0.6s var(--ease-out-soft);
+  }
+  .hero-stack:hover .hero-frame-bg {
+    transform: rotate(3.5deg) scale(1.02);
+  }
+  .hero-portrait {
+    position: relative;
+    z-index: 2;
+    border-radius: 32px;
+    overflow: hidden;
+    background: var(--color-ivory);
+    box-shadow: 0 24px 60px rgb(35 34 30 / 0.14);
+    aspect-ratio: 3 / 4;
+  }
+  /* The portrait opens from a rounded window on load. */
+  .hero-portrait {
+    animation: portrait-in 1.6s cubic-bezier(0.19, 1, 0.22, 1) 0.25s both;
+  }
+  @keyframes portrait-in {
+    from {
+      clip-path: inset(22% 18% 22% 18% round 120px);
+    }
+    to {
+      clip-path: inset(0 round 32px);
+    }
+  }
+  .hero-portrait :global(img) {
+    animation: portrait-zoom 2.2s cubic-bezier(0.19, 1, 0.22, 1) 0.25s both;
+  }
+  @keyframes portrait-zoom {
+    from {
+      scale: 1.18;
+    }
+  }
+  .hero-portrait :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: transform 0.8s var(--ease-out-soft);
+  }
+  .hero-stack:hover .hero-portrait :global(img) {
+    transform: scale(1.03);
+  }
+
+  .floating-pill {
+    position: absolute;
+    z-index: 4;
+    background: rgb(251 250 246 / 0.92);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgb(255 255 255 / 0.9);
+    box-shadow: 0 20px 40px rgb(35 34 30 / 0.12);
+    border-radius: 20px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: box-shadow 0.4s ease;
+  }
+  .floating-pill:hover {
+    box-shadow: 0 24px 48px rgb(214 154 124 / 0.25);
+  }
+  .fp-top {
+    top: 24px;
+    left: -28px;
+    animation: float-top 6s ease-in-out infinite alternate;
+  }
+  .fp-bottom {
+    bottom: 24px;
+    right: -20px;
+    animation: float-bottom 7s ease-in-out infinite alternate;
+  }
+  @media (max-width: 520px) {
+    .fp-top {
+      left: -8px;
+    }
+    .fp-bottom {
+      right: -8px;
+    }
+  }
+  @keyframes float-top {
+    to {
+      transform: translateY(-12px) rotate(-1.5deg);
+    }
+  }
+  @keyframes float-bottom {
+    to {
+      transform: translateY(10px) rotate(1.2deg);
+    }
+  }
+  .fp-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--color-clay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-charcoal);
+    font-weight: 800;
+    font-size: 15px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 0.06);
+  }
+  .fp-icon-sage {
+    background: var(--color-sage-deep);
+    color: var(--color-white);
+  }
+  .fp-text strong {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--color-charcoal);
+  }
+  .fp-text span {
+    font-size: 11.5px;
+    color: rgb(35 34 30 / 0.7);
+    font-weight: 600;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-portrait,
+    .hero-portrait :global(img) {
+      animation: none;
+    }
+    .hero-orb,
+    .fp-top,
+    .fp-bottom {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  // The design's "cellular aura": simplex noise fields mixing bone, sand, clay, sage and rose,
+  // bent slightly by the pointer. Shader source as exported by Stitch.
+  const canvas = document.getElementById('heroShader') as HTMLCanvasElement | null;
+  const gl = canvas?.getContext('webgl');
+
+  if (canvas && gl) {
+    const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+    const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+varying vec2 v_texCoord;
+
+vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+
+float snoise(vec2 v) {
+  const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+  vec2 i  = floor(v + dot(v, C.yy));
+  vec2 x0 = v -   i + dot(i, C.xx);
+  vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+  vec4 x12 = x0.xyxy + C.xxzz;
+  x12.xy -= i1;
+  i = mod289(i);
+  vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 ));
+  vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+  m = m*m;
+  m = m*m;
+  vec3 x = 2.0 * fract(p * C.www) - 1.0;
+  vec3 h = abs(x) - 0.5;
+  vec3 ox = floor(x + 0.5);
+  vec3 a0 = x - ox;
+  m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+  vec3 g;
+  g.x  = a0.x  * x0.x  + h.x  * x0.y;
+  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+  return 130.0 * dot(m, g);
+}
+
+void main() {
+  float t = u_time * 0.25;
+  vec2 p = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+  vec2 m = (u_mouse.xy - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+
+  vec3 cBone  = vec3(0.984, 0.980, 0.965);
+  vec3 cSand  = vec3(0.941, 0.906, 0.851);
+  vec3 cClay  = vec3(0.839, 0.604, 0.486);
+  vec3 cSage  = vec3(0.722, 0.761, 0.678);
+  vec3 cRose  = vec3(0.816, 0.627, 0.608);
+
+  float dMouse = length(p - m);
+  float mouseWave = smoothstep(0.6, 0.0, dMouse) * 0.12;
+
+  float n1 = snoise(p * 1.6 + vec2(t * 0.4, t * 0.3) + mouseWave);
+  float n2 = snoise(p * 2.8 - vec2(t * 0.35, -t * 0.5) + n1 * 0.35);
+  float n3 = snoise(p * 4.2 + vec2(-t * 0.2, t * 0.4) + n2 * 0.4);
+
+  float w1 = smoothstep(-0.6, 0.8, n1);
+  float w2 = smoothstep(-0.4, 0.9, n2);
+  float w3 = smoothstep(-0.3, 0.7, n3);
+
+  vec3 col = mix(cBone, cSand, w1 * 0.85);
+  col = mix(col, cClay, w2 * 0.22);
+  col = mix(col, cSage, w3 * 0.18);
+  col = mix(col, cRose, (1.0 - w1) * 0.12);
+
+  vec2 focalPos = vec2(0.35, 0.1) + m * 0.15;
+  float focalGlow = smoothstep(0.95, 0.1, length(p - focalPos));
+  col = mix(col, cClay, focalGlow * 0.14);
+
+  gl_FragColor = vec4(col, 1.0);
+}`;
+    const compile = (type: number, src: string) => {
+      const s = gl.createShader(type)!;
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      return s;
+    };
+    const prog = gl.createProgram()!;
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    const pos = gl.getAttribLocation(prog, 'a_position');
+    gl.enableVertexAttribArray(pos);
+    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+    const uTime = gl.getUniformLocation(prog, 'u_time');
+    const uRes = gl.getUniformLocation(prog, 'u_resolution');
+    const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // u_mouse in pixel coordinates matching u_resolution (ShaderToy convention).
+    const mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+
+    const draw = (t: number) => {
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform1f(uTime, t * 0.001);
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.uniform2f(uMouse, mouse.x, mouse.y);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    };
+
+    const syncSize = () => {
+      const w = canvas.clientWidth || 1280;
+      const h = canvas.clientHeight || 720;
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+      }
+    };
+    new ResizeObserver(() => {
+      syncSize();
+      if (still) draw(0);
+    }).observe(canvas);
+    syncSize();
+
+    window.addEventListener(
+      'mousemove',
+      (e) => {
+        const r = canvas.getBoundingClientRect();
+        if (r.width && r.height) {
+          mouse.x = ((e.clientX - r.left) / r.width) * canvas.width;
+          mouse.y = (1 - (e.clientY - r.top) / r.height) * canvas.height;
+        }
+      },
+      { passive: true }
+    );
+
+    if (still) {
+      draw(0);
+    } else {
+      let frame = 0;
+      let visible = true;
+      const loop = (t: number) => {
+        draw(t);
+        frame = visible ? requestAnimationFrame(loop) : 0;
+      };
+      new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible && !frame) frame = requestAnimationFrame(loop);
+      }).observe(canvas);
+      frame = requestAnimationFrame(loop);
+    }
+  }
+</script>

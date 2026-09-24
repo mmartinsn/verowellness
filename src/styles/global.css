@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './motion.css';
 
 /*
   Veronica Wellness — design tokens and shared primitives.
@@ -7,8 +8,10 @@
   Two visual systems coexist by design, both authored by Mari:
     · the editorial pages (home B, The Method, 1:1, checkout) — Cormorant Garamond + Nunito,
       hand-written CSS ported into scoped component styles that read these tokens;
-    · the home page from Stitch — Bodoni Moda + Plus Jakarta Sans, utility classes.
-  `[data-theme="stitch"]` on <html> swaps the few tokens that differ. Everything else is shared.
+    · the first Stitch home (/inicio-stitch/) — Bodoni Moda + Plus Jakarta Sans, utility classes;
+    · the home page (/), Mari's second Stitch design — Cormorant Garamond + Plus Jakarta Sans.
+  `[data-theme="stitch"]` / `[data-theme="inicio"]` on <html> swap the few tokens that differ.
+  Everything else is shared.
 
   Palette: the hex values are the ones Mari's pages use. They are close relatives of the seven
   brand-book colours, not the same values — see docs/DECISIONES.md before "fixing" them.
@@ -44,6 +47,10 @@
   --color-surface-warm: #faf6ef;
   --color-surface-quote: #faf4ea;
 
+  /* Second Stitch home only (/): two extra warm tones it introduces */
+  --color-clay-rich: #c28263;
+  --color-sand-light: #f4efe6;
+
   /* ── Type ── */
   --font-serif: 'Cormorant Garamond', 'Times New Roman', serif;
   --font-sans: 'Nunito Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -74,6 +81,19 @@
   --font-sans: 'Plus Jakarta Sans Variable', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+/* The home page (/), Mari's second Stitch design (2026-09-22): Cormorant stays the serif, Plus
+   Jakarta Sans replaces Nunito, and the design's own hex values for the tones that differ. */
+:root[data-theme='inicio'] {
+  --color-ivory: #f7f4ec;
+  --color-sand: #ece3d4;
+  --color-sage-deep: #9fa98d;
+  --color-olive: #7b816d;
+  --color-rose: #e2b7b2;
+  --color-charcoal: #23221e;
+  --font-sans: 'Plus Jakarta Sans Variable', 'Nunito Variable', -apple-system, sans-serif;
+  --container-site: 1260px;
+}
+
 @layer base {
   :root {
     /* Lets <details> animate to `height: auto` where the browser supports it (Chrome 129+). */
@@ -81,6 +101,8 @@
   }
   html {
     scroll-behavior: smooth;
+    /* In-page anchors land below the sticky header (84 px) instead of under it. */
+    scroll-padding-top: 96px;
     background: var(--color-bone);
     color-scheme: light only;
   }
@@ -88,6 +110,9 @@
     background: var(--color-bone);
     color: var(--color-charcoal);
     font-family: var(--font-sans);
+    /* Cormorant's default old-style figures make 1 read as I and 0 as o («I:I», «3o»); lining
+       figures keep numbers legible in every face. */
+    font-variant-numeric: lining-nums;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
@@ -388,6 +413,73 @@
       transition: none;
     }
   }
+  /* ── Home (/) primitives: wider column, dotted eyebrow, uppercase pill buttons with a dark
+     primary — as in the second Stitch design. Only under data-theme="inicio". ── */
+  :root[data-theme='inicio'] .wrap {
+    padding: 0 28px;
+  }
+  @media (min-width: 768px) {
+    :root[data-theme='inicio'] .wrap {
+      padding: 0 48px;
+    }
+  }
+  @media (min-width: 1200px) {
+    :root[data-theme='inicio'] .wrap {
+      padding: 0 64px;
+    }
+  }
+  :root[data-theme='inicio'] .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    letter-spacing: 0.22em;
+  }
+  :root[data-theme='inicio'] .eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.8;
+  }
+  :root[data-theme='inicio'] .btn {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 18px 36px;
+    border-width: 1.5px;
+  }
+  :root[data-theme='inicio'] .btn-primary {
+    background: var(--color-charcoal);
+    color: var(--color-bone);
+    box-shadow: 0 10px 28px rgb(35 34 30 / 0.12);
+  }
+  :root[data-theme='inicio'] .btn-primary:hover {
+    background: var(--color-clay-deep);
+    color: var(--color-white);
+    box-shadow: 0 14px 34px rgb(214 154 124 / 0.35);
+  }
+  :root[data-theme='inicio'] .btn-secondary {
+    background: var(--color-clay);
+  }
+  :root[data-theme='inicio'] .btn-secondary:hover {
+    background: var(--color-clay-deep);
+    color: var(--color-white);
+    box-shadow: none;
+  }
+  :root[data-theme='inicio'] .btn-outline {
+    border-color: rgb(35 34 30 / 0.12);
+  }
+  :root[data-theme='inicio'] .btn-outline:hover {
+    border-color: var(--color-charcoal);
+  }
+
+  /* Controls that only work with JS are hidden without it. */
+  html.no-js .js-only {
+    display: none !important;
+  }
+
   /* Without JS nothing should stay invisible. */
   html.no-js .reveal,
   html.no-js .reveal-scale,

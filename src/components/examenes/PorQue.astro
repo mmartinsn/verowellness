@@ -1,0 +1,293 @@
+---
+/**
+ * Exámenes · ¿por qué estos exámenes? (Mari, 2026-09-24) — a routine check-up beside a functional
+ * test, the first dimmed and the second lit, then the three reasons to do them with Veronica
+ * Wellness: easy, practical, fast. Copy by Codex (2026-09-24): what routine panels do not usually
+ * include, without promising a diagnosis; to review with Verónica.
+ */
+const rutina = [
+  'Niveles de glucosa y colesterol',
+  'Hemograma: células de la sangre',
+  'Indicadores de función del hígado y los riñones',
+  'Niveles hormonales, si se solicitan',
+];
+const funcional = [
+  'Microbiota y otros indicadores intestinales',
+  'Patrones hormonales y cómo procesas ciertas hormonas',
+  'Marcadores de respuesta inmunitaria a alimentos',
+  'Marcadores relacionados con moho, metales y otras sustancias',
+  'Marcadores del metabolismo y de nutrientes',
+];
+const pilares = [
+  {
+    titulo: 'Fácil',
+    texto: 'Empieza por lo que sientes. Cada examen explica qué evalúa y cómo se toma la muestra.',
+    icono: 'M9 11l3 3 8-8M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9',
+  },
+  {
+    titulo: 'Práctico',
+    texto:
+      'Recibe el kit en casa, con sus instrucciones. La mayoría de las muestras puedes tomarlas tú misma.',
+    icono: 'M3 9l9-6 9 6v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9zM9 21v-7h6v7',
+  },
+  {
+    titulo: 'Rápido',
+    texto:
+      'El envío del kit se inicia cuando se verifica tu pago. Los resultados tardan entre 15 y 25 días hábiles desde que tu muestra llega al laboratorio.',
+    icono: 'M13 2L4 14h7l-1 8 9-12h-7l1-8z',
+  },
+];
+---
+
+<section class="pq" aria-labelledby="pq-titulo">
+  <div class="wrap">
+    <div class="pq-cab">
+      <span class="eyebrow">¿Por qué estos exámenes?</span>
+      <h2 id="pq-titulo" class="pq-h2">
+        Una mirada que <em class="grad-text on-dark">complementa tu chequeo.</em>
+      </h2>
+      <p>
+        Si sigues sintiendo molestias, es comprensible que quieras saber más. Estos exámenes pueden
+        aportar información sobre aspectos que no suelen incluirse en un chequeo de rutina. Su
+        utilidad depende de lo que evalúa cada prueba y de tu historia de salud.
+      </p>
+    </div>
+
+    <div class="pq-comp">
+      <div class="col rutina">
+        <p class="col-t">Tu chequeo de rutina</p>
+        <p class="col-sub">Revisa indicadores generales de salud</p>
+        <ul>{rutina.map((r) => <li>{r}</li>)}</ul>
+      </div>
+      <div class="vs" aria-hidden="true">+</div>
+      <div class="col funcional">
+        <p class="col-t">Los exámenes funcionales</p>
+        <p class="col-sub">Exploran aspectos específicos, según la prueba</p>
+        <ul>{funcional.map((r) => <li>{r}</li>)}</ul>
+      </div>
+    </div>
+
+    <div class="pq-vw">
+      <h3 class="pq-h3">Con Veronica Wellness, el proceso es</h3>
+      <ol class="pilares">
+        {
+          pilares.map((p, i) => (
+            <li class="pilar" style={`--i:${i}`}>
+              <span class="pil-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="26" height="26">
+                  <path d={p.icono} />
+                </svg>
+              </span>
+              <span class="pil-t">{p.titulo}</span>
+              <p>{p.texto}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pq {
+    position: relative;
+    padding: clamp(72px, 9vw, 120px) 0;
+    background:
+      radial-gradient(ellipse 50% 45% at 80% 35%, rgb(207 215 196 / 0.14), transparent 70%),
+      radial-gradient(ellipse 45% 40% at 10% 90%, rgb(214 154 124 / 0.12), transparent 70%), #1d1e1a;
+    color: var(--color-bone);
+    border-top: 1px solid rgb(248 246 241 / 0.08);
+  }
+  .pq .eyebrow {
+    color: var(--color-clay);
+  }
+  .pq-cab {
+    max-width: 780px;
+  }
+  .pq-h2 {
+    margin-top: 14px;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(36px, 4.6vw, 64px);
+    line-height: 1.02;
+    color: var(--color-bone);
+  }
+  .pq-h2 em {
+    font-style: italic;
+  }
+  .pq-cab p {
+    margin-top: 18px;
+    max-width: 620px;
+    font-size: clamp(16px, 1.3vw, 18px);
+    line-height: 1.65;
+    color: rgb(248 246 241 / 0.72);
+  }
+
+  /* ── Routine vs functional ── */
+  .pq-comp {
+    margin-top: clamp(40px, 5vw, 60px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    align-items: stretch;
+  }
+  @media (min-width: 860px) {
+    .pq-comp {
+      grid-template-columns: minmax(0, 0.85fr) auto minmax(0, 1.15fr);
+      gap: 20px;
+    }
+  }
+  .col {
+    padding: clamp(24px, 3vw, 36px);
+    border-radius: 24px;
+  }
+  .rutina {
+    background: rgb(255 255 255 / 0.03);
+    border: 1px dashed rgb(248 246 241 / 0.2);
+    color: rgb(248 246 241 / 0.55);
+  }
+  .funcional {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(145deg, rgb(214 154 124 / 0.2), rgb(207 215 196 / 0.12));
+    border: 1px solid rgb(214 154 124 / 0.55);
+    box-shadow: 0 30px 60px -30px rgb(214 154 124 / 0.45);
+  }
+  .col-t {
+    font-family: var(--font-serif);
+    font-size: clamp(24px, 2.2vw, 30px);
+    line-height: 1.1;
+  }
+  .funcional .col-t {
+    color: var(--color-bone);
+  }
+  .col-sub {
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .funcional .col-sub {
+    color: var(--color-clay);
+  }
+  .col ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+    display: grid;
+    gap: 10px;
+  }
+  .col li {
+    position: relative;
+    padding-left: 26px;
+    font-size: 15.5px;
+    line-height: 1.5;
+  }
+  .rutina li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    opacity: 0.6;
+  }
+  .funcional li {
+    color: var(--color-bone);
+    font-weight: 600;
+  }
+  .funcional li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 0.45em;
+    width: 12px;
+    height: 7px;
+    border-left: 2px solid var(--color-clay);
+    border-bottom: 2px solid var(--color-clay);
+    rotate: -45deg;
+  }
+  .vs {
+    align-self: center;
+    justify-self: center;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1px solid rgb(248 246 241 / 0.2);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 30px;
+    line-height: 1;
+    color: var(--color-clay);
+  }
+
+  /* ── The three reasons ── */
+  .pq-vw {
+    margin-top: clamp(56px, 7vw, 88px);
+  }
+  .pq-h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(26px, 2.6vw, 36px);
+    color: var(--color-bone);
+    text-align: center;
+  }
+  .pilares {
+    list-style: none;
+    padding: 0;
+    margin: 28px 0 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  @media (min-width: 860px) {
+    .pilares {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+  }
+  .pilar {
+    padding: 28px 26px;
+    border-radius: 22px;
+    background: rgb(255 255 255 / 0.04);
+    border: 1px solid rgb(248 246 241 / 0.1);
+    transition:
+      transform 0.45s cubic-bezier(0.19, 1, 0.22, 1),
+      border-color 0.35s ease;
+  }
+  .pilar:hover {
+    transform: translateY(-4px);
+    border-color: rgb(214 154 124 / 0.5);
+  }
+  .pil-ico {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: var(--color-clay);
+    color: #1b1a17;
+  }
+  .pil-ico svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .pil-t {
+    display: block;
+    margin-top: 18px;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(34px, 3.2vw, 44px);
+    line-height: 1;
+    color: var(--color-bone);
+  }
+  .pilar p {
+    margin-top: 10px;
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: rgb(248 246 241 / 0.72);
+  }
+</style>

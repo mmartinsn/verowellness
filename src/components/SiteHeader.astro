@@ -1,8 +1,9 @@
 ---
 /**
  * Sticky site header: wordmark · nav · CTA · hamburger, plus the full-screen mobile menu.
- * One component, two looks: the editorial sand bar by default, and the Stitch treatment
- * (translucent, small uppercase links, dark pill CTA) when <html data-theme="stitch">.
+ * One component, three looks: the editorial sand bar by default, the first Stitch treatment
+ * (translucent, small uppercase links, dark pill CTA) under <html data-theme="stitch">, and the
+ * home's (translucent bone, sentence-case links, menu dropping from the top) under "inicio".
  */
 import Wordmark from './Wordmark.astro';
 import Icon from './Icon.astro';
@@ -49,7 +50,7 @@ const current = Astro.url.pathname;
   </div>
 </header>
 
-<nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil">
+<nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" inert>
   {
     nav.map((item, i) => (
       <a href={href(item.path)} class="mobile-link" style={`--i:${i}`}>
@@ -96,9 +97,11 @@ const current = Astro.url.pathname;
   .header-nav {
     display: none;
     align-items: center;
-    gap: 32px;
+    /* Eight links and the CTA share the bar: the gap gives way before anything wraps. */
+    gap: clamp(14px, 1.7vw, 32px);
   }
   .header-nav a {
+    white-space: nowrap;
     font-size: 15px;
     font-weight: 700;
     color: var(--color-charcoal);
@@ -167,6 +170,12 @@ const current = Astro.url.pathname;
     display: none;
   }
 
+  /* Narrow desktops: a smaller menu so the links and the CTA still fit on one line. */
+  @media (min-width: 1024px) and (max-width: 1179px) {
+    .header-nav a {
+      font-size: 13.5px;
+    }
+  }
   @media (min-width: 1024px) {
     .header-nav {
       display: flex;
@@ -231,7 +240,7 @@ const current = Astro.url.pathname;
     background: rgb(253 249 242 / 0.82);
     box-shadow: 0 8px 30px -18px rgb(35 34 30 / 0.25);
   }
-  :global(html[data-theme='stitch']) .header-wordmark {
+  :global(html[data-theme='stitch'] .header-wordmark) {
     font-size: 20px;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -313,6 +322,101 @@ const current = Astro.url.pathname;
     text-transform: uppercase;
     align-self: stretch;
   }
+
+  /* ── Home look (data-theme="inicio") ── */
+  :global(html[data-theme='inicio']) .site-header {
+    height: 84px;
+    background: rgb(251 250 246 / 0.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgb(35 34 30 / 0.06);
+  }
+  :global(html[data-theme='inicio']) .site-header.scrolled {
+    height: 84px;
+    background: rgb(251 250 246 / 0.96);
+    box-shadow: 0 10px 30px rgb(35 34 30 / 0.04);
+  }
+  :global(html[data-theme='inicio'] .header-wordmark) {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    gap: 12px;
+  }
+  :global(html[data-theme='inicio'] .header-wordmark .wordmark-mark) {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.5s var(--ease-out-soft);
+  }
+  :global(html[data-theme='inicio'] .header-wordmark:hover .wordmark-mark) {
+    transform: rotate(180deg) scale(1.1);
+  }
+  :global(html[data-theme='inicio']) .header-nav {
+    gap: 36px;
+  }
+  :global(html[data-theme='inicio']) .header-nav a {
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: rgb(35 34 30 / 0.7);
+    padding: 6px 0;
+    transition: color 0.2s ease;
+  }
+  :global(html[data-theme='inicio']) .header-nav a:hover,
+  :global(html[data-theme='inicio']) .header-nav a[aria-current='page'] {
+    color: var(--color-charcoal);
+  }
+  :global(html[data-theme='inicio']) .header-nav a::after {
+    bottom: 0;
+    height: 1.5px;
+  }
+  /* The design's header button is written with an inline @media that browsers drop, so its
+     preview shows no button in the bar; kept that way. The CTA lives in the page and the
+     phone bar. */
+  :global(html[data-theme='inicio']) .header-cta {
+    display: none;
+  }
+  :global(html[data-theme='inicio']) .hamburger-bars {
+    gap: 6px;
+  }
+  :global(html[data-theme='inicio']) .hamburger-bars span {
+    width: 26px;
+    height: 1.5px;
+    border-radius: 0;
+  }
+  :global(html[data-theme='inicio'])
+    .hamburger[aria-expanded='true']
+    .hamburger-bars
+    span:nth-child(1) {
+    transform: translateY(7.5px) rotate(45deg);
+  }
+  :global(html[data-theme='inicio'])
+    .hamburger[aria-expanded='true']
+    .hamburger-bars
+    span:nth-child(3) {
+    transform: translateY(-7.5px) rotate(-45deg);
+  }
+  :global(html[data-theme='inicio']) .mobile-menu {
+    z-index: 99;
+    background: var(--color-sand-light);
+    justify-content: flex-start;
+    gap: 24px;
+    padding: 100px 32px 40px;
+    transform: translateY(-100%);
+    transition: transform 0.4s var(--ease-out-soft);
+  }
+  :global(html[data-theme='inicio']) .mobile-menu.open {
+    transform: translateY(0);
+  }
+  :global(html[data-theme='inicio']) .mobile-menu .mobile-link {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 32px;
+  }
+  :global(html[data-theme='inicio']) .mobile-menu .mobile-cta {
+    margin-top: 20px;
+    align-self: stretch;
+    font-family: var(--font-sans);
+    font-size: 13px;
+  }
 </style>
 
 <script>
@@ -330,6 +434,8 @@ const current = Astro.url.pathname;
   if (hamburger && menu) {
     const setOpen = (open: boolean) => {
       menu.classList.toggle('open', open);
+      // A closed menu is off-screen, not gone: keep its links out of the keyboard order.
+      menu.inert = !open;
       hamburger.setAttribute('aria-expanded', String(open));
       hamburger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
       document.body.style.overflow = open ? 'hidden' : '';

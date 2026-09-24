@@ -1,0 +1,134 @@
+---
+/**
+ * 08 · Sobre Verónica — the main portrait with a small second photo floating over its corner,
+ * and her introduction with the signature line.
+ */
+import { Image } from 'astro:assets';
+import principal from '../../assets/fotos/veronica-te-sonrisa.jpg';
+import secundaria from '../../assets/fotos/veronica-bowl.jpg';
+import { href } from '../../lib/url';
+import { marca } from '../../data/site';
+---
+
+<section class="sobre" id="sobre-mi">
+  <div class="wrap sobre-grid">
+    <div class="galeria reveal-left">
+      <div class="foto-principal">
+        <Image
+          src={principal}
+          class="sd-clip"
+          alt={`${marca.creadora} sonriendo con una taza de té`}
+          widths={[480, 720, 960]}
+          sizes="(min-width: 900px) 480px, 90vw"
+        />
+      </div>
+      <div class="foto-flotante sd-parallax">
+        <Image
+          src={secundaria}
+          alt={`${marca.creadora} comiendo un bowl de ensalada`}
+          widths={[180, 360]}
+          sizes="180px"
+        />
+      </div>
+    </div>
+
+    <div class="sobre-copy reveal-right">
+      <span class="eyebrow">Sobre {marca.creadora} · {marca.titulo}</span>
+      <h2>La creadora de {marca.metodo}</h2>
+      <p>
+        Verónica trabaja la nutrición funcional y la salud celular sin fragmentar el cuerpo en
+        departamentos. The Layer Method™ nace de traducir años de trabajo 1:1 en un sistema claro:
+        mapear antes de intervenir, priorizar antes de añadir.
+      </p>
+      <p class="p-sm">
+        Ofrece asesorías 100% online, adaptadas a los horarios de todas partes del mundo.
+      </p>
+      <blockquote class="firma">"No persigas cada síntoma. Entiende las capas."</blockquote>
+      <div class="sobre-cta">
+        <a class="btn btn-secondary" href={href('/el-metodo')}>Conoce {marca.metodo}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sobre {
+    padding: 110px 0;
+    background: var(--color-bone);
+  }
+  .sobre-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .sobre-grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 72px;
+    }
+  }
+  .galeria {
+    position: relative;
+  }
+  .foto-principal {
+    border-radius: 32px;
+    overflow: hidden;
+    background: var(--color-sand);
+    box-shadow: 0 24px 60px rgb(35 34 30 / 0.12);
+    aspect-ratio: 4 / 5;
+    transition: transform 0.4s var(--ease-out-soft);
+  }
+  .foto-principal:hover {
+    transform: scale(1.01);
+  }
+  .foto-principal :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .foto-flotante {
+    display: none;
+    position: absolute;
+    bottom: -24px;
+    right: -24px;
+    width: 180px;
+    aspect-ratio: 1;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgb(35 34 30 / 0.15);
+    border: 4px solid var(--color-bone);
+    transition: transform 0.4s var(--ease-out-soft);
+  }
+  @media (min-width: 640px) {
+    .foto-flotante {
+      display: block;
+    }
+  }
+  .foto-flotante:hover {
+    transform: scale(1.05) rotate(2deg);
+  }
+  .foto-flotante :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .sobre-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .firma {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(24px, 2.8vw, 32px);
+    color: var(--color-clay-deep);
+    border-left: 3px solid var(--color-clay);
+    padding-left: 20px;
+    margin-top: 10px;
+  }
+  .sobre-cta {
+    margin-top: 16px;
+  }
+</style>

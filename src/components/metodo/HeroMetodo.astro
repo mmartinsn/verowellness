@@ -5,7 +5,7 @@
  */
 import { Image } from 'astro:assets';
 import Wordmark from '../Wordmark.astro';
-import retrato from '../../assets/fotos/veronica-bata-frontal.jpg';
+import retrato from '../../assets/fotos/veronica-riendo-sentada.jpg';
 import { href } from '../../lib/url';
 import { marca } from '../../data/site';
 
@@ -152,6 +152,8 @@ const lineas = [
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Keep her laugh in frame when the 2:3 photo is cropped to 4:5. */
+    object-position: 50% 30%;
     transition: transform 1.2s var(--ease-out-soft);
   }
   .hero-photo:hover :global(img) {

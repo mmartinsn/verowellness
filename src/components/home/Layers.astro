@@ -1,0 +1,431 @@
+---
+/**
+ * 04 · The five Layers — a stack of coloured slabs on the left and an inspector on the right
+ * that shows what the chosen Layer observes and its key question; below, how they connect.
+ *
+ * Slabs are buttons (click, or hover on wide screens, as in the design). Every Layer's panel is
+ * rendered visible; the script hides all but the active one, so without JS the five read one
+ * after another. Text comes from `src/data/layers.ts`.
+ */
+import { layers } from '../../data/layers';
+import { marca } from '../../data/site';
+
+/**
+ * Text on the slabs: dark everywhere except olive. The design had white on sage-deep too, which
+ * measures 2.46:1; charcoal there gives 6.47:1 (astra/Claude review, 2026-09-23).
+ */
+const claroSobreOscuro = new Set(['olive']);
+---
+
+<section class="metodo" id="method">
+  <div class="wrap">
+    <div class="metodo-head reveal">
+      <span class="eyebrow">The Layer Method™</span>
+      <h2>El cuerpo no funciona por departamentos.</h2>
+      <p>
+        Cada capa de tu salud está conectada con las demás. No es una lista de pasos que sigues en
+        orden — es un mapa que se trabaja en conjunto, para que sepas en cuál capa enfocarte
+        primero.
+      </p>
+      <div class="stamp">{marca.lema}</div>
+    </div>
+
+    <div class="layers-layout reveal">
+      <div class="slabs" role="group" aria-label="Las cinco Layers">
+        {
+          layers.map((l, i) => (
+            <button
+              type="button"
+              class:list={[
+                'slab',
+                'sd-lift',
+                { activo: i === 0, claro: claroSobreOscuro.has(l.color) },
+              ]}
+              style={`--slab: var(--color-${l.color}); --i: ${i}`}
+              data-layer={l.num}
+              aria-pressed={i === 0 ? 'true' : 'false'}
+              aria-controls="layerInspector"
+            >
+              <span class="slab-left">
+                <span class="slab-num">LAYER {l.num}</span>
+                <span class="slab-title">{l.nombre}</span>
+              </span>
+              <span class="slab-badge" aria-hidden="true">
+                →
+              </span>
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="inspector spot" id="layerInspector" aria-live="polite">
+        {
+          layers.map((l, i) => (
+            <div class="insp-panel" data-panel={l.num} data-inicial={i === 0 ? '' : undefined}>
+              <div>
+                <div class="insp-header">
+                  <div class="insp-badge">{l.num}</div>
+                  <div>
+                    <span class="eyebrow">Capa explorada</span>
+                    <h3 class="insp-title">{l.nombre}</h3>
+                  </div>
+                </div>
+                <span class="insp-what-tag">Qué observa esta Layer:</span>
+                <div class="insp-what">{l.observaTexto}</div>
+              </div>
+              <div class="insp-q-card">
+                <span class="eyebrow insp-q-eyebrow">La pregunta clave</span>
+                <p class="insp-q">"{l.pregunta}"</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="sintesis spot reveal">
+      <span class="eyebrow">Cómo se conectan</span>
+      <p class="sintesis-text">
+        <strong>Nutrición</strong> aporta las materias primas; <strong
+          >las vías de eliminación</strong
+        > permiten procesar y eliminar; <strong>el terreno</strong> describe el entorno regulatorio;
+        <strong>la célula</strong> profundiza en energía y resiliencia; y <strong
+          >los hábitos</strong
+        >
+        determinan cuánto de la estrategia puede sostenerse en la vida real.
+        <em>Se mapean en conjunto, no una por una.</em>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .metodo {
+    padding: 100px 0 120px;
+    background: var(--color-bone);
+  }
+  .metodo-head {
+    text-align: center;
+    max-width: 780px;
+    margin: 0 auto 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .stamp {
+    display: inline-block;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-size: 13px;
+    color: var(--color-clay-deep);
+    padding: 6px 18px;
+    background: rgb(231 183 160 / 0.22);
+    border-radius: var(--radius-pill);
+    box-shadow: 0 2px 10px rgb(214 154 124 / 0.15);
+  }
+
+  .layers-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-top: 48px;
+  }
+  @media (min-width: 960px) {
+    .layers-layout {
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+  }
+
+  .slabs {
+    perspective: 1100px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .slab {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    border-radius: 20px;
+    padding: 24px 28px;
+    border: 2px solid transparent;
+    background: var(--slab);
+    color: var(--color-charcoal);
+    user-select: none;
+    box-shadow: 0 4px 18px rgb(35 34 30 / 0.03);
+    transition:
+      transform 0.4s var(--ease-out-soft),
+      box-shadow 0.4s var(--ease-out-soft),
+      border-color 0.4s var(--ease-out-soft);
+  }
+  .slab.claro {
+    color: var(--color-white);
+  }
+  .slab:hover {
+    transform: translateX(8px);
+    box-shadow: 0 8px 24px rgb(35 34 30 / 0.08);
+  }
+  .slab.activo {
+    border-color: var(--color-charcoal);
+    box-shadow: 0 18px 40px rgb(35 34 30 / 0.14);
+    transform: translateX(12px) scale(1.01);
+  }
+  .slab.activo::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 24px;
+    border: 2px solid var(--color-clay-deep);
+    opacity: 0.4;
+    animation: slab-glow 2.5s infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes slab-glow {
+    0% {
+      opacity: 0.25;
+      transform: scale(0.99);
+    }
+    100% {
+      opacity: 0.7;
+      transform: scale(1.01);
+    }
+  }
+  .slab-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .slab-num {
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    opacity: 0.75;
+  }
+  .slab-title {
+    font-weight: 800;
+    font-size: 20px;
+  }
+  .slab-badge {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    transition:
+      transform 0.3s var(--ease-out-soft),
+      background 0.3s ease;
+  }
+  .slab.activo .slab-badge {
+    background: var(--color-charcoal);
+    color: var(--color-white);
+    transform: rotate(90deg);
+  }
+  @media (max-width: 520px) {
+    .slab {
+      padding: 20px 22px;
+    }
+    .slab-left {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+    }
+    .slab.activo {
+      transform: translateX(6px);
+    }
+  }
+
+  .inspector {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-ivory);
+    border: 1px solid rgb(35 34 30 / 0.12);
+    border-radius: 32px;
+    padding: 44px;
+    min-height: 480px;
+    box-shadow: 0 20px 50px rgb(35 34 30 / 0.06);
+    display: flex;
+  }
+  @media (max-width: 520px) {
+    .inspector {
+      padding: 32px 26px;
+      min-height: 0;
+    }
+  }
+  .inspector::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(214 154 124 / 0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .insp-panel {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 24px;
+    width: 100%;
+    animation: panel-in 0.35s var(--ease-out-soft);
+  }
+  .insp-panel[hidden] {
+    display: none;
+  }
+  /* No JS: the five panels stack inside the inspector, separated by a rule. */
+  :global(html.no-js) .inspector {
+    flex-direction: column;
+    gap: 32px;
+  }
+  :global(html.no-js) .insp-panel + .insp-panel {
+    padding-top: 32px;
+    border-top: 1px solid rgb(35 34 30 / 0.1);
+  }
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+  .insp-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .insp-badge {
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--color-clay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--color-charcoal);
+    box-shadow: 0 4px 14px rgb(214 154 124 / 0.3);
+  }
+  .insp-title {
+    font-size: 34px;
+  }
+  .insp-what-tag {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-clay-deep);
+    margin-bottom: 10px;
+  }
+  .insp-what {
+    font-size: 17px;
+    color: rgb(35 34 30 / 0.85);
+    font-weight: 600;
+    line-height: 1.6;
+    padding: 18px 22px;
+    background: var(--color-white);
+    border-radius: 18px;
+    border: 1px solid rgb(35 34 30 / 0.06);
+    box-shadow: 0 4px 16px rgb(35 34 30 / 0.02);
+  }
+  .insp-q-card {
+    border-left: 3px solid var(--color-clay-deep);
+    padding-left: 20px;
+    margin-top: 10px;
+  }
+  .insp-q-eyebrow {
+    color: rgb(35 34 30 / 0.7);
+  }
+  .insp-q {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(21px, 2.4vw, 27px);
+    line-height: 1.35;
+    color: var(--color-charcoal);
+  }
+
+  .sintesis {
+    margin-top: 48px;
+    background: var(--color-white);
+    border: 1.5px solid rgb(35 34 30 / 0.12);
+    border-radius: 28px;
+    padding: 38px 44px;
+    box-shadow: 0 12px 36px rgb(35 34 30 / 0.04);
+  }
+  @media (max-width: 520px) {
+    .sintesis {
+      padding: 30px 26px;
+    }
+  }
+  /* Block, as in the design — which also drops the dot, since ::before is then empty inline. */
+  .sintesis .eyebrow {
+    display: block;
+    margin-bottom: 12px;
+  }
+  .sintesis .eyebrow::before {
+    display: none;
+  }
+  .sintesis-text {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--color-charcoal);
+    font-weight: 500;
+  }
+  .sintesis-text strong {
+    color: var(--color-clay-deep);
+    font-weight: 800;
+  }
+  .sintesis-text em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 21px;
+    display: block;
+    margin-top: 10px;
+    color: rgb(35 34 30 / 0.85);
+  }
+</style>
+
+<script>
+  const slabs = document.querySelectorAll<HTMLButtonElement>('.slab[data-layer]');
+  const panels = document.querySelectorAll<HTMLElement>('.insp-panel[data-panel]');
+  const wide = window.matchMedia('(min-width: 961px)');
+
+  // Without JS every panel stays visible, stacked; with JS only the active one shows.
+  panels.forEach((p) => (p.hidden = !('inicial' in p.dataset)));
+
+  const activate = (slab: HTMLButtonElement) => {
+    if (slab.classList.contains('activo')) return;
+    const num = slab.dataset.layer;
+    slabs.forEach((s) => {
+      const on = s === slab;
+      s.classList.toggle('activo', on);
+      s.setAttribute('aria-pressed', String(on));
+    });
+    panels.forEach((p) => (p.hidden = p.dataset.panel !== num));
+  };
+
+  slabs.forEach((slab) => {
+    slab.addEventListener('click', () => activate(slab));
+    slab.addEventListener('mouseenter', () => {
+      if (wide.matches) activate(slab);
+    });
+  });
+</script>

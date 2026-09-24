@@ -1,7 +1,8 @@
 ---
 /**
- * Layout for the public pages: header, <main>, footer, optional sticky mobile CTA, and the
- * one-time scroll-reveal observer that powers `.reveal` / `.reveal-stagger`.
+ * Layout for the public pages: header, <main>, footer, optional sticky mobile CTA, the
+ * one-time scroll-reveal observer that powers `.reveal` / `.reveal-stagger`, and the motion
+ * system (split headings, pointer light, magnetic buttons — src/scripts/motion.ts).
  */
 import BaseLayout from './BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
@@ -12,12 +13,14 @@ interface Props {
   title: string;
   description: string;
   noindex?: boolean;
-  theme?: 'editorial' | 'stitch';
+  theme?: 'editorial' | 'stitch' | 'inicio';
+  /** Structured data for this page (see BaseLayout). */
+  jsonLd?: Record<string, unknown>[];
   /** Show the sticky bottom CTA on small screens (label/path default to "Trabaja conmigo"). */
   mobileCta?: { label?: string; path?: string } | false;
 }
 
-const { title, description, noindex, theme = 'editorial', mobileCta = {} } = Astro.props;
+const { title, description, noindex, theme = 'editorial', mobileCta = {}, jsonLd } = Astro.props;
 ---
 
 <BaseLayout
@@ -25,6 +28,7 @@ const { title, description, noindex, theme = 'editorial', mobileCta = {} } = Ast
   description={description}
   noindex={noindex}
   theme={theme}
+  jsonLd={jsonLd}
   bodyClass={mobileCta ? 'has-mobile-cta' : undefined}
 >
   <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -48,10 +52,14 @@ const { title, description, noindex, theme = 'editorial', mobileCta = {} } = Ast
 </style>
 
 <script>
-  // Reveal-on-scroll: add `.in` the first time an element enters the viewport.
+  import { initMotion } from '../scripts/motion';
+
+  // Reveal-on-scroll: add `.in` the first time an element enters the viewport. The motion system
+  // (split headings) registers its elements through the same observer.
   const els = document.querySelectorAll<HTMLElement>(
     '.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-stagger'
   );
+  let observe: (el: Element) => void = (el) => el.classList.add('in');
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(
       (entries) => {
@@ -64,8 +72,8 @@ const { title, description, noindex, theme = 'editorial', mobileCta = {} } = Ast
       },
       { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
     );
-    els.forEach((el) => io.observe(el));
-  } else {
-    els.forEach((el) => el.classList.add('in'));
+    observe = (el) => io.observe(el);
   }
+  els.forEach((el) => observe(el));
+  initMotion(observe);
 </script>

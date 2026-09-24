@@ -40,10 +40,32 @@ const { ciclo, featured = false, ctaLabel = 'Reservar' } = Astro.props;
       ))
     }
   </ul>
+  {
+    ciclo.bonus && (
+      <p class="pbonus">
+        <strong>Bonus</strong> {ciclo.bonus}
+      </p>
+    )
+  }
   <a class="btn btn-outline btn-block pbtn" href={href(checkoutPath(ciclo))}>{ctaLabel}</a>
 </article>
 
 <style>
+  .pbonus {
+    margin: 0 0 22px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 1px dashed rgb(48 47 42 / 0.28);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .pbonus strong {
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 11.5px;
+    margin-right: 6px;
+  }
   .price-card {
     border-radius: var(--radius-lg);
     padding: 40px 32px;

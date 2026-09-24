@@ -23,6 +23,8 @@ export interface Ciclo {
   incluyeCheckout: string[];
   /** Note at the bottom of the card (Next cycle: the 6-month reactivation rule). */
   notaPie?: string;
+  /** A gift for this cycle, shown under what it includes (Mari, 2026-09-23; copy by Codex). */
+  bonus?: string;
   /** Copy for the confirmation screen after paying. */
   confirmacion: { titulo: string; texto: string; calendlyUrl: string; calendlyEtiqueta: string };
 }
@@ -47,6 +49,7 @@ export const ciclos: Record<CicloId, Ciclo> = {
       'The Layer Plan™',
       'The Layer Review™',
     ],
+    bonus: 'Pacientes nuevos: «Guía de alimentación anti-inflamatoria como estilo de vida» gratis.',
     incluyeCheckout: [
       'The Layer Assessment™',
       'The Layer Map™',
@@ -93,9 +96,12 @@ export function checkoutPath(ciclo: Ciclo): string {
   return `/checkout/${ciclo.slug}`;
 }
 
-/** `$247 + tax`, as the cards print it. */
+/** Where the home's «Trabaja conmigo» buttons go: the new-client cycle (Mari, 2026-09-22). */
+export const checkoutPrincipal = checkoutPath(ciclos.INITIAL_LAYER_CYCLE);
+
+/** `$247`, as the cards print it. Tax shows only in the checkout (Mari, 2026-09-24). */
 export function precioCard(ciclo: Ciclo): string {
-  return `$${ciclo.subtotal} + tax`;
+  return `$${ciclo.subtotal}`;
 }
 
 export function precios(ciclo: Ciclo): Desglose {

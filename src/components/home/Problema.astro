@@ -1,0 +1,136 @@
+---
+/**
+ * 02 · El problema — the heading on the left; on the right the five "fragment" claims the
+ * reader keeps hearing, and the payoff card: many tools, little strategy.
+ */
+const fragmentos = [
+  '"Toma esto para el cortisol."',
+  '"Esto desintoxica."',
+  '"Esto mejora tu mitocondria."',
+  '"Esto balancea tus hormonas."',
+  '"Esto repara tu intestino."',
+];
+---
+
+<section class="problema" id="problema">
+  <div class="wrap problema-grid">
+    <div class="problema-head reveal">
+      <span class="eyebrow">El problema</span>
+      <h2>Haces mucho por tu salud.<br />Pero no sabes qué priorizar.</h2>
+      <p>
+        Vivimos saturadas de información sobre longevidad, suplementos y protocolos virales. El
+        resultado no es falta de ganas: es agotamiento por falta de dirección.
+      </p>
+    </div>
+    <div class="reveal">
+      <ul class="fragmentos">
+        {
+          fragmentos.map((f) => (
+            <li class="fragmento spot">
+              <span>{f}</span>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="payoff">
+        <p class="pull">El resultado: muchas herramientas, poca estrategia.</p>
+        <p class="payoff-line">No es que te falte información. Es que te falta un mapa.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .problema {
+    padding: 110px 0;
+    background: var(--color-bone);
+  }
+  .problema-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  @media (min-width: 900px) {
+    .problema-grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 80px;
+      align-items: center;
+    }
+  }
+  .problema-head {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .fragmentos {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    list-style: none;
+    padding: 0;
+  }
+  .fragmento {
+    background: var(--color-white);
+    border: 1px solid rgb(35 34 30 / 0.12);
+    border-radius: 20px;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: 0 4px 18px rgb(35 34 30 / 0.03);
+    transition:
+      transform 0.3s var(--ease-out-soft),
+      border-color 0.3s var(--ease-out-soft),
+      box-shadow 0.3s var(--ease-out-soft);
+  }
+  .fragmento:hover {
+    transform: translateX(10px);
+    border-color: var(--color-clay);
+    box-shadow: 0 10px 30px rgb(214 154 124 / 0.18);
+  }
+  .fragmento span {
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--color-charcoal);
+  }
+  .fragmento svg {
+    flex-shrink: 0;
+    color: var(--color-clay-deep);
+    transition: transform 0.3s var(--ease-out-soft);
+  }
+  .fragmento:hover svg {
+    transform: translateX(4px);
+  }
+  .payoff {
+    margin-top: 36px;
+    background: var(--color-sand);
+    border-radius: 24px;
+    padding: 36px;
+    border-left: 5px solid var(--color-clay-deep);
+  }
+  .payoff .pull {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(26px, 3.2vw, 36px);
+    line-height: 1.25;
+    margin-bottom: 12px;
+    color: var(--color-charcoal);
+  }
+  .payoff .payoff-line {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-charcoal);
+  }
+</style>

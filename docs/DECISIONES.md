@@ -76,16 +76,70 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     los HTML de Mari en más del 95 % (medido por palabras); solo cambian la tipografía (Instrument
     Sans) y el envoltorio. Los HTML sueltos son la fuente canónica.
 
+13. **2026-09-22 — El inicio es el segundo diseño de Stitch.** Mari lo pidió explícitamente
+    («quiero que el home sea esta página») y entregó su export, que se guarda sin versionar en
+    `fuentes/stitch-home-2026-09-22.html`. El primer Stitch se movió a `/inicio-stitch/`
+    (`noindex`) y el editorial sigue en `/inicio-editorial/`; ninguno se borró. Lo que se ajustó
+    al pasarlo al sitio, con su razón:
+    - **Tipografía y tonos:** tercer tema, `data-theme="inicio"`: Cormorant Garamond + Plus Jakarta
+      Sans, y los hex del export donde difieren (`ivory`, `sand`, `sage-deep`, `olive`, `rose`,
+      `charcoal`, más `clay-rich` y `sand-light`). Las demás páginas no cambian.
+    - **Foto del hero:** el export usa un fotograma de la sesión con laptop que no está en esta
+      máquina; se usa `ZGPH1218` (misma sesión y pose, 1024×1536), guardada como
+      `veronica-bata-laptop.jpg`. La copia de Stitch era de 341×512. Cambiarla es un archivo.
+    - **Punto azul** junto a «Asesorías 100% online»: el export usaba `#60A5FA`, fuera de la paleta
+      que Verónica blindó; va en `sage-deep`.
+    - **Botón del header:** en el export está escrito con un `@media` dentro de `style=""` que el
+      navegador descarta, así que en la vista previa de Mari no aparece. Se dejó oculto; la llamada
+      a la acción está en el hero, en la página y en la barra fija del teléfono.
+    - **FAQ:** el export no tiene FAQ y su enlace «FAQ» apuntaba al cierre. Se conserva el FAQ del
+      inicio anterior, entre «Sobre Verónica» y el cierre, para que el enlace lleve a preguntas.
+    - **Enlaces:** «Click aquí» de cada tarjeta va a su checkout; «Conoce The Layer Method™» (en
+      «Sobre Verónica») va a `/el-metodo/` en vez de a `#oferta`, porque ahora esa página existe.
+    - **Navegación:** entra «Sobre mí» (`/#sobre-mi`), como en el diseño. Resuelve la pregunta
+      abierta sobre «Sobre mí».
+    - **Movimiento:** el shader WebGL, el halo que sigue al cursor y la inclinación 3D se
+      conservan; el shader se pausa fuera de pantalla y todo se detiene con «reducir movimiento».
+
+14. **2026-09-23 — Página de Exámenes.** Pedida por Mari («que sea innovadora completamente»), con la
+    lista de precios de Verónica como fuente. Decisiones, con las opciones recomendadas que Mari
+    aprobó («todas las recomendadas»): se **compra** desde la página (selección → checkout de 5
+    pasos) y se suma **7 %** de impuesto. Solo el precio de venta entra al sitio. Los CTA del home
+    llevan al checkout del Initial Layer Cycle (pedido de Mari, 22-sep). Detalle y preguntas en
+    [`EXAMENES.md`](EXAMENES.md).
+
+15. **2026-09-23 — Correcciones de copy y SEO** (revisión de astra del 22-sep, aplicada a pedido de
+    Mari). **SEO:** `noindex` en todo el prototipo con un solo interruptor (`prototipo` en
+    `src/data/site.ts`; el `robots.txt` de la subcarpeta no protege nada); `og:url`, `og:image`
+    (1200×630, `scripts/og-image.mjs`) y tarjetas de X/Twitter en todas las páginas; JSON-LD
+    (`Organization`, `WebSite`, `Person`, `Service` con las dos ofertas en USD sin impuesto) en
+    inicio y 1:1 (`src/lib/schema.ts`); `sitemap.xml` con inicio, The Method, 1:1 y Exámenes;
+    títulos con intención de búsqueda en inicio, 1:1 y The Method; hero visible sin esperar al
+    script; las cinco Layers legibles sin JS; menú móvil cerrado fuera del teclado (`inert`);
+    anclas compensadas por el header; contraste de la Layer 03 (texto carbón) y del copyright;
+    enlaces legales en el pie. **Copy:** concordancia de la primera FAQ; «garantiza» → «busca
+    que»; duración del ciclo alineada con la oferta («en un máximo de 60 días»); el lema sale de
+    una sola fuente (`marca.lema`); «Click aquí» → «Haz clic aquí», con etiqueta accesible.
+    **No se tocó, porque son hechos de Verónica:** el mecanismo de la primera FAQ y el alcance
+    clínico de la segunda («diagnóstico clínico sintomático»); los plazos y resultados de la
+    tercera («dos a tres semanas», «compuertas emuntoriales»); la duración del Next (90 vs
+    60–90 min); credenciales y perfiles sociales (no van en el JSON-LD hasta confirmarlos); el
+    tono de clay para texto pequeño (paleta blindada); anglicismos («lifestyle», «Continuum»).
+
+16. **2026-09-23 — Título profesional: Nutricionista** (confirmado por Mari). Va en `marca.titulo` y en
+    el JSON-LD (`Person.jobTitle`). Los ebooks usan otros rótulos en portada («Asesora de Salud
+    Holística e Integral» en el de azúcar; «Nutrición clínica · Medicina integrativa» en el de GLP-1);
+    el recetario ya dice «Nutricionista».
+
 ## Abiertas — para Mari y Verónica
 
-- **¿Cuál inicio?** A (Stitch) o B (editorial). Hasta que se decida, `/variantes/` muestra los dos.
-- **¿Una sola tipografía?** Si sí, ¿Cormorant + Nunito (el resto del sitio y el recetario) o
-  Bodoni + Plus Jakarta (Stitch)?
+- **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
+- **Foto del hero:** ¿el fotograma exacto del export (no está en esta máquina) o `ZGPH1218`?
+- **¿Una sola tipografía?** El inicio trae Cormorant + Plus Jakarta; el resto del sitio, Cormorant +
+  Nunito (lo que Verónica pidió para el recetario). ¿Se unifica, y con cuál sans?
 - **¿Paleta de Mari o los siete hex del brand book?** Verónica blindó la paleta; conviene que lo
   vea con la tabla de arriba.
 - **¿Fotos con el pelo claro o oscurecido?** Regla de Mari para el recetario vs. su uso aquí.
-- **«Sobre mí» en el menú**: solo tiene sentido si gana la variante editorial o se añade la sección
-  a la de Stitch.
 - **Textos legales** y **aviso médico**: los redacta Verónica.
 - **Pasarelas**: confirmar cuáles se contratan (Stripe, PayPal, Zelle manual) y si el impuesto es
   7 % para todos los países.

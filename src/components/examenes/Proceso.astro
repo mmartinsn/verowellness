@@ -1,0 +1,166 @@
+---
+/**
+ * Exámenes · how it works — the four steps from order to results, on a dark band with a line
+ * that "fills" as the section enters the viewport. The steps live in data/examenes (`pasosPedido`)
+ * so the order confirmation shows exactly the same text.
+ */
+import { pasosPedido } from '../../data/examenes';
+
+const iconos = [
+  'M4 6h16l-1.5 9H5.5L4 6zM4 6L3 3H1M8 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM17 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2z',
+  'M3 8l9-5 9 5v8l-9 5-9-5V8zM3 8l9 5 9-5M12 13v8',
+  'M9 3h6M10 3v5l-5 9a3 3 0 0 0 2.6 4.5h8.8A3 3 0 0 0 19 17l-5-9V3M7 14h10',
+  'M4 4h16v12H5.5L4 17.5V4zM8 9h8M8 12h5',
+];
+---
+
+<section class="proceso" aria-labelledby="proc-titulo">
+  <div class="wrap">
+    <div class="proc-head reveal">
+      <span class="eyebrow">Tu examen, paso a paso</span>
+      <h2 id="proc-titulo">De tu pedido a tus resultados</h2>
+    </div>
+    <ol class="proc-pasos reveal-stagger">
+      {
+        pasosPedido.map((p, i) => (
+          <li class="paso">
+            <span class="paso-icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24">
+                <path d={iconos[i]} />
+              </svg>
+            </span>
+            <span class="paso-num">Paso {String(i + 1).padStart(2, '0')}</span>
+            <h3>{p.titulo}</h3>
+            <p>{p.texto}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="proc-nota reveal">
+      Te acompañamos durante todo el proceso. Te explicamos cómo enviar tu muestra, en qué plazo
+      debe llegar al laboratorio y resolvemos tus dudas en cada paso.
+    </p>
+  </div>
+</section>
+
+<style>
+  .proceso {
+    position: relative;
+    overflow: hidden;
+    padding: 96px 0 104px;
+    background: radial-gradient(circle at 15% 0%, #3e3d36 0%, #1f1e1b 70%);
+    color: var(--color-bone);
+  }
+  .proceso::after {
+    content: '';
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    right: -160px;
+    bottom: -260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(214 154 124 / 0.3) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .proc-head {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 56px;
+  }
+  .proc-head .eyebrow {
+    color: var(--color-clay);
+  }
+  .proc-head h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(38px, 5vw, 64px);
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--color-bone);
+  }
+  .proc-pasos {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+  }
+  /* The rail behind the icons, drawn once the list is revealed. */
+  @media (min-width: 1000px) {
+    .proc-pasos::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 28px;
+      right: 28px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--color-clay), rgb(231 183 160 / 0.15));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 1.4s var(--ease-out-soft) 0.2s;
+    }
+    .proc-pasos:global(.in)::before {
+      transform: scaleX(1);
+    }
+  }
+  .paso {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .paso-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--color-clay);
+    color: var(--color-charcoal);
+    box-shadow: 0 0 0 8px rgb(35 34 30 / 0.9);
+    margin-bottom: 10px;
+  }
+  .paso-icono svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .paso-num {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-clay);
+  }
+  .paso h3 {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--color-bone);
+  }
+  .paso p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgb(251 250 246 / 0.78);
+    max-width: 300px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .proc-pasos::before {
+      transition: none;
+      transform: none;
+    }
+  }
+  .proc-nota {
+    margin-top: 36px;
+    max-width: 640px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgb(248 246 241 / 0.62);
+  }
+</style>

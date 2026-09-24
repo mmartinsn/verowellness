@@ -1,0 +1,93 @@
+---
+/**
+ * 05 · Otra mirada — a full-width rose band (boxed until 2026-09-23; slimmer since 2026-09-24): the symptom is not always
+ * where it starts, and three short principles as pills. Its content stays on the site column.
+ */
+const principios = [
+  'Antes de añadir, hay que entender.',
+  'El orden también importa.',
+  'No necesitas hacer más. Necesitas saber qué priorizar.',
+];
+---
+
+<section class="otra-mirada">
+  <div class="wrap">
+    <div class="banner">
+      <span class="eyebrow">Otra mirada</span>
+      <p class="pull">No todo empieza donde aparece el síntoma.</p>
+      <div class="pills">
+        {principios.map((p) => <span class="pill">{p}</span>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .otra-mirada {
+    padding: 0;
+  }
+  /* A slow flowing gradient through the rose family instead of a flat fill. */
+  .banner {
+    background: linear-gradient(
+      120deg,
+      var(--color-rose) 0%,
+      #ecc6b8 30%,
+      var(--color-rose) 55%,
+      #e9c9c4 80%,
+      var(--color-rose) 100%
+    );
+    background-size: 300% 300%;
+    animation: banner-flow 18s ease-in-out infinite alternate;
+    margin-inline: calc(50% - 50vw);
+    /* Full bleed, with the text kept on the same column as the rest of the page. */
+    padding: clamp(56px, 7vw, 96px) max(28px, calc(50vw - 566px));
+    overflow: hidden;
+  }
+  .banner .eyebrow {
+    color: rgb(35 34 30 / 0.85);
+    margin-bottom: 16px;
+  }
+  .pull {
+    font-family: var(--font-serif);
+    font-size: clamp(34px, 4.8vw, 64px);
+    font-style: italic;
+    line-height: 1.15;
+    color: var(--color-charcoal);
+    max-width: 1000px;
+  }
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 26px;
+  }
+  .pill {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--color-charcoal);
+    padding: 12px 22px;
+    border-radius: var(--radius-pill);
+    background: rgb(251 250 246 / 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgb(255 255 255 / 0.7);
+    transition:
+      transform 0.25s ease,
+      background 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  @keyframes banner-flow {
+    to {
+      background-position: 100% 50%;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .banner {
+      animation: none;
+    }
+  }
+  .pill:hover {
+    transform: translateY(-3px);
+    background: var(--color-white);
+    box-shadow: 0 8px 20px rgb(201 140 134 / 0.3);
+  }
+</style>

@@ -1,54 +1,125 @@
 ---
 /**
- * Home — the Stitch design Mari preferred (voice note, 2026-09-21). The editorial alternative
- * lives at /inicio-editorial/ for comparison; see docs/DECISIONES.md.
+ * Home — Mari's second Stitch design (export of 2026-09-22, `fuentes/stitch-home-2026-09-22.html`).
+ * Nine sections: hero, problem, premise, the five Layers, another look, tools ≠ strategy, the
+ * offer, about Verónica, and the closing portal. The FAQ from the earlier home sits between the
+ * last two so the «FAQ» link in the navigation has somewhere to land.
  *
- * This route alone loads the Stitch type pairing (Bodoni Moda + Plus Jakarta Sans).
+ * Type: Cormorant Garamond + Plus Jakarta Sans (`data-theme="inicio"`). The page-wide effects of
+ * the design live here: the reading-progress line, the soft glow that follows the cursor on
+ * desktop, and the 3D tilt on `.tilt-card`. All three stand down under reduced motion.
  */
-import '@fontsource-variable/bodoni-moda/wght.css';
-import '@fontsource-variable/bodoni-moda/wght-italic.css';
+import '@fontsource/cormorant-garamond/300.css';
+import '@fontsource/cormorant-garamond/600-italic.css';
 import '@fontsource-variable/plus-jakarta-sans';
 import SiteLayout from '../layouts/SiteLayout.astro';
-import HeroStitch from '../components/home/HeroStitch.astro';
-import LayersShowcase from '../components/home/LayersShowcase.astro';
-import TresPasos from '../components/home/TresPasos.astro';
-import Reframe from '../components/home/Reframe.astro';
-import OfertaCard from '../components/home/OfertaCard.astro';
-import Faq from '../components/home/Faq.astro';
+import { checkoutPrincipal } from '../data/oferta';
+import { grafoSitio, grafoServicio } from '../lib/schema';
+import Hero from '../components/home/Hero.astro';
+import Problema from '../components/home/Problema.astro';
+import Premisa from '../components/home/Premisa.astro';
+import Layers from '../components/home/Layers.astro';
+import OtraMirada from '../components/home/OtraMirada.astro';
+import Herramientas from '../components/home/Herramientas.astro';
+import Oferta from '../components/home/Oferta.astro';
+import SobreVeronica from '../components/home/SobreVeronica.astro';
+import Faq from '../components/Faq.astro';
+import Cierre from '../components/home/Cierre.astro';
 ---
 
 <SiteLayout
-  title="THE LAYER METHOD™ — by Veronica Wellness"
-  description="THE LAYER METHOD™ by Veronica Wellness. Salud por capas. Del terreno a la célula."
-  theme="stitch"
-  mobileCta={false}
+  title="Nutrición funcional online — The Layer Method™ | Veronica Wellness"
+  description="Asesorías 100% online de nutrición funcional y salud celular. The Layer Method™ ordena tu salud por capas para identificar qué necesita atención primero."
+  jsonLd={[...grafoSitio(Astro.site), grafoServicio(Astro.site)]}
+  theme="inicio"
+  mobileCta={{ path: checkoutPrincipal }}
 >
   <div id="scrollProgress" aria-hidden="true"></div>
-  <HeroStitch />
-  <LayersShowcase />
-  <TresPasos />
-  <Reframe />
-  <OfertaCard />
+  <div id="cursorSpotlight" aria-hidden="true"></div>
+  <Hero />
+  <Problema />
+  <Premisa />
+  <Layers />
+  <OtraMirada />
+  <Herramientas />
+  <Oferta />
+  <SobreVeronica />
   <Faq />
+  <Cierre />
 </SiteLayout>
 
-<style>
-  /* Thin reading-progress line along the top, from the Stitch design. */
+<style is:global>
+  /* Base type of the design, for this page's sections (not the FAQ, which brings its own
+     utility classes). Zero specificity, so every component's scoped style wins. */
+  :where(html[data-theme='inicio'] main > section:not(#faq)) :where(h1, h2, h3, h4) {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-charcoal);
+  }
+  :where(html[data-theme='inicio'] main > section:not(#faq)) :where(h2) {
+    font-size: clamp(34px, 5.2vw, 68px);
+    line-height: 1.05;
+  }
+  :where(html[data-theme='inicio'] main > section:not(#faq)) :where(h3) {
+    font-size: clamp(24px, 3.2vw, 36px);
+    line-height: 1.15;
+  }
+  :where(html[data-theme='inicio'] main > section:not(#faq)) :where(p) {
+    font-size: clamp(16px, 1.25vw, 18.5px);
+    font-weight: 450;
+    color: rgb(35 34 30 / 0.85);
+    line-height: 1.68;
+  }
+  :where(html[data-theme='inicio'] main > section:not(#faq)) :where(.p-sm) {
+    font-size: 14.5px;
+    color: rgb(35 34 30 / 0.7);
+    font-weight: 500;
+  }
+
   #scrollProgress {
     position: fixed;
     top: 0;
     left: 0;
     width: 0%;
-    height: 2.5px;
+    height: 3px;
     background: linear-gradient(
       90deg,
       var(--color-clay-deep),
-      var(--color-sage-deep),
-      var(--color-charcoal)
+      var(--color-rose-deep),
+      var(--color-clay)
     );
+    box-shadow: 0 0 10px rgb(214 154 124 / 0.6);
     z-index: 9999;
     pointer-events: none;
-    transition: width 0.1s ease-out;
+    transition: width 0.1s cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  #cursorSpotlight {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 380px;
+    height: 380px;
+    margin: -190px 0 0 -190px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(
+      circle,
+      rgb(214 154 124 / 0.14) 0%,
+      rgb(207 215 196 / 0.08) 40%,
+      transparent 70%
+    );
+    z-index: 9998;
+    filter: blur(12px);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    mix-blend-mode: multiply;
+  }
+  @media (max-width: 1024px), (prefers-reduced-motion: reduce) {
+    #cursorSpotlight {
+      display: none;
+    }
   }
 </style>
 
@@ -61,5 +132,47 @@ import Faq from '../components/home/Faq.astro';
     };
     window.addEventListener('scroll', update, { passive: true });
     update();
+  }
+
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // Glow that trails the cursor with a little inertia (desktop only).
+  const spot = document.getElementById('cursorSpotlight');
+  if (spot && fine && !calm && window.innerWidth > 1024) {
+    let x = window.innerWidth / 2;
+    let y = window.innerHeight / 2;
+    let cx = x;
+    let cy = y;
+    window.addEventListener(
+      'mousemove',
+      (e) => {
+        x = e.clientX;
+        y = e.clientY;
+        spot.style.opacity = '1';
+      },
+      { passive: true }
+    );
+    document.documentElement.addEventListener('mouseleave', () => (spot.style.opacity = '0'));
+    const follow = () => {
+      cx += (x - cx) * 0.08;
+      cy += (y - cy) * 0.08;
+      spot.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+      requestAnimationFrame(follow);
+    };
+    requestAnimationFrame(follow);
+  }
+
+  // Subtle 3D tilt toward the pointer on cards marked `.tilt-card`.
+  if (fine && !calm) {
+    document.querySelectorAll<HTMLElement>('.tilt-card').forEach((card) => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const rx = -((e.clientY - r.top - r.height / 2) / (r.height / 2)) * 5;
+        const ry = ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 5;
+        card.style.transform = `perspective(1000px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+      });
+      card.addEventListener('mouseleave', () => (card.style.transform = ''));
+    });
   }
 </script>

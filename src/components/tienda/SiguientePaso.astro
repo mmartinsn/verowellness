@@ -1,0 +1,159 @@
+---
+/**
+ * Tienda · next step — a dark band with an aurora that links the ebooks to the Initial Layer
+ * Cycle, without pressure. Price, length and bonus come from data/oferta (written once); the
+ * lines around them are Codex's copy.
+ */
+import { ciclos } from '../../data/oferta';
+import { precioTienda } from '../../data/tienda';
+import { href } from '../../lib/url';
+
+const c = ciclos.INITIAL_LAYER_CYCLE;
+---
+
+<section class="paso aurora" aria-labelledby="paso-titulo">
+  <div class="wrap paso-grid">
+    <div class="paso-copy">
+      <span class="eyebrow">Siguiente paso</span>
+      <h2 id="paso-titulo">
+        Cuando quieras mirar <em class="grad-text on-dark">tu caso</em> conmigo.
+      </h2>
+      <p>
+        Estas guías son un punto de partida. Si quieres trabajar tus prioridades de forma
+        personalizada, podemos hacerlo juntas con The Layer Method™.
+      </p>
+    </div>
+    <div class="paso-card spot">
+      <div class="paso-card-top">
+        <span>{c.nombre}</span>
+        <span class="paso-precio">{precioTienda(c.subtotal)}</span>
+      </div>
+      <p>
+        2 sesiones privadas online de 90 minutos, con una separación recomendada de aproximadamente
+        30 días, a completar en un máximo de 60 días.
+      </p>
+      <p>
+        Revisamos tu historia y tus hábitos, construimos tu The Layer Map™ y definimos tus 3
+        prioridades. En la segunda sesión revisamos y ajustamos tu The Layer Plan™.
+      </p>
+      {
+        c.bonus && (
+          <p class="paso-bonus">
+            <strong>Bonus</strong> {c.bonus}
+          </p>
+        )
+      }
+      <p class="paso-cierre">
+        Puedes empezar por una lectura. Si más adelante quieres acompañamiento, aquí estoy.
+      </p>
+      <a class="paso-btn" href={href('/1-1')} data-magnet="0.25">Conocer la asesoría 1:1</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .paso {
+    background: radial-gradient(circle at 20% 10%, #3e3d36 0%, #1f1e1b 70%);
+    color: var(--color-bone);
+    padding: clamp(72px, 9vw, 130px) 0;
+  }
+  .paso-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+    align-items: center;
+  }
+  @media (min-width: 1000px) {
+    .paso-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 80px;
+    }
+  }
+  .paso-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .paso-copy .eyebrow {
+    color: var(--color-clay);
+  }
+  .paso-copy h2 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(46px, 6vw, 84px);
+    line-height: 0.98;
+    color: var(--color-bone);
+  }
+  .paso-copy p {
+    font-size: clamp(16px, 1.3vw, 18px);
+    line-height: 1.65;
+    color: rgb(248 246 241 / 0.82);
+  }
+  .paso-card {
+    background: rgb(255 255 255 / 0.06);
+    border: 1px solid rgb(231 183 160 / 0.3);
+    border-radius: 32px;
+    padding: clamp(28px, 3vw, 40px);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    backdrop-filter: blur(6px);
+  }
+  .paso-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 2.6vw, 38px);
+  }
+  .paso-precio {
+    color: var(--color-clay);
+  }
+  .paso-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgb(248 246 241 / 0.82);
+  }
+  .paso-card .paso-bonus {
+    padding: 14px 18px;
+    border-radius: 16px;
+    background: rgb(231 183 160 / 0.14);
+    font-weight: 600;
+    color: #f3d3c2;
+  }
+  .paso-bonus strong {
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-right: 6px;
+  }
+  .paso-card .paso-cierre {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.35;
+    color: var(--color-bone);
+  }
+  .paso-btn {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    min-height: 56px;
+    padding: 0 30px;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(135deg, #f0c4ae, var(--color-clay-deep));
+    color: var(--color-charcoal);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background 0.35s ease;
+  }
+  .paso-btn:hover {
+    background: var(--color-white);
+  }
+</style>

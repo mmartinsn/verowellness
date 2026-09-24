@@ -1,0 +1,45 @@
+---
+/**
+ * Checkout — shop. What is bought is the visitor's selection on /tienda/, read from localStorage
+ * by the checkout script; prices come from data/tienda (USD, tax added here only). Delivery of the
+ * PDFs after paying is a placeholder until Verónica confirms how it works (docs/DECISIONES.md).
+ */
+import CheckoutLayout from '../../layouts/CheckoutLayout.astro';
+import Checkout from '../../components/checkout/Checkout.astro';
+import { productos, CLAVE_TIENDA } from '../../data/tienda';
+import { href } from '../../lib/url';
+
+const pedido = {
+  id: 'TIENDA',
+  nombre: 'Ebooks y recetas',
+  etiqueta: 'Tu selección',
+  descripcionCorta: '',
+  subtotal: 0,
+  incluyeCheckout: [],
+  confirmacion: {
+    titulo: 'Tu compra está confirmada.',
+    texto:
+      'Los productos que elegiste están disponibles en PDF. Léelos a tu ritmo. Vuelve a ellos cuando lo necesites.',
+  },
+};
+---
+
+<CheckoutLayout
+  title="Checkout de la tienda — Veronica Wellness"
+  description="Confirma y paga los ebooks y recetas que elegiste."
+>
+  <Checkout
+    ciclo={pedido}
+    etiquetaProducto="Pedido"
+    textos={{
+      datos: 'Esta información crea tu perfil como cliente de Veronica Wellness.',
+      zellePendiente: 'En cuanto lo confirmemos (24–48h) te enviaremos tus PDF por email.',
+      pedido: 'pedido',
+    }}
+    carrito={{
+      clave: CLAVE_TIENDA,
+      volver: href('/tienda'),
+      catalogo: productos.map(({ id, nombre, precio }) => ({ id, nombre, precio })),
+    }}
+  />
+</CheckoutLayout>

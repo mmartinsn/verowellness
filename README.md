@@ -10,18 +10,21 @@ aprobación se le conecta la infraestructura real (pagos, CRM, agenda, legal, do
 
 ## Rutas
 
-| Ruta                             | Qué es                                                                             |
-| -------------------------------- | ---------------------------------------------------------------------------------- |
-| `/`                              | Inicio, variante A — el diseño de Stitch que Mari prefirió                         |
-| `/inicio-editorial/`             | Inicio, variante B — la versión editorial (nueve secciones)                        |
-| `/el-metodo/`                    | The Method: principio, tres pasos, mapa de las cinco Layers, puente al 1:1         |
-| `/1-1/`                          | La oferta 1:1 sesión por sesión, entregables, precios, para quién es               |
-| `/checkout/initial-layer-cycle/` | Checkout de 5 pasos del Initial Layer Cycle (pago simulado)                        |
-| `/checkout/next-layer-cycle/`    | Checkout del Next Layer Cycle                                                      |
-| `/legal/*`                       | Términos, privacidad y aviso médico — **marcadores**, el texto lo redacta Verónica |
-| `/variantes/`                    | Índice de todas las páginas, para presentar. No enlazado, `noindex`                |
+| Ruta                             | Qué es                                                                                                        |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `/`                              | Inicio — el segundo diseño de Stitch, el que Mari eligió el 22-sep                                            |
+| `/inicio-stitch/`                | Inicio, variante A — el primer diseño de Stitch (fue el inicio hasta el 22-sep)                               |
+| `/inicio-editorial/`             | Inicio, variante B — la versión editorial (nueve secciones)                                                   |
+| `/el-metodo/`                    | The Method: principio, tres pasos, mapa de las cinco Layers, puente al 1:1                                    |
+| `/1-1/`                          | La oferta 1:1 sesión por sesión, entregables, precios, para quién es                                          |
+| `/examenes/`                     | Catálogo de exámenes: órbita de áreas, buscador, filtros, comparador, «Mi selección» (ver `docs/EXAMENES.md`) |
+| `/checkout/examenes/`            | Checkout de los exámenes elegidos (pago simulado)                                                             |
+| `/checkout/initial-layer-cycle/` | Checkout de 5 pasos del Initial Layer Cycle (pago simulado)                                                   |
+| `/checkout/next-layer-cycle/`    | Checkout del Next Layer Cycle                                                                                 |
+| `/legal/*`                       | Términos, privacidad y aviso médico — **marcadores**, el texto lo redacta Verónica                            |
+| `/variantes/`                    | Índice de todas las páginas, para presentar. No enlazado, `noindex`                                           |
 
-Las dos variantes de inicio conviven a propósito hasta que se apruebe una. Ver
+Las variantes A y B se conservan para comparar; el inicio es el que Mari eligió. Ver
 [`docs/DECISIONES.md`](docs/DECISIONES.md).
 
 ## Correr
@@ -64,12 +67,13 @@ interactividad (menú, acordeones, checkout) son `<script>` de Astro por compone
 | `docs/`                    | Brief de lo recibido, decisiones tomadas y abiertas, la especificación de diseño de Stitch                                       |
 | `fuentes/` (no versionado) | El material tal como llegó de Mari: HTML, zips, audio, fotos de estudio, capturas                                                |
 
-**Dos sistemas visuales conviven por diseño**: las páginas editoriales (Cormorant Garamond + Nunito)
-y el inicio de Stitch (Bodoni Moda + Plus Jakarta Sans). `<html data-theme="stitch">` cambia los
-pocos tokens que difieren; el resto es común. Unificar tipografía es cambiar dos variables.
+**Tres sistemas visuales conviven por diseño**: las páginas editoriales (Cormorant Garamond + Nunito),
+el primer Stitch (Bodoni Moda + Plus Jakarta Sans, `data-theme="stitch"`) y el inicio
+(Cormorant Garamond + Plus Jakarta Sans, `data-theme="inicio"`). Cada tema cambia los pocos tokens
+que difieren; el resto es común. Unificar tipografía es cambiar dos variables.
 
-Las fuentes se autoalojan con `@fontsource`; nada se carga de Google. El inicio de Stitch es la única
-ruta que paga por su pareja tipográfica.
+Las fuentes se autoalojan con `@fontsource`; nada se carga de Google. Plus Jakarta Sans (y Bodoni en
+`/inicio-stitch/`) solo la cargan las rutas que la usan.
 
 ## Despliegue
 
@@ -82,7 +86,8 @@ enlace hay que tocar porque todos pasan por `href()`.
 
 ## Qué falta para producción
 
-- [ ] Aprobar una variante de inicio y borrar la otra
+- [x] Aprobar el inicio (22-sep: el segundo diseño de Stitch)
+- [ ] Borrar las variantes A y B cuando ya no hagan falta para comparar
 - [ ] Decidir tipografía y paleta finales (ver `docs/DECISIONES.md`)
 - [ ] Pagos reales: Stripe (tarjeta / Apple Pay), PayPal, verificación manual de Zelle — cada punto está marcado `INTEGRATION POINT` en `Checkout.astro`
 - [ ] CRM: alta del cliente y del pedido (el prototipo solo lo escribe en consola)

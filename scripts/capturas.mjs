@@ -24,21 +24,25 @@ const BASE = (baseArg >= 0 ? args[baseArg + 1] : 'http://127.0.0.1:4321/verowell
 const OUT = path.resolve('capturas');
 
 const CHROME = [
+  process.env.CHROME_PATH,
   'C:/Program Files/Google/Chrome/Application/chrome.exe',
   'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
   '/usr/bin/google-chrome',
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-].find((p) => existsSync(p));
+].find((p) => p && existsSync(p));
 if (!CHROME) {
-  console.error('No Chrome found; set the path in scripts/capturas.mjs');
+  console.error('No Chrome found; set CHROME_PATH or add the path in scripts/capturas.mjs');
   process.exit(2);
 }
 
 const RUTAS = [
   '/',
+  '/inicio-stitch/',
   '/inicio-editorial/',
   '/el-metodo/',
   '/1-1/',
+  '/examenes/',
+  '/tienda/',
   '/checkout/initial-layer-cycle/',
   '/checkout/next-layer-cycle/',
   '/legal/terminos/',

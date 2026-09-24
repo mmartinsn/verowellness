@@ -1,0 +1,440 @@
+---
+/**
+ * Tienda · «Mi selección». On wide screens a bookmark ribbon hangs from under the header and
+ * grows a little with every book added; tapping it opens the summary. On phones it becomes a
+ * bar at the bottom once something is chosen. The selection is kept in localStorage
+ * (`CLAVE_TIENDA`) for /checkout/tienda/. Prices are shown without tax: tax appears only at
+ * checkout. "Comprar …" adds the book (if needed) and goes straight to checkout.
+ *
+ * The script also marks each chapter `.visto` when it enters the viewport, which draws the
+ * highlighter under its quote.
+ */
+import { Image } from 'astro:assets';
+import { productos, precioTienda, CLAVE_TIENDA } from '../../data/tienda';
+import { href } from '../../lib/url';
+
+const catalogo = productos.map((p) => ({
+  id: p.id,
+  nombre: p.nombre,
+  precio: p.precio,
+}));
+const checkout = href('/checkout/tienda');
+---
+
+<div
+  class="seleccion js-only"
+  id="tiendaSeleccion"
+  data-catalogo={JSON.stringify(catalogo)}
+  data-clave={CLAVE_TIENDA}
+  data-checkout={checkout}
+>
+  <button
+    type="button"
+    class="cinta"
+    id="cintaBtn"
+    aria-expanded="false"
+    aria-controls="cintaPanel"
+    aria-label="Abrir mi selección"
+  >
+    <span class="cinta-n" id="cintaN">0</span>
+    <span class="cinta-lbl">Mi selección</span>
+    <span class="cinta-monto" id="cintaMonto">USD 0</span>
+  </button>
+
+  <div class="panel" id="cintaPanel" hidden>
+    <p class="panel-titulo">Mi selección</p>
+    <div class="panel-vacio" id="panelVacio">
+      <strong>Tu selección está vacía.</strong>
+      <span>Explora las guías y elige el tema por el que quieres empezar.</span>
+    </div>
+    <ul class="panel-lista" id="panelLista">
+      {
+        productos.map((p) => (
+          <li data-item={p.id} hidden>
+            <Image src={p.portada} alt="" widths={[76]} sizes="38px" />
+            <span class="pl-nombre">{p.nombre}</span>
+            <span class="pl-precio">{precioTienda(p.precio)}</span>
+            <button
+              type="button"
+              class="pl-quitar"
+              data-quitar={p.id}
+              aria-label={`Quitar ${p.nombre}`}
+            >
+              ×
+            </button>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="panel-sub"><span>Subtotal</span><span id="panelSub">USD 0</span></div>
+    <p class="panel-nota">
+      Todos los precios están en USD. Los impuestos se calculan en el checkout. Productos digitales
+      descargables en PDF.
+    </p>
+    <a class="btn btn-primary btn-block" href={checkout} id="panelIr">Continuar al pago</a>
+  </div>
+</div>
+
+<style>
+  .seleccion {
+    position: fixed;
+    top: 84px;
+    right: clamp(24px, 6vw, 96px);
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .cinta {
+    width: 124px;
+    /* 150 px plus a little per book (set by the script as --extra). */
+    height: calc(150px + var(--extra, 0px));
+    border: 0;
+    cursor: pointer;
+    background: var(--color-charcoal);
+    color: var(--color-bone);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 20px), 0 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    padding: 0 0 34px;
+    font: inherit;
+    filter: drop-shadow(0 14px 22px rgb(35 34 30 / 0.25));
+    transition: height 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
+    animation: cinta-in 1s cubic-bezier(0.34, 1.4, 0.64, 1) 0.6s both;
+  }
+  @keyframes cinta-in {
+    from {
+      height: 0;
+    }
+  }
+  /* Scrolled: the ribbon folds into a short tab at the edge so it never covers a cover. */
+  .seleccion {
+    transition: right 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .seleccion.recogida:not(.abierta) {
+    right: 16px;
+  }
+  .seleccion.recogida:not(.abierta) .cinta {
+    height: 96px;
+    width: 76px;
+    padding-bottom: 28px;
+  }
+  .seleccion.recogida:not(.abierta) .cinta-monto,
+  .seleccion.recogida:not(.abierta) .cinta-lbl {
+    display: none;
+  }
+  .cinta {
+    transition:
+      height 0.7s cubic-bezier(0.34, 1.4, 0.64, 1),
+      width 0.6s cubic-bezier(0.19, 1, 0.22, 1),
+      padding 0.6s ease;
+  }
+  .cinta-n {
+    font-family: var(--font-serif);
+    font-size: 42px;
+    line-height: 1;
+  }
+  .cinta-lbl {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-clay);
+  }
+  .cinta-monto {
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .panel {
+    margin-top: 12px;
+    width: 380px;
+    max-width: calc(100vw - 32px);
+    padding: 26px;
+    border-radius: 28px;
+    background: var(--color-white);
+    box-shadow: 0 40px 90px rgb(35 34 30 / 0.22);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    animation: panel-in 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .panel[hidden] {
+    display: none;
+  }
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
+  .panel-titulo {
+    font-family: var(--font-serif);
+    font-size: 30px;
+  }
+  .panel-vacio {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: rgb(35 34 30 / 0.75);
+  }
+  .panel-vacio strong {
+    color: var(--color-charcoal);
+    font-size: 15px;
+  }
+  .panel-vacio[hidden] {
+    display: none;
+  }
+  .panel-lista {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .panel-lista li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgb(35 34 30 / 0.08);
+  }
+  .panel-lista li[hidden] {
+    display: none;
+  }
+  .panel-lista :global(img) {
+    width: 38px;
+    height: 54px;
+    object-fit: cover;
+    border-radius: 3px;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 0.15);
+  }
+  .pl-nombre {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .pl-precio {
+    font-size: 14px;
+    font-weight: 800;
+  }
+  .pl-quitar {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--color-ivory);
+    font-size: 18px;
+    color: var(--color-charcoal);
+  }
+  .panel-sub {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 800;
+    padding-top: 4px;
+  }
+  .panel-nota {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: rgb(35 34 30 / 0.68);
+  }
+
+  /* Phones: a bar at the bottom, only once something is chosen. */
+  @media (max-width: 760px) {
+    .seleccion {
+      top: auto;
+      right: 14px;
+      left: 14px;
+      bottom: calc(14px + env(safe-area-inset-bottom));
+      align-items: stretch;
+      flex-direction: column-reverse;
+    }
+    .seleccion:not(.con-items) .cinta {
+      display: none;
+    }
+    .cinta {
+      width: auto;
+      height: 64px;
+      clip-path: none;
+      border-radius: var(--radius-pill);
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 12px;
+      padding: 0 22px 0 10px;
+      animation: none;
+    }
+    .cinta-n {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--color-clay);
+      color: var(--color-charcoal);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cinta-lbl {
+      flex: 1;
+      text-align: left;
+      color: var(--color-bone);
+      font-size: 11.5px;
+    }
+    .cinta-monto {
+      font-size: 16px;
+      font-weight: 800;
+    }
+    .panel {
+      margin: 0 0 12px;
+      width: auto;
+      max-width: none;
+    }
+    .seleccion.recogida:not(.abierta) {
+      right: 14px;
+    }
+    .seleccion.recogida:not(.abierta) .cinta {
+      height: 64px;
+      width: auto;
+      padding: 0 22px 0 10px;
+    }
+    .seleccion.recogida:not(.abierta) .cinta-monto,
+    .seleccion.recogida:not(.abierta) .cinta-lbl {
+      display: inline;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cinta,
+    .panel {
+      animation: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.getElementById('tiendaSeleccion');
+  if (root) {
+    type Item = { id: string; nombre: string; precio: number };
+    const catalogo: Item[] = JSON.parse(root.dataset.catalogo ?? '[]');
+    const porId = new Map(catalogo.map((i) => [i.id, i]));
+    const CLAVE = root.dataset.clave ?? 'vw-tienda-seleccion';
+    const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
+    const fmt = (n: number) => `USD ${Number.isInteger(n) ? n : n.toFixed(2).replace('.', ',')}`;
+
+    const leer = (): string[] => {
+      try {
+        const v = JSON.parse(localStorage.getItem(CLAVE) ?? '[]');
+        return Array.isArray(v) ? v.filter((id) => porId.has(id)) : [];
+      } catch {
+        return [];
+      }
+    };
+    const sel = new Set<string>(leer());
+    const guardar = () => {
+      try {
+        localStorage.setItem(CLAVE, JSON.stringify([...sel]));
+      } catch {
+        // Storage blocked: the selection still works for this visit.
+      }
+    };
+
+    const pintar = () => {
+      const n = sel.size;
+      const sub = Math.round([...sel].reduce((s, id) => s + porId.get(id)!.precio, 0) * 100) / 100;
+      $('cintaN')!.textContent = String(n);
+      $('cintaMonto')!.textContent = fmt(sub);
+      $('panelSub')!.textContent = fmt(sub);
+      $('panelVacio')!.hidden = n > 0;
+      root.classList.toggle('con-items', n > 0);
+      root.querySelector<HTMLElement>('.cinta')!.style.setProperty('--extra', `${n * 26}px`);
+      root
+        .querySelectorAll<HTMLElement>('[data-item]')
+        .forEach((li) => (li.hidden = !sel.has(li.dataset.item!)));
+      document.querySelectorAll<HTMLButtonElement>('[data-tienda-add]').forEach((b) => {
+        b.setAttribute('aria-pressed', String(sel.has(b.dataset.tiendaAdd!)));
+      });
+      const ir = $<HTMLAnchorElement>('panelIr')!;
+      ir.toggleAttribute('aria-disabled', n === 0);
+      ir.style.pointerEvents = n === 0 ? 'none' : '';
+      ir.style.opacity = n === 0 ? '0.45' : '';
+    };
+
+    document.querySelectorAll<HTMLButtonElement>('[data-tienda-add]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const id = b.dataset.tiendaAdd!;
+        if (sel.has(id)) sel.delete(id);
+        else sel.add(id);
+        guardar();
+        pintar();
+      })
+    );
+    document.querySelectorAll<HTMLButtonElement>('[data-tienda-comprar]').forEach((b) =>
+      b.addEventListener('click', () => {
+        sel.add(b.dataset.tiendaComprar!);
+        guardar();
+        window.location.href = root.dataset.checkout!;
+      })
+    );
+    root.querySelectorAll<HTMLButtonElement>('[data-quitar]').forEach((b) =>
+      b.addEventListener('click', () => {
+        sel.delete(b.dataset.quitar!);
+        guardar();
+        pintar();
+      })
+    );
+
+    const btn = $('cintaBtn')!;
+    const panel = $('cintaPanel')!;
+    const abrir = (open: boolean) => {
+      panel.hidden = !open;
+      btn.setAttribute('aria-expanded', String(open));
+      root.classList.toggle('abierta', open);
+    };
+    btn.addEventListener('click', () => abrir(panel.hidden));
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') abrir(false);
+    });
+    document.addEventListener('click', (e) => {
+      if (!panel.hidden && !root.contains(e.target as Node)) abrir(false);
+    });
+    const recoger = () => root.classList.toggle('recogida', window.scrollY > 240);
+    window.addEventListener('scroll', recoger, { passive: true });
+    recoger();
+
+    // The summary floats over the page; reading on closes it.
+    let y0 = window.scrollY;
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!panel.hidden && Math.abs(window.scrollY - y0) > 120) abrir(false);
+        if (panel.hidden) y0 = window.scrollY;
+      },
+      { passive: true }
+    );
+    pintar();
+
+    // Draw each quote's highlighter once its chapter is on screen.
+    const caps = document.querySelectorAll('.capitulo');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((en) => {
+            if (en.isIntersecting) {
+              en.target.classList.add('visto');
+              io.unobserve(en.target);
+            }
+          }),
+        { threshold: 0.35 }
+      );
+      caps.forEach((c) => io.observe(c));
+    } else {
+      caps.forEach((c) => c.classList.add('visto'));
+    }
+  }
+</script>

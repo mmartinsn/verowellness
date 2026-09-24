@@ -1,10 +1,10 @@
 ---
 /**
  * Site footer: wordmark and tagline, the same navigation as the header, the brand line
- * "Health has layers.™" and the copyright.
+ * "Health has layers.™", the copyright and the links to the legal pages.
  */
 import Wordmark from './Wordmark.astro';
-import { nav, marca, copyright } from '../data/site';
+import { nav, marca, copyright, legal } from '../data/site';
 import { href } from '../lib/url';
 ---
 
@@ -22,6 +22,11 @@ import { href } from '../lib/url';
     <div class="footer-bottom">
       <p class="footer-quote">{marca.lema}</p>
       <span class="footer-legal">{copyright}</span>
+      <nav class="footer-legales" aria-label="Legal">
+        <a href={href(legal.terminos)}>Términos</a>
+        <a href={href(legal.privacidad)}>Privacidad</a>
+        <a href={href(legal.avisoMedico)}>Aviso médico</a>
+      </nav>
     </div>
   </div>
 </footer>
@@ -93,6 +98,23 @@ import { href } from '../lib/url';
     color: rgb(48 47 42 / 0.72);
   }
 
+  .footer-legales {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .footer-legales a {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgb(48 47 42 / 0.72);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgb(48 47 42 / 0.25);
+  }
+  .footer-legales a:hover {
+    color: var(--color-clay-deep);
+  }
   :global(html[data-theme='stitch']) .site-footer {
     border-top: 1px solid rgb(0 0 0 / 0.08);
     padding: 56px 0;
@@ -116,5 +138,52 @@ import { href } from '../lib/url';
     font-size: 11px;
     font-weight: 400;
     color: rgb(0 0 0 / 0.4);
+  }
+
+  /* Home look: top rule, sentence-case grey links, copyright alone on the left (the design's
+     footer has no brand line). */
+  :global(html[data-theme='inicio']) .site-footer {
+    border-top: 1px solid rgb(35 34 30 / 0.12);
+    padding: 64px 0 40px;
+  }
+  :global(html[data-theme='inicio']) .footer-top {
+    padding-bottom: 0;
+    border-bottom: 0;
+    gap: 40px;
+  }
+  :global(html[data-theme='inicio']) .footer-tagline {
+    margin-top: 12px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: rgb(35 34 30 / 0.7);
+  }
+  :global(html[data-theme='inicio']) .footer-links {
+    gap: 28px;
+  }
+  :global(html[data-theme='inicio']) .footer-links a {
+    font-size: 14px;
+    color: rgb(35 34 30 / 0.7);
+    transition: color 0.2s ease;
+  }
+  :global(html[data-theme='inicio']) .footer-bottom {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgb(35 34 30 / 0.06);
+    text-align: left;
+  }
+  :global(html[data-theme='inicio']) .footer-quote {
+    display: none;
+  }
+  /* 0.65 alpha on bone measures ≥ 4.5:1 (the design's 0.4 was 2.4:1). */
+  :global(html[data-theme='inicio']) .footer-legal,
+  :global(html[data-theme='inicio']) .footer-legales a {
+    font-weight: 500;
+    color: rgb(35 34 30 / 0.65);
+  }
+  :global(html[data-theme='inicio']) .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
   }
 </style>

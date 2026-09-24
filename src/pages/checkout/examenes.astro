@@ -1,0 +1,40 @@
+---
+/**
+ * Checkout — lab tests. What is bought is the visitor's selection on /examenes/, read from
+ * localStorage by the checkout script; prices come from data/examenes (sale price, tax added).
+ */
+import CheckoutLayout from '../../layouts/CheckoutLayout.astro';
+import Checkout from '../../components/checkout/Checkout.astro';
+import { examenes, CLAVE_SELECCION } from '../../data/examenes';
+import { href } from '../../lib/url';
+
+const pedido = {
+  id: 'EXAMENES',
+  nombre: 'Exámenes funcionales',
+  etiqueta: 'Tu selección',
+  descripcionCorta: '',
+  subtotal: 0,
+  incluyeCheckout: [],
+  // Placeholder copy for the prototype — to be confirmed with Verónica (docs/EXAMENES.md).
+  confirmacion: {
+    titulo: 'Pedido recibido',
+    texto: 'Registramos tu pedido de exámenes. Te escribiremos por email con los siguientes pasos.',
+  },
+};
+---
+
+<CheckoutLayout
+  title="Checkout de exámenes — Veronica Wellness"
+  description="Confirma y paga los exámenes funcionales que elegiste."
+>
+  <Checkout
+    ciclo={pedido}
+    etiquetaProducto="Pedido"
+    textos={{ pedido: 'pedido de exámenes' }}
+    carrito={{
+      clave: CLAVE_SELECCION,
+      volver: href('/examenes'),
+      catalogo: examenes.map(({ id, nombre, precio }) => ({ id, nombre, precio })),
+    }}
+  />
+</CheckoutLayout>

@@ -1,0 +1,154 @@
+---
+/**
+ * 06 · Herramientas ≠ estrategia — the tools of the moment on two endless ribbons running in
+ * opposite directions, the line that none is a strategy by itself, and the "uncomfortable
+ * truth" panel. Each ribbon's list is rendered twice (the copy `aria-hidden`) so it loops
+ * seamlessly; under reduced motion only the first copy shows, wrapped.
+ */
+const herramientas = [
+  'Ayuno intermitente',
+  'Péptidos',
+  'Análogos de GLP-1',
+  'Suplementos virales',
+  'Meditación',
+  'Sauna infrarrojo',
+  'Baños de hielo',
+  'Sueros de vitaminas',
+  'Pediluvio',
+  'Cámara hiperbárica',
+  'Terapias de ozono',
+];
+const filas = [herramientas.slice(0, 6), herramientas.slice(6)];
+---
+
+<section class="herramientas">
+  <div class="wrap">
+    <div class="intro reveal">
+      <span class="eyebrow">Esto son herramientas</span>
+    </div>
+  </div>
+  <div class="cintas reveal">
+    {
+      filas.map((fila, i) => (
+        <div class:list={['marquee', { reverse: i === 1 }]} style={`--marquee-dur: ${38 + i * 8}s`}>
+          {[0, 1].map((copia) => (
+            <ul class="marquee-track" aria-hidden={copia === 1 ? 'true' : undefined}>
+              {[...fila, ...fila].map((h, j) => (
+                <li
+                  class:list={['burbuja', { dup: j >= fila.length }]}
+                  aria-hidden={j >= fila.length ? 'true' : undefined}
+                >
+                  {h}
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+  <div class="wrap">
+    <div class="intro-cierre reveal">
+      <p class="punch">Ninguna, por sí sola, es una estrategia.</p>
+    </div>
+
+    <div class="duo reveal">
+      <div>
+        <span class="eyebrow">La verdad incómoda</span>
+        <h2>Herramientas ≠ estrategia.</h2>
+      </div>
+      <div>
+        <p>
+          Cada semana aparece una herramienta nueva — y cada semana sientes que deberías estar
+          usándola. Pero una herramienta sin estrategia es solo una cosa más que probar. Un
+          suplemento, un ayuno o un protocolo pueden tener sentido, pero solo dentro de un mapa que
+          entienda tu cuerpo completo. Fuera de él, es ruido.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .herramientas {
+    padding: 100px 0;
+    background: var(--color-bone);
+  }
+  .intro {
+    text-align: center;
+    max-width: 840px;
+    margin: 0 auto 44px;
+  }
+  .intro {
+    text-align: center;
+    margin-bottom: 26px;
+  }
+  .cintas {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 30px;
+  }
+  .marquee-track {
+    list-style: none;
+    margin: 0;
+  }
+  .burbuja {
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 15px;
+    color: rgb(35 34 30 / 0.85);
+    background: var(--color-white);
+    border: 1px solid rgb(35 34 30 / 0.12);
+    padding: 14px 26px;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 4px 14px rgb(35 34 30 / 0.03);
+    transition:
+      border-color 0.3s ease,
+      color 0.3s ease,
+      box-shadow 0.3s ease,
+      background 0.3s ease;
+  }
+  .burbuja:hover {
+    border-color: var(--color-clay);
+    color: var(--color-clay-rich);
+    background: linear-gradient(135deg, #fff, #fbeee7);
+    box-shadow: 0 12px 26px rgb(214 154 124 / 0.25);
+  }
+  .intro-cierre {
+    text-align: center;
+  }
+  .punch {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 24px;
+    color: rgb(35 34 30 / 0.7);
+    text-align: center;
+  }
+
+  .duo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-top: 64px;
+    align-items: center;
+    background: var(--color-ivory);
+    border-radius: 32px;
+    padding: 48px 36px;
+    border: 1px solid rgb(35 34 30 / 0.06);
+  }
+  @media (min-width: 860px) {
+    .duo {
+      grid-template-columns: 0.9fr 1.1fr;
+      padding: 64px;
+      gap: 64px;
+    }
+  }
+  .duo h2 {
+    margin-top: 10px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .burbuja.dup {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,280 @@
+---
+/**
+ * Tienda · hero — the headline on the left; on the right the three ebooks fanned out like a
+ * hand of cards in 3D (they spread further on hover), over a drifting clay/sage aurora, with a
+ * slowly turning seal. From the Claude Design canvas «Veronica Wellness — Tienda de ebooks».
+ */
+import { Image } from 'astro:assets';
+import { productos, precioTienda } from '../../data/tienda';
+
+const [hackear, recetario, glp1] = productos;
+const desde = Math.min(...productos.map((p) => p.precio));
+---
+
+<section class="t-hero" aria-labelledby="t-titulo">
+  <div class="t-aurora" aria-hidden="true"></div>
+  <div class="wrap t-hero-grid">
+    <div class="t-copy">
+      <span class="eyebrow">Veronica Wellness · Recursos de Verónica Dudamell</span>
+      <h1 id="t-titulo" class="t-titulo">
+        Empieza por lo que necesitas <em class="grad-text">entender</em>.
+      </h1>
+      <p class="t-bajada">
+        Ebooks y recetas de Verónica Dudamell para mirar tus hábitos con más claridad, organizar tus
+        mañanas y llevar mejores preguntas a consulta. Una lectura a la vez.
+      </p>
+      <div class="t-ctas">
+        <a class="btn btn-primary" href="#indice" data-magnet="0.25">Explorar la tienda</a>
+        <span class="t-meta">{productos.length} títulos · PDF · desde {precioTienda(desde)}</span>
+      </div>
+    </div>
+
+    <div class="abanico" aria-hidden="true">
+      <div class="libro l1">
+        <Image src={hackear.portada} alt="" widths={[300, 600]} sizes="300px" loading="eager" />
+      </div>
+      <div class="libro l3">
+        <Image src={glp1.portada} alt="" widths={[300, 600]} sizes="300px" loading="eager" />
+      </div>
+      <div class="libro l2">
+        <Image
+          src={recetario.portada}
+          alt=""
+          widths={[320, 640]}
+          sizes="320px"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <div class="sello">
+        <svg viewBox="0 0 150 150" width="150" height="150">
+          <defs>
+            <path id="sello-circ" d="M75,75 m-58,0 a58,58 0 1,1 116,0 a58,58 0 1,1 -116,0"></path>
+          </defs>
+          <circle cx="75" cy="75" r="72"></circle>
+          <text>
+            <textPath href="#sello-circ">DESCARGA DIGITAL · PDF · DESCARGA DIGITAL · PDF ·</textPath
+            >
+          </text>
+        </svg>
+        <span class="sello-centro"><small>DESDE</small>{`$${desde}`}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .t-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 40px 0 72px;
+  }
+  .t-aurora {
+    position: absolute;
+    width: 900px;
+    height: 900px;
+    right: -200px;
+    top: -140px;
+    border-radius: 50%;
+    background:
+      radial-gradient(closest-side at 40% 40%, rgb(231 183 160 / 0.55), transparent 70%),
+      radial-gradient(closest-side at 70% 65%, rgb(207 215 196 / 0.6), transparent 70%);
+    filter: blur(30px);
+    animation: t-aurora 22s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes t-aurora {
+    to {
+      transform: translate(60px, -40px) scale(1.12) rotate(10deg);
+    }
+  }
+  .t-hero-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    align-items: center;
+    min-height: calc(100vh - 160px);
+  }
+  @media (min-width: 1000px) {
+    .t-hero-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 40px;
+    }
+  }
+  .t-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+  .t-titulo {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(58px, 8vw, 112px);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    color: var(--color-charcoal);
+  }
+  .t-titulo em {
+    font-style: italic;
+  }
+  .t-bajada {
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.65;
+    color: rgb(35 34 30 / 0.82);
+    max-width: 520px;
+  }
+  .t-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 18px;
+  }
+  .t-meta {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgb(35 34 30 / 0.68);
+  }
+
+  /* ── The fan of books ── */
+  .abanico {
+    position: relative;
+    height: clamp(460px, 48vw, 680px);
+    perspective: 1600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .libro {
+    position: absolute;
+    width: clamp(190px, 21vw, 300px);
+    aspect-ratio: 300 / 424;
+    border-radius: 3px 8px 8px 3px;
+    overflow: hidden;
+    box-shadow: 30px 40px 60px rgb(35 34 30 / 0.28);
+    transform-style: preserve-3d;
+    transition:
+      transform 0.9s cubic-bezier(0.19, 1, 0.22, 1),
+      box-shadow 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .libro::after {
+    /* the spine: a light fold along the left edge */
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 14px;
+    background: linear-gradient(
+      90deg,
+      rgb(0 0 0 / 0.28),
+      rgb(255 255 255 / 0.28) 60%,
+      rgb(0 0 0 / 0.08)
+    );
+  }
+  .libro :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .l1 {
+    transform: rotateY(-22deg) rotateZ(-9deg) translate3d(-38%, 4%, 0);
+    animation: libro-in 1.2s cubic-bezier(0.19, 1, 0.22, 1) 0.1s both;
+  }
+  .l3 {
+    aspect-ratio: 300 / 388;
+    transform: rotateY(-14deg) rotateZ(8deg) translate3d(38%, 6%, 0);
+    animation: libro-in 1.2s cubic-bezier(0.19, 1, 0.22, 1) 0.25s both;
+  }
+  .l2 {
+    width: clamp(205px, 22.5vw, 320px);
+    z-index: 2;
+    transform: rotateY(-16deg) translate3d(0, -2%, 40px);
+    box-shadow: 40px 50px 80px rgb(35 34 30 / 0.32);
+    animation: libro-in 1.2s cubic-bezier(0.19, 1, 0.22, 1) 0.4s both;
+  }
+  @keyframes libro-in {
+    from {
+      opacity: 0;
+      translate: 0 80px;
+    }
+  }
+  @media (hover: hover) {
+    .abanico:hover .l1 {
+      transform: rotateY(-26deg) rotateZ(-14deg) translate3d(-52%, 2%, 0);
+    }
+    .abanico:hover .l2 {
+      transform: rotateY(-18deg) translate3d(0, -8%, 60px);
+    }
+    .abanico:hover .l3 {
+      transform: rotateY(-10deg) rotateZ(12deg) translate3d(52%, 4%, 0);
+    }
+  }
+
+  .sello {
+    position: absolute;
+    right: 6%;
+    bottom: 10%;
+    z-index: 4;
+    width: 150px;
+    height: 150px;
+  }
+  .sello svg {
+    animation: girar 26s linear infinite;
+  }
+  .sello circle {
+    fill: var(--color-charcoal);
+  }
+  .sello text {
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 3.6px;
+    fill: var(--color-clay);
+  }
+  @keyframes girar {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .sello-centro {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-bone);
+    font-family: var(--font-serif);
+    font-size: 40px;
+    line-height: 1;
+  }
+  .sello-centro small {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+  }
+  @media (max-width: 600px) {
+    .sello {
+      width: 112px;
+      height: 112px;
+      right: 0;
+      bottom: 2%;
+    }
+    .sello svg {
+      width: 112px;
+      height: 112px;
+    }
+    .sello-centro {
+      font-size: 30px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .t-aurora,
+    .sello svg,
+    .l1,
+    .l2,
+    .l3 {
+      animation: none;
+    }
+  }
+</style>

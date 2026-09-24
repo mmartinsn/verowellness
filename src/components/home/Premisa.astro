@@ -1,0 +1,192 @@
+---
+/**
+ * 03 · La premisa — the signature belief on a compact full-width dark band, with Verónica cut out
+ * (no background) standing at its foot and rising above its top edge into the light page — an
+ * editorial "pop-out". A soft clay glow sits behind her
+ * (the ring around her was removed, Mari 2026-09-23).
+ *
+ * History (Mari, 2026-09-23): boxed panel → full-width band → "más pequeña, un mockup de Vero sin
+ * fondo, moderno y minimalista". The cutout is made locally with macOS Vision
+ * (scripts/recortar-fondo.swift) from `veronica-bata-mano-bolsillo.jpg`.
+ */
+import { Image } from 'astro:assets';
+import recorte from '../../assets/fotos/veronica-bata-recorte.png';
+import { marca } from '../../data/site';
+---
+
+<section class="premisa">
+  <div class="wrap">
+    <div class="banda">
+      <div class="fondo aurora" aria-hidden="true">
+        <div class="aura"></div>
+      </div>
+      <div class="premisa-texto">
+        <span class="eyebrow">La premisa</span>
+        <blockquote class="cita" data-split>
+          "La salud celular empieza mucho <span class="grad-text on-dark"
+            >antes de llegar a la célula."</span
+          >
+        </blockquote>
+        <p class="firma">— {marca.creadora}</p>
+      </div>
+      <figure class="figura">
+        <span class="halo" aria-hidden="true"></span>
+        <Image
+          src={recorte}
+          alt={`${marca.creadora} con bata blanca, sonriendo`}
+          widths={[360, 540, 746]}
+          sizes="(min-width: 960px) 320px, 48vw"
+        />
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .premisa {
+    /* Room above the band for the part of the figure that rises out of it. */
+    padding-top: clamp(76px, 9vw, 124px);
+  }
+  /* Full bleed band; overflow stays visible so the figure can rise above it. */
+  .banda {
+    position: relative;
+    margin-inline: calc(50% - 50vw);
+    padding: clamp(48px, 5.5vw, 76px) max(24px, calc(50vw - 566px));
+    color: var(--color-bone);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+  }
+  @media (min-width: 960px) {
+    .banda {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      min-height: 320px;
+    }
+  }
+  /* The dark ground and its aurora, clipped to the band on their own layer. */
+  .fondo {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(
+      ellipse 80% 90% at 50% 40%,
+      #33312b 0%,
+      var(--color-charcoal) 55%,
+      #1a1916 100%
+    );
+  }
+  .aura {
+    position: absolute;
+    width: 620px;
+    height: 620px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(214 154 124 / 0.32) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    animation: aura 10s ease-in-out infinite alternate;
+  }
+  @keyframes aura {
+    0% {
+      transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    50% {
+      transform: translate(35px, -30px) scale(1.08) rotate(6deg);
+    }
+    100% {
+      transform: translate(-25px, 35px) scale(0.96) rotate(-6deg);
+    }
+  }
+
+  .premisa-texto {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .banda .eyebrow {
+    color: var(--color-clay);
+  }
+  .cita {
+    font-family: var(--font-serif);
+    font-size: clamp(34px, 4.4vw, 60px);
+    font-style: italic;
+    line-height: 1.12;
+    color: var(--color-bone);
+    max-width: 680px;
+    text-wrap: balance;
+  }
+  .firma {
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgb(248 246 241 / 0.6);
+  }
+
+  /* ── Verónica, standing on the band's foot and rising above its top ── */
+  .figura {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    align-self: end;
+    justify-self: center;
+    width: min(320px, 48vw);
+    /* Pull her down to the band's bottom edge and let her rise past its top. */
+    margin-bottom: calc(-1 * clamp(48px, 5.5vw, 76px));
+    margin-top: calc(-1 * clamp(124px, 13vw, 190px));
+  }
+  .figura :global(img) {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: auto;
+    display: block;
+    /* The photo ends at the waist: let that edge dissolve into the band instead of a cut. */
+    -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+  }
+  .halo {
+    position: absolute;
+    left: 50%;
+    top: 34%;
+    width: 120%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(231 183 160 / 0.45) 0%, transparent 62%);
+    filter: blur(10px);
+    z-index: 0;
+  }
+  @media (max-width: 959px) {
+    .figura {
+      order: -1;
+      margin-top: calc(-1 * clamp(124px, 26vw, 180px));
+      margin-bottom: 28px;
+    }
+    .premisa-texto {
+      text-align: center;
+      align-items: center;
+    }
+  }
+  @supports (animation-timeline: view()) {
+    /* She rises a little as the band scrolls by. */
+    .figura :global(img) {
+      animation: sube linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 50%;
+    }
+    @keyframes sube {
+      from {
+        translate: 0 60px;
+        opacity: 0.2;
+      }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .aura,
+    .figura :global(img) {
+      animation: none;
+    }
+  }
+</style>
