@@ -244,7 +244,8 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     flechas, ordenados por `prioridad` (Mari: «los más potentes primero»). Van en Sobre mí y en
     Asesorías antes de los precios (los tres primeros). Textos tal cual los mandó Mari, solo con
     ortografía corregida: Lorena González, Liza Koutcharyan (foto), Fabiana de Luca (foto), Mouna
-    Harbie, Sofía Molina, Margarita Medel (foto) y Yisandra Sori (foto).
+    Harbie, Sofía Molina, Patricia Medel (foto), Mariexis Palacios (foto), Margarita Medel (foto) y
+    Yisandra Sori (foto).
 
 ## Abiertas — para Mari y Verónica
 

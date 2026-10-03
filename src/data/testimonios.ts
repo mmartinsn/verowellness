@@ -8,6 +8,8 @@ import fotoMargarita from '../assets/testimonios/margarita-medel.jpg';
 import fotoLiza from '../assets/testimonios/liza-koutcharyan.jpg';
 import fotoYisandra from '../assets/testimonios/yisandra-sori.jpg';
 import fotoFabiana from '../assets/testimonios/fabiana-de-luca.jpg';
+import fotoPatricia from '../assets/testimonios/patricia-medel.jpg';
+import fotoMariexis from '../assets/testimonios/mariexis-palacios.jpg';
 
 export interface Testimonio {
   id: string;
@@ -52,7 +54,7 @@ export const testimonios: Testimonio[] = [
       'Hace tres años comencé a trabajar con Veronica en mejorar mi alimentación y salud, y desde entonces he experimentado cambios que van más allá de la pérdida de peso. Este plan de alimentación diseñado específicamente para mis necesidades, me ha ayudado a perder y mantener mi peso de una manera sostenible, pero sobre todo, a sentirme mejor y prestar mucha más atención a lo que mi cuerpo necesita.',
       'Estoy muy agradecida con Vero por su acompañamiento profesional, conocimiento y por la manera cálida y personalizada en la que ha guiado mi proceso. Estos tres años me han enseñado que alimentarse bien no se trata de seguir una dieta temporal, sino de crear hábitos que realmente pueda mantener y que contribuyan a sentirme bien a largo plazo. Sin duda, ha sido una parte muy importante de mi camino hacia una vida más saludable y espero continuar aprendiendo de su experiencia!! 🩷🙏',
     ],
-    prioridad: 6,
+    prioridad: 8,
   },
   {
     id: 'lorena-gonzalez',
@@ -107,7 +109,7 @@ export const testimonios: Testimonio[] = [
     motivo: [],
     destacado: 'Dios puso a Vero en mi camino para ayudar en mi sanación, ella sabe lo que hace.',
     texto: [],
-    prioridad: 7,
+    prioridad: 9,
   },
   {
     id: 'fabiana-de-luca',
@@ -122,5 +124,30 @@ export const testimonios: Testimonio[] = [
       'Seguimos descubriendo mi cuerpo poquito a poquito, pero estoy demasiado feliz y agradecida con mis resultados desde el primer mes. Más que una nutricionista, siento que encontré a alguien que realmente se preocupa por entenderme y acompañarme en todo el proceso.',
     ],
     prioridad: 3,
+  },
+  {
+    id: 'patricia-medel',
+    nombre: 'Patricia Medel',
+    lugar: 'USA',
+    foto: fotoPatricia,
+    motivo: ['Peso', 'Estilo de vida'],
+    destacado: 'Me di cuenta que esto era para siempre.',
+    texto: [
+      'A mis 65 años, he probado de todo. Cuando empecé mi tratamiento con Vero, me di cuenta que esto era para siempre: para siempre recuperar mi salud y mi peso. Y me apoyó para que este proceso sea un estilo de vida. Muchas gracias.',
+    ],
+    prioridad: 6,
+  },
+  {
+    id: 'mariexis-palacios',
+    nombre: 'Mariexis Palacios',
+    lugar: 'Caracas, Venezuela',
+    foto: fotoMariexis,
+    motivo: ['Estilo de vida', 'Familia'],
+    destacado: 'Sus asesorías abarcan más allá de la alimentación.',
+    texto: [
+      'Mi experiencia con Vero ha sido genial, hemos ido trabajando en mi salud desde cada pilar fundamental para que los cambios sean a largo plazo, entendiendo cada uno y poder hacerlo como un estilo de vida y no solo una dieta más, ya que sus asesorías abarcan más allá de la alimentación. Sus conocimientos, compromiso, la paciencia y amabilidad con que lleva mi caso de verdad que me hace sentir acompañada en todo el proceso.',
+      'Vero, estoy muy agradecida por todo lo que a mí y mi familia nos has ayudado. Seguimos adelante 🫶🏻.',
+    ],
+    prioridad: 7,
   },
 ];
