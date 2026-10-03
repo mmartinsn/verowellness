@@ -5,7 +5,11 @@
  */
 import CheckoutLayout from '../../layouts/CheckoutLayout.astro';
 import Checkout from '../../components/checkout/Checkout.astro';
-import { examenes, CLAVE_SELECCION } from '../../data/examenes';
+import { examenes, CLAVE_SELECCION, FEE_LABORATORIO } from '../../data/examenes';
+import { ciclos } from '../../data/oferta';
+
+const session = ciclos.LAYER_SESSION;
+const initial = ciclos.INITIAL_LAYER_CYCLE;
 import { href } from '../../lib/url';
 
 const pedido = {
@@ -30,6 +34,26 @@ const pedido = {
   <Checkout
     ciclo={pedido}
     etiquetaProducto="Pedido"
+    extras={{
+      lectura: [
+        {
+          id: session.id,
+          rotulo: session.consultas,
+          nombre: session.nombre,
+          precio: session.subtotal,
+          texto: 'Se brinda lectura de exámenes y plan de acción.',
+        },
+        {
+          id: initial.id,
+          rotulo: initial.consultas,
+          nombre: initial.nombre,
+          precio: initial.subtotal,
+          texto:
+            'Aseguras el seguimiento de los pasos del plan de acción en base a tus resultados.',
+        },
+      ],
+      feePorItem: FEE_LABORATORIO,
+    }}
     textos={{ pedido: 'pedido de exámenes' }}
     carrito={{
       clave: CLAVE_SELECCION,

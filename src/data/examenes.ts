@@ -521,6 +521,13 @@ export function examenesDeArea(areaId: string): Examen[] {
 export const CLAVE_SELECCION = 'vw-examenes-seleccion';
 
 /**
+ * The lab's own charges per test, added apart in the checkout and without tax (Verónica, change
+ * 41: «services fee $10-15 y authorization network $10 aprox»). The top of her range, 15 + 10, so
+ * the order never falls short; to confirm with her.
+ */
+export const FEE_LABORATORIO = 25;
+
+/**
  * FAQ of /examenes/ — adapted from nutriwhitesalud.com/politicas/examenes (read 2026-09-24) at
  * Mari's request («la logística es tal como ellos lo tienen»): the same windows, rules and fees,
  * with «Embajador NutriWhite» turned into the 1:1 advisory with Verónica. Wording by Codex (2026-09-24).

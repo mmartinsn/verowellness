@@ -184,6 +184,21 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     qué» en oscuro. Rótulos de interfaz del catálogo (título, buscador, sin resultados) por
     Claude. «Perfil hepático de tu catálogo» → «de nuestro catálogo».
 
+20. **2026-10-03 — Tienda (43–47) y checkouts.** Precios 9.99 / 19.99 (más vendido) / 12.99 y la
+    cuarta guía «Vuelve a sentirte tú» a 19.99 (más vendido) con su portada; los textos de las
+    tres guías son los de Verónica tal cual (título, pregunta, párrafo, «Dentro encontrarás» y
+    cierre); la de hormonas, del manuscrito v4. **Checkouts:** 7 % en todos (ya estaba); el bonus
+    del Initial se ve en el resumen; en Layer Session, Initial y Next, antes de pagar,
+    «¿Deseas adquirir alguna de nuestras guías?» con las cuatro guías a precio normal; en la
+    tienda, al llegar, una ventana ofrece la siguiente guía que no está en el pedido (recetario →
+    hackear → hormonas → GLP-1) con 15 % de descuento «solo en este pedido» (porcentaje propuesto,
+    a confirmar); en exámenes, Sí/No a la cita de lectura (1 consulta USD 150 «Se brinda lectura
+    de exámenes y plan de acción», 2 consultas USD 269 «Aseguras el seguimiento…»), con el aviso
+    «se lee 1 examen por cita…», y el fee del laboratorio aparte y sin impuesto, USD 25 por examen
+    (tope de lo que dio Verónica, a confirmar). «Overall pick up» del cambio 39 no se entendió;
+    queda preguntado. Totales probados en navegador (p. ej. 2 exámenes 399.60 + 7 % 27.97 + fee
+    50 = 477.57).
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

@@ -3,6 +3,7 @@
 import CheckoutLayout from '../../layouts/CheckoutLayout.astro';
 import Checkout from '../../components/checkout/Checkout.astro';
 import { ciclos } from '../../data/oferta';
+import { guiasCheckout } from '../../data/tienda';
 
 const ciclo = ciclos.LAYER_SESSION;
 ---
@@ -11,5 +12,5 @@ const ciclo = ciclos.LAYER_SESSION;
   title={`Reserva tu ${ciclo.nombre} — Veronica Wellness`}
   description="Reserva tu Layer Session con Veronica Wellness: una consulta privada online y tu plan de acción."
 >
-  <Checkout ciclo={ciclo} />
+  <Checkout ciclo={ciclo} extras={{ guias: guiasCheckout() }} />
 </CheckoutLayout>

@@ -6,7 +6,13 @@
  */
 import CheckoutLayout from '../../layouts/CheckoutLayout.astro';
 import Checkout from '../../components/checkout/Checkout.astro';
-import { productos, CLAVE_TIENDA } from '../../data/tienda';
+import {
+  productos,
+  CLAVE_TIENDA,
+  guiasCheckout,
+  ordenPopupGuias,
+  DESCUENTO_POPUP,
+} from '../../data/tienda';
 import { href } from '../../lib/url';
 
 const pedido = {
@@ -31,6 +37,10 @@ const pedido = {
   <Checkout
     ciclo={pedido}
     etiquetaProducto="Pedido"
+    extras={{
+      guias: guiasCheckout(),
+      popupGuias: { orden: ordenPopupGuias, descuento: DESCUENTO_POPUP },
+    }}
     textos={{
       datos: 'Esta información crea tu perfil como cliente de Veronica Wellness.',
       zellePendiente: 'En cuanto lo confirmemos (24–48h) te enviaremos tus PDF por email.',

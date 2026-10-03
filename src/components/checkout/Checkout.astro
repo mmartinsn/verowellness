@@ -25,6 +25,8 @@ export interface ProductoCheckout {
   descripcionCorta: string;
   subtotal: number;
   incluyeCheckout: string[];
+  /** A gift shown in the summary (the Initial Layer Cycle's guide, on every sale). */
+  bonus?: string;
   confirmacion: { titulo: string; texto: string; calendlyUrl?: string; calendlyEtiqueta?: string };
 }
 
@@ -45,14 +47,44 @@ export interface TextosCheckout {
   pedido?: string;
 }
 
+/** A guide that can be added to the order before paying (Verónica, changes 12 and 46). */
+export interface GuiaExtra {
+  id: string;
+  nombre: string;
+  precio: number;
+  portada?: string;
+}
+
+/** One way to book the reading of the tests (change 39): 1 or 2 appointments. */
+export interface LecturaExtra {
+  id: string;
+  rotulo: string;
+  nombre: string;
+  precio: number;
+  texto: string;
+}
+
+/** What can be added on the summary step; every amount is recalculated live. */
+export interface ExtrasCheckout {
+  /** «¿Deseas adquirir alguna de nuestras guías?» */
+  guias?: GuiaExtra[];
+  /** Shop only: a popup on arrival suggesting the next guide, at this discount (0–1). */
+  popupGuias?: { orden: string[]; descuento: number };
+  /** Lab tests only: the Sí/No reading appointment and its two options. */
+  lectura?: LecturaExtra[];
+  /** Lab tests only: the lab's own fee per test, shown apart and without tax. */
+  feePorItem?: number;
+}
+
 interface Props {
   ciclo: ProductoCheckout;
   carrito?: CarritoCheckout;
+  extras?: ExtrasCheckout;
   textos?: TextosCheckout;
   /** Label of the product row in the reviews ("Programa" for cycles). */
   etiquetaProducto?: string;
 }
-const { ciclo, carrito, textos = {}, etiquetaProducto = 'Programa' } = Astro.props;
+const { ciclo, carrito, extras, textos = {}, etiquetaProducto = 'Programa' } = Astro.props;
 const p = desglose(ciclo.subtotal);
 const impuestoPct = Math.round(p.taxRate * 100);
 
@@ -104,6 +136,7 @@ const metodos = [
   data-config={JSON.stringify(config)}
   data-carrito={carrito ? JSON.stringify(carrito) : undefined}
   data-pedido={textos.pedido}
+  data-extras={extras ? JSON.stringify(extras) : undefined}
 >
   <main class="checkout-main" id="main">
     <div class="mobile-progress" id="mobile-progress">
@@ -206,14 +239,77 @@ const metodos = [
       <div class="review-card">
         <div class="review-row"><span>{etiquetaProducto}</span><span>{ciclo.nombre}</span></div>
         <p class="review-note" data-desc-corta>{ciclo.descripcionCorta}</p>
+        <div data-lineas-extra></div>
         <div class="review-row">
           <span>Subtotal</span><span data-subtotal>{usd(p.subtotal)}</span>
         </div>
         <div class="review-row">
           <span>Impuesto ({impuestoPct}%)</span><span data-impuesto>{usd(p.impuesto)}</span>
         </div>
+        <div class="review-row" data-fila-fee hidden>
+          <span>Fee del laboratorio (servicio y autorización)</span><span data-fee></span>
+        </div>
         <div class="review-row"><span>Total</span><span data-total>{usd(p.total)}</span></div>
       </div>
+
+      {
+        extras?.lectura && (
+          <div class="extra-bloque" data-lectura>
+            <p class="extra-titulo">¿Quieres agregar una cita para la lectura de tu examen?</p>
+            <div class="extra-sino" role="radiogroup" aria-label="Agregar cita de lectura">
+              <label class="sino">
+                <input type="radio" name="lectura-sino" value="no" checked />
+                <span>No, por ahora</span>
+              </label>
+              <label class="sino">
+                <input type="radio" name="lectura-sino" value="si" />
+                <span>Sí, quiero agregarla</span>
+              </label>
+            </div>
+            <div class="extra-opciones" data-lectura-opciones hidden>
+              {extras.lectura.map((o, i) => (
+                <label class="opcion">
+                  <input type="radio" name="lectura-opcion" value={o.id} checked={i === 0} />
+                  <span class="opcion-cab">
+                    <strong>{o.rotulo}</strong> · {o.nombre}
+                    <span class="opcion-precio">{usd(o.precio)}</span>
+                  </span>
+                  <span class="opcion-texto">{o.texto}</span>
+                </label>
+              ))}
+              <p class="extra-aviso">
+                <strong>Importante:</strong> se lee 1 examen por cita. Además de leer tu examen,
+                escuchamos tu historia y analizamos tus formularios para crear tu plan de acción
+                integral.
+              </p>
+            </div>
+          </div>
+        )
+      }
+
+      {
+        extras?.guias && !extras.popupGuias && (
+          <div class="extra-bloque" data-guias>
+            <p class="extra-titulo">¿Deseas adquirir alguna de nuestras guías?</p>
+            <div class="guias">
+              {extras.guias.map((g) => (
+                <label class="guia">
+                  <input type="checkbox" value={g.id} data-guia />
+                  {g.portada && (
+                    <img src={g.portada} alt="" width="56" height="74" loading="lazy" />
+                  )}
+                  <span class="guia-nombre">{g.nombre}</span>
+                  <span class="guia-precio">{usd(g.precio)}</span>
+                  <span class="guia-check" aria-hidden="true">
+                    <span class="no">Agregar</span>
+                    <span class="si">Agregada ✓</span>
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+        )
+      }
 
       <div class="step-actions">
         <button type="button" class="link-btn" data-goto="1">&larr; Editar mis datos</button>
@@ -409,16 +505,27 @@ const metodos = [
     <span class="summary-tag">{ciclo.etiqueta}</span>
     <h2 class="summary-title">{ciclo.nombre}</h2>
     <p class="summary-desc">{ciclo.descripcionCorta}</p>
+    <div data-lineas-extra></div>
     <div class="summary-line">
       <span>Subtotal</span><span data-subtotal>{usd(p.subtotal)}</span>
     </div>
     <div class="summary-line">
       <span>Impuesto ({impuestoPct}%)</span><span data-impuesto>{usd(p.impuesto)}</span>
     </div>
+    <div class="summary-line" data-fila-fee hidden>
+      <span>Fee del laboratorio</span><span data-fee></span>
+    </div>
     <div class="summary-line total"><span>Total</span><span data-total>{usd(p.total)}</span></div>
     <ul class="summary-includes" data-incluye>
       {ciclo.incluyeCheckout.map((i) => <li>{i}</li>)}
     </ul>
+    {
+      ciclo.bonus && (
+        <p class="summary-bonus">
+          <strong>Bonus</strong> {ciclo.bonus}
+        </p>
+      )
+    }
     {
       carrito && (
         <p class="summary-empty" data-carrito-vacio hidden>
@@ -427,6 +534,41 @@ const metodos = [
       )
     }
   </aside>
+
+  {
+    extras?.popupGuias && extras.guias && (
+      <dialog class="popup-guia" data-popup-guia aria-labelledby="popup-guia-t">
+        <p class="pg-eyebrow">Solo en este pedido</p>
+        <p class="pg-titulo" id="popup-guia-t">
+          ¿La sumas a tu pedido?
+        </p>
+        <div class="pg-item">
+          <img data-pg-portada alt="" width="96" height="128" />
+          <div>
+            <p class="pg-nombre" data-pg-nombre />
+            <p class="pg-precios">
+              <s data-pg-antes /> <strong data-pg-ahora />
+            </p>
+            <p class="pg-texto">
+              Precio especial con {Math.round(extras.popupGuias.descuento * 100)}% de descuento,
+              válido solo ahora.
+            </p>
+          </div>
+        </div>
+        <p class="pg-agregada" data-pg-agregada hidden>
+          Listo, la agregamos a tu pedido. ¿Y esta también?
+        </p>
+        <div class="pg-acciones">
+          <button type="button" class="btn btn-primary" data-pg-si>
+            Agregar a mi pedido
+          </button>
+          <button type="button" class="link-btn" data-pg-no>
+            No, gracias
+          </button>
+        </div>
+      </dialog>
+    )
+  }
 </div>
 
 <style>
@@ -968,6 +1110,263 @@ const metodos = [
       display: block;
     }
   }
+  /* ── Extras on the summary step ── */
+  .extra-bloque {
+    background: var(--color-white);
+    border: 1px solid rgb(48 47 42 / 0.1);
+    border-radius: var(--radius-lg);
+    padding: 22px 24px;
+    margin-bottom: 22px;
+  }
+  .extra-titulo {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    line-height: 1.2;
+    margin: 0 0 14px;
+  }
+  .extra-sino {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .sino,
+  .opcion,
+  .guia {
+    cursor: pointer;
+  }
+  .sino input,
+  .opcion input,
+  .guia input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .sino span {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgb(48 47 42 / 0.2);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .sino input:checked + span {
+    background: var(--color-charcoal);
+    color: var(--color-bone);
+    border-color: var(--color-charcoal);
+  }
+  .sino input:focus-visible + span,
+  .opcion:focus-within,
+  .guia:focus-within {
+    outline: 2px solid var(--color-clay-deep);
+    outline-offset: 2px;
+  }
+  .extra-opciones {
+    margin-top: 16px;
+    display: grid;
+    gap: 10px;
+  }
+  .opcion {
+    display: grid;
+    gap: 4px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid rgb(48 47 42 / 0.14);
+    transition:
+      border-color 0.2s,
+      background 0.2s;
+  }
+  .opcion:has(input:checked) {
+    border-color: var(--color-clay-deep);
+    background: rgb(231 183 160 / 0.16);
+  }
+  .opcion-cab {
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
+    font-size: 15px;
+  }
+  .opcion-precio {
+    margin-left: auto;
+    font-weight: 800;
+  }
+  .opcion-texto {
+    font-size: 13.5px;
+    color: rgb(48 47 42 / 0.7);
+  }
+  .extra-aviso {
+    margin: 4px 0 0;
+    font-size: 13px;
+    line-height: 1.55;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--color-ivory);
+    color: rgb(48 47 42 / 0.8);
+  }
+  .guias {
+    display: grid;
+    gap: 10px;
+  }
+  .guia {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 14px 10px 10px;
+    border-radius: 16px;
+    border: 1px solid rgb(48 47 42 / 0.12);
+    transition:
+      border-color 0.2s,
+      background 0.2s;
+  }
+  .guia img {
+    width: 44px;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 6px 14px -8px rgb(48 47 42 / 0.5);
+  }
+  .guia-nombre {
+    font-size: 14.5px;
+    font-weight: 700;
+  }
+  .guia-precio {
+    font-weight: 800;
+    font-size: 14.5px;
+  }
+  .guia-check {
+    font-size: 12.5px;
+    font-weight: 800;
+    padding: 7px 12px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-charcoal);
+  }
+  .guia-check .si,
+  .guia:has(input:checked) .guia-check .no {
+    display: none;
+  }
+  .guia:has(input:checked) .guia-check .si {
+    display: inline;
+  }
+  .guia:has(input:checked) {
+    border-color: var(--color-sage-deep);
+    background: rgb(207 215 196 / 0.3);
+  }
+  .guia:has(input:checked) .guia-check {
+    background: var(--color-charcoal);
+    color: var(--color-bone);
+  }
+  @media (max-width: 520px) {
+    .guia {
+      grid-template-columns: auto 1fr;
+    }
+  }
+  /* Rows written by the script do not carry the scoped class: style them globally. */
+  :global(.summary-line.extra),
+  :global(.review-row.extra) {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 8px 0;
+    font-size: 14.5px;
+    color: var(--color-clay-rich);
+    border-bottom: 1px solid rgb(48 47 42 / 0.08);
+  }
+  .summary-bonus {
+    margin-top: 14px;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgb(231 183 160 / 0.2);
+  }
+
+  /* ── Shop popup ── */
+  .popup-guia {
+    margin: auto;
+    inset: 0;
+    border: 0;
+    border-radius: 28px;
+    padding: 30px;
+    width: min(460px, calc(100vw - 32px));
+    background: var(--color-bone);
+    color: var(--color-charcoal);
+    box-shadow: 0 40px 90px -30px rgb(0 0 0 / 0.5);
+  }
+  .popup-guia::backdrop {
+    background: rgb(20 19 16 / 0.5);
+    backdrop-filter: blur(6px);
+  }
+  .popup-guia[open] {
+    animation: pg-in 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  @keyframes pg-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.97);
+    }
+  }
+  .pg-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--color-charcoal);
+    color: var(--color-clay);
+    margin: 0;
+  }
+  .pg-titulo {
+    font-family: var(--font-serif);
+    font-size: 30px;
+    line-height: 1.1;
+    margin: 14px 0 18px;
+  }
+  .pg-item {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .pg-item img {
+    width: 84px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 12px 24px -12px rgb(48 47 42 / 0.6);
+  }
+  .pg-nombre {
+    font-weight: 800;
+    font-size: 16px;
+    margin: 0 0 4px;
+  }
+  .pg-precios {
+    margin: 0 0 6px;
+  }
+  .pg-precios s {
+    color: rgb(48 47 42 / 0.5);
+    margin-right: 6px;
+  }
+  .pg-precios strong {
+    font-size: 22px;
+    color: var(--color-clay-rich);
+  }
+  .pg-texto {
+    font-size: 13.5px;
+    color: rgb(48 47 42 / 0.7);
+    margin: 0;
+  }
+  .pg-agregada {
+    margin: 16px 0 0;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--color-sage-deep);
+  }
+  .pg-acciones {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-top: 22px;
+    flex-wrap: wrap;
+  }
 </style>
 
 <script>
@@ -1045,6 +1444,138 @@ const metodos = [
       order: Record<string, unknown> | null;
       payment_method: Metodo | null;
     } = { client: null, order: null, payment_method: null };
+
+    /* ── Extras: guides, the tests' reading appointment and the lab fee (changes 12, 39–41, 46) ── */
+    type Linea = { id: string; nombre: string; precio: number };
+    const extras: {
+      guias?: { id: string; nombre: string; precio: number; portada?: string }[];
+      popupGuias?: { orden: string[]; descuento: number };
+      lectura?: { id: string; rotulo: string; nombre: string; precio: number; texto: string }[];
+      feePorItem?: number;
+    } | null = root.dataset.extras ? JSON.parse(root.dataset.extras) : null;
+    const base = config.subtotal;
+    const lineas: Linea[] = [];
+    let fee = 0;
+    const r2 = (n: number) => Math.round(n * 100) / 100;
+    const recalc = () => {
+      fee = r2((extras?.feePorItem ?? 0) * items.length);
+      config.subtotal = r2(base + lineas.reduce((t, l) => t + l.precio, 0));
+      config.tax_amount = r2(config.subtotal * config.tax_rate);
+      config.total = r2(config.subtotal + config.tax_amount + fee);
+      root
+        .querySelectorAll('[data-subtotal]')
+        .forEach((el) => (el.textContent = usd(config.subtotal)));
+      root
+        .querySelectorAll('[data-impuesto]')
+        .forEach((el) => (el.textContent = usd(config.tax_amount)));
+      root.querySelectorAll('[data-total]').forEach((el) => (el.textContent = usd(config.total)));
+      root
+        .querySelectorAll<HTMLElement>('[data-fila-fee]')
+        .forEach((el) => (el.hidden = fee === 0));
+      root.querySelectorAll('[data-fee]').forEach((el) => (el.textContent = usd(fee)));
+      root.querySelectorAll('[data-lineas-extra]').forEach((box) =>
+        box.replaceChildren(
+          ...lineas.map((l) => {
+            const row = document.createElement('div');
+            row.className = box.closest('.summary-card')
+              ? 'summary-line extra'
+              : 'review-row extra';
+            const a = document.createElement('span');
+            a.textContent = `+ ${l.nombre}`;
+            const b = document.createElement('span');
+            b.textContent = usd(l.precio);
+            row.append(a, b);
+            return row;
+          })
+        )
+      );
+      if (state.order) {
+        Object.assign(state.order, {
+          extras: lineas.map((l) => ({ id: l.id, price: l.precio })),
+          lab_fee: fee,
+          subtotal: config.subtotal,
+          tax_amount: config.tax_amount,
+          total: config.total,
+        });
+      }
+    };
+    const poner = (l: Linea) => {
+      const i = lineas.findIndex((x) => x.id === l.id);
+      if (i >= 0) lineas[i] = l;
+      else lineas.push(l);
+      recalc();
+    };
+    const quitar = (id: string) => {
+      const i = lineas.findIndex((x) => x.id === id);
+      if (i >= 0) lineas.splice(i, 1);
+      recalc();
+    };
+    const guiaPorId = new Map((extras?.guias ?? []).map((g) => [g.id, g]));
+    const checks = [...root.querySelectorAll<HTMLInputElement>('[data-guia]')];
+    checks.forEach((c) =>
+      c.addEventListener('change', () => {
+        const g = guiaPorId.get(c.value)!;
+        if (c.checked) poner({ id: `guia:${g.id}`, nombre: g.nombre, precio: g.precio });
+        else quitar(`guia:${g.id}`);
+      })
+    );
+    const bloqueLectura = root.querySelector<HTMLElement>('[data-lectura]');
+    if (bloqueLectura && extras?.lectura) {
+      const opciones = bloqueLectura.querySelector<HTMLElement>('[data-lectura-opciones]')!;
+      const leer = () => {
+        const si =
+          bloqueLectura.querySelector<HTMLInputElement>('input[name="lectura-sino"]:checked')
+            ?.value === 'si';
+        opciones.hidden = !si;
+        if (!si) return quitar('lectura');
+        const id = bloqueLectura.querySelector<HTMLInputElement>(
+          'input[name="lectura-opcion"]:checked'
+        )?.value;
+        const o = extras.lectura!.find((x) => x.id === id) ?? extras.lectura![0];
+        poner({ id: 'lectura', nombre: `Lectura: ${o.rotulo} · ${o.nombre}`, precio: o.precio });
+      };
+      bloqueLectura.querySelectorAll('input').forEach((i) => i.addEventListener('change', leer));
+    }
+    // Shop: on arrival, offer the next guide not in the cart, at a discount, one after another.
+    const popup = root.querySelector<HTMLDialogElement>('[data-popup-guia]');
+    if (popup && extras?.popupGuias && items.length > 0) {
+      const enCarrito = new Set(items.map((i) => i.id));
+      const cola = extras.popupGuias.orden.filter((id) => !enCarrito.has(id) && guiaPorId.has(id));
+      const desc = extras.popupGuias.descuento;
+      let actual = '';
+      const siguiente = () => {
+        actual = cola.shift() ?? '';
+        if (!actual) return popup.close();
+        const g = guiaPorId.get(actual)!;
+        const img = popup.querySelector<HTMLImageElement>('[data-pg-portada]')!;
+        if (g.portada) img.src = g.portada;
+        img.hidden = !g.portada;
+        popup.querySelector('[data-pg-nombre]')!.textContent = g.nombre;
+        popup.querySelector('[data-pg-antes]')!.textContent = usd(g.precio);
+        popup.querySelector('[data-pg-ahora]')!.textContent = usd(r2(g.precio * (1 - desc)));
+      };
+      popup.querySelector('[data-pg-si]')!.addEventListener('click', () => {
+        const g = guiaPorId.get(actual)!;
+        poner({
+          id: `guia:${g.id}`,
+          nombre: `${g.nombre} (−${Math.round(desc * 100)}%)`,
+          precio: r2(g.precio * (1 - desc)),
+        });
+        const c = checks.find((x) => x.value === g.id);
+        if (c) {
+          c.checked = true;
+          c.disabled = true;
+        }
+        popup.querySelector<HTMLElement>('[data-pg-agregada]')!.hidden = false;
+        siguiente();
+      });
+      popup.querySelector('[data-pg-no]')!.addEventListener('click', () => popup.close());
+      if (cola.length) {
+        siguiente();
+        setTimeout(() => popup.showModal(), 600);
+      }
+    }
+    recalc();
 
     /* ── Step navigation ── */
     const stepLabels: Record<number, string> = {

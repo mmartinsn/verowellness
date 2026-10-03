@@ -7,6 +7,7 @@
 import { ciclos } from '../../data/oferta';
 import { precioTienda } from '../../data/tienda';
 import { href } from '../../lib/url';
+import { cta } from '../../data/site';
 
 const c = ciclos.INITIAL_LAYER_CYCLE;
 ---
@@ -46,7 +47,7 @@ const c = ciclos.INITIAL_LAYER_CYCLE;
       <p class="paso-cierre">
         Puedes empezar por una lectura. Si más adelante quieres acompañamiento, aquí estoy.
       </p>
-      <a class="paso-btn" href={href('/asesorias')} data-magnet="0.25">Conocer las asesorías</a>
+      <a class="paso-btn" href={href('/asesorias')} data-magnet="0.25">{cta.label}</a>
     </div>
   </div>
 </section>

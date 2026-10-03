@@ -39,21 +39,28 @@ const { producto: p, espejo = false } = Astro.props;
       <div class="cap-top">
         <span class="cap-eyebrow">Capítulo {p.num}</span>
         <span class="cap-linea" aria-hidden="true"></span>
+        {p.bestSeller && <span class="cap-best">Más vendido</span>}
         <span class="cap-precio">{precioTienda(p.precio)}</span>
       </div>
       <h2 id={`${p.id}-titulo`} class="cap-nombre">{p.nombre}</h2>
       <p class="cap-sub">{p.subtitulo}</p>
-      <p class="cap-gancho">“{p.gancho}”</p>
+      <p class="cap-gancho">{p.gancho}</p>
 
-      <div class="cap-para">
-        <span class="cap-label">Para ti si…</span>
-        <ul>
-          {p.paraTi.map((t) => <li>{t}</li>)}
-        </ul>
-      </div>
+      {
+        p.paraTi && (
+          <div class="cap-para">
+            <span class="cap-label">Para ti si…</span>
+            <ul>
+              {p.paraTi.map((t) => (
+                <li>{t}</li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
 
       <div class="cap-indice">
-        <span class="cap-label">Qué incluye</span>
+        <span class="cap-label">Dentro encontrarás</span>
         <ol class="reveal-stagger">
           {
             p.incluye.map((t, i) => (
@@ -68,7 +75,7 @@ const { producto: p, espejo = false } = Astro.props;
 
       <figure class="cap-cita">
         <blockquote><mark>{p.cita.texto}</mark></blockquote>
-        <figcaption>Pág. {p.cita.pagina}</figcaption>
+        {p.cita.pagina && <figcaption>Pág. {p.cita.pagina}</figcaption>}
       </figure>
 
       {p.nota && <p class="cap-nota">{p.nota}</p>}
@@ -210,6 +217,17 @@ const { producto: p, espejo = false } = Astro.props;
     flex: 1;
     height: 1px;
     background: rgb(35 34 30 / 0.15);
+  }
+  .cap-best {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 11px;
+    border-radius: var(--radius-pill);
+    background: var(--color-charcoal);
+    color: var(--color-bone);
+    white-space: nowrap;
   }
   .cap-precio {
     font-family: var(--font-serif);
