@@ -1,15 +1,19 @@
 /**
- * The 1:1 offer: two cycles, as priced in Mari's pages and checkout prototype.
+ * The 1:1 offer. Public: Layer Session (1 consulta) and Initial Layer Cycle (2 consultas, nuevas).
+ * The Next Layer Cycle (2 consultas de control) is for existing patients: its price is not shown,
+ * only its checkout exists, reached from the email (Mari, 2026-10-03: 150 / 269 / 210).
  * Every price shown on the site derives from `subtotal` here — never typed twice.
  */
 import { desglose, type Desglose } from '../lib/precio';
 
-export type CicloId = 'INITIAL_LAYER_CYCLE' | 'NEXT_LAYER_CYCLE';
+export type CicloId = 'LAYER_SESSION' | 'INITIAL_LAYER_CYCLE' | 'NEXT_LAYER_CYCLE';
 
 export interface Ciclo {
   id: CicloId;
-  slug: 'initial-layer-cycle' | 'next-layer-cycle';
+  slug: 'layer-session' | 'initial-layer-cycle' | 'next-layer-cycle';
   nombre: string;
+  /** «1 consulta» / «2 consultas», shown on the cards. */
+  consultas: string;
   etiqueta: string;
   /** Small italic note under the tag (only the Initial cycle carries one on the cards). */
   etiquetaNota?: string;
@@ -30,54 +34,77 @@ export interface Ciclo {
 }
 
 export const ciclos: Record<CicloId, Ciclo> = {
+  LAYER_SESSION: {
+    id: 'LAYER_SESSION',
+    slug: 'layer-session',
+    nombre: 'Layer Session',
+    consultas: '1 consulta',
+    etiqueta: 'Consulta individual',
+    subtotal: 150,
+    descripcion:
+      'Una consulta para escuchar tu historia, revisar tus formularios y definir tu plan de acción.',
+    descripcionCorta:
+      'Una consulta con revisión de tu historia y formularios, y un plan de acción.',
+    incluye: ['Escucha de tu historia', 'Revisión de tus formularios', 'Plan de acción'],
+    incluyeCheckout: ['Escucha de tu historia', 'Revisión de tus formularios', 'Plan de acción'],
+    confirmacion: {
+      titulo: '¡Listo, bienvenida!',
+      texto:
+        'Tu pago está confirmado. Agenda tu cita a continuación; recibirás The Layer Assessment por email antes de la cita.',
+      calendlyUrl: 'https://calendly.com/veronicawellness/layer-session',
+      calendlyEtiqueta: 'Calendly — Layer Session booking',
+    },
+  },
   INITIAL_LAYER_CYCLE: {
     id: 'INITIAL_LAYER_CYCLE',
     slug: 'initial-layer-cycle',
     nombre: 'Initial Layer Cycle',
+    consultas: '2 consultas',
     etiqueta: 'Para nuevos clientes',
     etiquetaNota:
       'También aplica si tienes 6 meses o más sin asistir a una asesoría y necesitas plantear una nueva estrategia.',
-    subtotal: 247,
+    subtotal: 269,
     descripcion:
       'Dos sesiones privadas de 90 minutos, separadas ~30 días, a completar en un máximo de 60.',
     descripcionCorta:
       '2 sesiones privadas de 90 min · separación recomendada de aproximadamente 30 días · ciclo a completar dentro de 60 días.',
     incluye: [
-      'The Layer Assessment™',
-      'The Layer Map™ — Alta Prioridad · Prioridad Secundaria · Mantenimiento',
+      'The Layer Assessment',
+      'The Layer Map — Alta Prioridad · Prioridad Secundaria · Mantenimiento',
       'Top 3 Priorities',
-      'The Layer Plan™',
-      'The Layer Review™',
+      'The Layer Plan',
+      'The Layer Review',
     ],
-    bonus: 'Pacientes nuevos: «Guía de alimentación anti-inflamatoria como estilo de vida» gratis.',
+    bonus: 'Incluye gratis la «Guía de alimentación anti-inflamatoria como estilo de vida».',
     incluyeCheckout: [
-      'The Layer Assessment™',
-      'The Layer Map™',
+      'The Layer Assessment',
+      'The Layer Map',
       'Top 3 Priorities',
-      'The Layer Plan™',
+      'The Layer Plan',
     ],
     confirmacion: {
       titulo: '¡Listo, bienvenida!',
       texto:
-        'Tu Initial Layer Cycle está confirmado. Agenda tu primera sesión a continuación — recibirás The Layer Assessment™ por email antes de tu cita.',
+        'Tu Initial Layer Cycle está confirmado. Agenda tu primera sesión a continuación — recibirás The Layer Assessment por email antes de tu cita.',
       calendlyUrl: 'https://calendly.com/veronicawellness/layer-assessment',
-      calendlyEtiqueta: 'Calendly — Layer Assessment™ booking',
+      calendlyEtiqueta: 'Calendly — Layer Assessment booking',
     },
   },
   NEXT_LAYER_CYCLE: {
     id: 'NEXT_LAYER_CYCLE',
     slug: 'next-layer-cycle',
     nombre: 'Next Layer Cycle',
+    consultas: '2 consultas de control',
     etiqueta: 'Tarifa de continuidad',
-    subtotal: 197,
+    subtotal: 210,
     descripcion:
       'Para quienes ya completaron su Initial Layer Cycle. Dos sesiones privadas de 90 minutos para continuar profundizando, revisar tu evolución y redefinir prioridades sin empezar de cero.',
     descripcionCorta: '2 sesiones privadas de 60-90 min · para clientes de seguimiento.',
-    incluye: ['Revisión de tu evolución', 'Redefinición de prioridades', 'Layer Plan™ actualizado'],
+    incluye: ['Revisión de tu evolución', 'Redefinición de prioridades', 'Layer Plan actualizado'],
     incluyeCheckout: [
       'Revisión de tu evolución',
       'Nuevas prioridades identificadas',
-      'Layer Plan™ actualizado',
+      'Layer Plan actualizado',
     ],
     notaPie:
       'Si tienes 6 meses o más sin asistir a una asesoría, deberás adquirir nuevamente el Initial Layer Cycle, ya que es necesario plantear tu estrategia desde cero.',
@@ -90,7 +117,18 @@ export const ciclos: Record<CicloId, Ciclo> = {
   },
 };
 
-export const listaCiclos: Ciclo[] = [ciclos.INITIAL_LAYER_CYCLE, ciclos.NEXT_LAYER_CYCLE];
+/** The two public offers, in card order: one appointment left, the new-patient cycle right. */
+export const listaCiclos: Ciclo[] = [ciclos.LAYER_SESSION, ciclos.INITIAL_LAYER_CYCLE];
+
+/** Existing patients: no public price, they write on Instagram (copy: Codex, 2026-10-03). */
+export const continuidad = {
+  etiqueta: 'Acceso privado',
+  titulo: '¿Ya eres mi paciente?',
+  texto:
+    'Tus planes de continuidad no se publican. Escríbeme por Instagram y te los enviaré por correo para seguir trabajando conmigo.',
+  boton: 'Escríbeme por Instagram',
+  url: 'https://ig.me/m/verodudamell',
+};
 
 export function checkoutPath(ciclo: Ciclo): string {
   return `/checkout/${ciclo.slug}`;
@@ -99,7 +137,7 @@ export function checkoutPath(ciclo: Ciclo): string {
 /** Where the home's «Trabaja conmigo» buttons go: the new-client cycle (Mari, 2026-09-22). */
 export const checkoutPrincipal = checkoutPath(ciclos.INITIAL_LAYER_CYCLE);
 
-/** `$247`, as the cards print it. Tax shows only in the checkout (Mari, 2026-09-24). */
+/** `$269`, as the cards print it. Tax shows only in the checkout (Mari, 2026-09-24). */
 export function precioCard(ciclo: Ciclo): string {
   return `$${ciclo.subtotal}`;
 }

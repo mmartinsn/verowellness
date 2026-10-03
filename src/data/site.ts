@@ -5,9 +5,9 @@
 export const marca = {
   /** Wordmark without accent, on purpose (brand book: neutral, international reading). */
   nombre: 'Veronica Wellness',
-  metodo: 'The Layer Method™',
-  lema: 'Health has layers.™',
-  firma: 'Salud por capas. Del terreno a la célula.',
+  metodo: 'The Layer Method',
+  lema: 'Health has layers.',
+  firma: 'Salud por capas.',
   /** Verónica's Instagram (Mari, 2026-09-23 — not @veronicawellness). */
   instagram: '@verodudamell',
   dominio: 'veronicawellness.com',
@@ -37,7 +37,9 @@ export const nav: NavItem[] = [
 ];
 
 export const cta = {
-  label: 'Trabaja conmigo',
+  label: 'Trabaja conmigo · Click aquí',
+  /** Short form for the header, where the full label does not fit. */
+  corto: 'Trabaja conmigo',
   path: '/1-1',
 };
 
@@ -58,7 +60,7 @@ export const prototipo = true;
 /** Social-sharing image (1200 × 630), built by scripts/og-image.mjs. */
 export const imagenSocial = {
   archivo: 'og/veronica-wellness.jpg',
-  alt: 'Verónica Dudamell, creadora de The Layer Method™, sonriendo con bata blanca',
+  alt: 'Verónica Dudamell, creadora de The Layer Method, sonriendo con bata blanca',
   ancho: 1200,
   alto: 630,
 };

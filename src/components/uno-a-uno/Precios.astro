@@ -15,7 +15,7 @@ import { listaCiclos } from '../../data/oferta';
       cero — usamos el contexto ya construido, a tu ritmo, sin membresía ni programa a largo plazo.
     </p>
     <div class="pricing-columns">
-      {listaCiclos.map((c, i) => <PriceCard ciclo={c} featured={i === 0} />)}
+      {listaCiclos.map((c) => <PriceCard ciclo={c} featured={c.id === 'INITIAL_LAYER_CYCLE'} />)}
     </div>
   </div>
 </section>

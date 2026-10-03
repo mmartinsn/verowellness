@@ -14,14 +14,18 @@ import { marca } from '../../data/site';
  * Text on the slabs: dark everywhere except olive. The design had white on sage-deep too, which
  * measures 2.46:1; charcoal there gives 6.47:1 (astra/Claude review, 2026-09-23).
  */
-const claroSobreOscuro = new Set(['olive']);
+const claroSobreOscuro = new Set(['olive', 'charcoal']);
+const tono = (i: number) => {
+  const c = layers[i].color;
+  return `--tono: var(--color-${c}); --texto: ${claroSobreOscuro.has(c) ? 'var(--color-bone)' : 'var(--color-charcoal)'}`;
+};
 ---
 
 <section class="metodo" id="method">
   <div class="wrap">
     <div class="metodo-head reveal">
-      <span class="eyebrow">The Layer Method™</span>
-      <h2>El cuerpo no funciona por departamentos.</h2>
+      <h2 class="metodo-titulo">The Layer Method</h2>
+      <p class="metodo-sub">El cuerpo no funciona por departamentos.</p>
       <p>
         Cada capa de tu salud está conectada con las demás. No es una lista de pasos que sigues en
         orden — es un mapa que se trabaja en conjunto, para que sepas en cuál capa enfocarte
@@ -61,7 +65,12 @@ const claroSobreOscuro = new Set(['olive']);
       <div class="inspector spot" id="layerInspector" aria-live="polite">
         {
           layers.map((l, i) => (
-            <div class="insp-panel" data-panel={l.num} data-inicial={i === 0 ? '' : undefined}>
+            <div
+              class="insp-panel"
+              data-panel={l.num}
+              data-inicial={i === 0 ? '' : undefined}
+              style={tono(i)}
+            >
               <div>
                 <div class="insp-header">
                   <div class="insp-badge">{l.num}</div>
@@ -86,14 +95,13 @@ const claroSobreOscuro = new Set(['olive']);
     <div class="sintesis spot reveal">
       <span class="eyebrow">Cómo se conectan</span>
       <p class="sintesis-text">
-        <strong>Nutrición</strong> aporta las materias primas; <strong
-          >las vías de eliminación</strong
-        > permiten procesar y eliminar; <strong>el terreno</strong> describe el entorno regulatorio;
-        <strong>la célula</strong> profundiza en energía y resiliencia; y <strong
-          >los hábitos</strong
-        >
+        <strong style={tono(0)}>Nutrición</strong> aporta las materias primas; <strong
+          style={tono(1)}>las vías de eliminación</strong
+        > permiten procesar y eliminar; <strong style={tono(2)}>el terreno</strong> describe el entorno
+        regulatorio; <strong style={tono(3)}>la célula</strong> profundiza en energía y resiliencia; y
+        <strong style={tono(4)}>los hábitos</strong>
         determinan cuánto de la estrategia puede sostenerse en la vida real.
-        <em>Se mapean en conjunto, no una por una.</em>
+        <em>Se mapean y trabajan en conjunto, no una por una.</em>
       </p>
     </div>
   </div>
@@ -112,6 +120,21 @@ const claroSobreOscuro = new Set(['olive']);
     flex-direction: column;
     align-items: center;
     gap: 16px;
+  }
+  .metodo-titulo {
+    font-size: clamp(48px, 8vw, 104px);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.95;
+    margin: 0;
+  }
+  .metodo-sub {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(24px, 2.8vw, 36px);
+    line-height: 1.2;
+    color: var(--color-clay-rich);
+    margin: 0;
   }
   .stamp {
     display: inline-block;
@@ -314,13 +337,13 @@ const claroSobreOscuro = new Set(['olive']);
     width: 46px;
     height: 46px;
     border-radius: 50%;
-    background: var(--color-clay);
+    background: var(--tono, var(--color-clay));
+    color: var(--texto, var(--color-charcoal));
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 800;
     font-size: 15px;
-    color: var(--color-charcoal);
     box-shadow: 0 4px 14px rgb(214 154 124 / 0.3);
   }
   .insp-title {
@@ -389,15 +412,22 @@ const claroSobreOscuro = new Set(['olive']);
     color: var(--color-charcoal);
     font-weight: 500;
   }
+  /* Each Layer name wears its fixed ATLAS colour (Verónica, change 6). */
   .sintesis-text strong {
-    color: var(--color-clay-deep);
-    font-weight: 800;
+    background: var(--tono);
+    color: var(--texto);
+    font-weight: 700;
+    padding: 1px 8px;
+    border-radius: 6px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
   }
   .sintesis-text em {
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: 21px;
+    font-size: clamp(22px, 2vw, 26px);
     display: block;
+    text-align: center;
     margin-top: 10px;
     color: rgb(35 34 30 / 0.85);
   }

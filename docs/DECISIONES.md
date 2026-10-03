@@ -131,6 +131,27 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     Holística e Integral» en el de azúcar; «Nutrición clínica · Medicina integrativa» en el de GLP-1);
     el recetario ya dice «Nutricionista».
 
+17. **2026-10-03 — Ajustes de Verónica, página por página, sobre la versión del 29-sep.** Mari
+    pidió volver a esa versión (se deshizo la ronda del 03-oct, que sigue en el historial) y
+    aplicar el documento «AJUSTES PAGINA WEB…» con cuidado, sin rediseñar lo que no se pide.
+    Reparto: diseño Claude; textos nuevos y fotos, Codex. **Inicio (cambios 1–18):** subtítulo
+    «El método que trata tus síntomas por capas»; frase resaltada «Todos tus síntomas están
+    conectados…»; botón «Trabaja conmigo · Click aquí» (el header usa la versión corta); los
+    cinco «Toma esto para…»; la premisa con la frase nueva; THE LAYER METHOD como título y «El
+    cuerpo no funciona por departamentos» como subtítulo; colores fijos de las capas según ATLAS
+    (Nutrición carbón, Vías clay, Terreno sage deep, Célula rose, Hábitos olive) en
+    `layers.ts`, también en el párrafo «Cómo se conectan»; «Se mapean y trabajan en conjunto, no
+    una por una» en cursiva y centrada; los tres globos nuevos; paréntesis en «Herramientas»; sin
+    ™ en todo el sitio; «del terreno a la célula» fuera del pie y del hero. **Precios (Mari):**
+    1 consulta (Layer Session) USD 150 a la izquierda, 2 consultas para nuevas (Initial) USD 269
+    a la derecha, con el bonus de la guía siempre; 2 consultas de control (Next) USD 210 sin
+    precio público: bloque «Acceso privado · ¿Ya eres mi paciente?» con enlace a Instagram, y su
+    checkout queda para el enlace del correo. Nuevo checkout `/checkout/layer-session`. «Evolución
+    continua», «¿Completas tu primer ciclo?» y «Ahora decidimos cuál es tu Next Layer con un
+    segundo ciclo.». Botón fijo también en escritorio. Seis preguntas frecuentes nuevas (Codex).
+    Los textos de la Layer Session y las FAQ nuevas son de Codex; la Layer Session no dice
+    duración porque no está confirmada.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

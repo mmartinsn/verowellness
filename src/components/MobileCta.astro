@@ -29,9 +29,22 @@ const { label = cta.label, path = cta.path } = Astro.props;
     border-top: 1px solid rgb(48 47 42 / 0.1);
     padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
   }
+  /* Desktop: the same button floats at the bottom right, always in reach while scrolling
+     (Verónica, change 16: «que este botón quede fijo siempre»). */
   @media (min-width: 1024px) {
     .mobile-cta-bar {
-      display: none;
+      left: auto;
+      right: 28px;
+      bottom: 28px;
+      background: none;
+      backdrop-filter: none;
+      border-top: 0;
+      padding: 0;
+    }
+    .mobile-cta-bar .btn {
+      width: auto;
+      padding-inline: 36px;
+      box-shadow: 0 14px 34px -12px rgb(48 47 42 / 0.45);
     }
   }
 </style>

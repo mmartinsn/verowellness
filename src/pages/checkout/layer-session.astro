@@ -1,15 +1,15 @@
 ---
-/** Checkout — Initial Layer Cycle. Content and prices come from data/oferta. */
+/** Checkout — Layer Session. Content and prices come from data/oferta. */
 import CheckoutLayout from '../../layouts/CheckoutLayout.astro';
 import Checkout from '../../components/checkout/Checkout.astro';
 import { ciclos } from '../../data/oferta';
 
-const ciclo = ciclos.INITIAL_LAYER_CYCLE;
+const ciclo = ciclos.LAYER_SESSION;
 ---
 
 <CheckoutLayout
   title={`Reserva tu ${ciclo.nombre} — Veronica Wellness`}
-  description="Reserva tu Initial Layer Cycle con Veronica Wellness. Dos sesiones privadas de 90 min: The Layer Assessment, The Layer Map y tu Layer Plan."
+  description="Reserva tu Layer Session con Veronica Wellness: una consulta privada online y tu plan de acción."
 >
   <Checkout ciclo={ciclo} />
 </CheckoutLayout>

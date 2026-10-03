@@ -1,6 +1,6 @@
 ---
 /**
- * 01 · Hero — The Layer Method™ title, hook and lede on the left; Verónica's portrait on a
+ * 01 · Hero — The Layer Method title, hook and lede on the left; Verónica's portrait on a
  * tilted sand frame with two floating badges on the right. Behind it, the design's WebGL
  * "cellular aura" shader plus three breathing orbs.
  *
@@ -10,7 +10,7 @@
  */
 import { Image } from 'astro:assets';
 import retrato from '../../assets/fotos/veronica-bata-laptop.jpg';
-import { marca } from '../../data/site';
+import { cta, marca } from '../../data/site';
 import { checkoutPrincipal } from '../../data/oferta';
 import { href } from '../../lib/url';
 ---
@@ -31,7 +31,8 @@ import { href } from '../../lib/url';
         <span class="eyebrow">Salud celular &amp; nutrición funcional</span>
         <span class="tagline-pill">{marca.lema}</span>
       </div>
-      <h1 class="hero-title">The Layer Method<span class="tm">™</span></h1>
+      <h1 class="hero-title">The Layer Method</h1>
+      <p class="hero-subtitulo">El método que trata tus síntomas por capas</p>
       <div class="hero-byline">by <span>VERONICA WELLNESS</span></div>
       <p class="hero-hook" data-split>
         Tu cuerpo no necesita más cosas. Necesita <span class="grad-text">el orden correcto.</span>
@@ -42,17 +43,19 @@ import { href } from '../../lib/url';
           bien, quizá el problema sea por dónde estás empezando.
         </p>
         <p>
-          The Layer Method™ ordena tu salud por capas para identificar qué necesita atención
-          primero.
+          The Layer Method ordena tu salud por capas para identificar qué necesita atención primero.
         </p>
-        <p class="hero-lede-strong">Energía. Digestión. Piel. Hormonas. Todo está conectado.</p>
+        <p class="hero-lede-strong">
+          <mark
+            >Todos tus síntomas están conectados: Dolores. Mente/emociones. Energía. Digestión.
+            Alergias. Piel. Hormonas.</mark
+          >
+        </p>
       </div>
       <div class="hero-ctas">
-        <a class="btn btn-primary" href={href(checkoutPrincipal)} data-magnet="0.25"
-          >Trabaja conmigo</a
-        >
+        <a class="btn btn-primary" href={href(checkoutPrincipal)} data-magnet="0.25">{cta.label}</a>
         <a class="link-arrow" href="#method">
-          <span>Descubre The Layer Method™</span>
+          <span>Descubre The Layer Method</span>
           <span class="arrow-circle" aria-hidden="true">→</span>
         </a>
       </div>
@@ -67,7 +70,7 @@ import { href } from '../../lib/url';
         <div class="floating-pill fp-top">
           <div class="fp-icon">01</div>
           <div class="fp-text">
-            <strong>Del terreno a la célula</strong>
+            <strong>Salud por capas</strong>
             <span>Estrategia integral</span>
           </div>
         </div>
@@ -217,12 +220,6 @@ import { href } from '../../lib/url';
     text-transform: uppercase;
     color: var(--color-charcoal);
   }
-  .hero-title .tm {
-    font-size: 0.35em;
-    vertical-align: super;
-    font-weight: 400;
-    color: var(--color-clay-deep);
-  }
   .hero-byline {
     font-size: 15px;
     font-weight: 700;
@@ -260,6 +257,22 @@ import { href } from '../../lib/url';
   .hero-lede .hero-lede-strong {
     font-weight: 600;
     color: var(--color-charcoal);
+  }
+  .hero-lede-strong mark {
+    background: rgb(231 183 160 / 0.55);
+    color: inherit;
+    padding: 2px 6px;
+    border-radius: 4px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    line-height: 1.9;
+  }
+  .hero-subtitulo {
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 2.4vw, 30px);
+    line-height: 1.25;
+    color: var(--color-clay-rich);
+    margin: 4px 0 14px;
   }
   .hero-ctas {
     display: flex;
