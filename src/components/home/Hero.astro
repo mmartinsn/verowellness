@@ -1,6 +1,6 @@
 ---
 /**
- * 01 · Hero — The Layer Method™ title, hook and lede on the left; Verónica's portrait on a
+ * 01 · Hero — The Layer Method title, hook and lede on the left; Verónica's portrait on a
  * tilted sand frame with two floating badges on the right. Behind it, the design's WebGL
  * "cellular aura" shader plus three breathing orbs.
  *
@@ -10,8 +10,18 @@
  */
 import { Image } from 'astro:assets';
 import retrato from '../../assets/fotos/veronica-bata-laptop.jpg';
-import { marca } from '../../data/site';
+import { cta, marca } from '../../data/site';
 import { checkoutPrincipal } from '../../data/oferta';
+
+const sintomas = [
+  'Dolores.',
+  'Mente/emociones.',
+  'Energía.',
+  'Digestión.',
+  'Alergias.',
+  'Piel.',
+  'Hormonas.',
+];
 import { href } from '../../lib/url';
 ---
 
@@ -31,7 +41,8 @@ import { href } from '../../lib/url';
         <span class="eyebrow">Salud celular &amp; nutrición funcional</span>
         <span class="tagline-pill">{marca.lema}</span>
       </div>
-      <h1 class="hero-title">The Layer Method<span class="tm">™</span></h1>
+      <h1 class="hero-title">The Layer Method</h1>
+      <p class="hero-subtitle">El método que trata tus síntomas por capas</p>
       <div class="hero-byline">by <span>VERONICA WELLNESS</span></div>
       <p class="hero-hook" data-split>
         Tu cuerpo no necesita más cosas. Necesita <span class="grad-text">el orden correcto.</span>
@@ -42,17 +53,16 @@ import { href } from '../../lib/url';
           bien, quizá el problema sea por dónde estás empezando.
         </p>
         <p>
-          The Layer Method™ ordena tu salud por capas para identificar qué necesita atención
-          primero.
+          The Layer Method ordena tu salud por capas para identificar qué necesita atención primero.
         </p>
-        <p class="hero-lede-strong">Energía. Digestión. Piel. Hormonas. Todo está conectado.</p>
+        <p class="hero-lede-strong">
+          <mark class="resalte">Todos tus síntomas están conectados: {sintomas.join(' ')}</mark>
+        </p>
       </div>
       <div class="hero-ctas">
-        <a class="btn btn-primary" href={href(checkoutPrincipal)} data-magnet="0.25"
-          >Trabaja conmigo</a
-        >
+        <a class="btn btn-primary" href={href(checkoutPrincipal)} data-magnet="0.25">{cta.label}</a>
         <a class="link-arrow" href="#method">
-          <span>Descubre The Layer Method™</span>
+          <span>Descubre The Layer Method</span>
           <span class="arrow-circle" aria-hidden="true">→</span>
         </a>
       </div>
@@ -217,11 +227,13 @@ import { href } from '../../lib/url';
     text-transform: uppercase;
     color: var(--color-charcoal);
   }
-  .hero-title .tm {
-    font-size: 0.35em;
-    vertical-align: super;
-    font-weight: 400;
-    color: var(--color-clay-deep);
+  .hero-subtitle {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(24px, 2.4vw, 32px);
+    line-height: 1.2;
+    color: var(--color-clay-rich);
+    margin-top: -6px;
   }
   .hero-byline {
     font-size: 15px;
@@ -258,8 +270,18 @@ import { href } from '../../lib/url';
     color: rgb(35 34 30 / 0.85);
   }
   .hero-lede .hero-lede-strong {
-    font-weight: 600;
+    font-weight: 700;
     color: var(--color-charcoal);
+    line-height: 1.85;
+  }
+  .resalte {
+    color: inherit;
+    padding: 2px 6px;
+    background: linear-gradient(rgb(231 183 160 / 0.95), rgb(231 183 160 / 0.95)) no-repeat;
+    background-size: 100% 88%;
+    background-position: 0 60%;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
   .hero-ctas {
     display: flex;

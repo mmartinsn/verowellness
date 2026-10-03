@@ -1,8 +1,4 @@
 ---
-/**
- * Sticky bottom call-to-action, phones and tablets only. The layout adds the matching bottom
- * padding to <body> so the bar never covers the footer.
- */
 import { href } from '../lib/url';
 import { cta } from '../data/site';
 
@@ -13,12 +9,12 @@ interface Props {
 const { label = cta.label, path = cta.path } = Astro.props;
 ---
 
-<div class="mobile-cta-bar">
-  <a href={href(path)} class="btn btn-primary btn-block">{label}</a>
+<div class="sticky-cta-bar">
+  <a href={href(path)} class="btn btn-primary btn-block sticky-cta-btn">{label}</a>
 </div>
 
 <style>
-  .mobile-cta-bar {
+  .sticky-cta-bar {
     position: fixed;
     left: 0;
     right: 0;
@@ -30,8 +26,19 @@ const { label = cta.label, path = cta.path } = Astro.props;
     padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
   }
   @media (min-width: 1024px) {
-    .mobile-cta-bar {
-      display: none;
+    .sticky-cta-bar {
+      left: auto;
+      right: 28px;
+      bottom: 28px;
+      background: none;
+      backdrop-filter: none;
+      border-top: 0;
+      padding: 0;
+    }
+    .sticky-cta-btn {
+      width: auto;
+      padding-inline: 40px;
+      box-shadow: 0 14px 34px -12px rgb(48 47 42 / 0.45);
     }
   }
 </style>

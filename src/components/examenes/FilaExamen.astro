@@ -1,0 +1,250 @@
+---
+import { areaPorId, muestras, productoDe, type Examen } from '../../data/examenes';
+import { usd } from '../../lib/precio';
+import { iconoCasa, iconoMuestra } from './iconos';
+
+interface Props {
+  examen: Examen;
+  buscar?: string;
+  oculto?: boolean;
+}
+const { examen: e, buscar, oculto = false } = Astro.props;
+const area = areaPorId.get(e.area)!;
+---
+
+<article
+  class="fe"
+  data-item
+  data-area={e.area}
+  data-buscar={buscar}
+  hidden={oculto}
+  style={`--tono:var(--color-${area.color})`}
+>
+  <div class="fe-info">
+    <p class="fe-meta">
+      <span class="fe-area">{area.nombre}</span>
+      {e.laboratorio && <span class="fe-lab">{e.laboratorio}</span>}
+    </p>
+    <h4 class="fe-nombre">{e.nombre}</h4>
+    {
+      (e.muestras.length > 0 || e.enCasa) && (
+        <p class="fe-muestras">
+          {e.muestras.map((m) => (
+            <span class="fe-chip">
+              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                <path d={iconoMuestra[m]} />
+              </svg>
+              {muestras[m]}
+            </span>
+          ))}
+          {e.enCasa && (
+            <span class="fe-chip casa">
+              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                <path d={iconoCasa} />
+              </svg>
+              Desde casa
+            </span>
+          )}
+        </p>
+      )
+    }
+  </div>
+  <div class="fe-compra">
+    <span class="fe-precio">{usd(e.precio)}</span>
+    <div class="fe-botones">
+      <button type="button" class="fe-ficha" data-ficha={e.id}>
+        Ver ficha<span class="sr-only"> de {e.nombre}</span>
+      </button>
+      <button type="button" class="fe-add" aria-pressed="false" data-add={productoDe(e)}>
+        <span class="fe-add-no">Agregar</span>
+        <span class="fe-add-si">Agregado ✓</span>
+        <span class="sr-only">{e.nombre}</span>
+      </button>
+    </div>
+  </div>
+</article>
+
+<style>
+  .fe {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px 20px;
+    align-items: center;
+    padding: 18px 20px 18px 22px;
+    border-radius: 18px;
+    background: var(--color-white);
+    border: 1px solid rgb(35 34 30 / 0.08);
+    box-shadow: 0 10px 24px -20px rgb(35 34 30 / 0.35);
+    overflow: hidden;
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease,
+      transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .fe[hidden] {
+    display: none;
+  }
+  .fe::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    bottom: 14px;
+    width: 4px;
+    border-radius: 0 4px 4px 0;
+    background: var(--tono);
+  }
+  .fe:hover {
+    border-color: color-mix(in srgb, var(--tono) 60%, transparent);
+    box-shadow: 0 18px 34px -22px color-mix(in srgb, var(--tono) 70%, rgb(35 34 30 / 0.5));
+    transform: translateY(-2px);
+  }
+  .fe.elegido {
+    background: color-mix(in srgb, var(--tono) 12%, var(--color-white));
+    border-color: color-mix(in srgb, var(--tono) 70%, transparent);
+  }
+  .fe-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .fe-area {
+    color: color-mix(in srgb, var(--tono) 55%, var(--color-charcoal));
+  }
+  .fe-lab {
+    color: rgb(35 34 30 / 0.5);
+  }
+  .fe-nombre {
+    margin-top: 4px;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(19px, 1.6vw, 22px);
+    line-height: 1.15;
+    color: var(--color-charcoal);
+  }
+  .fe-muestras {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .fe-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: var(--radius-pill);
+    background: var(--color-sand-light);
+    font-size: 12px;
+    font-weight: 700;
+    color: rgb(35 34 30 / 0.7);
+  }
+  .fe-chip.casa {
+    background: color-mix(in srgb, var(--color-sage) 55%, var(--color-white));
+  }
+  .fe-chip svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .fe-compra {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  .fe-precio {
+    font-family: var(--font-serif);
+    font-size: 26px;
+    line-height: 1;
+    color: var(--color-charcoal);
+  }
+  .fe-botones {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .fe-ficha {
+    all: unset;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 8px 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: rgb(35 34 30 / 0.72);
+    border-radius: 8px;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--tono) 70%, transparent);
+    text-underline-offset: 4px;
+  }
+  .fe-ficha:hover {
+    color: var(--color-charcoal);
+  }
+  .fe-ficha:focus-visible,
+  .fe-add:focus-visible {
+    outline: 2px solid var(--color-clay-deep);
+    outline-offset: 2px;
+  }
+  .fe-add {
+    all: unset;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 104px;
+    min-height: 40px;
+    padding: 0 16px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgb(35 34 30 / 0.22);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-charcoal);
+    transition:
+      background 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .fe-add:hover {
+    border-color: var(--color-clay-deep);
+    background: color-mix(in srgb, var(--color-clay) 25%, transparent);
+  }
+  .fe-add-si {
+    display: none;
+  }
+  .fe-add[aria-pressed='true'] {
+    background: var(--color-clay);
+    border-color: var(--color-clay);
+  }
+  .fe-add[aria-pressed='true'] .fe-add-no {
+    display: none;
+  }
+  .fe-add[aria-pressed='true'] .fe-add-si {
+    display: inline;
+  }
+  @media (max-width: 560px) {
+    .fe {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .fe-compra {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>

@@ -1,0 +1,10 @@
+---
+import type { Texto } from '../../data/tienda';
+
+interface Props {
+  texto: Texto;
+}
+const { texto } = Astro.props;
+---
+
+{texto.map((f) => (typeof f === 'string' ? f : <strong>{f.b}</strong>))}

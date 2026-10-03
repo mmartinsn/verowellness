@@ -1,39 +1,26 @@
 ---
 /**
- * 07 · La oferta — The Layer Method™ 1:1: the four-step process, the two price cards and the
- * "continuum" of cycles (Initial → Next → Next when needed).
+ * 07 · La oferta — the asesorías: the four-step process, the two price cards (one
+ * appointment and the Initial Layer Cycle), the invitation-only note for the Next Layer Cycle,
+ * and the continuum of cycles (Initial, Next, Next when needed).
  *
- * Prices, tags, notes and deliverables come from `src/data/oferta.ts`; each card's button goes
- * to its checkout.
+ * Process, prices, tags, notes and deliverables come from src/data; each card goes to its checkout.
  */
-import { ciclos, checkoutPath, checkoutPrincipal, precioCard } from '../../data/oferta';
+import {
+  ciclos,
+  checkoutPath,
+  checkoutPrincipal,
+  continuidad,
+  listaCiclos,
+  precioCard,
+  rotuloCitas,
+} from '../../data/oferta';
+import { pasosProceso } from '../../data/proceso';
+import { cta } from '../../data/site';
 import { href } from '../../lib/url';
 
 const initial = ciclos.INITIAL_LAYER_CYCLE;
 const next = ciclos.NEXT_LAYER_CYCLE;
-
-const pasos = [
-  {
-    titulo: 'Antes de tu Cita 1',
-    marca: 'The Layer Assessment™',
-    texto: 'Historia, objetivos, alimentación, lifestyle, síntomas y laboratorios.',
-  },
-  {
-    titulo: 'Cita 1 · Mapear + Priorizar',
-    dur: '90 min',
-    marca: 'The Layer Map™ · Top 3 Priorities · The Layer Plan™',
-    texto: 'Mapeas tus Layers, conectas la información y defines qué merece atención primero.',
-  },
-  {
-    titulo: 'Entre Citas · Implementar',
-    texto: 'Pones en práctica tu Layer Plan™ y observamos respuesta y obstáculos.',
-  },
-  {
-    titulo: 'Cita 2 · Revisar + Ajustar',
-    dur: '90 min',
-    texto: 'Revisamos qué mejoró, qué falta, y actualizamos tu Layer Plan™.',
-  },
-];
 
 const continuum = [
   {
@@ -73,7 +60,7 @@ const check =
   <div class="wrap">
     <div class="oferta-head reveal">
       <span class="eyebrow">La oferta</span>
-      <h2 class="caps">The Layer Method™ 1:1</h2>
+      <h2 class="caps">Asesorías</h2>
       <p>
         Deja de adivinar qué hacer con tu salud. Aquí conectas todas las piezas y sales con un plan
         claro: qué priorizar, en qué orden, y por qué.
@@ -85,7 +72,7 @@ const check =
       <span class="eyebrow proceso-label">Así funciona el proceso:</span>
       <ol class="proceso">
         {
-          pasos.map((p, i) => (
+          pasosProceso.map((p, i) => (
             <li class="paso spot">
               <div class="paso-num">{i + 1}</div>
               <div class="paso-titulo">
@@ -101,64 +88,52 @@ const check =
     </div>
 
     <div class="precios reveal">
-      <article class="tier destacado grad-ring tilt-card">
-        <div>
-          <span class="ptag">{initial.etiqueta}</span>
-          <h3 class="pname">{initial.nombre}</h3>
-          <span class="pval">{precioCard(initial)}</span>
-          <p class="pnota">{initial.etiquetaNota}</p>
-          <p class="pdesc">{initial.descripcion}</p>
-          <ul class="incluye">
-            {
-              initial.incluye.map((item) => (
-                <li>
-                  <Fragment set:html={check} />
-                  {item}
-                </li>
-              ))
-            }
-          </ul>
-          {
-            initial.bonus && (
-              <p class="bonus">
-                <span class="bonus-tag">Bonus</span>
-                {initial.bonus}
+      {
+        listaCiclos.map((c) => (
+          <article class:list={['tier', 'tilt-card', c.destacado ? 'destacado grad-ring' : 'spot']}>
+            <div>
+              <span class:list={['ptag', { 'ptag-sand': !c.destacado }]}>{c.etiqueta}</span>
+              <h3 class="pname">{c.nombre}</h3>
+              <p class="pprecio">
+                <span class="pval">{precioCard(c)}</span>
+                <span class="pcitas">{rotuloCitas(c)}</span>
               </p>
-            )
-          }
-        </div>
-        <a
-          class="btn btn-primary btn-block"
-          href={href(checkoutPath(initial))}
-          aria-label={`Reservar ${initial.nombre}`}>Haz clic aquí</a
-        >
-      </article>
-
-      <article class="tier spot tilt-card">
-        <div>
-          <span class="ptag ptag-sand">{next.etiqueta}</span>
-          <h3 class="pname">{next.nombre}</h3>
-          <span class="pval">{precioCard(next)}</span>
-          <p class="pnota">{next.descripcion}</p>
-          <p class="pdesc pdesc-nota">{next.notaPie}</p>
-          <ul class="incluye">
-            {
-              next.incluye.map((item) => (
-                <li>
-                  <Fragment set:html={check} />
-                  {item}
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-        <a
-          class="btn btn-outline btn-block"
-          href={href(checkoutPath(next))}
-          aria-label={`Reservar ${next.nombre}`}>Haz clic aquí</a
-        >
-      </article>
+              {c.etiquetaNota && <p class="pnota">{c.etiquetaNota}</p>}
+              <p class="pdesc">{c.descripcion}</p>
+              <ul class="incluye">
+                {c.incluye.map((item) => (
+                  <li>
+                    <Fragment set:html={check} />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              {c.bonus && (
+                <p class="bonus">
+                  <span class="bonus-tag">Bonus</span>
+                  {c.bonus}
+                </p>
+              )}
+            </div>
+            <a
+              class:list={['btn', 'btn-block', c.destacado ? 'btn-primary' : 'btn-outline']}
+              href={href(checkoutPath(c))}
+              aria-label={`Reservar ${c.nombre}`}
+            >
+              {cta.label}
+            </a>
+          </article>
+        ))
+      }
     </div>
+
+    <aside class="exclusivo reveal">
+      <span class="exclusivo-tag">{continuidad.etiqueta}</span>
+      <div>
+        <p class="exclusivo-titulo">{continuidad.titulo}</p>
+        <p class="exclusivo-texto">{continuidad.texto}</p>
+      </div>
+    </aside>
 
     <div class="continuidad reveal">
       <div class="orbitas" aria-hidden="true">
@@ -167,11 +142,9 @@ const check =
         <div class="orbita orbita-3"></div>
       </div>
       <div class="cont-head">
-        <span class="eyebrow">Continuum de Evolución</span>
-        <p class="pull">Completaste tu primer ciclo. Ahora decidimos cuál es tu Next Layer.</p>
-        <p class="cont-sub">
-          El proceso evoluciona por ciclos, a tu ritmo — sin membresías ni ataduras.
-        </p>
+        <span class="eyebrow">Evolución continua</span>
+        <p class="pull">¿Completas tu primer ciclo?</p>
+        <p class="cont-sub">Ahora decidimos cuál es tu Next Layer con un segundo ciclo.</p>
       </div>
       <div class="cont-steps">
         <div class="riel" aria-hidden="true"><div class="riel-pulso"></div></div>
@@ -211,9 +184,7 @@ const check =
         </ol>
       </div>
       <div class="cont-cta">
-        <a class="btn btn-primary" href={href(checkoutPrincipal)} data-magnet="0.25"
-          >Trabaja conmigo</a
-        >
+        <a class="btn btn-primary" href={href(checkoutPrincipal)} data-magnet="0.25">{cta.label}</a>
       </div>
     </div>
   </div>
@@ -322,8 +293,73 @@ const check =
   }
   @media (min-width: 860px) {
     .precios {
-      grid-template-columns: 1.05fr 0.95fr;
-      align-items: stretch;
+      grid-template-columns: 0.95fr 1.05fr;
+      align-items: start;
+    }
+  }
+  .pprecio {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .pprecio .pval {
+    margin-bottom: 0;
+  }
+  .pcitas {
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: rgb(35 34 30 / 0.08);
+    color: var(--color-charcoal);
+  }
+  .exclusivo {
+    max-width: 1060px;
+    margin: 28px auto 0;
+    padding: 26px 32px;
+    border-radius: 28px;
+    background:
+      radial-gradient(ellipse 60% 120% at 0% 0%, rgb(231 183 160 / 0.28) 0%, transparent 70%),
+      var(--color-charcoal);
+    color: var(--color-bone);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    box-shadow: 0 20px 50px rgb(35 34 30 / 0.16);
+  }
+  .exclusivo-tag {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--color-clay);
+    color: var(--color-charcoal);
+  }
+  .exclusivo-titulo {
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 2.4vw, 28px);
+    line-height: 1.15;
+    margin-bottom: 4px;
+    color: var(--color-bone);
+  }
+  .exclusivo-texto {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: rgb(253 249 242 / 0.82);
+  }
+  @media (max-width: 640px) {
+    .exclusivo {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 24px;
+      gap: 14px;
     }
   }
   .tier {
@@ -536,9 +572,10 @@ const check =
     line-height: 1.18;
   }
   .cont-head .cont-sub {
-    font-size: 15px;
-    font-weight: 600;
-    color: rgb(35 34 30 / 0.7);
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.25;
+    color: var(--color-clay-rich);
   }
 
   .cont-steps {

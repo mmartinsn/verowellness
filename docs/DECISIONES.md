@@ -131,6 +131,33 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     Holística e Integral» en el de azúcar; «Nutrición clínica · Medicina integrativa» en el de GLP-1);
     el recetario ya dice «Nutricionista».
 
+17. **2026-10-03 — Los ajustes de Verónica** (documento «AJUSTES PAGINA WEB INICIO THE METHOD 1-1 y
+    examenes (falta suplementos)», 47 cambios con capturas; respuestas de Santiago el 02/03-oct). Lo
+    que no es copia literal de ella, con su razón:
+    - **Precios.** «Layer Session» (1 cita) USD 197 e Initial Layer Cycle (2 citas) USD 247
+      («siguen siendo los mismos precios»; el nombre sale del vocabulario de marca de ATLAS). El
+      Next Layer Cycle ya no muestra precio: llega por invitación al terminar el Initial (nota
+      `continuidad` en `oferta.ts`). Su checkout sigue existiendo para el enlace del correo.
+    - **Lectura de exámenes:** 1 cita = Layer Session, 2 citas = Initial Layer Cycle; se lee un
+      examen por cita.
+    - **Fees de laboratorio:** línea aparte por examen, 15 de service fee + 10 de authorization
+      network (ella dio «$10-15» y «$10 aprox»; se toma el tope para no perder). Sin impuesto; el
+      7 % va sobre exámenes, citas y guías. Constantes en `src/lib/precio.ts`.
+    - **Guías añadidas en el checkout:** 15 % de descuento (Santiago). La guía nueva de hormonas
+      está «por definir» de precio (con Rosi) y no se vende todavía.
+    - **™ fuera de todo el sitio**, también del lema y del pie.
+    - **Colores de las Layers según ATLAS** (`fuentes/2026-10-02_ATLAS_design_system_v2-3.pdf`,
+      bloque 13, «fuente única de verdad»): Nutrición charcoal, Vías clay, Terreno sage deep,
+      Célula rose, Hábitos olive. Viven en `layers.ts` y todas las páginas los leen de ahí.
+    - **«The Method» → «Mi método» y «1:1» → «Asesorías»** en el menú; la página pasa a
+      `/asesorias/` y `/1-1/` redirige.
+    - **Botón «Trabaja conmigo · Click aquí»** en todo el sitio (`cta.label`); el del header usa la
+      versión corta. La barra fija se ve en todas las pantallas, también en escritorio.
+    - **Preguntas frecuentes nuevas:** Santiago autorizó redactarlas («inventalas pero de manera
+      acorde»), solo con hechos que ya dice el sitio.
+    - **Fotos:** el color del pelo se iguala al de las fotos finales del recetario, retocando por
+      color con la cara sin tocar; una edición generativa le cambió las facciones el 16-sep.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
@@ -139,7 +166,11 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   Nunito (lo que Verónica pidió para el recetario). ¿Se unifica, y con cuál sans?
 - **¿Paleta de Mari o los siete hex del brand book?** Verónica blindó la paleta; conviene que lo
   vea con la tabla de arriba.
-- **¿Fotos con el pelo claro o oscurecido?** Regla de Mari para el recetario vs. su uso aquí.
+- **Textos redactados para aprobar** (decisión 17): la nota de acceso al Next Layer Cycle, la
+  descripción de la Layer Session, el aviso de lectura de exámenes, la ventana de guías del
+  checkout y las preguntas frecuentes nuevas.
+- **Precio de la guía de hormonas** (con Rosi) y su portada definitiva.
+- **Suplementos:** su documento dice «falta suplementos»; esa página no se tocó en esta ronda.
 - **Textos legales** y **aviso médico**: los redacta Verónica.
 - **Pasarelas**: confirmar cuáles se contratan (Stripe, PayPal, Zelle manual) y si el impuesto es
   7 % para todos los países.

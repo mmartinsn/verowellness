@@ -6,6 +6,7 @@
 import CheckoutLayout from '../../layouts/CheckoutLayout.astro';
 import Checkout from '../../components/checkout/Checkout.astro';
 import { examenes, CLAVE_SELECCION } from '../../data/examenes';
+import { opcionesLectura } from '../../components/checkout/tipos';
 import { href } from '../../lib/url';
 
 const pedido = {
@@ -34,7 +35,9 @@ const pedido = {
     carrito={{
       clave: CLAVE_SELECCION,
       volver: href('/examenes'),
+      tipo: 'examen',
       catalogo: examenes.map(({ id, nombre, precio }) => ({ id, nombre, precio })),
     }}
+    lectura={opcionesLectura()}
   />
 </CheckoutLayout>

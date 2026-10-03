@@ -1,29 +1,14 @@
 ---
-/**
- * "Cinco Layers. Un solo mapa." — the five Layers as glass sheets in 3D (MapaLuz) and the five
- * expandable Layer cards, the whole section on the dark brown ground (Mari, 2026-09-23). Content
- * from data/layers.
- */
-import { layers, type Layer } from '../../data/layers';
+import { layers } from '../../data/layers';
 import MapaLuz from './MapaLuz.astro';
-
-// Card colours follow Mari's page (Layer 01 sits on charcoal there, not clay).
-const cardColor: Record<Layer['num'], string> = {
-  '01': 'charcoal',
-  '02': 'clay',
-  '03': 'sage-deep',
-  '04': 'rose',
-  '05': 'olive',
-};
-const oscuro = (num: Layer['num']) => num === '01' || num === '05';
 ---
 
 <section id="layers" class="capas-oscura">
   <div class="wrap">
-    <span class="eyebrow">The Layer Method™</span>
+    <span class="eyebrow">The Layer Method</span>
     <h2 class="layers-intro">Cinco Layers. Un solo mapa.</h2>
     <p class="lede">
-      Cada Layer observa una parte distinta de tu bienestar — pero ninguna existe aislada de las
+      Cada capa observa una parte distinta de tu bienestar, pero ninguna existe aislada de las
       demás. Lo que ocurre en una puede sentirse en otra. Por eso no se recorren en orden: se
       exploran como territorios de un mismo terreno.
     </p>
@@ -31,22 +16,21 @@ const oscuro = (num: Layer['num']) => num === '01' || num === '05';
     <div class="layers-legend">
       <MapaLuz />
       <p class="legend-note">
-        Cinco territorios que se superponen y se leen en conjunto — no una secuencia de pasos.
+        Cinco territorios que se superponen y se leen en conjunto, no una secuencia de pasos.
       </p>
     </div>
   </div>
 </section>
 
-<!-- The five cards on their own light ground, a section apart from the dark map (Mari, 2026-09-23). -->
-<section class="capas-tarjetas" aria-label="Las cinco Layers">
+<section class="capas-tarjetas" aria-label="Las cinco capas">
   <div class="wrap">
-    <span class="eyebrow">Explora cada Layer</span>
+    <span class="eyebrow">Explora cada capa</span>
     <div class="layer-map" id="layerMap">
       {
         layers.map((l) => (
           <article
-            class:list={['layer-card', { oscuro: oscuro(l.num) }]}
-            style={`background:var(--color-${cardColor[l.num]});`}
+            class:list={['layer-card', { oscuro: l.oscuro }]}
+            style={`background:var(--color-${l.color});`}
             data-open="false"
           >
             <button
@@ -72,17 +56,9 @@ const oscuro = (num: Layer['num']) => num === '01' || num === '05';
             </div>
             <div class="lc-detail">
               <div class="lc-detail-inner">
-                <div>
-                  <p class="lc-quote">"{l.cita}"</p>
-                  <div class="lc-connects">
-                    <span class="lc-connects-lbl">Se conecta con</span>
-                    {l.conecta.map((c) => (
-                      <span class="lc-tag">{c}</span>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <div class="lc-detail-label">Qué observa esta Layer</div>
+                <p class="lc-quote">"{l.cita}"</p>
+                <div class="lc-observa">
+                  <div class="lc-detail-label">Qué observa esta capa</div>
                   <ul class="lc-bullets">
                     {l.observa.map((o) => (
                       <li>{o}</li>
@@ -126,7 +102,7 @@ const oscuro = (num: Layer['num']) => num === '01' || num === '05';
     color: rgb(248 246 241 / 0.78);
   }
   .capas-oscura .legend-note {
-    color: rgb(248 246 241 / 0.5);
+    color: rgb(248 246 241 / 0.88);
   }
   /* Cards section: a light, warm ground with a soft clay/sage wash. */
   .capas-tarjetas {
@@ -163,22 +139,27 @@ const oscuro = (num: Layer['num']) => num === '01' || num === '05';
     margin: 36px 0 44px;
   }
   .legend-note {
-    font-size: 13px;
-    color: rgb(48 47 42 / 0.45);
-    margin-top: 22px;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(24px, 3.2vw, 38px);
+    line-height: 1.3;
+    max-width: 820px;
+    margin: 44px auto 0;
     text-align: center;
+    text-wrap: balance;
   }
 
   .layer-map {
     position: relative;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    grid-auto-flow: row dense;
     gap: 20px;
     align-items: start;
   }
-  /* Five cards in two columns leave the last one alone: centre it instead of an empty half. */
   @media (min-width: 641px) {
-    .layer-card:last-child:nth-child(odd):not([data-open='true']) {
+    .layer-map:not(:has(.layer-card[data-open='true'])) .layer-card:last-child:nth-child(odd) {
       grid-column: 1 / -1;
       justify-self: center;
       width: calc(50% - 10px);
@@ -297,10 +278,9 @@ const oscuro = (num: Layer['num']) => num === '01' || num === '05';
     border-top-color: rgb(251 250 246 / 0.25);
   }
   .lc-detail-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 36px;
-    align-items: start;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
     min-height: 0;
     overflow: hidden;
     opacity: 0;
@@ -311,7 +291,6 @@ const oscuro = (num: Layer['num']) => num === '01' || num === '05';
   }
   @media (max-width: 760px) {
     .lc-detail-inner {
-      grid-template-columns: 1fr;
       gap: 22px;
     }
   }
@@ -319,8 +298,9 @@ const oscuro = (num: Layer['num']) => num === '01' || num === '05';
     font-family: var(--font-serif);
     font-style: italic;
     font-weight: 500;
-    font-size: 27px;
-    line-height: 1.45;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.4;
+    max-width: 860px;
   }
   .lc-detail-label {
     font-weight: 800;
@@ -348,31 +328,6 @@ const oscuro = (num: Layer['num']) => num === '01' || num === '05';
   }
   .oscuro .lc-bullets li {
     background: rgb(251 250 246 / 0.16);
-  }
-  .lc-connects {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    margin-top: 26px;
-  }
-  .lc-connects-lbl {
-    font-weight: 700;
-    font-size: 15px;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    opacity: 0.7;
-    margin-right: 4px;
-  }
-  .lc-tag {
-    font-weight: 700;
-    font-size: 16px;
-    padding: 9px 18px;
-    border-radius: var(--radius-pill);
-    background: rgb(48 47 42 / 0.12);
-  }
-  .oscuro .lc-tag {
-    background: rgb(251 250 246 / 0.22);
   }
 </style>
 

@@ -1,65 +1,65 @@
-/**
- * The shop (/tienda/): Verónica's digital products. Prices from Mari (2026-09-23); copy written by
- * Codex (astra) from the ebooks' own text and cut to five "Qué incluye" lines each, as in the
- * Claude Design canvas «Veronica Wellness — Tienda de ebooks». Pending Verónica's review:
- * how the PDFs are delivered after paying, and the card names (editorial vs. cover titles).
- *
- * The anti-inflammatory guide is not sold here: it is the bonus of the Initial Layer Cycle
- * (data/oferta.ts).
- */
 import type { ImageMetadata } from 'astro';
 import portadaHackear from '../assets/tienda/portada-hackear.jpg';
 import portadaRecetario from '../assets/tienda/portada-recetario.jpg';
 import portadaGlp1 from '../assets/tienda/portada-glp1.jpg';
+import portadaHormonas from '../assets/tienda/portada-hormonas.jpg';
 
-export interface Producto {
+export type Texto = (string | { b: string })[];
+
+export interface Libro {
   id: string;
   num: string;
-  /** Pages in the PDF — also the huge outline number behind the chapter. */
-  paginas: number;
-  /** Card name (Codex) and the title printed on the cover. */
   nombre: string;
-  tituloPortada: string;
-  /** USD, before tax (tax is added at checkout only). */
-  precio: number;
+  titulo: string;
   portada: ImageMetadata;
-  subtitulo: string;
-  gancho: string;
-  paraTi: string[];
-  incluye: string[];
-  cita: { texto: string; pagina: number };
+  pregunta: string;
+  parrafo: Texto;
+  incluye: Texto[];
+  cierre: string;
   formato: string;
-  /** Scope note under the chapter, when the product needs one. */
   nota?: string;
-  boton: string;
-  /** Visual tone of the chapter: ground and the accent of the number and the highlighter. */
+  bestSeller?: boolean;
   tono: 'clay' | 'sage' | 'rose';
+}
+
+export interface Producto extends Libro {
+  precio: number;
+  boton: string;
 }
 
 export const productos: Producto[] = [
   {
     id: 'hackear-tu-cerebro',
     num: '01',
-    paginas: 34,
-    nombre: 'Azúcar, harinas y antojos',
-    tituloPortada: 'Cómo hackear tu cerebro para dejar el azúcar y las harinas en 14 días',
-    precio: 7,
+    nombre: 'Cómo hackear tu cerebro',
+    titulo: 'Cómo hackear tu cerebro para dejar el azúcar y las harinas en 14 días',
+    precio: 9.99,
     portada: portadaHackear,
-    subtitulo: 'Una propuesta de 14 días para explorar tus hábitos alrededor de la comida.',
-    gancho: 'Antes de cambiar lo que comes, observa qué pasa cuando aparece el antojo.',
-    paraTi: [
-      'Quieres observar qué situaciones y emociones acompañan tus antojos.',
-      'Buscas ejemplos de comidas y alternativas para cocinar con otras harinas.',
-      'Te interesa entender las etiquetas de los productos que compras.',
+    pregunta:
+      '¿Empiezas el día decidida a comer mejor y terminas la tarde buscando algo dulce que te calme?',
+    parrafo: [
+      'Ese ciclo de antojo, culpa y «mañana empiezo» puede ocupar más espacio en tu vida del que quisieras. Esta guía te propone una ruta de 14 días para observar qué dispara tus antojos, organizar tus comidas y practicar herramientas para responder de otra manera.',
     ],
     incluye: [
-      '34 páginas con una propuesta organizada en 2 fases: días 1–7 y días 8–14.',
-      'La fórmula del Plato S.O.S. y 1 ejemplo de menú diario con desayuno, almuerzo, cena y snacks.',
-      'La regla de los 15 minutos y 4 herramientas para explorar el impulso de comer, incluido el escáner H.A.L.T.',
-      'Reintroducción de tubérculos y frutas, con un semáforo de carga glucémica.',
-      'Lectura de etiquetas, 8 alternativas de harinas sin cereales y opciones vegetales para sustituir lácteos.',
+      [
+        { b: 'Dos fases claras:' },
+        ' una primera semana de cambios alimentarios y una segunda de reintroducción de frutas y tubérculos.',
+      ],
+      [
+        { b: 'La fórmula del plato S.O.S.' },
+        ' y un ejemplo de menú para organizar comidas con proteína, vegetales y grasas.',
+      ],
+      [
+        { b: 'La regla de los 15 minutos' },
+        ', ejercicios de mindfulness y respiración para hacer una pausa frente al impulso de comer.',
+      ],
+      [
+        { b: 'El escáner H.A.L.T.' },
+        ' para explorar si estás buscando comida por hambre, ansiedad, soledad o cansancio.',
+      ],
+      ['Orientación sobre frutas, endulzantes y combinaciones de alimentos para la segunda fase.'],
     ],
-    cita: { texto: 'En lugar de bloquearlo, obsérvalo.', pagina: 12 },
+    cierre: 'No hace falta esperar a otro lunes para empezar a entender tus patrones.',
     formato: 'PDF · 34 páginas',
     nota: 'Los 14 días describen la estructura de la propuesta, no un plazo garantizado de resultados. Los cambios de alimentación requieren valorar tu caso.',
     boton: 'Comprar ebook',
@@ -68,26 +68,42 @@ export const productos: Producto[] = [
   {
     id: 'recetario-30-desayunos',
     num: '02',
-    paginas: 47,
-    nombre: '30 desayunos de Verónica',
-    tituloPortada: '30 Desayunos Antiinflamatorios Express',
+    nombre: '30 desayunos antiinflamatorios express',
+    titulo: '30 desayunos antiinflamatorios express',
     precio: 19.99,
+    bestSeller: true,
     portada: portadaRecetario,
-    subtitulo: 'Recetas dulces y saladas para organizar tus mañanas con opciones concretas.',
-    gancho: 'Tu mañana ya tiene suficientes decisiones. Deja pensado el desayuno.',
-    paraTi: [
-      'Quieres variar el desayuno y tener a mano opciones dulces y saladas.',
-      'Te sirve preparar algunas bases con anticipación para la semana.',
-      'Buscas cantidades, instrucciones y sustituciones en un mismo lugar.',
+    pregunta:
+      'Quieres evitar las harinas, lácteos y el azúcar, empezar tu día con un mejor desayuno, pero ya te aburriste de los huevos de siempre y de buscar recetas que nunca preparas.',
+    parrafo: [
+      'Resuelve tus mañanas con 30 recetas dulces y saladas que combinan sabor, variedad y ',
+      { b: 'entre 26 y 35 g de proteína por porción' },
+      '. Desde rollos de canela y pancakes hasta arepas de yuca y egg wraps: opciones concretas para abrir el recetario, elegir y cocinar.',
     ],
     incluye: [
-      '30 recetas en 3 secciones de 10: dulces altos en proteína, carbohidratos con proteína animal y saladas bajas en carbohidratos.',
-      'Ingredientes con cantidades, preparación paso a paso, porciones y valores nutricionales estimados.',
-      'Una tabla resumen de las 30 recetas con tiempos, proteína por porción y página de consulta.',
-      'Despensa básica, guía de utensilios, preparación anticipada y congelación.',
-      '5 propuestas para organizar la semana y notas de conservación y sustitución.',
+      [
+        'Recetas sin trigo, cebada, centeno, avena, maíz, arroz, soya, lácteos de vaca ni azúcar refinada.',
+      ],
+      [
+        {
+          b: '10 desayunos dulces altos en proteína, 10 con carbohidratos anti-inflamatorios y proteína animal, y 10 salados low carb.',
+        },
+      ],
+      [
+        { b: '16 recetas listas en 15 minutos o menos' },
+        ', más opciones para dejar preparadas desde la noche anterior.',
+      ],
+      [
+        'Calorías y macronutrientes estimados por porción, ingredientes con cantidades y preparación paso a paso.',
+      ],
+      [
+        { b: 'Tips de meal prep, conservación y congelación' },
+        ' para cocinar una vez y resolver varias mañanas.',
+      ],
+      ['Sustituciones, despensa básica y claves para revisar las etiquetas de tus ingredientes.'],
     ],
-    cita: { texto: 'Mañanas reales. Decisiones ya tomadas.', pagina: 2 },
+    cierre:
+      'Mañana vas a desayunar otra vez. Ten lista una opción que te provoque y encaje con tu forma de comer.',
     formato: 'PDF · 47 páginas · Edición 2026',
     boton: 'Comprar recetario',
     tono: 'sage',
@@ -95,26 +111,36 @@ export const productos: Producto[] = [
   {
     id: 'guia-glp1-retatrutida',
     num: '03',
-    paginas: 21,
-    nombre: 'GLP-1 y retatrutida',
-    tituloPortada: 'Todas a tu alrededor ya se están inyectando. Tú decide hacerlo bien.',
-    precio: 13.5,
+    nombre: 'Todas se están inyectando',
+    titulo: 'Todas se están inyectando: guía de GLP-1 y RETA',
+    precio: 12.99,
     portada: portadaGlp1,
-    subtitulo: 'Una guía educativa para tomar decisiones informadas junto a tu médico.',
-    gancho: 'Tu decisión merece información y una conversación con tu médico.',
-    paraTi: [
-      'Escuchas hablar de estas inyecciones y quieres entender los términos antes de hablar con tu médico.',
-      'Estás en tratamiento médico y buscas temas de alimentación y hábitos para revisar en consulta.',
-      'Quieres conocer los efectos adversos y las señales de alarma que aborda la guía.',
+    pregunta:
+      'Antes de tu próxima decisión sobre las inyecciones, entiende qué necesitas cuidar además del peso.',
+    parrafo: [
+      'Quizás estás considerando usarlas. Quizás ya empezaste y ahora te preguntas cómo comer con menos apetito, qué hacer con las molestias digestivas o cómo cuidar tu músculo. Esta guía reúne las preguntas que conviene hacer y las bases de alimentación y hábitos que acompañan el proceso.',
     ],
     incluye: [
-      'Una introducción a GLP-1 y una comparación de semaglutida, tirzepatida y retatrutida.',
-      'Secciones sobre hambre emocional, hábitos digestivos y una propuesta semanal de movimiento.',
-      '12 ideas de comidas: 3 desayunos, 3 almuerzos, 3 cenas y 3 meriendas.',
-      'Una tabla de 10 efectos adversos con cuándo consultar y 8 señales de alarma.',
-      'Una lista diaria de 9 puntos para revisar hábitos y el seguimiento indicado por tu médico.',
+      [
+        { b: 'Diferencias entre semaglutida, tirzepatida y retatrutida' },
+        ', con una explicación de su funcionamiento y las precauciones descritas para RETA.',
+      ],
+      [
+        { b: 'Cálculos orientativos de calorías, proteína, grasas, carbohidratos y fibra' },
+        ', con un ejemplo paso a paso.',
+      ],
+      ['Ideas de comidas y estrategias para cuando la llenura dificulta alimentarte.'],
+      [
+        { b: 'Una tabla de efectos adversos:' },
+        ' náuseas, reflujo, estreñimiento, fatiga y otras molestias, con señales para consultar.',
+      ],
+      [{ b: 'Un esquema semanal de movimiento y fuerza' }, ' enfocado en conservar músculo.'],
+      [
+        'Herramientas para abordar el hambre emocional y preparar, junto con tu médico, los hábitos que necesitarás si el tratamiento cambia.',
+      ],
     ],
-    cita: { texto: 'Hoy avancé, aunque no haya sido perfecto. Y eso también cuenta.', pagina: 19 },
+    cierre:
+      'Si ya estás en este camino, cada día es una oportunidad para construir hábitos que te acompañen a largo plazo. Una guía educativa para llegar mejor informada a tus decisiones y consultas.',
     formato: 'PDF · 21 páginas',
     nota: 'Contenido educativo para conversar con tu médico. No recomienda iniciar fármacos ni sustituye la valoración médica para decidir sobre un tratamiento.',
     boton: 'Comprar guía educativa',
@@ -122,12 +148,63 @@ export const productos: Producto[] = [
   },
 ];
 
-/** `USD 19,99` — the shop writes prices the Spanish way, as in the copy. */
+export const proximamente: Libro[] = [
+  {
+    id: 'guia-hormonas-30',
+    num: '04',
+    nombre: 'Vuelve a sentirte tú',
+    titulo: 'Vuelve a sentirte tú',
+    bestSeller: true,
+    portada: portadaHormonas,
+    pregunta: 'Entiende tus hormonas a partir de los 30 y empieza por lo que sí puedes cambiar.',
+    parrafo: [
+      'Entre los 30 y los 40 muchas mujeres notan cambios: menos energía, un ciclo distinto, peor descanso, más antojos o un cuerpo que ya no responde igual. Los 30 no son un interruptor: nada cambia automáticamente al cumplir años, y ninguno de estos cambios es un diagnóstico por sí solo.',
+    ],
+    incluye: [
+      [
+        { b: 'Tu ciclo y tus hormonas sexuales:' },
+        ' tu ciclo como una conversación mensual, tus números de referencia y qué mirar cuando el SPM se vuelve incapacitante.',
+      ],
+      [
+        { b: 'Tiroides, cortisol e insulina:' },
+        ' el termostato de tu metabolismo, tu respuesta al estrés y tu composición corporal.',
+      ],
+      [
+        { b: 'Tu plato hormonal' },
+        ', comidas sencillas y cómo ajustar alimentación, entrenamiento y hábitos a cada fase.',
+      ],
+      [
+        { b: 'Ovulación y preconcepción' },
+        ', hígado e intestino, y lo que hacen los anticonceptivos.',
+      ],
+      [
+        { b: 'Exámenes que podemos evaluar' },
+        ' en nuestra asesoría, según tu historia y tus síntomas.',
+      ],
+      [
+        { b: 'Un plan de 30 días' },
+        ' y workbooks para registrar tu ciclo, tu energía y tu radar premenstrual.',
+      ],
+    ],
+    cierre: 'Tus hormonas son una capa, no toda la historia.',
+    formato: 'PDF · Libro y workbook',
+    nota: 'Contenido educativo. No sustituye una evaluación médica ni sirve para diagnosticar o tratar enfermedades.',
+    tono: 'clay',
+  },
+];
+
+export const libros: (Producto | Libro)[] = [...productos, ...proximamente];
+
+export function esComprable(libro: Producto | Libro): libro is Producto {
+  return 'precio' in libro;
+}
+
 export function precioTienda(n: number): string {
   return `USD ${Number.isInteger(n) ? n : n.toFixed(2).replace('.', ',')}`;
 }
 
-/** localStorage key for the shop selection, read by /checkout/tienda/. */
+export const precioPorDefinir = 'Precio por definir';
+
 export const CLAVE_TIENDA = 'vw-tienda-seleccion';
 
 export const avisoLegal =

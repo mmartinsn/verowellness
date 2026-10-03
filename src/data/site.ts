@@ -5,9 +5,11 @@
 export const marca = {
   /** Wordmark without accent, on purpose (brand book: neutral, international reading). */
   nombre: 'Veronica Wellness',
-  metodo: 'The Layer Method™',
-  lema: 'Health has layers.™',
+  metodo: 'The Layer Method',
+  lema: 'Health has layers.',
   firma: 'Salud por capas. Del terreno a la célula.',
+  sintoma:
+    'El síntoma es el punto de partida. Sanar empieza por entender las capas detrás de lo que sientes.',
   /** Verónica's Instagram (Mari, 2026-09-23 — not @veronicawellness). */
   instagram: '@verodudamell',
   dominio: 'veronicawellness.com',
@@ -28,8 +30,8 @@ export interface NavItem {
  */
 export const nav: NavItem[] = [
   { label: 'Inicio', path: '/' },
-  { label: 'The Method', path: '/el-metodo' },
-  { label: '1:1', path: '/1-1' },
+  { label: 'Mi método', path: '/el-metodo' },
+  { label: 'Asesorías', path: '/asesorias' },
   { label: 'Exámenes', path: '/examenes' },
   { label: 'Tienda', path: '/tienda' },
   { label: 'Suplementos', path: '/suplementos' },
@@ -37,8 +39,9 @@ export const nav: NavItem[] = [
 ];
 
 export const cta = {
-  label: 'Trabaja conmigo',
-  path: '/1-1',
+  label: 'Trabaja conmigo · Click aquí',
+  corto: 'Trabaja conmigo',
+  path: '/asesorias',
 };
 
 export const legal = {
@@ -58,7 +61,7 @@ export const prototipo = true;
 /** Social-sharing image (1200 × 630), built by scripts/og-image.mjs. */
 export const imagenSocial = {
   archivo: 'og/veronica-wellness.jpg',
-  alt: 'Verónica Dudamell, creadora de The Layer Method™, sonriendo con bata blanca',
+  alt: 'Verónica Dudamell, creadora de The Layer Method, sonriendo con bata blanca',
   ancho: 1200,
   alto: 630,
 };

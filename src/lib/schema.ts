@@ -47,18 +47,18 @@ export function grafoSitio(site: URL | undefined): Nodo[] {
   ];
 }
 
-/** The 1:1 offer: one Service with an Offer per cycle (price before tax, in USD). */
+/** The asesorías offer: one Service with an Offer per public option (price before tax, in USD). */
 export function grafoServicio(site: URL | undefined): Nodo {
   const inicio = url(site, '/');
   return {
     '@type': 'Service',
-    '@id': `${inicio}#layer-method-1-1`,
-    name: `${marca.metodo} 1:1`,
+    '@id': `${inicio}#asesorias`,
+    name: `Asesorías ${marca.metodo}`,
     serviceType: 'Asesoría de nutrición funcional y salud celular',
     provider: { '@id': `${inicio}#organizacion` },
     availableChannel: {
       '@type': 'ServiceChannel',
-      serviceUrl: url(site, '/1-1'),
+      serviceUrl: url(site, '/asesorias'),
       name: 'Asesorías 100% online',
     },
     offers: listaCiclos.map((c) => ({

@@ -64,7 +64,7 @@ console.log(`archivo: ${archivo}`);
 await page.goto(url, { waitUntil: 'load' });
 await marcoListo();
 esperar(
-  /LAYER METHOD/.test(await page.title()),
+  /The Layer Method/i.test(await page.title()),
   `abre en el inicio (título: ${await page.title()})`
 );
 await foto('01-inicio');
@@ -73,16 +73,16 @@ await foto('01-inicio');
 await marco().click('.header-nav a[data-ir="el-metodo"]');
 await page.waitForFunction(() => location.hash === '#el-metodo');
 await marcoListo();
-esperar(true, 'clic en «The Method» dentro del marco → #el-metodo');
+esperar(true, 'clic en «Mi método» dentro del marco → #el-metodo');
 await foto('02-el-metodo');
 
 // Nested route + anchor.
-await page.goto(url + '#1-1~cta', { waitUntil: 'load' });
+await page.goto(url + '#asesorias~cta', { waitUntil: 'load' });
 await marcoListo();
 await sleep(900);
 const scrollY = await page.evaluate(() => document.getElementById('marco').contentWindow.scrollY);
-esperar(scrollY > 1000, `#1-1~cta desplaza al ancla (scrollY ${Math.round(scrollY)})`);
-await foto('03-1-1-cta');
+esperar(scrollY > 1000, `#asesorias~cta desplaza al ancla (scrollY ${Math.round(scrollY)})`);
+await foto('03-asesorias-cta');
 
 // The checkout keeps its behaviour inside the bundle.
 await page.goto(url + '#checkout/initial-layer-cycle', { waitUntil: 'load' });

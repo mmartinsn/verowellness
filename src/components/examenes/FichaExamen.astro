@@ -1,0 +1,332 @@
+---
+import { areaPorId, examenes, muestras, productoDe } from '../../data/examenes';
+import { sintomasDeExamen } from '../../data/sintomas';
+import { usd } from '../../lib/precio';
+import { href } from '../../lib/url';
+import { iconoCasa, iconoMuestra } from './iconos';
+
+const fichas = Object.fromEntries(
+  examenes.map((e) => {
+    const area = areaPorId.get(e.area)!;
+    return [
+      e.id,
+      {
+        nombre: e.nombre,
+        laboratorio: e.laboratorio ?? '',
+        area: area.nombre,
+        color: area.color,
+        precio: usd(e.precio),
+        producto: productoDe(e),
+        descripcion: e.descripcion,
+        chips: [
+          ...e.muestras.map((m) => ({ texto: muestras[m], icono: iconoMuestra[m] })),
+          ...(e.enCasa ? [{ texto: 'Desde casa', icono: iconoCasa }] : []),
+        ],
+        sintomas: sintomasDeExamen(e.id).map((s) => `${s.num} · ${s.titulo}`),
+      },
+    ];
+  })
+);
+---
+
+<dialog
+  class="ficha"
+  data-ficha-dialog
+  data-fichas={JSON.stringify(fichas)}
+  aria-labelledby="ficha-nombre"
+>
+  <div class="ficha-caja">
+    <button type="button" class="ficha-cerrar" data-cerrar aria-label="Cerrar ficha">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"
+        ><path d="M6 6l12 12M18 6L6 18"></path></svg
+      >
+    </button>
+    <p class="ficha-meta">
+      <span class="ficha-area" data-campo="area"></span>
+      <span class="ficha-lab" data-campo="laboratorio"></span>
+    </p>
+    <h3 class="ficha-nombre" id="ficha-nombre" data-campo="nombre"></h3>
+    <p class="ficha-precio">
+      <span data-campo="precio"></span>
+      <small>+ fees del laboratorio e impuesto al finalizar</small>
+    </p>
+    <p class="ficha-muestras" data-campo="muestras"></p>
+    <p class="ficha-desc" data-campo="descripcion"></p>
+    <div class="ficha-sintomas" data-bloque="sintomas">
+      <p class="ficha-sub">Aparece en</p>
+      <ul data-campo="sintomas"></ul>
+    </div>
+    <div class="ficha-acciones">
+      <button type="button" class="ficha-add" aria-pressed="false" data-add="">
+        <span class="ficha-add-no">Agregar a mi selección</span>
+        <span class="ficha-add-si">Agregado ✓</span>
+      </button>
+      <a class="ficha-ayuda" href={href('/asesorias')}>¿Te ayudamos a elegir?</a>
+    </div>
+  </div>
+</dialog>
+
+<template id="ficha-chip">
+  <span class="ficha-chip"
+    ><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path></path></svg><span
+    ></span></span
+  >
+</template>
+
+<style>
+  .ficha {
+    margin: auto;
+    width: min(620px, calc(100vw - 32px));
+    max-height: min(86vh, 820px);
+    padding: 0;
+    border: 0;
+    border-radius: 26px;
+    background: var(--color-bone);
+    color: var(--color-charcoal);
+    box-shadow: 0 40px 90px -30px rgb(35 34 30 / 0.55);
+    overflow: auto;
+  }
+  .ficha::backdrop {
+    background: rgb(35 34 30 / 0.45);
+    backdrop-filter: blur(3px);
+  }
+  .ficha[open] {
+    animation: ficha-in 0.45s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  @keyframes ficha-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.98);
+    }
+  }
+  .ficha-caja {
+    position: relative;
+    padding: clamp(26px, 4vw, 40px);
+    border-top: 6px solid var(--tono, var(--color-clay));
+  }
+  .ficha-cerrar {
+    all: unset;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    background: var(--color-sand-light);
+  }
+  .ficha-cerrar svg,
+  .ficha-chip svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ficha-cerrar:focus-visible,
+  .ficha-add:focus-visible,
+  .ficha-ayuda:focus-visible {
+    outline: 2px solid var(--color-clay-deep);
+    outline-offset: 2px;
+  }
+  .ficha-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    padding-right: 48px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .ficha-area {
+    color: color-mix(in srgb, var(--tono, var(--color-clay)) 55%, var(--color-charcoal));
+  }
+  .ficha-lab {
+    color: rgb(35 34 30 / 0.5);
+  }
+  .ficha-nombre {
+    margin-top: 10px;
+    padding-right: 32px;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(28px, 3.4vw, 38px);
+    line-height: 1.08;
+  }
+  .ficha-precio {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 12px;
+    font-family: var(--font-serif);
+    font-size: 30px;
+    line-height: 1;
+  }
+  .ficha-precio small {
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    color: rgb(35 34 30 / 0.55);
+  }
+  .ficha-muestras {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .ficha-muestras:empty {
+    display: none;
+  }
+  .ficha-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 11px;
+    border-radius: var(--radius-pill);
+    background: var(--color-sand-light);
+    font-size: 12.5px;
+    font-weight: 700;
+    color: rgb(35 34 30 / 0.72);
+  }
+  .ficha-desc {
+    margin-top: 18px;
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: rgb(35 34 30 / 0.8);
+  }
+  .ficha-sintomas {
+    margin-top: 20px;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--tono, var(--color-clay)) 18%, var(--color-ivory));
+  }
+  .ficha-sintomas[hidden] {
+    display: none;
+  }
+  .ficha-sub {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgb(35 34 30 / 0.6);
+  }
+  .ficha-sintomas ul {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 4px;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .ficha-acciones {
+    margin-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+  }
+  .ficha-add {
+    all: unset;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 26px;
+    border-radius: var(--radius-pill);
+    background: var(--color-charcoal);
+    color: var(--color-bone);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .ficha-add-si {
+    display: none;
+  }
+  .ficha-add[aria-pressed='true'] {
+    background: var(--color-clay);
+    color: var(--color-charcoal);
+  }
+  .ficha-add[aria-pressed='true'] .ficha-add-no {
+    display: none;
+  }
+  .ficha-add[aria-pressed='true'] .ficha-add-si {
+    display: inline;
+  }
+  .ficha-ayuda {
+    font-size: 14px;
+    font-weight: 700;
+    border-bottom: 1px solid rgb(35 34 30 / 0.3);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ficha[open] {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  type Ficha = {
+    nombre: string;
+    laboratorio: string;
+    area: string;
+    color: string;
+    precio: string;
+    producto: string;
+    descripcion: string;
+    chips: { texto: string; icono: string }[];
+    sintomas: string[];
+  };
+
+  const dialogo = document.querySelector<HTMLDialogElement>('[data-ficha-dialog]');
+  const molde = document.querySelector<HTMLTemplateElement>('#ficha-chip');
+  if (dialogo && molde) {
+    const fichas: Record<string, Ficha> = JSON.parse(dialogo.dataset.fichas ?? '{}');
+    const campo = (nombre: string) =>
+      dialogo.querySelector<HTMLElement>(`[data-campo="${nombre}"]`)!;
+
+    const chip = (texto: string, icono: string) => {
+      const nodo = molde.content.firstElementChild!.cloneNode(true) as HTMLElement;
+      nodo.querySelector('path')!.setAttribute('d', icono);
+      nodo.querySelector('span')!.textContent = texto;
+      return nodo;
+    };
+
+    const abrir = (id: string) => {
+      const f = fichas[id];
+      if (!f) return;
+      dialogo.style.setProperty('--tono', `var(--color-${f.color})`);
+      campo('area').textContent = f.area;
+      campo('laboratorio').textContent = f.laboratorio;
+      campo('nombre').textContent = f.nombre;
+      campo('precio').textContent = f.precio;
+      campo('descripcion').textContent = f.descripcion;
+      campo('muestras').replaceChildren(...f.chips.map((c) => chip(c.texto, c.icono)));
+      const lista = campo('sintomas');
+      lista.replaceChildren(
+        ...f.sintomas.map((s) => {
+          const li = document.createElement('li');
+          li.textContent = s;
+          return li;
+        })
+      );
+      dialogo.querySelector<HTMLElement>('[data-bloque="sintomas"]')!.hidden =
+        f.sintomas.length === 0;
+      dialogo.querySelector<HTMLButtonElement>('.ficha-add')!.dataset.add = f.producto;
+      document.dispatchEvent(new CustomEvent('vw:seleccion-pintar'));
+      dialogo.showModal();
+    };
+
+    document.addEventListener('click', (ev) => {
+      const boton = (ev.target as Element).closest<HTMLElement>('[data-ficha]');
+      if (boton) abrir(boton.dataset.ficha!);
+    });
+    dialogo.querySelector('[data-cerrar]')!.addEventListener('click', () => dialogo.close());
+    dialogo.addEventListener('click', (ev) => {
+      if (ev.target === dialogo) dialogo.close();
+    });
+  }
+</script>

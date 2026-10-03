@@ -25,9 +25,9 @@ const tonos = ['clay-deep', 'sage-deep', 'rose-deep'];
 
 <SiteLayout
   title="Suplementos recomendados por Verónica Dudamell | Veronica Wellness"
-  description="Cómo recomienda Verónica Dudamell los suplementos dentro de The Layer Method™: primero el mapa, calidad de grado profesional y revisión en cada ciclo. Compra directa en Wholescripts."
+  description="Cómo recomienda Verónica Dudamell los suplementos dentro de The Layer Method: primero el mapa, calidad de grado profesional y revisión en cada ciclo. Compra directa en Wholescripts."
   theme="inicio"
-  mobileCta={false}
+  stickyCta={false}
   jsonLd={grafoSitio(Astro.site)}
 >
   <section class="s-hero" aria-labelledby="s-titulo">
@@ -46,7 +46,7 @@ const tonos = ['clay-deep', 'sage-deep', 'rose-deep'];
         </p>
         <div class="s-ctas">
           <a class="btn btn-primary" href="#acceso" data-magnet="0.25">Cómo acceder</a>
-          <a class="s-link" href={href('/1-1')}>¿No sabes cuáles necesitas? →</a>
+          <a class="s-link" href={href('/asesorias')}>¿No sabes cuáles necesitas? →</a>
         </div>
       </div>
       <!-- Verónica presenting two of the shelf's bottles. Photo made with Codex from her own
@@ -55,7 +55,7 @@ const tonos = ['clay-deep', 'sage-deep', 'rose-deep'];
         <figure class="s-foto">
           <Image
             src={fotoSuplementos}
-            alt={`${marca.creadora} con bata blanca, sosteniendo dos frascos blancos de The Layer Method™`}
+            alt={`${marca.creadora} con bata blanca, sosteniendo dos frascos blancos de The Layer Method`}
             widths={[480, 760, 1122]}
             sizes="(min-width: 1000px) 460px, 88vw"
             loading="eager"
@@ -121,7 +121,7 @@ const tonos = ['clay-deep', 'sage-deep', 'rose-deep'];
               <span class="a-n">2</span>
               <div>
                 <strong>Busca lo que está en tu plan</strong>
-                <p>Compra solo lo que definimos juntas en tu Layer Plan™.</p>
+                <p>Compra solo lo que definimos juntas en tu Layer Plan.</p>
               </div>
             </li>
             <li>

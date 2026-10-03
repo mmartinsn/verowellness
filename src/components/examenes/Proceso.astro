@@ -1,6 +1,6 @@
 ---
 /**
- * Exámenes · how it works — the four steps from order to results, on a dark band with a line
+ * Exámenes · how it works — the four steps from order to results, on a light band with a line
  * that "fills" as the section enters the viewport. The steps live in data/examenes (`pasosPedido`)
  * so the order confirmation shows exactly the same text.
  */
@@ -47,9 +47,9 @@ const iconos = [
   .proceso {
     position: relative;
     overflow: hidden;
-    padding: 96px 0 104px;
-    background: radial-gradient(circle at 15% 0%, #3e3d36 0%, #1f1e1b 70%);
-    color: var(--color-bone);
+    padding: clamp(64px, 8vw, 100px) 0;
+    background: linear-gradient(180deg, var(--color-bone) 0%, var(--color-sand-light) 100%);
+    color: var(--color-charcoal);
   }
   .proceso::after {
     content: '';
@@ -59,44 +59,42 @@ const iconos = [
     right: -160px;
     bottom: -260px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgb(214 154 124 / 0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgb(207 215 196 / 0.6) 0%, transparent 70%);
     pointer-events: none;
   }
   .proc-head {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-bottom: 56px;
+    margin-bottom: 48px;
   }
   .proc-head .eyebrow {
-    color: var(--color-clay);
+    color: var(--color-clay-rich);
   }
   .proc-head h2 {
     font-family: var(--font-serif);
-    font-size: clamp(38px, 5vw, 64px);
+    font-size: clamp(36px, 4.6vw, 60px);
     font-weight: 400;
     line-height: 1.05;
-    color: var(--color-bone);
   }
   .proc-pasos {
     position: relative;
     z-index: 1;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 20px;
+    gap: 16px;
     list-style: none;
     padding: 0;
   }
-  /* The rail behind the icons, drawn once the list is revealed. */
   @media (min-width: 1000px) {
     .proc-pasos::before {
       content: '';
       position: absolute;
-      top: 28px;
-      left: 28px;
-      right: 28px;
+      top: 52px;
+      left: 52px;
+      right: 52px;
       height: 1px;
-      background: linear-gradient(90deg, var(--color-clay), rgb(231 183 160 / 0.15));
+      background: linear-gradient(90deg, var(--color-clay-deep), rgb(214 154 124 / 0.2));
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 1.4s var(--ease-out-soft) 0.2s;
@@ -109,9 +107,14 @@ const iconos = [
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    padding: 24px;
+    border-radius: 22px;
+    background: rgb(255 255 255 / 0.7);
+    border: 1px solid rgb(35 34 30 / 0.07);
   }
   .paso-icono {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -120,7 +123,7 @@ const iconos = [
     border-radius: 50%;
     background: var(--color-clay);
     color: var(--color-charcoal);
-    box-shadow: 0 0 0 8px rgb(35 34 30 / 0.9);
+    box-shadow: 0 0 0 8px rgb(253 249 242 / 0.9);
     margin-bottom: 10px;
   }
   .paso-icono svg {
@@ -135,20 +138,18 @@ const iconos = [
     font-weight: 800;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-clay);
+    color: var(--color-clay-rich);
   }
   .paso h3 {
     font-family: var(--font-serif);
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 500;
     line-height: 1.15;
-    color: var(--color-bone);
   }
   .paso p {
     font-size: 15px;
     line-height: 1.6;
-    color: rgb(251 250 246 / 0.78);
-    max-width: 300px;
+    color: rgb(35 34 30 / 0.72);
   }
   @media (prefers-reduced-motion: reduce) {
     .proc-pasos::before {
@@ -156,11 +157,41 @@ const iconos = [
       transform: none;
     }
   }
+  @media (max-width: 640px) {
+    .proc-head {
+      margin-bottom: 28px;
+    }
+    .proc-pasos {
+      gap: 10px;
+    }
+    .paso {
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr);
+      column-gap: 16px;
+      row-gap: 4px;
+      padding: 18px;
+    }
+    .paso-icono {
+      grid-row: span 3;
+      width: 48px;
+      height: 48px;
+      margin-bottom: 0;
+      box-shadow: none;
+    }
+    .paso h3 {
+      font-size: 22px;
+    }
+    .paso p {
+      font-size: 14.5px;
+    }
+  }
   .proc-nota {
-    margin-top: 36px;
+    position: relative;
+    z-index: 1;
+    margin-top: 28px;
     max-width: 640px;
     font-size: 15px;
     line-height: 1.6;
-    color: rgb(248 246 241 / 0.62);
+    color: rgb(35 34 30 / 0.66);
   }
 </style>

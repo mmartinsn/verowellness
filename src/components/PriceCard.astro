@@ -4,23 +4,26 @@
  * Everything printed comes from data/oferta; the button leads to that cycle's checkout.
  */
 import Icon from './Icon.astro';
-import { checkoutPath, precioCard, type Ciclo } from '../data/oferta';
+import { checkoutPath, precioCard, rotuloCitas, type Ciclo } from '../data/oferta';
+import { cta } from '../data/site';
 import { href } from '../lib/url';
 
 interface Props {
   ciclo: Ciclo;
-  /** The featured card gets the clay background. */
   featured?: boolean;
   ctaLabel?: string;
 }
-const { ciclo, featured = false, ctaLabel = 'Reservar' } = Astro.props;
+const { ciclo, featured = ciclo.destacado, ctaLabel = cta.label } = Astro.props;
 ---
 
 <article class:list={['price-card', { featured }]}>
   <span class="ptag">{ciclo.etiqueta}</span>
   {ciclo.etiquetaNota && <p class="pnote">{ciclo.etiquetaNota}</p>}
   <h3 class="pname">{ciclo.nombre}</h3>
-  <span class="pval">{precioCard(ciclo)}</span>
+  <p class="pprecio">
+    <span class="pval">{precioCard(ciclo)}</span>
+    <span class="pcitas">{rotuloCitas(ciclo)}</span>
+  </p>
   <p class="pdesc">{ciclo.descripcion}</p>
   {
     ciclo.notaPie && (
@@ -136,11 +139,28 @@ const { ciclo, featured = false, ctaLabel = 'Reservar' } = Astro.props;
     line-height: 1.15;
     margin-top: 6px;
   }
+  .pprecio {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
   .pval {
     font-family: var(--font-sans);
     font-weight: 800;
     font-size: clamp(24px, 2.6vw, 30px);
     color: var(--color-charcoal);
+  }
+  .pcitas {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgb(48 47 42 / 0.08);
+    color: rgb(48 47 42 / 0.85);
   }
   .pdesc {
     font-size: 16.5px;
