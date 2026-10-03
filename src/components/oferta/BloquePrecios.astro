@@ -55,6 +55,7 @@ const check =
   </div>
 
   <article class="tier destacado grad-ring tilt-card">
+    <span class="recomendada">Recomendada</span>
     <div>
       <span class="ptag">{initial.etiqueta}</span>
       <h3 class="pname">{initial.nombre}</h3>
@@ -178,6 +179,29 @@ const check =
 
   /* The featured card's button is dark on every page (the editorial theme's primary is clay,
      which would vanish on the clay card). */
+  /* «Recomendada» on the top edge of the new-patient cycle (Verónica, 2026-10-03: a visual nudge
+     towards the two appointments). */
+  .destacado {
+    position: relative;
+    overflow: visible;
+  }
+  .recomendada {
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    translate: -50% 0;
+    z-index: 2;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--color-charcoal);
+    color: var(--color-clay);
+    white-space: nowrap;
+    box-shadow: 0 10px 22px -12px rgb(35 34 30 / 0.6);
+  }
   .destacado .btn {
     background: var(--color-charcoal);
     color: var(--color-bone);
