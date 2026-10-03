@@ -1,5 +1,5 @@
 /**
- * The five Layers of The Layer Method — the one source for every page that lists them
+ * The five Layers of The Layer Method™ — the one source for every page that lists them
  * (home, The Method, 1:1). Text is Verónica's, taken verbatim from Mari's pages.
  *
  * `color` names a token from `@theme` in global.css (`--color-<name>`); `oscuro` marks the
@@ -46,8 +46,8 @@ export const layers: Layer[] = [
     cita: 'Materias primas: lo que el cuerpo necesita para funcionar, reparar y adaptarse.',
     conecta: ['Vías de Eliminación', 'Célula'],
     rol: 'Cimiento',
-    color: 'charcoal',
-    oscuro: true,
+    color: 'clay',
+    oscuro: false,
   },
   {
     num: '02',
@@ -68,7 +68,7 @@ export const layers: Layer[] = [
     cita: 'Antes de hablar de detox profundo, quiero saber cómo eliminas.',
     conecta: ['Terreno', 'Nutrición', 'Célula'],
     rol: 'Drenaje',
-    color: 'clay',
+    color: 'sage',
     oscuro: false,
   },
   {

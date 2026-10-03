@@ -1,4 +1,8 @@
 ---
+/**
+ * The Method — the methodology page: principle, three steps, the five Layers map, the central
+ * reframe and the bridge to the 1:1 process.
+ */
 import SiteLayout from '../layouts/SiteLayout.astro';
 import HeroMetodo from '../components/metodo/HeroMetodo.astro';
 import Intro from '../components/metodo/Intro.astro';
@@ -8,13 +12,13 @@ import Bridge from '../components/metodo/Bridge.astro';
 ---
 
 <SiteLayout
-  title="Mi método: The Layer Method, tu salud por capas | Veronica Wellness"
-  description="Mi método, The Layer Method: un mapa de cinco capas interconectadas para entender tu salud. Deja de perseguir cada síntoma por separado y descubre qué merece atención primero."
-  stickyCta={{ path: '/asesorias#cta' }}
+  title="The Layer Method™: salud por capas, del terreno a la célula | Veronica Wellness"
+  description="The Layer Method™: un mapa de cinco Layers interconectadas para entender tu salud por capas, del terreno a la célula. Deja de perseguir cada síntoma por separado."
+  mobileCta={{ label: 'Mapea tus Layers', path: '/1-1' }}
 >
   <HeroMetodo />
-  <CincoLayersMapa />
   <Intro />
+  <CincoLayersMapa />
   <ReframeMetodo />
   <Bridge />
 </SiteLayout>

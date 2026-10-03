@@ -1,7 +1,14 @@
 ---
-import { listaCiclos, precioCard, rotuloCitas } from '../../data/oferta';
-import { cta } from '../../data/site';
+/**
+ * Tienda · next step — a dark band with an aurora that links the ebooks to the Initial Layer
+ * Cycle, without pressure. Price, length and bonus come from data/oferta (written once); the
+ * lines around them are Codex's copy.
+ */
+import { ciclos } from '../../data/oferta';
+import { precioTienda } from '../../data/tienda';
 import { href } from '../../lib/url';
+
+const c = ciclos.INITIAL_LAYER_CYCLE;
 ---
 
 <section class="paso aurora" aria-labelledby="paso-titulo">
@@ -13,33 +20,33 @@ import { href } from '../../lib/url';
       </h2>
       <p>
         Estas guías son un punto de partida. Si quieres trabajar tus prioridades de forma
-        personalizada, podemos hacerlo juntas con The Layer Method.
+        personalizada, podemos hacerlo juntas con The Layer Method™.
       </p>
     </div>
     <div class="paso-card spot">
-      <ul class="paso-ofertas">
-        {
-          listaCiclos.map((c) => (
-            <li class:list={['paso-oferta', { destacada: c.destacado }]}>
-              <div class="paso-card-top">
-                <span class="paso-nombre">{c.nombre}</span>
-                <span class="paso-citas">{rotuloCitas(c)}</span>
-                <span class="paso-precio">{precioCard(c)}</span>
-              </div>
-              <p>{c.descripcion}</p>
-              {c.bonus && (
-                <p class="paso-bonus">
-                  <strong>Bonus</strong> {c.bonus}
-                </p>
-              )}
-            </li>
-          ))
-        }
-      </ul>
+      <div class="paso-card-top">
+        <span>{c.nombre}</span>
+        <span class="paso-precio">{precioTienda(c.subtotal)}</span>
+      </div>
+      <p>
+        2 sesiones privadas online de 90 minutos, con una separación recomendada de aproximadamente
+        30 días, a completar en un máximo de 60 días.
+      </p>
+      <p>
+        Revisamos tu historia y tus hábitos, construimos tu The Layer Map™ y definimos tus 3
+        prioridades. En la segunda sesión revisamos y ajustamos tu The Layer Plan™.
+      </p>
+      {
+        c.bonus && (
+          <p class="paso-bonus">
+            <strong>Bonus</strong> {c.bonus}
+          </p>
+        )
+      }
       <p class="paso-cierre">
         Puedes empezar por una lectura. Si más adelante quieres acompañamiento, aquí estoy.
       </p>
-      <a class="paso-btn" href={href(cta.path)} data-magnet="0.25">{cta.label}</a>
+      <a class="paso-btn" href={href('/1-1')} data-magnet="0.25">Conocer la asesoría 1:1</a>
     </div>
   </div>
 </section>
@@ -94,48 +101,15 @@ import { href } from '../../lib/url';
     gap: 16px;
     backdrop-filter: blur(6px);
   }
-  .paso-ofertas {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  .paso-oferta {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 22px 0;
-    border-bottom: 1px solid rgb(248 246 241 / 0.14);
-  }
-  .paso-oferta:first-child {
-    padding-top: 0;
-  }
   .paso-card-top {
     display: flex;
+    justify-content: space-between;
     align-items: baseline;
-    flex-wrap: wrap;
-    gap: 8px 14px;
-  }
-  .paso-nombre {
+    gap: 16px;
     font-family: var(--font-serif);
-    font-size: clamp(26px, 2.4vw, 34px);
-    line-height: 1.1;
-  }
-  .paso-citas {
-    align-self: center;
-    padding: 5px 12px;
-    border-radius: var(--radius-pill);
-    background: rgb(248 246 241 / 0.1);
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgb(248 246 241 / 0.85);
+    font-size: clamp(28px, 2.6vw, 38px);
   }
   .paso-precio {
-    margin-left: auto;
-    font-family: var(--font-serif);
-    font-size: clamp(28px, 2.6vw, 36px);
     color: var(--color-clay);
   }
   .paso-card p {
@@ -181,13 +155,5 @@ import { href } from '../../lib/url';
   }
   .paso-btn:hover {
     background: var(--color-white);
-  }
-  @media (max-width: 480px) {
-    .paso-btn {
-      align-self: stretch;
-      justify-content: center;
-      padding: 0 18px;
-      letter-spacing: 0.04em;
-    }
   }
 </style>

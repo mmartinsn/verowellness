@@ -1,21 +1,24 @@
 ---
+/**
+ * 1:1 hero: the ivory panel with title, italic lede and CTA beside the horizontal portrait.
+ */
 import { Image } from 'astro:assets';
-import retrato from '../../assets/fotos/veronica-cocina-asesorias-hero.jpg';
-import { cta, marca } from '../../data/site';
+import retrato from '../../assets/fotos/veronica-laptop-de-pie.jpg';
+import { marca } from '../../data/site';
 ---
 
 <section class="tight reveal">
   <div class="wrap">
     <div class="hero-demo">
       <div class="hero-content">
-        <span class="eyebrow">Asesorías · The Layer Method</span>
+        <span class="eyebrow">The Layer Method™ 1:1</span>
         <h1>Tu salud tiene capas.<br />Tu estrategia también debería tenerlas.</h1>
         <p class="italic-lede">
-          Un proceso individual y personalizado para organizar tu contexto, identificar prioridades
-          y construir una estrategia personalizada utilizando The Layer Method.
+          Un proceso 1:1 para organizar tu contexto, identificar prioridades y construir una
+          estrategia personalizada utilizando The Layer Method™.
         </p>
         <div class="btn-row">
-          <a class="btn btn-primary" href="#cta">{cta.label}</a>
+          <a class="btn btn-primary" href="#cta">Agenda conmigo</a>
         </div>
       </div>
       <div class="hero-photo">

@@ -1,23 +1,22 @@
 ---
 /**
- * Exámenes — the functional lab tests (data/examenes, from Verónica's price list of 2026-09).
- * The magnifier hero stays dark; the rest of the page is light (Verónica, 2026-10-02): the notice
- * that tests are not required for the asesorías, the steps from order to results, the catalogue by
- * group with its search, her fifteen symptom cards (data/sintomas), «¿Por qué estos exámenes?» and
- * the FAQ. One ficha dialog serves every exam; the selection dock replaces the sticky CTA.
+ * Exámenes — the functional lab tests (data/examenes.ts, from Verónica's price list of 2026-09),
+ * presented by symptom on a dark ground (Mari, 2026-09-24): HeroLupa (the lens hero), PorSintoma (hero, the ten symptoms,
+ * the tests of the chosen one and the selection dock → /checkout/examenes/), then Proceso, the
+ * «¿Por qué estos exámenes?» (PorQue), the logistics after nutriwhitesalud.com/exam, and the FAQ after its exam policy. The earlier orbit + explorer (Constelacion,
+ * Explorador) stay in components/examenes, unused, until Mari confirms this version.
+ *
+ * Same visual system as the home (`data-theme="inicio"`: Cormorant Garamond + Plus Jakarta Sans).
+ * The selection dock replaces the sticky mobile CTA on this page.
  */
 import '@fontsource/cormorant-garamond/600-italic.css';
 import '@fontsource-variable/plus-jakarta-sans';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import HeroLupa from '../components/examenes/HeroLupa.astro';
-import AvisoAsesoria from '../components/examenes/AvisoAsesoria.astro';
-import Proceso from '../components/examenes/Proceso.astro';
-import Catalogo from '../components/examenes/Catalogo.astro';
 import PorSintoma from '../components/examenes/PorSintoma.astro';
 import PorQue from '../components/examenes/PorQue.astro';
+import Proceso from '../components/examenes/Proceso.astro';
 import FaqExamenes from '../components/examenes/FaqExamenes.astro';
-import FichaExamen from '../components/examenes/FichaExamen.astro';
-import Seleccion from '../components/examenes/Seleccion.astro';
 import { examenes, preguntasExamenes } from '../data/examenes';
 import { grafoSitio } from '../lib/schema';
 
@@ -29,22 +28,19 @@ const faqLd = {
     acceptedAnswer: { '@type': 'Answer', text: p.a },
   })),
 };
-const description = `${examenes.length} exámenes funcionales por grupo y por síntoma —digestión, hormonas, alimentos, cansancio, moho y más— con qué mide cada uno, su muestra y su precio. Kit en tu casa.`;
+const description = `${examenes.length} exámenes funcionales organizados por síntoma —digestión, cansancio, hormonas, estrés y más— con para quién es cada uno, su muestra y su precio. Kit en tu casa.`;
 ---
 
 <SiteLayout
   title="Exámenes funcionales — Veronica Wellness"
   description={description}
   theme="inicio"
+  mobileCta={false}
   jsonLd={[...grafoSitio(Astro.site), faqLd]}
 >
   <HeroLupa />
-  <AvisoAsesoria />
-  <Proceso />
-  <Catalogo />
   <PorSintoma />
   <PorQue />
+  <Proceso />
   <FaqExamenes />
-  <FichaExamen />
-  <Seleccion />
 </SiteLayout>

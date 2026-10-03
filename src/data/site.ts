@@ -5,11 +5,9 @@
 export const marca = {
   /** Wordmark without accent, on purpose (brand book: neutral, international reading). */
   nombre: 'Veronica Wellness',
-  metodo: 'The Layer Method',
-  lema: 'Health has layers.',
-  firma: 'Salud por capas.',
-  sintoma:
-    'El síntoma es el punto de partida. Sanar empieza por entender las capas detrás de lo que sientes.',
+  metodo: 'The Layer Method™',
+  lema: 'Health has layers.™',
+  firma: 'Salud por capas. Del terreno a la célula.',
   /** Verónica's Instagram (Mari, 2026-09-23 — not @veronicawellness). */
   instagram: '@verodudamell',
   dominio: 'veronicawellness.com',
@@ -26,13 +24,12 @@ export interface NavItem {
 /**
  * Main navigation: the home design of 2026-09-22 (Inicio · The Method · Sobre mí · 1:1 · FAQ) plus
  * Exámenes, Tienda and Suplementos (2026-09-23). «Sobre mí» left the menu on 2026-09-24 (Mari): it
- * is a section of the home, reached from there. It came back as its own page on 2026-10-03 (Mari). The FAQ is also a home section and stays.
+ * is a section of the home, reached from there. The FAQ is also a home section and stays.
  */
 export const nav: NavItem[] = [
   { label: 'Inicio', path: '/' },
-  { label: 'Sobre mí', path: '/sobre-mi' },
-  { label: 'Mi método', path: '/el-metodo' },
-  { label: 'Asesorías', path: '/asesorias' },
+  { label: 'The Method', path: '/el-metodo' },
+  { label: '1:1', path: '/1-1' },
   { label: 'Exámenes', path: '/examenes' },
   { label: 'Tienda', path: '/tienda' },
   { label: 'Suplementos', path: '/suplementos' },
@@ -40,9 +37,8 @@ export const nav: NavItem[] = [
 ];
 
 export const cta = {
-  label: 'Trabaja conmigo · Click aquí',
-  corto: 'Trabaja conmigo',
-  path: '/asesorias',
+  label: 'Trabaja conmigo',
+  path: '/1-1',
 };
 
 export const legal = {
@@ -62,7 +58,7 @@ export const prototipo = true;
 /** Social-sharing image (1200 × 630), built by scripts/og-image.mjs. */
 export const imagenSocial = {
   archivo: 'og/veronica-wellness.jpg',
-  alt: 'Verónica Dudamell, creadora de The Layer Method, sonriendo con bata blanca',
+  alt: 'Verónica Dudamell, creadora de The Layer Method™, sonriendo con bata blanca',
   ancho: 1200,
   alto: 630,
 };

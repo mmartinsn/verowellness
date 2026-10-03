@@ -3,7 +3,6 @@
 import CheckoutLayout from '../../layouts/CheckoutLayout.astro';
 import Checkout from '../../components/checkout/Checkout.astro';
 import { ciclos } from '../../data/oferta';
-import { guiasEnOferta } from '../../components/checkout/tipos';
 
 const ciclo = ciclos.NEXT_LAYER_CYCLE;
 ---
@@ -12,5 +11,5 @@ const ciclo = ciclos.NEXT_LAYER_CYCLE;
   title={`Reserva tu ${ciclo.nombre} — Veronica Wellness`}
   description="Reserva tu Next Layer Cycle con Veronica Wellness. Dos sesiones privadas de 90 min para seguir profundizando y redefinir prioridades."
 >
-  <Checkout ciclo={ciclo} guias={guiasEnOferta()} />
+  <Checkout ciclo={ciclo} />
 </CheckoutLayout>

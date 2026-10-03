@@ -10,23 +10,19 @@ aprobación se le conecta la infraestructura real (pagos, CRM, agenda, legal, do
 
 ## Rutas
 
-| Ruta                             | Qué es                                                                                            |
-| -------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `/`                              | Inicio — el segundo diseño de Stitch, el que Mari eligió el 22-sep                                |
-| `/inicio-stitch/`                | Inicio, variante A — el primer diseño de Stitch (fue el inicio hasta el 22-sep)                   |
-| `/inicio-editorial/`             | Inicio, variante B — la versión editorial (nueve secciones)                                       |
-| `/el-metodo/`                    | Mi método: el mapa de las cinco Layers, el principio, la idea central, puente a las asesorías     |
-| `/asesorias/`                    | Las asesorías sesión por sesión, entregables y precios (`/1-1/` redirige aquí)                    |
-| `/examenes/`                     | Catálogo de exámenes por grupos y por síntomas, buscador, «Mi selección» (ver `docs/EXAMENES.md`) |
-| `/tienda/`                       | Guías y recetario de Verónica                                                                     |
-| `/suplementos/`                  | El estante de Verónica y el acceso por Wholescripts                                               |
-| `/checkout/examenes/`            | Checkout de los exámenes elegidos, con cita de lectura opcional y fees por examen (pago simulado) |
-| `/checkout/tienda/`              | Checkout de la tienda, con la oferta de una guía más                                              |
-| `/checkout/layer-session/`       | Checkout de la Layer Session, una cita (pago simulado)                                            |
-| `/checkout/initial-layer-cycle/` | Checkout del Initial Layer Cycle, dos citas, con la oferta de guías (pago simulado)               |
-| `/checkout/next-layer-cycle/`    | Checkout del Next Layer Cycle; no está enlazado, llega por invitación                             |
-| `/legal/*`                       | Términos, privacidad y aviso médico — **marcadores**, el texto lo redacta Verónica                |
-| `/variantes/`                    | Índice de todas las páginas, para presentar. No enlazado, `noindex`                               |
+| Ruta                             | Qué es                                                                                                        |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `/`                              | Inicio — el segundo diseño de Stitch, el que Mari eligió el 22-sep                                            |
+| `/inicio-stitch/`                | Inicio, variante A — el primer diseño de Stitch (fue el inicio hasta el 22-sep)                               |
+| `/inicio-editorial/`             | Inicio, variante B — la versión editorial (nueve secciones)                                                   |
+| `/el-metodo/`                    | The Method: principio, tres pasos, mapa de las cinco Layers, puente al 1:1                                    |
+| `/1-1/`                          | La oferta 1:1 sesión por sesión, entregables, precios, para quién es                                          |
+| `/examenes/`                     | Catálogo de exámenes: órbita de áreas, buscador, filtros, comparador, «Mi selección» (ver `docs/EXAMENES.md`) |
+| `/checkout/examenes/`            | Checkout de los exámenes elegidos (pago simulado)                                                             |
+| `/checkout/initial-layer-cycle/` | Checkout de 5 pasos del Initial Layer Cycle (pago simulado)                                                   |
+| `/checkout/next-layer-cycle/`    | Checkout del Next Layer Cycle                                                                                 |
+| `/legal/*`                       | Términos, privacidad y aviso médico — **marcadores**, el texto lo redacta Verónica                            |
+| `/variantes/`                    | Índice de todas las páginas, para presentar. No enlazado, `noindex`                                           |
 
 Las variantes A y B se conservan para comparar; el inicio es el que Mari eligió. Ver
 [`docs/DECISIONES.md`](docs/DECISIONES.md).

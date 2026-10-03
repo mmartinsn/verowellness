@@ -22,45 +22,6 @@ export function desglose(subtotal: number, taxRate = TAX_RATE): Desglose {
   return { subtotal, impuesto, total, taxRate };
 }
 
-const formatoUsd = new Intl.NumberFormat('en-US', {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
-
 export function usd(n: number): string {
-  return `$${formatoUsd.format(n)}`;
-}
-
-export const DESCUENTO_GUIAS = 0.15;
-export const FEE_SERVICIO = 15;
-export const FEE_AUTORIZACION = 10;
-export const FEE_POR_EXAMEN = FEE_SERVICIO + FEE_AUTORIZACION;
-
-export function conDescuento(precio: number, descuento = DESCUENTO_GUIAS): number {
-  return redondear(precio * (1 - descuento));
-}
-
-export type TipoLinea = 'base' | 'producto' | 'examen' | 'guia' | 'cita';
-
-export interface LineaPedido {
-  id: string;
-  nombre: string;
-  precio: number;
-  tipo: TipoLinea;
-  precioLista?: number;
-  grupo?: string;
-}
-
-export interface TotalesPedido extends Desglose {
-  examenes: number;
-  fees: number;
-}
-
-export function totalesPedido(lineas: LineaPedido[], taxRate = TAX_RATE): TotalesPedido {
-  const subtotal = redondear(lineas.reduce((suma, l) => suma + l.precio, 0));
-  const impuesto = redondear(subtotal * taxRate);
-  const examenes = lineas.filter((l) => l.tipo === 'examen').length;
-  const fees = redondear(examenes * FEE_POR_EXAMEN);
-  const total = redondear(subtotal + impuesto + fees);
-  return { subtotal, impuesto, total, taxRate, examenes, fees };
+  return `$${n.toFixed(2)}`;
 }

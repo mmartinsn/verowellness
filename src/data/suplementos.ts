@@ -22,7 +22,7 @@ export const wholescripts = {
 /** The label: what goes into each recommendation (100%) and what never does (0%). */
 export const etiqueta = {
   si: [
-    'Tu contexto (The Layer Assessment)',
+    'Tu contexto (The Layer Assessment™)',
     'Una prioridad que lo justifique',
     'Calidad de grado profesional',
     'Revisión en tu siguiente sesión',
@@ -34,7 +34,7 @@ export const principios = [
   {
     titulo: 'Primero el mapa',
     texto:
-      'Un suplemento entra cuando responde a una de tus prioridades, no antes. Por eso se define dentro de tu Layer Plan, junto con la alimentación y los hábitos.',
+      'Un suplemento entra cuando responde a una de tus prioridades, no antes. Por eso se define dentro de tu Layer Plan™, junto con la alimentación y los hábitos.',
   },
   {
     titulo: 'Calidad que se puede rastrear',
@@ -61,7 +61,7 @@ export interface Suplemento {
  * nutriwhitesalud.com/supplement (six groups, 17 products; read 2026-09-24) at Mari's request, and
  * placed by what each Layer observes (data/layers): vitamins → 01, digestion/liver → 02,
  * microbiota/gut/immune/metabolism → 03, mitochondria/antioxidants → 04. NutriWhite lists nothing
- * for sleep or stress, so 05 stays empty and its card says the picks come in the Layer Plan.
+ * for sleep or stress, so 05 stays empty and its card says the picks come in the Layer Plan™.
  * PENDIENTE (Verónica): confirm the list and the placement, and that each product is on her
  * Wholescripts (NutriWhite links these to FullScript).
  */
@@ -79,7 +79,7 @@ export const recomendaciones: Record<'01' | '02' | '03' | '04' | '05', Suplement
   '03': [
     { nombre: 'MegaMucosa', marca: 'Microbiome Labs' },
     { nombre: 'Berbemycin', marca: 'XYMOGEN' },
-    { nombre: 'G.I. Detox +', marca: 'Biocidin Botanicals' },
+    { nombre: 'G.I. Detox™ +', marca: 'Biocidin Botanicals' },
     { nombre: 'Candidastat', marca: 'Vitanica' },
     { nombre: 'Serrapeptase', marca: 'Protocol for Life Balance' },
     { nombre: 'MedCaps IS', marca: 'XYMOGEN' },

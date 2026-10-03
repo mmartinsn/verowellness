@@ -1,471 +1,738 @@
 ---
-import { sintomas, cierre, examenesDe, opcionesDe } from '../../data/sintomas';
+/**
+ * Exámenes por síntoma — the page's body under HeroLupa (Mari, 2026-09-24). A dark ground that
+ * breaks from the rest of the site; the visitor starts from what she feels: ten symptom cards, and under
+ * them the tests for the chosen one, each led by who it is for (its «Útil si…» line), then its
+ * sample, price and an «Agregar» toggle. The selection is kept in localStorage under
+ * `CLAVE_SELECCION` (the same list the checkout reads) and summed in a floating dock.
+ *
+ * Groups: data/sintomas. Tests, prices and descriptions: data/examenes (Verónica's price list).
+ */
+import { examenes, muestras, productoDe, CLAVE_SELECCION, type Muestra } from '../../data/examenes';
+import { sintomas, examenesDe, paraQuien } from '../../data/sintomas';
+import { usd } from '../../lib/precio';
 import { href } from '../../lib/url';
-import FilaExamen from './FilaExamen.astro';
+
+const iconoMuestra: Record<Muestra, string> = {
+  heces: 'M5 9h14l-1.5 9.5a2 2 0 0 1-2 1.5h-7a2 2 0 0 1-2-1.5L5 9zM8 9V6a4 4 0 0 1 8 0v3',
+  orina: 'M9 3h6M10 3v4l-4 9a4 4 0 0 0 3.6 5.7h4.8A4 4 0 0 0 18 16l-4-9V3M7.5 14h9',
+  sangre: 'M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z',
+  saliva: 'M8 3h8v5a4 4 0 0 1-8 0V3zM12 12v9M9 21h6',
+  aliento: 'M3 9h11a3 3 0 1 0-3-3M3 14h15a3 3 0 1 1-3 3M3 19h7',
+  hisopo: 'M5 19L17 7M17 7l2.5-2.5a1.5 1.5 0 0 1 2 2L19 9M5 19l-1 2 2-1',
+  ambiente: 'M4 11l8-7 8 7M6 9.5V20h12V9.5M10 20v-5h4v5',
+};
+
+const grupos = sintomas.map((s) => ({ ...s, items: examenesDe(s) }));
+const precios = Object.fromEntries(examenes.map((e) => [productoDe(e), e.precio]));
 ---
 
-<section class="ps" id="sintomas" data-por-sintoma aria-labelledby="ps-titulo">
-  <div class="ps-luz" aria-hidden="true"></div>
-  <div class="wrap">
-    <div class="ps-cab reveal">
-      <span class="eyebrow">Por lo que sientes</span>
-      <h2 id="ps-titulo" class="ps-h2">¿No sabes qué examen podrías necesitar?</h2>
-      <div class="ps-intro">
-        <p class="ps-lede">
-          ¿Qué se parece más a lo que sientes o buscas? Explora las categorías para conocer las
-          opciones disponibles.
-        </p>
-        <p>
-          Si te identificas con varias, podemos ayudarte a priorizar según tus síntomas,
-          antecedentes y objetivos durante tu asesoría.
-        </p>
-      </div>
-    </div>
-    <p class="ps-nota">
-      Los grupos siguientes organizan las opciones disponibles. La selección de un examen se
-      individualiza según tus síntomas, antecedentes y objetivos.
-    </p>
+<section
+  class="ps"
+  id="sintomas"
+  data-por-sintoma
+  data-clave={CLAVE_SELECCION}
+  data-precios={JSON.stringify(precios)}
+>
+  <div class="ps-aurora" aria-hidden="true"></div>
 
-    <ol class="ps-grid reveal-stagger">
+  <!-- The ten symptoms -->
+  <div class="wrap ps-cab">
+    <p class="ps-pregunta">¿Qué se parece más a lo que sientes?</p>
+  </div>
+  <div class="wrap carrusel" data-carrusel>
+    <button type="button" class="flecha izq" data-mover="-1" aria-label="Ver síntomas anteriores">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"
+        ><path d="M15 5l-7 7 7 7"></path></svg
+      >
+    </button>
+    <button type="button" class="flecha der" data-mover="1" aria-label="Ver más síntomas">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"
+        ><path d="M9 5l7 7-7 7"></path></svg
+      >
+    </button>
+    <div class="ps-sintomas" role="tablist" aria-label="Elige lo que sientes">
       {
-        sintomas.map((s) => (
-          <li>
-            <button
-              type="button"
-              class="sint"
-              data-abrir={s.id}
-              aria-haspopup="dialog"
-              style={`--tono:var(--color-${s.color})`}
-            >
-              <span class="sint-top">
-                <span class="sint-num">{s.num}</span>
-                <span class="sint-ico" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" width="22" height="22">
-                    <path d={s.icono} />
-                  </svg>
-                </span>
-              </span>
-              <span class="sint-t">{s.titulo}</span>
-              <span class="sint-d">{s.descripcion}</span>
-              <span class="sint-btn">
-                Explorar exámenes <span aria-hidden="true">→</span>
-              </span>
-            </button>
-          </li>
+        grupos.map((g, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`tab-${g.id}`}
+            class:list={['sint', { on: i === 0 }]}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-controls={`panel-${g.id}`}
+            data-sintoma={g.id}
+            style={`--tono:var(--color-${g.color});--i:${i}`}
+          >
+            <span class="sint-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24">
+                <path d={g.icono} />
+              </svg>
+            </span>
+            <span class="sint-t">{g.titulo}</span>
+            <span class="sint-e">{g.ejemplos}</span>
+            <span class="sint-c">
+              {g.items.length} {g.items.length === 1 ? 'examen' : 'exámenes'} →
+            </span>
+          </button>
         ))
       }
-    </ol>
+    </div>
   </div>
 
-  <dialog class="panel" data-panel-dialog aria-label="Exámenes por síntoma">
-    <div class="panel-caja">
-      <button type="button" class="panel-cerrar" data-cerrar aria-label="Cerrar">
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"
-          ><path d="M6 6l12 12M18 6L6 18"></path></svg
+  <!-- Tests for the chosen symptom -->
+  <div class="wrap ps-resultados" id="resultados">
+    {
+      grupos.map((g, i) => (
+        <div
+          class="panel"
+          role="tabpanel"
+          id={`panel-${g.id}`}
+          aria-labelledby={`tab-${g.id}`}
+          hidden={i !== 0}
+          style={`--tono:var(--color-${g.color})`}
         >
-      </button>
-      {
-        sintomas.map((s) => (
-          <article
-            class="panel-s"
-            data-panel={s.id}
-            hidden
-            style={`--tono:var(--color-${s.color})`}
-          >
-            <header class="panel-cab">
-              <span class="panel-ico" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="26" height="26">
-                  <path d={s.icono} />
-                </svg>
-              </span>
-              <p class="panel-num">
-                {s.num} · {opcionesDe(s)} {opcionesDe(s) === 1 ? 'opción' : 'opciones'}
-              </p>
-              <h3 class="panel-t">{s.titulo}</h3>
-              <p class="panel-d">{s.descripcion}</p>
-            </header>
-            {s.orientacionPrimero && (
-              <div class="guia destacada">
-                <p>
-                  En tu caso, lo ideal es elegir con orientación: en tu asesoría revisamos tus
-                  síntomas, antecedentes y objetivos para seleccionar los estudios pertinentes.
-                </p>
-                <a class="guia-btn" href={href('/asesorias')}>
-                  Pide orientación en tu asesoría
-                </a>
-              </div>
-            )}
-            {s.subcategorias.map((sub) => (
-              <div class="sub">
-                <h4 class="sub-p">{sub.pregunta}</h4>
-                {cierre(sub) && <p class="sub-c">{cierre(sub)}</p>}
-                <div class="sub-lista">
-                  {examenesDe(sub).map((e) => (
-                    <FilaExamen examen={e} />
-                  ))}
+          <div class="panel-cab">
+            <p class="panel-eyebrow">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path d={g.icono} />
+              </svg>
+              Lo que te trae aquí
+            </p>
+            <h2 class="panel-t">{g.titulo}</h2>
+            <p class="panel-sub">
+              {`${g.items.length} ${g.items.length === 1 ? 'examen disponible' : 'exámenes disponibles'}.`}{' '}
+              Conoce qué evalúa cada opción.
+            </p>
+          </div>
+          <ol class="lista">
+            {g.items.map((e) => (
+              <li class="ex" data-producto={productoDe(e)}>
+                <div class="ex-info">
+                  <p class="ex-meta">
+                    {e.laboratorio && <span class="ex-lab">{e.laboratorio}</span>}
+                  </p>
+                  <h3 class="ex-nombre">{e.nombre}</h3>
+                  <p class="ex-para">{paraQuien(e)}</p>
+                  <div class="ex-pie">
+                    {e.muestras.map((m) => (
+                      <span class="ex-muestra">
+                        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                          <path d={iconoMuestra[m]} />
+                        </svg>
+                        {muestras[m]}
+                      </span>
+                    ))}
+                    <details class="ex-mas">
+                      <summary>Qué mide</summary>
+                      <p>{e.descripcion}</p>
+                    </details>
+                  </div>
                 </div>
-              </div>
+                <div class="ex-compra">
+                  <span class="ex-precio">{usd(e.precio)}</span>
+                  <button
+                    type="button"
+                    class="ex-add"
+                    aria-pressed="false"
+                    data-add={productoDe(e)}
+                  >
+                    <span class="ex-add-no">Agregar</span>
+                    <span class="ex-add-si">Agregado ✓</span>
+                    <span class="sr-only">{e.nombre}</span>
+                  </button>
+                </div>
+              </li>
             ))}
-            {!s.orientacionPrimero && (
-              <div class="guia">
-                <p>¿No sabes cuál elegir? Podemos ayudarte a priorizar durante tu asesoría.</p>
-                <a class="guia-btn" href={href('/asesorias')}>
-                  Pide ayuda para elegir
-                </a>
-              </div>
-            )}
-          </article>
-        ))
-      }
-    </div>
-  </dialog>
+          </ol>
+        </div>
+      ))
+    }
+    <p class="ps-nota">
+      ¿Tienes dudas sobre cuál elegir? En tu <a href={href('/1-1')}>asesoría 1:1</a> revisamos juntas
+      si necesitas un examen y cuál tiene sentido para ti. Los impuestos se calculan al finalizar la compra.
+    </p>
+  </div>
+
+  <!-- The selection -->
+  <div class="dock" data-dock hidden>
+    <span class="dock-n"
+      ><strong data-dock-n>0</strong> <span data-dock-palabra>exámenes</span></span
+    >
+    <span class="dock-total" data-dock-total>$0.00</span>
+    <a class="dock-btn" href={href('/checkout/examenes')}>Continuar →</a>
+  </div>
 </section>
 
 <style>
+  /* ── The dark ground ── */
   .ps {
     position: relative;
     overflow: hidden;
-    padding: clamp(64px, 8vw, 110px) 0;
-    background: linear-gradient(180deg, var(--color-ivory) 0%, var(--color-sand-light) 100%);
+    padding: clamp(48px, 6vw, 80px) 0 clamp(80px, 9vw, 120px);
     scroll-margin-top: 70px;
-  }
-  .ps-luz {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
     background:
-      radial-gradient(ellipse 40% 35% at 90% 8%, rgb(207 215 196 / 0.55), transparent 70%),
-      radial-gradient(ellipse 35% 30% at 4% 70%, rgb(231 183 160 / 0.45), transparent 70%),
-      radial-gradient(ellipse 30% 25% at 60% 100%, rgb(226 183 178 / 0.4), transparent 70%);
+      radial-gradient(ellipse 60% 40% at 85% 0%, rgb(207 215 196 / 0.12), transparent 70%),
+      radial-gradient(ellipse 55% 35% at 0% 30%, rgb(214 154 124 / 0.12), transparent 70%),
+      linear-gradient(180deg, #1b1a17 0%, #20221d 55%, #1a1916 100%);
+    color: var(--color-bone);
   }
-  .ps .wrap {
-    position: relative;
+  .ps-aurora {
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    right: -200px;
+    top: -220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(214 154 124 / 0.18), transparent 65%);
+    filter: blur(20px);
+    animation: ps-aurora 20s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes ps-aurora {
+    to {
+      transform: translate(-80px, 60px) scale(1.15);
+    }
   }
   .ps .eyebrow {
-    color: var(--color-clay-rich);
+    color: var(--color-clay);
   }
+
   .ps-cab {
-    display: grid;
-    gap: 16px 56px;
+    position: relative;
   }
-  @media (min-width: 960px) {
-    .ps-cab {
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-      align-items: end;
-    }
-    .ps-cab .eyebrow {
-      grid-column: 1 / -1;
-    }
-  }
-  .ps-h2 {
+  .ps-pregunta {
     font-family: var(--font-serif);
-    font-weight: 400;
-    font-size: clamp(36px, 4.6vw, 62px);
-    line-height: 1.02;
+    font-size: clamp(26px, 2.8vw, 38px);
+    line-height: 1.1;
+    color: var(--color-bone);
   }
-  .ps-intro {
-    display: grid;
-    gap: 10px;
-    font-size: 16px;
-    line-height: 1.6;
-    color: rgb(35 34 30 / 0.72);
+  /* ── The symptom carousel: one row that slides sideways, arrows at the sides ── */
+  .carrusel {
+    position: relative;
+    margin-top: 22px;
   }
-  .ps-lede {
-    font-size: clamp(17px, 1.4vw, 19px);
-    font-weight: 600;
-    color: var(--color-charcoal);
-  }
-  .ps-nota {
-    margin-top: 28px;
-    padding-left: 14px;
-    border-left: 3px solid var(--color-clay);
-    font-size: 14px;
-    line-height: 1.55;
-    color: rgb(35 34 30 / 0.62);
-    max-width: 760px;
-  }
-  .ps-grid {
-    margin: 28px 0 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-  @media (min-width: 760px) {
-    .ps-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-  }
-  @media (min-width: 1120px) {
-    .ps-grid {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-    }
-  }
-  .ps-grid li {
+  .ps-sintomas {
     display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scroll-padding-inline: 2px;
+    padding: 10px 4px 34px;
+    margin-bottom: -24px;
+    scrollbar-width: none;
+    /* the edges fade, hinting that more cards follow */
+    mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  }
+  .ps-sintomas::-webkit-scrollbar {
+    display: none;
+  }
+  .carrusel.al-inicio .ps-sintomas {
+    mask-image: linear-gradient(90deg, #000 96%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, #000 96%, transparent);
+  }
+  .carrusel.al-final .ps-sintomas {
+    mask-image: linear-gradient(90deg, transparent, #000 4%);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%);
+  }
+  .flecha {
+    all: unset;
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    translate: 0 -50%;
+    background: rgb(27 26 23 / 0.9);
+    border: 1px solid rgb(248 246 241 / 0.25);
+    color: var(--color-bone);
+    cursor: pointer;
+    box-shadow: 0 10px 24px -8px rgb(0 0 0 / 0.6);
+    transition:
+      background 0.3s ease,
+      border-color 0.3s ease,
+      opacity 0.3s ease,
+      scale 0.3s ease;
+  }
+  .flecha svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .flecha:hover {
+    background: var(--color-clay);
+    border-color: var(--color-clay);
+    color: #1b1a17;
+    scale: 1.06;
+  }
+  .flecha:focus-visible {
+    outline: 2px solid var(--color-clay);
+    outline-offset: 3px;
+  }
+  .flecha.izq {
+    left: -8px;
+  }
+  .flecha.der {
+    right: -8px;
+  }
+  .flecha:disabled,
+  .flecha[disabled] {
+    opacity: 0;
+    pointer-events: none;
+  }
+  @media (min-width: 1360px) {
+    .flecha.izq {
+      left: -64px;
+    }
+    .flecha.der {
+      right: -64px;
+    }
   }
   .sint {
     all: unset;
-    box-sizing: border-box;
-    flex: 1;
+    flex: 0 0 clamp(230px, 22vw, 272px);
+    scroll-snap-align: start;
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 18px 18px 16px;
+    gap: 8px;
+    padding: 20px 20px 18px;
     border-radius: 20px;
-    background: rgb(255 255 255 / 0.78);
-    border: 1px solid rgb(35 34 30 / 0.08);
-    box-shadow: 0 14px 30px -26px rgb(35 34 30 / 0.5);
+    background: rgb(255 255 255 / 0.04);
+    border: 1px solid rgb(248 246 241 / 0.1);
     cursor: pointer;
     overflow: hidden;
     transition:
       background 0.35s ease,
       border-color 0.35s ease,
-      box-shadow 0.35s ease,
       transform 0.45s cubic-bezier(0.19, 1, 0.22, 1);
+    animation: sint-in 0.8s cubic-bezier(0.19, 1, 0.22, 1) calc(var(--i) * 0.05s) backwards;
   }
-  .sint::after {
+  @keyframes sint-in {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+  }
+  .sint::before {
+    /* the symptom's colour, as a soft glow from the corner */
     content: '';
     position: absolute;
-    inset: auto -30% -55% auto;
-    width: 80%;
+    inset: auto -40% -60% auto;
+    width: 90%;
     aspect-ratio: 1;
     border-radius: 50%;
     background: radial-gradient(circle, var(--tono), transparent 70%);
-    opacity: 0.18;
+    opacity: 0.16;
     transition: opacity 0.4s ease;
     pointer-events: none;
   }
-  .sint:hover {
-    background: color-mix(in srgb, var(--tono) 16%, var(--color-white));
-    border-color: color-mix(in srgb, var(--tono) 60%, transparent);
-    box-shadow: 0 22px 40px -26px color-mix(in srgb, var(--tono) 80%, rgb(35 34 30 / 0.6));
-    transform: translateY(-4px);
+  /* Pointing at a card lights it with its symptom's tint — the chosen card's look
+     (Mari, 2026-09-24: «que pase cuando se pasa el cursor, no solo cuando se hace clic»). */
+  .sint:hover,
+  .sint.on {
+    background: color-mix(in srgb, var(--tono) 22%, #1b1a17);
+    border-color: var(--tono);
   }
-  .sint:hover::after {
-    opacity: 0.4;
+  .sint:hover {
+    transform: translateY(-3px);
+  }
+  .sint:hover::before {
+    opacity: 0.45;
   }
   .sint:focus-visible {
-    outline: 2px solid var(--color-clay-deep);
+    outline: 2px solid var(--color-clay);
     outline-offset: 3px;
   }
-  .sint-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  /* The chosen one keeps the lit look, plus a soft halo, a slight lift and its icon filled. */
+  .sint.on {
+    box-shadow:
+      0 0 0 1px var(--tono),
+      0 18px 40px -18px color-mix(in srgb, var(--tono) 70%, transparent);
+    transform: translateY(-4px);
   }
-  .sint-num {
-    font-family: var(--font-serif);
-    font-size: 22px;
-    line-height: 1;
-    color: color-mix(in srgb, var(--tono) 55%, var(--color-charcoal));
+  .sint.on::before {
+    opacity: 0.7;
   }
   .sint-ico {
     display: grid;
     place-items: center;
-    width: 42px;
-    height: 42px;
+    width: 46px;
+    height: 46px;
     border-radius: 14px;
-    background: color-mix(in srgb, var(--tono) 30%, var(--color-white));
-    color: color-mix(in srgb, var(--tono) 45%, var(--color-charcoal));
-    transition: transform 0.45s cubic-bezier(0.19, 1, 0.22, 1);
+    background: color-mix(in srgb, var(--tono) 18%, transparent);
+    color: var(--tono);
+    transition:
+      background 0.35s ease,
+      color 0.35s ease,
+      transform 0.45s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .sint-ico svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .sint:hover .sint-ico {
     transform: rotate(-6deg) scale(1.06);
   }
-  .sint-ico svg,
-  .panel-ico svg,
-  .panel-cerrar svg {
+  .sint.on .sint-ico {
+    background: var(--tono);
+    color: #1b1a17;
+  }
+  .sint-t {
+    font-family: var(--font-serif);
+    font-size: clamp(21px, 1.8vw, 25px);
+    line-height: 1.12;
+    color: var(--color-bone);
+  }
+  .sint-e {
+    font-size: 13px;
+    line-height: 1.45;
+    color: rgb(248 246 241 / 0.6);
+  }
+  .sint-c {
+    margin-top: auto;
+    padding-top: 6px;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--tono);
+  }
+
+  /* ── Results ── */
+  .ps-resultados {
+    position: relative;
+    margin-top: clamp(40px, 5vw, 64px);
+    scroll-margin-top: 90px;
+  }
+  .panel {
+    animation: panel-in 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .panel[hidden] {
+    display: none;
+  }
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+  .panel-cab {
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgb(248 246 241 / 0.12);
+  }
+  .panel-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--tono);
+  }
+  .panel-eyebrow svg {
     fill: none;
     stroke: currentColor;
     stroke-width: 1.7;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
-  .sint-t {
+  .panel-t {
+    margin-top: 8px;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(32px, 3.6vw, 50px);
+    line-height: 1.05;
+    color: var(--color-bone);
+  }
+  .panel-sub {
+    margin-top: 8px;
+    font-size: 15px;
+    color: rgb(248 246 241 / 0.6);
+  }
+  .lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .ex {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px 40px;
+    padding: 26px 0;
+    border-bottom: 1px solid rgb(248 246 241 / 0.1);
+    transition: background 0.3s ease;
+  }
+  @media (min-width: 820px) {
+    .ex {
+      grid-template-columns: minmax(0, 1fr) 200px;
+      align-items: center;
+    }
+  }
+  .ex.elegido {
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--tono) 12%, transparent),
+      transparent 70%
+    );
+  }
+  .ex-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .ex-lab {
+    color: rgb(248 246 241 / 0.5);
+  }
+  .ex-nombre {
+    margin-top: 8px;
     font-family: var(--font-serif);
     font-weight: 500;
-    font-size: clamp(19px, 1.5vw, 22px);
-    line-height: 1.12;
-    color: var(--color-charcoal);
+    font-size: clamp(22px, 2vw, 28px);
+    line-height: 1.15;
+    color: var(--color-bone);
   }
-  .sint-d {
-    font-size: 13px;
-    line-height: 1.45;
-    color: rgb(35 34 30 / 0.62);
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  .ex-para {
+    margin-top: 8px;
+    max-width: 720px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgb(248 246 241 / 0.8);
   }
-  .sint-btn {
-    margin-top: auto;
-    padding-top: 4px;
-    font-size: 11.5px;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: color-mix(in srgb, var(--tono) 50%, var(--color-charcoal));
+  .ex-pie {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    align-items: center;
   }
-  @media (max-width: 640px) {
-    .sint {
-      padding: 14px 14px 12px;
-      gap: 8px;
-    }
-    .sint-t {
-      font-size: 17px;
-    }
-    .sint-d {
-      display: none;
-    }
-    .sint-ico {
-      width: 36px;
-      height: 36px;
-    }
+  .ex-muestra {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: rgb(248 246 241 / 0.65);
   }
-
-  .panel {
-    margin: 0 0 0 auto;
-    width: min(680px, 100vw);
-    max-width: 100vw;
-    height: 100dvh;
-    max-height: 100dvh;
-    padding: 0;
-    border: 0;
-    background: var(--color-bone);
-    color: var(--color-charcoal);
-    box-shadow: -30px 0 80px -30px rgb(35 34 30 / 0.5);
-    overflow: auto;
-    overscroll-behavior: contain;
+  .ex-muestra svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
-  .panel::backdrop {
-    background: rgb(35 34 30 / 0.4);
-    backdrop-filter: blur(2px);
+  .ex-mas {
+    flex-basis: 100%;
   }
-  .panel[open] {
-    animation: panel-in 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-  }
-  @keyframes panel-in {
-    from {
-      transform: translateX(40px);
-      opacity: 0;
-    }
-  }
-  .panel-caja {
-    position: relative;
-    padding: clamp(24px, 4vw, 44px) clamp(18px, 4vw, 40px) 120px;
-  }
-  .panel-cerrar {
-    all: unset;
-    position: sticky;
-    top: 0;
-    float: right;
-    z-index: 2;
-    display: grid;
-    place-items: center;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
+  .ex-mas summary {
+    display: inline-block;
     cursor: pointer;
-    background: var(--color-white);
-    box-shadow: 0 8px 20px -12px rgb(35 34 30 / 0.5);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-clay);
+    border-bottom: 1px solid rgb(214 154 124 / 0.4);
+    list-style: none;
   }
-  .panel-cerrar:focus-visible,
-  .guia-btn:focus-visible {
-    outline: 2px solid var(--color-clay-deep);
-    outline-offset: 2px;
-  }
-  .panel-s[hidden] {
+  .ex-mas summary::-webkit-details-marker {
     display: none;
   }
-  .panel-cab {
-    padding-bottom: 22px;
-    border-bottom: 1px solid rgb(35 34 30 / 0.1);
+  .ex-mas[open] summary {
+    margin-bottom: 10px;
   }
-  .panel-ico {
-    display: grid;
-    place-items: center;
-    width: 54px;
-    height: 54px;
-    border-radius: 18px;
-    background: color-mix(in srgb, var(--tono) 32%, var(--color-white));
-    color: color-mix(in srgb, var(--tono) 45%, var(--color-charcoal));
+  .ex-mas p {
+    max-width: 760px;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: rgb(248 246 241 / 0.66);
   }
-  .panel-num {
-    margin-top: 16px;
-    font-size: 11.5px;
+  .ex-compra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  @media (min-width: 820px) {
+    .ex-compra {
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+    }
+  }
+  .ex-precio {
+    font-family: var(--font-serif);
+    font-size: 30px;
+    line-height: 1;
+    color: var(--color-bone);
+  }
+  .ex-add {
+    all: unset;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 132px;
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgb(248 246 241 / 0.3);
+    font-size: 13px;
     font-weight: 800;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: color-mix(in srgb, var(--tono) 50%, var(--color-charcoal));
+    color: var(--color-bone);
+    cursor: pointer;
+    transition:
+      background 0.3s ease,
+      color 0.3s ease,
+      border-color 0.3s ease;
   }
-  .panel-t {
-    margin-top: 6px;
-    font-family: var(--font-serif);
-    font-weight: 500;
-    font-size: clamp(30px, 3.6vw, 40px);
-    line-height: 1.05;
+  .ex-add:hover {
+    border-color: var(--color-clay);
   }
-  .panel-d {
-    margin-top: 10px;
-    font-size: 15.5px;
-    line-height: 1.6;
-    color: rgb(35 34 30 / 0.72);
+  .ex-add:focus-visible {
+    outline: 2px solid var(--color-clay);
+    outline-offset: 3px;
   }
-  .sub {
-    margin-top: 28px;
+  .ex-add-si {
+    display: none;
   }
-  .sub-p {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    font-size: clamp(21px, 2vw, 24px);
-    line-height: 1.2;
+  .ex-add[aria-pressed='true'] {
+    background: var(--color-clay);
+    border-color: var(--color-clay);
+    color: var(--color-charcoal);
   }
-  .sub-c {
-    margin-top: 4px;
-    font-size: 13.5px;
-    font-weight: 700;
-    color: rgb(35 34 30 / 0.55);
+  .ex-add[aria-pressed='true'] .ex-add-no {
+    display: none;
   }
-  .sub-lista {
-    margin-top: 12px;
-    display: grid;
-    gap: 10px;
+  .ex-add[aria-pressed='true'] .ex-add-si {
+    display: inline;
   }
-  .guia {
+  .ps-nota {
     margin-top: 32px;
-    padding: 20px 22px;
-    border-radius: 18px;
-    background: color-mix(in srgb, var(--color-sage) 45%, var(--color-white));
-    display: grid;
-    gap: 12px;
-    justify-items: start;
-    font-size: 15px;
-    line-height: 1.55;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: rgb(248 246 241 / 0.62);
   }
-  .guia.destacada {
-    margin-top: 24px;
-    background: color-mix(in srgb, var(--color-clay) 40%, var(--color-white));
-    border: 1px solid var(--color-clay-deep);
+  .ps-nota a {
+    color: var(--color-bone);
+    border-bottom: 1px solid rgb(248 246 241 / 0.35);
   }
-  .guia-btn {
+
+  /* ── The floating selection ── */
+  .dock {
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    translate: -50% 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 10px 10px 10px 24px;
+    border-radius: var(--radius-pill);
+    background: rgb(27 26 23 / 0.88);
+    border: 1px solid rgb(214 154 124 / 0.45);
+    box-shadow: 0 20px 40px -12px rgb(0 0 0 / 0.5);
+    backdrop-filter: blur(12px);
+    color: var(--color-bone);
+    animation: dock-in 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .dock[hidden] {
+    display: none;
+  }
+  @keyframes dock-in {
+    from {
+      opacity: 0;
+      translate: -50% 20px;
+    }
+  }
+  .dock-n {
+    font-size: 14px;
+  }
+  .dock-total {
+    font-family: var(--font-serif);
+    font-size: 22px;
+  }
+  .dock-btn {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
     padding: 0 22px;
     border-radius: var(--radius-pill);
-    background: var(--color-charcoal);
-    color: var(--color-bone);
+    background: linear-gradient(135deg, #f0c4ae, var(--color-clay-deep));
+    color: var(--color-charcoal);
     font-size: 13px;
     font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
+  .dock.bump {
+    animation: dock-bump 0.4s ease;
+  }
+  @keyframes dock-bump {
+    40% {
+      scale: 1.05;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .ps-sintomas {
+      gap: 10px;
+    }
+    .sint {
+      flex-basis: 68%;
+      padding: 16px 14px 14px;
+    }
+    .flecha {
+      display: none;
+    }
+    .sint-t {
+      font-size: 18px;
+    }
+    .sint-e {
+      font-size: 12px;
+    }
+    .dock {
+      left: 12px;
+      right: 12px;
+      translate: none;
+      justify-content: space-between;
+    }
+    @keyframes dock-in {
+      from {
+        opacity: 0;
+        translate: 0 20px;
+      }
+    }
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
   @media (prefers-reduced-motion: reduce) {
-    .panel[open] {
+    .ps-aurora,
+    .sint,
+    .panel,
+    .dock {
       animation: none;
     }
   }
@@ -473,28 +740,119 @@ import FilaExamen from './FilaExamen.astro';
 
 <script>
   const raiz = document.querySelector<HTMLElement>('[data-por-sintoma]');
-  const dialogo = raiz?.querySelector<HTMLDialogElement>('[data-panel-dialog]');
-  if (raiz && dialogo) {
-    const paneles = [...dialogo.querySelectorAll<HTMLElement>('[data-panel]')];
-    let origen: HTMLElement | null = null;
+  if (raiz) {
+    const CLAVE = raiz.dataset.clave!;
+    const precios: Record<string, number> = JSON.parse(raiz.dataset.precios ?? '{}');
+    const tabs = [...raiz.querySelectorAll<HTMLButtonElement>('.sint')];
+    const paneles = [...raiz.querySelectorAll<HTMLElement>('.panel')];
+    const resultados = raiz.querySelector<HTMLElement>('#resultados')!;
 
-    raiz.querySelectorAll<HTMLButtonElement>('[data-abrir]').forEach((b) =>
+    /* ── Symptom tabs ── */
+    const elegir = (id: string, desplazar: boolean) => {
+      tabs.forEach((t) => {
+        const on = t.dataset.sintoma === id;
+        t.classList.toggle('on', on);
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+      });
+      paneles.forEach((p) => (p.hidden = p.id !== `panel-${id}`));
+      tabs
+        .find((t) => t.dataset.sintoma === id)
+        ?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      if (desplazar) {
+        const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        resultados.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
+      }
+      history.replaceState(null, '', `#${id}`);
+    };
+    tabs.forEach((t, i) => {
+      t.tabIndex = i === 0 ? 0 : -1;
+      t.addEventListener('click', () => elegir(t.dataset.sintoma!, true));
+      t.addEventListener('keydown', (e) => {
+        const d =
+          e.key === 'ArrowRight' || e.key === 'ArrowDown'
+            ? 1
+            : e.key === 'ArrowLeft' || e.key === 'ArrowUp'
+              ? -1
+              : 0;
+        if (!d) return;
+        e.preventDefault();
+        const n = tabs[(i + d + tabs.length) % tabs.length];
+        n.focus();
+        elegir(n.dataset.sintoma!, false);
+      });
+    });
+    /* ── Carousel arrows ── */
+    const carrusel = raiz.querySelector<HTMLElement>('[data-carrusel]')!;
+    const pista = carrusel.querySelector<HTMLElement>('.ps-sintomas')!;
+    const izq = carrusel.querySelector<HTMLButtonElement>('.flecha.izq')!;
+    const der = carrusel.querySelector<HTMLButtonElement>('.flecha.der')!;
+    const bordes = () => {
+      const inicio = pista.scrollLeft <= 4;
+      const fin = pista.scrollLeft + pista.clientWidth >= pista.scrollWidth - 4;
+      izq.disabled = inicio;
+      der.disabled = fin;
+      carrusel.classList.toggle('al-inicio', inicio);
+      carrusel.classList.toggle('al-final', fin);
+    };
+    carrusel.querySelectorAll<HTMLButtonElement>('[data-mover]').forEach((b) =>
       b.addEventListener('click', () => {
-        const id = b.dataset.abrir!;
-        paneles.forEach((p) => (p.hidden = p.dataset.panel !== id));
-        const titulo = paneles
-          .find((p) => p.dataset.panel === id)
-          ?.querySelector('h3')?.textContent;
-        dialogo.setAttribute('aria-label', titulo ?? 'Exámenes por síntoma');
-        origen = b;
-        dialogo.showModal();
-        dialogo.scrollTop = 0;
+        const paso = (tabs[0].getBoundingClientRect().width + 12) * 2;
+        pista.scrollBy({ left: Number(b.dataset.mover) * paso });
       })
     );
-    dialogo.querySelector('[data-cerrar]')!.addEventListener('click', () => dialogo.close());
-    dialogo.addEventListener('click', (ev) => {
-      if (ev.target === dialogo) dialogo.close();
-    });
-    dialogo.addEventListener('close', () => origen?.focus());
+    pista.addEventListener('scroll', bordes, { passive: true });
+    addEventListener('resize', bordes);
+    bordes();
+
+    const inicial = location.hash.slice(1);
+    if (tabs.some((t) => t.dataset.sintoma === inicial)) elegir(inicial, false);
+
+    /* ── Selection (persisted, shared with the checkout) ── */
+    const leer = (): string[] => {
+      try {
+        const v = JSON.parse(localStorage.getItem(CLAVE) ?? '[]');
+        return Array.isArray(v) ? v.filter((id) => id in precios) : [];
+      } catch {
+        return [];
+      }
+    };
+    const sel = new Set<string>(leer());
+    const guardar = () => {
+      try {
+        localStorage.setItem(CLAVE, JSON.stringify([...sel]));
+      } catch {
+        // Private mode or blocked storage: the selection still works for this visit.
+      }
+    };
+    const dock = raiz.querySelector<HTMLElement>('[data-dock]')!;
+    const pintar = (bump = false) => {
+      raiz.querySelectorAll<HTMLButtonElement>('[data-add]').forEach((b) => {
+        const on = sel.has(b.dataset.add!);
+        b.setAttribute('aria-pressed', String(on));
+        b.closest('.ex')?.classList.toggle('elegido', on);
+      });
+      const n = sel.size;
+      const total = [...sel].reduce((s, id) => s + (precios[id] ?? 0), 0);
+      dock.hidden = n === 0;
+      dock.querySelector('[data-dock-n]')!.textContent = String(n);
+      dock.querySelector('[data-dock-palabra]')!.textContent = n === 1 ? 'examen' : 'exámenes';
+      dock.querySelector('[data-dock-total]')!.textContent = `$${total.toFixed(2)}`;
+      if (bump) {
+        dock.classList.remove('bump');
+        void dock.offsetWidth;
+        dock.classList.add('bump');
+      }
+    };
+    raiz.querySelectorAll<HTMLButtonElement>('[data-add]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const id = b.dataset.add!;
+        if (sel.has(id)) sel.delete(id);
+        else sel.add(id);
+        guardar();
+        pintar(true);
+      })
+    );
+    pintar();
   }
 </script>

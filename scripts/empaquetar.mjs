@@ -5,7 +5,7 @@
  * How it works: every page becomes a fully inlined document (CSS, scripts and images embedded;
  * fonts from Google Fonts, which is the one thing that needs a connection) and is stored as a
  * string inside a small shell page. The shell shows one page at a time in a full-window
- * <iframe srcdoc>, routes with the URL hash (#el-metodo, #asesorias, #checkout/initial-layer-cycle,
+ * <iframe srcdoc>, routes with the URL hash (#el-metodo, #1-1, #checkout/initial-layer-cycle,
  * #inicio~faq) and receives the clicks on internal links from inside the frame.
  *
  * Usage:  npm run build && npm run empaquetar          → entregas/<fecha>_Veronica_Wellness_prototipo.html
@@ -32,8 +32,6 @@ const FUENTES = {
     'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400..800&display=swap',
   stitch:
     'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400..800&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Plus+Jakarta+Sans:wght@300..800&display=swap',
-  inicio:
-    'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Nunito:wght@400..800&family=Plus+Jakarta+Sans:wght@300..800&display=swap',
 };
 const FAMILIAS = [
   ['Nunito Variable', 'Nunito'],
@@ -79,55 +77,8 @@ function rutaDesdeHref(href) {
   return { ruta: limpio || 'inicio', ancla: hash };
 }
 
-const IMPORT_ESTATICO =
-  /(\bimport\s*(?:[\w${},*\s]+from\s*)?|\bexport\s*[\w${},*\s]*from\s*)(["'])([^"']+)\2/g;
-const modulosEmbebidos = new Map();
-
-function archivoDeImport(especificador, dir) {
-  if (especificador.startsWith(BASE + '/'))
-    return path.join(DIST, especificador.slice(BASE.length));
-  if (especificador.startsWith('./') || especificador.startsWith('../'))
-    return path.resolve(dir, especificador);
-  return null;
-}
-
-async function moduloComoDataUri(archivo) {
-  if (!modulosEmbebidos.has(archivo)) {
-    const js = await embeberImports(await readFile(archivo, 'utf8'), path.dirname(archivo));
-    modulosEmbebidos.set(
-      archivo,
-      `data:text/javascript;base64,${Buffer.from(js).toString('base64')}`
-    );
-  }
-  return modulosEmbebidos.get(archivo);
-}
-
-async function embeberImports(js, dir) {
-  let salida = '';
-  let desde = 0;
-  for (const m of js.matchAll(IMPORT_ESTATICO)) {
-    const archivo = archivoDeImport(m[3], dir);
-    if (!archivo) continue;
-    salida += js.slice(desde, m.index) + m[1] + m[2] + (await moduloComoDataUri(archivo)) + m[2];
-    desde = m.index + m[0].length;
-  }
-  salida += js.slice(desde);
-  if (/\bimport\s*\(/.test(salida))
-    throw new Error('A module uses dynamic import(); the bundle only embeds static imports');
-  return salida;
-}
-
-function autocontenido(css) {
-  let limpio = css.replace(/@font-face\s*{[^}]*}/g, '');
-  for (const [de, a] of FAMILIAS) limpio = limpio.replaceAll(de, a);
-  const sinDatos = limpio.replace(/url\((["'])data:.*?\1\)/g, '').replace(/url\(data:[^)]*\)/g, '');
-  const restos = sinDatos.match(/url\([^)]*\)/g);
-  if (restos) throw new Error(`CSS still references files: ${restos.slice(0, 3).join(', ')}`);
-  return limpio;
-}
-
 async function empaquetarPagina(html) {
-  const tema = html.match(/data-theme="(stitch|inicio)"/)?.[1] ?? 'editorial';
+  const tema = /data-theme="stitch"/.test(html) ? 'stitch' : 'editorial';
   const titulo = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? 'Veronica Wellness';
 
   // 1. Nothing that names the hosting account.
@@ -136,27 +87,28 @@ async function empaquetarPagina(html) {
   // 2. Stylesheets → inline <style>, with the @fontsource faces removed and families renamed.
   const hojas = [...html.matchAll(/<link rel="stylesheet" href="([^"]+)">/g)];
   for (const m of hojas) {
-    const css = autocontenido(await readFile(path.join(DIST, m[1].replace(BASE, '')), 'utf8'));
-    html = html.replace(m[0], () => `<style>${css}</style>`);
+    let css = await readFile(path.join(DIST, m[1].replace(BASE, '')), 'utf8');
+    css = css.replace(/@font-face\s*{[^}]*}/g, '');
+    for (const [de, a] of FAMILIAS) css = css.replaceAll(de, a);
+    const restos = css.match(/url\((?!["']?data:)[^)]*\)/g);
+    if (restos) throw new Error(`CSS still references files: ${restos.slice(0, 3).join(', ')}`);
+    html = html.replace(m[0], `<style>${css}</style>`);
   }
-  html = html.replace(
-    /<style>([\s\S]*?)<\/style>/g,
-    (_, css) => `<style>${autocontenido(css)}</style>`
-  );
   html = html.replace(
     '<meta charset="utf-8">',
     `<meta charset="utf-8"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="${FUENTES[tema]}">`
   );
 
-  // 3. External module scripts → inline; every chunk they import becomes a data: module.
+  // 3. External module scripts → inline. Inline modules must not import anything.
   for (const m of [...html.matchAll(/<script type="module" src="([^"]+)"><\/script>/g)]) {
-    const archivo = path.join(DIST, m[1].replace(BASE, ''));
-    const js = await embeberImports(await readFile(archivo, 'utf8'), path.dirname(archivo));
-    html = html.replace(m[0], () => `<script type="module">${js}</script>`);
+    const js = await readFile(path.join(DIST, m[1].replace(BASE, '')), 'utf8');
+    html = html.replace(m[0], `<script type="module">${js}</script>`);
   }
-  for (const m of [...html.matchAll(/<script type="module">([\s\S]*?)<\/script>/g)]) {
-    const js = await embeberImports(m[1], DIST);
-    html = html.replace(m[0], () => `<script type="module">${js}</script>`);
+  for (const m of html.matchAll(/<script type="module">([\s\S]*?)<\/script>/g)) {
+    if (/\bimport\s*[({"']|\bfrom\s*["']/.test(m[1]))
+      throw new Error(
+        'An inline module imports a chunk; the bundle expects self-contained scripts'
+      );
   }
 
   // 4. Images → data URIs (the largest srcset candidate), favicon too.
@@ -173,7 +125,7 @@ async function empaquetarPagina(html) {
     if (src && src.startsWith(BASE + '/')) {
       tag = tag.replace(/\ssrc="[^"]+"/, ` src="${await dataUri(src)}"`);
     }
-    html = html.replace(m[0], () => tag);
+    html = html.replace(m[0], tag);
   }
   for (const m of [...html.matchAll(/<link rel="icon" href="([^"]+)"[^>]*>/g)]) {
     const limpio = m[1].replace(/\/$/, '');

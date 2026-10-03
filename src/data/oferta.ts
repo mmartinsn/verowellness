@@ -4,14 +4,12 @@
  */
 import { desglose, type Desglose } from '../lib/precio';
 
-export type CicloId = 'LAYER_SESSION' | 'INITIAL_LAYER_CYCLE' | 'NEXT_LAYER_CYCLE';
+export type CicloId = 'INITIAL_LAYER_CYCLE' | 'NEXT_LAYER_CYCLE';
 
 export interface Ciclo {
   id: CicloId;
-  slug: 'layer-session' | 'initial-layer-cycle' | 'next-layer-cycle';
+  slug: 'initial-layer-cycle' | 'next-layer-cycle';
   nombre: string;
-  citas: 1 | 2;
-  destacado: boolean;
   etiqueta: string;
   /** Small italic note under the tag (only the Initial cycle carries one on the cards). */
   etiquetaNota?: string;
@@ -32,79 +30,54 @@ export interface Ciclo {
 }
 
 export const ciclos: Record<CicloId, Ciclo> = {
-  LAYER_SESSION: {
-    id: 'LAYER_SESSION',
-    slug: 'layer-session',
-    nombre: 'Layer Session',
-    citas: 1,
-    destacado: false,
-    etiqueta: 'Una sola cita',
-    subtotal: 150,
-    descripcion:
-      'Una sesión privada de 90 minutos: escuchamos tu historia, revisamos tus formularios y sales con un plan de acción.',
-    descripcionCorta: '1 sesión privada de 90 min · plan de acción.',
-    incluye: ['The Layer Assessment', 'Revisión de tu historia y tus objetivos', 'Plan de acción'],
-    incluyeCheckout: ['The Layer Assessment', 'Plan de acción'],
-    confirmacion: {
-      titulo: '¡Listo, bienvenida!',
-      texto:
-        'Tu Layer Session está confirmada. Agenda tu cita a continuación. Recibirás The Layer Assessment por email antes de tu cita.',
-      calendlyUrl: 'https://calendly.com/veronicawellness/layer-session',
-      calendlyEtiqueta: 'Calendly — Layer Session booking',
-    },
-  },
   INITIAL_LAYER_CYCLE: {
     id: 'INITIAL_LAYER_CYCLE',
     slug: 'initial-layer-cycle',
     nombre: 'Initial Layer Cycle',
-    citas: 2,
-    destacado: true,
     etiqueta: 'Para nuevos clientes',
     etiquetaNota:
       'También aplica si tienes 6 meses o más sin asistir a una asesoría y necesitas plantear una nueva estrategia.',
-    subtotal: 269,
+    subtotal: 247,
     descripcion:
       'Dos sesiones privadas de 90 minutos, separadas ~30 días, a completar en un máximo de 60.',
     descripcionCorta:
       '2 sesiones privadas de 90 min · separación recomendada de aproximadamente 30 días · ciclo a completar dentro de 60 días.',
     incluye: [
-      'The Layer Assessment',
-      'The Layer Map: Alta Prioridad · Prioridad Secundaria · Mantenimiento',
+      'The Layer Assessment™',
+      'The Layer Map™ — Alta Prioridad · Prioridad Secundaria · Mantenimiento',
       'Top 3 Priorities',
-      'The Layer Plan',
-      'The Layer Review',
+      'The Layer Plan™',
+      'The Layer Review™',
     ],
-    bonus: 'Incluye gratis la «Guía de alimentación anti-inflamatoria como estilo de vida» gratis.',
+    bonus: 'Pacientes nuevos: «Guía de alimentación anti-inflamatoria como estilo de vida» gratis.',
     incluyeCheckout: [
-      'The Layer Assessment',
-      'The Layer Map',
+      'The Layer Assessment™',
+      'The Layer Map™',
       'Top 3 Priorities',
-      'The Layer Plan',
+      'The Layer Plan™',
     ],
     confirmacion: {
       titulo: '¡Listo, bienvenida!',
       texto:
-        'Tu Initial Layer Cycle está confirmado. Agenda tu primera sesión a continuación — recibirás The Layer Assessment por email antes de tu cita.',
+        'Tu Initial Layer Cycle está confirmado. Agenda tu primera sesión a continuación — recibirás The Layer Assessment™ por email antes de tu cita.',
       calendlyUrl: 'https://calendly.com/veronicawellness/layer-assessment',
-      calendlyEtiqueta: 'Calendly — Layer Assessment booking',
+      calendlyEtiqueta: 'Calendly — Layer Assessment™ booking',
     },
   },
   NEXT_LAYER_CYCLE: {
     id: 'NEXT_LAYER_CYCLE',
     slug: 'next-layer-cycle',
     nombre: 'Next Layer Cycle',
-    citas: 2,
-    destacado: false,
     etiqueta: 'Tarifa de continuidad',
-    subtotal: 210,
+    subtotal: 197,
     descripcion:
       'Para quienes ya completaron su Initial Layer Cycle. Dos sesiones privadas de 90 minutos para continuar profundizando, revisar tu evolución y redefinir prioridades sin empezar de cero.',
     descripcionCorta: '2 sesiones privadas de 60-90 min · para clientes de seguimiento.',
-    incluye: ['Revisión de tu evolución', 'Redefinición de prioridades', 'Layer Plan actualizado'],
+    incluye: ['Revisión de tu evolución', 'Redefinición de prioridades', 'Layer Plan™ actualizado'],
     incluyeCheckout: [
       'Revisión de tu evolución',
       'Nuevas prioridades identificadas',
-      'Layer Plan actualizado',
+      'Layer Plan™ actualizado',
     ],
     notaPie:
       'Si tienes 6 meses o más sin asistir a una asesoría, deberás adquirir nuevamente el Initial Layer Cycle, ya que es necesario plantear tu estrategia desde cero.',
@@ -117,20 +90,7 @@ export const ciclos: Record<CicloId, Ciclo> = {
   },
 };
 
-export const listaCiclos: Ciclo[] = [ciclos.LAYER_SESSION, ciclos.INITIAL_LAYER_CYCLE];
-
-export const continuidad = {
-  etiqueta: 'Acceso privado',
-  titulo: '¿Ya eres mi paciente?',
-  texto:
-    'Tus planes de continuidad no se publican. Escríbeme por Instagram y te los enviaré por correo para seguir trabajando conmigo.',
-  boton: 'Escríbeme por Instagram',
-  url: 'https://ig.me/m/verodudamell',
-};
-
-export function rotuloCitas(ciclo: Ciclo): string {
-  return ciclo.citas === 1 ? '1 cita' : `${ciclo.citas} citas`;
-}
+export const listaCiclos: Ciclo[] = [ciclos.INITIAL_LAYER_CYCLE, ciclos.NEXT_LAYER_CYCLE];
 
 export function checkoutPath(ciclo: Ciclo): string {
   return `/checkout/${ciclo.slug}`;
@@ -139,7 +99,7 @@ export function checkoutPath(ciclo: Ciclo): string {
 /** Where the home's «Trabaja conmigo» buttons go: the new-client cycle (Mari, 2026-09-22). */
 export const checkoutPrincipal = checkoutPath(ciclos.INITIAL_LAYER_CYCLE);
 
-/** `$269`, as the cards print it. Tax shows only in the checkout (Mari, 2026-09-24). */
+/** `$247`, as the cards print it. Tax shows only in the checkout (Mari, 2026-09-24). */
 export function precioCard(ciclo: Ciclo): string {
   return `$${ciclo.subtotal}`;
 }

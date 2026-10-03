@@ -1,6 +1,6 @@
 ---
 /**
- * Exámenes · preguntas frecuentes — on a warm light ground, the title on top and the
+ * Exámenes · preguntas frecuentes — on the page's dark ground, the title on top and the
  * questions under it (Mari, 2026-09-24). Native
  * <details>, so it works without JS; the script only closes the others when one opens.
  * Questions: data/examenes `preguntasExamenes` (after NutriWhite's exam policy).
@@ -14,11 +14,11 @@ import { href } from '../../lib/url';
     <div class="fx-cab">
       <span class="eyebrow">Antes de hacer tu pedido</span>
       <h2 id="fx-titulo" class="fx-h2">
-        Respuestas a tus <em class="grad-text">preguntas</em>
+        Respuestas a tus <em class="grad-text on-dark">preguntas</em>
       </h2>
       <p>
         ¿Tienes otra pregunta? Escríbenos antes de comprar. Si necesitas orientación para elegir un
-        examen, podemos revisarlo en tu <a href={href('/asesorias')}>asesoría</a>.
+        examen, podemos revisarlo en tu <a href={href('/1-1')}>asesoría 1:1</a>.
       </p>
     </div>
     <div class="fx-lista" data-fx>
@@ -40,8 +40,9 @@ import { href } from '../../lib/url';
 <style>
   .fx {
     padding: clamp(64px, 8vw, 110px) 0;
-    background: var(--color-sand-light);
-    color: var(--color-charcoal);
+    background: linear-gradient(180deg, #1a1916 0%, #1f201b 100%);
+    color: var(--color-bone);
+    border-top: 1px solid rgb(248 246 241 / 0.08);
   }
   /* Title on top, centred; the questions below it in one readable column. */
   .fx-grid {
@@ -53,7 +54,7 @@ import { href } from '../../lib/url';
     text-align: center;
   }
   .fx .eyebrow {
-    color: var(--color-clay-rich);
+    color: var(--color-clay);
   }
   .fx-h2 {
     margin-top: 14px;
@@ -61,6 +62,7 @@ import { href } from '../../lib/url';
     font-weight: 400;
     font-size: clamp(36px, 4.4vw, 60px);
     line-height: 1.02;
+    color: var(--color-bone);
   }
   .fx-h2 em {
     font-style: italic;
@@ -70,17 +72,17 @@ import { href } from '../../lib/url';
     max-width: 460px;
     font-size: 15.5px;
     line-height: 1.6;
-    color: rgb(35 34 30 / 0.66);
+    color: rgb(248 246 241 / 0.66);
   }
   .fx-cab a {
-    font-weight: 700;
-    border-bottom: 1px solid rgb(35 34 30 / 0.35);
+    color: var(--color-bone);
+    border-bottom: 1px solid rgb(248 246 241 / 0.35);
   }
   .fx-lista {
-    border-top: 1px solid rgb(35 34 30 / 0.12);
+    border-top: 1px solid rgb(248 246 241 / 0.12);
   }
   .fx-item {
-    border-bottom: 1px solid rgb(35 34 30 / 0.12);
+    border-bottom: 1px solid rgb(248 246 241 / 0.12);
   }
   .fx-item summary {
     display: flex;
@@ -93,16 +95,17 @@ import { href } from '../../lib/url';
     font-family: var(--font-serif);
     font-size: clamp(19px, 1.6vw, 22px);
     line-height: 1.3;
+    color: var(--color-bone);
     transition: color 0.3s ease;
   }
   .fx-item summary::-webkit-details-marker {
     display: none;
   }
   .fx-item summary:hover {
-    color: var(--color-clay-rich);
+    color: var(--color-clay);
   }
   .fx-item summary:focus-visible {
-    outline: 2px solid var(--color-clay-deep);
+    outline: 2px solid var(--color-clay);
     outline-offset: 2px;
     border-radius: 6px;
   }
@@ -113,7 +116,7 @@ import { href } from '../../lib/url';
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    border: 1px solid rgb(35 34 30 / 0.3);
+    border: 1px solid rgb(248 246 241 / 0.3);
     transition:
       background 0.3s ease,
       border-color 0.3s ease,
@@ -137,7 +140,7 @@ import { href } from '../../lib/url';
   .fx-item[open] .fx-mas {
     background: var(--color-clay);
     border-color: var(--color-clay);
-    color: var(--color-charcoal);
+    color: #1b1a17;
     transform: rotate(180deg);
   }
   .fx-item[open] .fx-mas::after {
@@ -147,7 +150,7 @@ import { href } from '../../lib/url';
     padding: 0 48px 24px 4px;
     font-size: 15.5px;
     line-height: 1.7;
-    color: rgb(35 34 30 / 0.74);
+    color: rgb(248 246 241 / 0.72);
     animation: fx-in 0.4s ease;
   }
   @keyframes fx-in {

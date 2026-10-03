@@ -1,7 +1,7 @@
 ---
 /**
  * Site footer: wordmark and tagline, the same navigation as the header, the brand line
- * "Health has layers.", the copyright and the links to the legal pages.
+ * "Health has layers.™", the copyright and the links to the legal pages.
  */
 import Wordmark from './Wordmark.astro';
 import { nav, marca, copyright, legal } from '../data/site';
@@ -13,7 +13,7 @@ import { href } from '../lib/url';
     <div class="footer-top">
       <div>
         <Wordmark link={false} />
-        <p class="footer-tagline">{marca.metodo} — salud por capas.</p>
+        <p class="footer-tagline">{marca.metodo} — salud por capas, del terreno a la célula.</p>
       </div>
       <nav class="footer-links" aria-label="Navegación de pie de página">
         {nav.map((item) => <a href={href(item.path)}>{item.label}</a>)}

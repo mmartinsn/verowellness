@@ -131,70 +131,6 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     Holística e Integral» en el de azúcar; «Nutrición clínica · Medicina integrativa» en el de GLP-1);
     el recetario ya dice «Nutricionista».
 
-17. **2026-10-03 — Los ajustes de Verónica** (documento «AJUSTES PAGINA WEB INICIO THE METHOD 1-1 y
-    examenes (falta suplementos)», 47 cambios con capturas; respuestas de Santiago el 02/03-oct). Lo
-    que no es copia literal de ella, con su razón:
-    - **Precios.** «Layer Session» (1 cita) USD 197 e Initial Layer Cycle (2 citas) USD 247
-      («siguen siendo los mismos precios»; el nombre sale del vocabulario de marca de ATLAS). El
-      Next Layer Cycle ya no muestra precio: llega por invitación al terminar el Initial (nota
-      `continuidad` en `oferta.ts`). Su checkout sigue existiendo para el enlace del correo.
-    - **Lectura de exámenes:** 1 cita = Layer Session, 2 citas = Initial Layer Cycle; se lee un
-      examen por cita.
-    - **Fees de laboratorio:** línea aparte por examen, 15 de service fee + 10 de authorization
-      network (ella dio «$10-15» y «$10 aprox»; se toma el tope para no perder). Sin impuesto; el
-      7 % va sobre exámenes, citas y guías. Constantes en `src/lib/precio.ts`.
-    - **Guías añadidas en el checkout:** 15 % de descuento (Santiago). La guía nueva de hormonas
-      está «por definir» de precio (con Rosi) y no se vende todavía.
-    - **™ fuera de todo el sitio**, también del lema y del pie.
-    - **Colores de las Layers según ATLAS** (`fuentes/2026-10-02_ATLAS_design_system_v2-3.pdf`,
-      bloque 13, «fuente única de verdad»): Nutrición charcoal, Vías clay, Terreno sage deep,
-      Célula rose, Hábitos olive. Viven en `layers.ts` y todas las páginas los leen de ahí.
-    - **«The Method» → «Mi método» y «1:1» → «Asesorías»** en el menú; la página pasa a
-      `/asesorias/` y `/1-1/` redirige.
-    - **Botón «Trabaja conmigo · Click aquí»** en todo el sitio (`cta.label`); el del header usa la
-      versión corta. La barra fija se ve en todas las pantallas, también en escritorio.
-    - **Preguntas frecuentes nuevas:** Santiago autorizó redactarlas («inventalas pero de manera
-      acorde»), solo con hechos que ya dice el sitio.
-    - **Fotos:** el color del pelo se iguala al de las fotos finales del recetario, retocando por
-      color con la cara sin tocar; una edición generativa le cambió las facciones el 16-sep.
-
-18. **2026-10-03 — Textos aprobados y lo que faltaba de los ajustes** (Mari: «aprueba los textos
-    según lo que tú consideres»). Revisión del documento de Verónica contra el sitio, cambio por
-    cambio. **Aprobados tal cual:** descripción de la Layer Session, aviso de lectura de exámenes
-    («se lee 1 examen por cita…»), guías antes de pagar, recuadro de orientación de Exámenes y las
-    FAQ de online, diferencia Session/Initial, exámenes y Next Layer Cycle. **Aprobados con
-    ajuste:** la nota del Next pasa a «Acceso por invitación» («no se publica… tu invitación
-    personal»), que es el tono membresía que ella pidió; el bonus deja de decir «pacientes nuevos»
-    o «si es tu primera vez», porque ella lo quiere en _todas_ las ventas del Initial; la FAQ de
-    pago ya no lista pasarelas (no están confirmadas) y menciona el fee de laboratorio; la ventana
-    de la tienda decía el 15 % tres veces, ahora una. **Faltaba:** botón fijo también en
-    Exámenes, Tienda y Suplementos (se oculta mientras se ve la barra de selección propia);
-    «del terreno a la célula» fuera del hero del inicio, del pie y del lema (ella lo quitó porque
-    «lo entienden pocos»); «trabajo 1:1» → «asesorías individuales»; en el tema del inicio, Célula
-    y Hábitos usan ahora el hex exacto de ATLAS (#D8ABA6, #8E9480).
-    **Guía de hormonas a la venta, USD 19.99:** la fuente es el manuscrito v4 («Vuelve a sentirte
-    tú», 29-sep, descargado por Mari el 03-oct), cuyo pie de portada fija ese precio y avisa de los
-    enlaces comerciales (ese aviso va en la nota). Entra en la ventana de la tienda tras el
-    recetario y hackear. El documento de ajustes decía «precio a definir con Rosi»: si Rosi
-    define otro, se cambia en `tienda.ts`.
-
-19. **2026-10-03 — Precios nuevos, pacientes que vuelven y fotos en la cocina** (Mari). Layer
-    Session (1 consulta) USD 150; Initial Layer Cycle (2 consultas, nuevas) USD 269; Next Layer
-    Cycle (2 consultas de control) USD 210, que no se muestra: solo vive en su checkout. El bloque
-    de continuidad pasa a «Acceso privado · ¿Ya eres mi paciente?» con enlace a mensaje directo de
-    Instagram (copy de Codex, opción 1, con rótulo más exclusivo). Las fotos del hero del inicio,
-    Mi método, Asesorías, «Sobre Verónica» y Entregables son generadas con Codex tomando como guía
-    la foto de cocina que mandó Mari (WhatsApp, 02-oct) y las reales como referencia de cara:
-    `veronica-cocina-*.jpg`, fuentes en `fuentes/fotos-2026-10-03/`. **Verónica debe aprobar que
-    la cara es fiel.** Siguen en estudio la banda de la premisa, el aviso de Exámenes y el bowl de
-    «Sobre Verónica».
-
-20. **2026-10-03 — Página «Sobre mí»** (`/sobre-mi`, de vuelta en el menú). Texto literal de la
-    versión extendida de «Sobre mi Veronica Wellness PAGINA WEB» (sin ™); los títulos de sección
-    son frases de ese mismo texto. La versión breve queda para la sección del inicio, si Mari lo
-    pide. Foto principal: la de cocina que mandó Mari. **Testimonios:** tres huecos reservados
-    hasta tener testimonios reales con permiso de cada paciente; no se escribe nada en su voz.
-
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
@@ -203,10 +139,7 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   Nunito (lo que Verónica pidió para el recetario). ¿Se unifica, y con cuál sans?
 - **¿Paleta de Mari o los siete hex del brand book?** Verónica blindó la paleta; conviene que lo
   vea con la tabla de arriba.
-- **Confirmar con Verónica:** el nombre «Layer Session» y sus 90 min, el 15 % de descuento en
-  guías, el fee de USD 25 por examen y el precio de la guía de hormonas (19.99 del manuscrito).
-- **Portada definitiva** de la guía de hormonas.
-- **Suplementos:** su documento dice «falta suplementos»; esa página no se tocó en esta ronda.
+- **¿Fotos con el pelo claro o oscurecido?** Regla de Mari para el recetario vs. su uso aquí.
 - **Textos legales** y **aviso médico**: los redacta Verónica.
 - **Pasarelas**: confirmar cuáles se contratan (Stripe, PayPal, Zelle manual) y si el impuesto es
   7 % para todos los países.

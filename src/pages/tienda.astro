@@ -1,4 +1,10 @@
 ---
+/**
+ * Tienda — Verónica's ebooks and recipes (data/tienda.ts), built from the Claude Design canvas
+ * «Veronica Wellness — Tienda de ebooks» (2026-09-23): the shop as a book. Hero with the three
+ * ebooks fanned in 3D, an index, one chapter per product, the bookmark «Mi selección», the step
+ * to the 1:1, and the legal note. Copy by Codex from the ebooks' text.
+ */
 import '@fontsource/cormorant-garamond/300.css';
 import '@fontsource/cormorant-garamond/400-italic.css';
 import '@fontsource-variable/plus-jakarta-sans';
@@ -7,21 +13,14 @@ import HeroTienda from '../components/tienda/HeroTienda.astro';
 import Capitulo from '../components/tienda/Capitulo.astro';
 import Seleccion from '../components/tienda/Seleccion.astro';
 import SiguientePaso from '../components/tienda/SiguientePaso.astro';
-import {
-  productos,
-  libros,
-  avisoLegal,
-  esComprable,
-  precioPorDefinir,
-  precioTienda,
-} from '../data/tienda';
+import { productos, avisoLegal, precioTienda } from '../data/tienda';
 import { grafoSitio } from '../lib/schema';
 import { href } from '../lib/url';
 
 const productosLd = productos.map((p) => ({
   '@type': 'Product',
-  name: p.titulo,
-  description: p.pregunta,
+  name: p.tituloPortada,
+  description: p.subtitulo,
   brand: { '@type': 'Brand', name: 'Veronica Wellness' },
   offers: {
     '@type': 'Offer',
@@ -35,8 +34,9 @@ const productosLd = productos.map((p) => ({
 
 <SiteLayout
   title="Ebooks y recetas de Verónica Dudamell | Veronica Wellness"
-  description="Explora los ebooks de Verónica Dudamell: antojos, 30 desayunos, hormonas a partir de los 30 y una guía educativa sobre GLP-1 y retatrutida. Descarga digital en PDF."
+  description="Explora los ebooks de Verónica Dudamell: antojos, 30 desayunos y una guía educativa sobre GLP-1 y retatrutida. Descarga digital en PDF."
   theme="inicio"
+  mobileCta={false}
   jsonLd={[...grafoSitio(Astro.site), ...productosLd]}
 >
   <HeroTienda />
@@ -46,15 +46,12 @@ const productosLd = productos.map((p) => ({
       <h2 class="indice-titulo" data-nosplit>Índice</h2>
       <ol>
         {
-          libros.map((p) => (
+          productos.map((p) => (
             <li>
               <a href={`#${p.id}`}>
                 <span class="i-num">{p.num}</span>
                 <span class="i-nombre">{p.nombre}</span>
-                <span class="i-precio">
-                  {esComprable(p) ? precioTienda(p.precio) : precioPorDefinir}
-                </span>
-                {p.bestSeller && <span class="i-best">Best seller</span>}
+                <span class="i-precio">{precioTienda(p.precio)}</span>
               </a>
             </li>
           ))
@@ -63,7 +60,7 @@ const productosLd = productos.map((p) => ({
     </div>
   </nav>
 
-  {libros.map((p, i) => <Capitulo libro={p} espejo={i % 2 === 1} />)}
+  {productos.map((p, i) => <Capitulo producto={p} espejo={i % 2 === 1} />)}
 
   <SiguientePaso />
 
@@ -122,17 +119,6 @@ const productosLd = productos.map((p) => ({
   .i-precio {
     font-weight: 600;
     color: rgb(35 34 30 / 0.6);
-  }
-  .i-best {
-    align-self: center;
-    padding: 4px 10px;
-    border-radius: var(--radius-pill);
-    background: var(--color-charcoal);
-    color: var(--color-clay);
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
   }
   .legal {
     padding-top: 48px;

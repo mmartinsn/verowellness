@@ -1,7 +1,7 @@
 ---
 /**
  * Exámenes · ¿por qué estos exámenes? (Mari, 2026-09-24) — a routine check-up beside a functional
- * test, the first dimmed and the second highlighted, then the three reasons to do them with Veronica
+ * test, the first dimmed and the second lit, then the three reasons to do them with Veronica
  * Wellness: easy, practical, fast. Copy by Codex (2026-09-24): what routine panels do not usually
  * include, without promising a diagnosis; to review with Verónica.
  */
@@ -44,7 +44,7 @@ const pilares = [
     <div class="pq-cab">
       <span class="eyebrow">¿Por qué estos exámenes?</span>
       <h2 id="pq-titulo" class="pq-h2">
-        Una mirada que <em class="grad-text">complementa tu chequeo.</em>
+        Una mirada que <em class="grad-text on-dark">complementa tu chequeo.</em>
       </h2>
       <p>
         Si sigues sintiendo molestias, es comprensible que quieras saber más. Estos exámenes pueden
@@ -91,15 +91,15 @@ const pilares = [
 <style>
   .pq {
     position: relative;
-    padding: clamp(64px, 8vw, 110px) 0;
+    padding: clamp(72px, 9vw, 120px) 0;
     background:
-      radial-gradient(ellipse 45% 40% at 85% 30%, rgb(207 215 196 / 0.45), transparent 70%),
-      radial-gradient(ellipse 40% 35% at 8% 90%, rgb(231 183 160 / 0.35), transparent 70%),
-      var(--color-bone);
-    color: var(--color-charcoal);
+      radial-gradient(ellipse 50% 45% at 80% 35%, rgb(207 215 196 / 0.14), transparent 70%),
+      radial-gradient(ellipse 45% 40% at 10% 90%, rgb(214 154 124 / 0.12), transparent 70%), #1d1e1a;
+    color: var(--color-bone);
+    border-top: 1px solid rgb(248 246 241 / 0.08);
   }
   .pq .eyebrow {
-    color: var(--color-clay-rich);
+    color: var(--color-clay);
   }
   .pq-cab {
     max-width: 780px;
@@ -108,21 +108,24 @@ const pilares = [
     margin-top: 14px;
     font-family: var(--font-serif);
     font-weight: 400;
-    font-size: clamp(34px, 4.4vw, 58px);
-    line-height: 1.04;
+    font-size: clamp(36px, 4.6vw, 64px);
+    line-height: 1.02;
+    color: var(--color-bone);
   }
   .pq-h2 em {
     font-style: italic;
   }
   .pq-cab p {
-    margin-top: 16px;
+    margin-top: 18px;
     max-width: 620px;
     font-size: clamp(16px, 1.3vw, 18px);
     line-height: 1.65;
-    color: rgb(35 34 30 / 0.72);
+    color: rgb(248 246 241 / 0.72);
   }
+
+  /* ── Routine vs functional ── */
   .pq-comp {
-    margin-top: clamp(36px, 5vw, 52px);
+    margin-top: clamp(40px, 5vw, 60px);
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 14px;
@@ -135,24 +138,20 @@ const pilares = [
     }
   }
   .col {
-    padding: clamp(22px, 3vw, 32px);
+    padding: clamp(24px, 3vw, 36px);
     border-radius: 24px;
   }
   .rutina {
-    background: rgb(255 255 255 / 0.55);
-    border: 1px dashed rgb(35 34 30 / 0.2);
-    color: rgb(35 34 30 / 0.6);
+    background: rgb(255 255 255 / 0.03);
+    border: 1px dashed rgb(248 246 241 / 0.2);
+    color: rgb(248 246 241 / 0.55);
   }
   .funcional {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(
-      145deg,
-      #f6dccd,
-      color-mix(in srgb, var(--color-sage) 60%, var(--color-white))
-    );
-    border: 1px solid rgb(214 154 124 / 0.6);
-    box-shadow: 0 30px 60px -36px rgb(194 130 99 / 0.6);
+    background: linear-gradient(145deg, rgb(214 154 124 / 0.2), rgb(207 215 196 / 0.12));
+    border: 1px solid rgb(214 154 124 / 0.55);
+    box-shadow: 0 30px 60px -30px rgb(214 154 124 / 0.45);
   }
   .col-t {
     font-family: var(--font-serif);
@@ -160,7 +159,7 @@ const pilares = [
     line-height: 1.1;
   }
   .funcional .col-t {
-    color: var(--color-charcoal);
+    color: var(--color-bone);
   }
   .col-sub {
     margin-top: 6px;
@@ -170,12 +169,12 @@ const pilares = [
     text-transform: uppercase;
   }
   .funcional .col-sub {
-    color: var(--color-clay-rich);
+    color: var(--color-clay);
   }
   .col ul {
     list-style: none;
     padding: 0;
-    margin: 18px 0 0;
+    margin: 20px 0 0;
     display: grid;
     gap: 10px;
   }
@@ -192,7 +191,7 @@ const pilares = [
     opacity: 0.6;
   }
   .funcional li {
-    color: var(--color-charcoal);
+    color: var(--color-bone);
     font-weight: 600;
   }
   .funcional li::before {
@@ -202,8 +201,8 @@ const pilares = [
     top: 0.45em;
     width: 12px;
     height: 7px;
-    border-left: 2px solid var(--color-clay-rich);
-    border-bottom: 2px solid var(--color-clay-rich);
+    border-left: 2px solid var(--color-clay);
+    border-bottom: 2px solid var(--color-clay);
     rotate: -45deg;
   }
   .vs {
@@ -214,59 +213,51 @@ const pilares = [
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    background: var(--color-white);
-    border: 1px solid rgb(35 34 30 / 0.14);
+    border: 1px solid rgb(248 246 241 / 0.2);
     font-family: var(--font-sans);
     font-weight: 300;
     font-size: 30px;
     line-height: 1;
-    color: var(--color-clay-rich);
+    color: var(--color-clay);
   }
+
+  /* ── The three reasons ── */
   .pq-vw {
-    margin-top: clamp(48px, 6vw, 76px);
+    margin-top: clamp(56px, 7vw, 88px);
   }
   .pq-h3 {
     font-family: var(--font-serif);
     font-weight: 400;
     font-size: clamp(26px, 2.6vw, 36px);
+    color: var(--color-bone);
     text-align: center;
   }
   .pilares {
     list-style: none;
     padding: 0;
-    margin: 26px 0 0;
+    margin: 28px 0 0;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 14px;
+    gap: 16px;
   }
   @media (min-width: 860px) {
     .pilares {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
+      gap: 22px;
     }
   }
   .pilar {
-    padding: 26px 24px;
+    padding: 28px 26px;
     border-radius: 22px;
-    background: var(--color-white);
-    border: 1px solid rgb(35 34 30 / 0.08);
-    box-shadow: 0 16px 34px -30px rgb(35 34 30 / 0.5);
+    background: rgb(255 255 255 / 0.04);
+    border: 1px solid rgb(248 246 241 / 0.1);
     transition:
       transform 0.45s cubic-bezier(0.19, 1, 0.22, 1),
       border-color 0.35s ease;
   }
-  .pilar:nth-child(1) {
-    --tono: var(--color-clay);
-  }
-  .pilar:nth-child(2) {
-    --tono: var(--color-sage);
-  }
-  .pilar:nth-child(3) {
-    --tono: var(--color-rose);
-  }
   .pilar:hover {
     transform: translateY(-4px);
-    border-color: var(--tono);
+    border-color: rgb(214 154 124 / 0.5);
   }
   .pil-ico {
     display: grid;
@@ -274,8 +265,8 @@ const pilares = [
     width: 52px;
     height: 52px;
     border-radius: 16px;
-    background: var(--tono);
-    color: var(--color-charcoal);
+    background: var(--color-clay);
+    color: #1b1a17;
   }
   .pil-ico svg {
     fill: none;
@@ -286,16 +277,17 @@ const pilares = [
   }
   .pil-t {
     display: block;
-    margin-top: 16px;
+    margin-top: 18px;
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: clamp(32px, 3vw, 40px);
+    font-size: clamp(34px, 3.2vw, 44px);
     line-height: 1;
+    color: var(--color-bone);
   }
   .pilar p {
     margin-top: 10px;
-    font-size: 15px;
+    font-size: 15.5px;
     line-height: 1.6;
-    color: rgb(35 34 30 / 0.72);
+    color: rgb(248 246 241 / 0.72);
   }
 </style>

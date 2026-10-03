@@ -1,43 +1,39 @@
 ---
-import BloquePrecios from '../BloquePrecios.astro';
-import { pasosProceso } from '../../data/proceso';
-import { cta } from '../../data/site';
+/**
+ * Dark bridge from the methodology to the 1:1 process: the four-piece chain and the CTA.
+ */
 import { href } from '../../lib/url';
+
+const proceso = ['THE LAYER ASSESSMENT™', 'THE LAYER MAP™', 'TOP 3 PRIORITIES', 'THE LAYER PLAN™'];
 ---
 
 <section id="bridge">
   <div class="wrap">
     <div class="bridge">
       <span class="eyebrow">De la metodología a tu proceso</span>
-      <h2>ASESORÍAS</h2>
+      <h2>THE LAYER METHOD™ 1:1</h2>
       <p class="lede">
-        El proceso personalizado comienza mapeando tu contexto individual. No una plantilla, no un
+        El proceso personalizado comienza mapeando tu contexto individual — no una plantilla, no un
         protocolo genérico.
       </p>
 
-      <span class="pasos-label">Así funciona el proceso:</span>
-      <ol class="pasos reveal-stagger">
+      <div class="process-row" aria-label="Proceso del Layer Method 1:1">
         {
-          pasosProceso.map((p, i) => (
-            <li class="paso">
-              <span class="paso-num">{i + 1}</span>
-              <p class="paso-titulo">
-                {p.titulo}
-                {p.dur && <span class="paso-dur">{p.dur}</span>}
-              </p>
-              {p.marca && <p class="paso-marca">{p.marca}</p>}
-              <p class="paso-texto">{p.texto}</p>
-            </li>
+          proceso.map((p, i) => (
+            <>
+              {i > 0 && (
+                <span class="process-arrow" aria-hidden="true">
+                  →
+                </span>
+              )}
+              <span class="process-step">{p}</span>
+            </>
           ))
         }
-      </ol>
-
-      <div class="bridge-actions">
-        <a class="btn btn-primary" href={href('/asesorias#cta')}>{cta.label}</a>
       </div>
 
-      <div class="bridge-precios">
-        <BloquePrecios oscuro />
+      <div class="bridge-actions">
+        <a class="btn btn-primary" href={href('/1-1')}>Conoce el proceso 1:1</a>
       </div>
     </div>
   </div>
@@ -57,7 +53,7 @@ import { href } from '../../lib/url';
   }
   @media (max-width: 640px) {
     .bridge {
-      padding: 44px 20px;
+      padding: 44px 26px;
     }
   }
   .bridge .eyebrow {
@@ -79,97 +75,39 @@ import { href } from '../../lib/url';
     margin-top: 18px;
     font-weight: 500;
   }
-  .pasos-label {
-    display: block;
-    margin: 40px 0 18px;
-    font-weight: 800;
-    font-size: 13px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--color-clay);
-  }
-  .pasos {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  @media (max-width: 1080px) {
-    .pasos {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  @media (max-width: 600px) {
-    .pasos {
-      grid-template-columns: 1fr;
-    }
-  }
-  .paso {
-    background: var(--color-bone);
-    color: var(--color-charcoal);
-    border-radius: 22px;
-    padding: 26px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    transition:
-      transform 0.3s var(--ease-out-soft),
-      box-shadow 0.3s var(--ease-out-soft);
-  }
-  .paso:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 18px 40px -18px rgb(0 0 0 / 0.6);
-  }
-  .paso-num {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--color-clay);
-    color: var(--color-charcoal);
-    font-weight: 800;
-    font-size: 13px;
+  .process-row {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 36px 0;
   }
-  .paso-titulo {
+  .process-step {
     font-weight: 800;
-    font-size: 17px;
-    line-height: 1.35;
-  }
-  .paso-dur {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    background: var(--color-sand);
-    padding: 2px 8px;
+    font-size: 14px;
+    padding: 12px 20px;
     border-radius: var(--radius-pill);
-    margin-left: 6px;
-    vertical-align: 2px;
+    background: rgb(251 250 246 / 0.1);
+    white-space: nowrap;
+    transition:
+      background 0.3s ease,
+      transform 0.3s var(--ease-out-soft);
   }
-  .paso-marca {
-    font-size: 12.5px;
-    font-weight: 700;
-    color: var(--color-clay-deep);
+  .process-step:hover {
+    background: rgb(251 250 246 / 0.22);
+    transform: translateY(-2px);
   }
-  .paso-texto {
-    font-size: 14.5px;
-    line-height: 1.5;
-    color: rgb(48 47 42 / 0.72);
+  .process-arrow {
+    color: rgb(251 250 246 / 0.45);
+    font-family: var(--font-serif);
+    font-size: 18px;
   }
   .bridge-actions {
     display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    align-items: center;
     justify-content: center;
-    margin: 40px 0 0;
-  }
-  .bridge-precios {
-    color: var(--color-charcoal);
-    margin-top: 56px;
-    padding-top: 48px;
-    border-top: 1px solid rgb(251 250 246 / 0.14);
+    margin-top: 12px;
   }
 </style>

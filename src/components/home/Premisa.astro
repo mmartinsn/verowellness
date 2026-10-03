@@ -12,10 +12,6 @@
 import { Image } from 'astro:assets';
 import recorte from '../../assets/fotos/veronica-bata-recorte.png';
 import { marca } from '../../data/site';
-
-const corte = marca.sintoma.indexOf('. ') + 1;
-const inicio = marca.sintoma.slice(0, corte);
-const resto = marca.sintoma.slice(corte + 1);
 ---
 
 <section class="premisa">
@@ -26,9 +22,10 @@ const resto = marca.sintoma.slice(corte + 1);
       </div>
       <div class="premisa-texto">
         <span class="eyebrow">La premisa</span>
-        <blockquote class="cita">
-          <span class="cita-linea">"{inicio}</span>
-          <span class="cita-linea grad-text on-dark">{resto}"</span>
+        <blockquote class="cita" data-split>
+          "La salud celular empieza mucho <span class="grad-text on-dark"
+            >antes de llegar a la célula."</span
+          >
         </blockquote>
         <p class="firma">— {marca.creadora}</p>
       </div>
@@ -62,8 +59,7 @@ const resto = marca.sintoma.slice(corte + 1);
   }
   @media (min-width: 960px) {
     .banda {
-      grid-template-columns: minmax(0, 1fr) auto;
-      column-gap: clamp(24px, 3vw, 56px);
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
       min-height: 320px;
     }
   }
@@ -113,19 +109,12 @@ const resto = marca.sintoma.slice(corte + 1);
   }
   .cita {
     font-family: var(--font-serif);
-    font-size: clamp(28px, 2.6vw, 34px);
+    font-size: clamp(34px, 4.4vw, 60px);
     font-style: italic;
-    line-height: 1.22;
+    line-height: 1.12;
     color: var(--color-bone);
-  }
-  .cita-linea {
-    display: block;
+    max-width: 680px;
     text-wrap: balance;
-  }
-  @media (min-width: 1200px) {
-    .cita-linea {
-      white-space: nowrap;
-    }
   }
   .firma {
     font-size: 12.5px;

@@ -1,4 +1,8 @@
 ---
+/**
+ * Four recognition questions. Their landing line ("No necesitas necesariamente hacer más.
+ * Necesitas saber qué priorizar.") is now the full-screen Insight right after (Mari, 2026-09-23).
+ */
 const preguntas = [
   '¿Tienes muchos datos pero poca claridad?',
   '¿Has probado diferentes estrategias sin saber cuál debería ser la prioridad?',
@@ -7,111 +11,30 @@ const preguntas = [
 ];
 ---
 
-<section class="reconocimiento">
+<section class="reveal-stagger reveal">
   <div class="wrap">
-    <div class="panel reveal">
-      <div class="cabeza">
-        <span class="eyebrow">¿Te reconoces aquí?</span>
-        <p class="bajada">Si alguna de estas preguntas te suena, este proceso es para ti.</p>
-      </div>
-      <ul class="preguntas reveal-stagger reveal">
-        {
-          preguntas.map((q, i) => (
-            <li class="pregunta">
-              <span class="num" aria-hidden="true">{`0${i + 1}`}</span>
-              <p>{q}</p>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+    {preguntas.map((q) => <p class="recognition-q">{q}</p>)}
   </div>
 </section>
 
 <style>
-  .reconocimiento {
+  section {
     padding: 64px 0;
   }
   @media (max-width: 760px) {
-    .reconocimiento {
+    section {
       padding: 36px 0;
     }
   }
-  .panel {
-    position: relative;
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 2fr);
-    gap: 40px;
-    align-items: start;
-    padding: 52px 48px;
-    border-radius: var(--radius-lg);
-    background:
-      radial-gradient(90% 120% at 0% 0%, rgb(231 183 160 / 0.35), transparent 60%),
-      radial-gradient(70% 90% at 100% 100%, rgb(207 215 196 / 0.45), transparent 60%),
-      var(--color-sand-light);
-  }
-  @media (max-width: 900px) {
-    .panel {
-      grid-template-columns: 1fr;
-      gap: 24px;
-      padding: 36px 22px;
-    }
-  }
-  .eyebrow {
-    margin-bottom: 14px;
-  }
-  .bajada {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    font-size: clamp(24px, 2.6vw, 32px);
-    line-height: 1.2;
-    color: var(--color-charcoal);
-  }
-  .preguntas {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-  }
-  @media (max-width: 640px) {
-    .preguntas {
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-  }
-  .pregunta {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding: 26px 26px 28px;
-    border-radius: 18px;
-    background: rgb(251 250 246 / 0.82);
-    border: 1px solid rgb(48 47 42 / 0.08);
-    box-shadow: 0 10px 28px -18px rgb(48 47 42 / 0.35);
-    transition:
-      transform 0.45s var(--ease-out-soft),
-      box-shadow 0.45s var(--ease-out-soft);
-  }
-  .pregunta:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 22px 40px -22px rgb(48 47 42 / 0.45);
-  }
-  .num {
-    font-family: var(--font-sans);
-    font-weight: 800;
-    font-size: 12px;
-    letter-spacing: 0.14em;
-    color: var(--color-clay-deep);
-  }
-  .pregunta p {
+  .recognition-q {
     font-family: var(--font-serif);
     font-style: italic;
-    font-weight: 500;
-    font-size: clamp(20px, 2vw, 23px);
-    line-height: 1.35;
-    color: var(--color-charcoal);
+    font-size: clamp(20px, 2.6vw, 26px);
+    line-height: 1.6;
+    color: rgb(48 47 42 / 0.72);
+    max-width: 720px;
+  }
+  .recognition-q + .recognition-q {
+    margin-top: 14px;
   }
 </style>

@@ -10,23 +10,18 @@
 import { layers } from '../../data/layers';
 import { marca } from '../../data/site';
 
-const conexiones = [
-  { capa: 'Nutrición', texto: 'aporta las materias primas;' },
-  { capa: 'las vías de eliminación', texto: 'permiten procesar y eliminar;' },
-  { capa: 'el terreno', texto: 'describe el entorno regulatorio;' },
-  { capa: 'la célula', texto: 'profundiza en energía y resiliencia; y' },
-  {
-    capa: 'los hábitos',
-    texto: 'determinan cuánto de la estrategia puede sostenerse en la vida real.',
-  },
-];
+/**
+ * Text on the slabs: dark everywhere except olive. The design had white on sage-deep too, which
+ * measures 2.46:1; charcoal there gives 6.47:1 (astra/Claude review, 2026-09-23).
+ */
+const claroSobreOscuro = new Set(['olive']);
 ---
 
 <section class="metodo" id="method">
   <div class="wrap">
     <div class="metodo-head reveal">
-      <h2 class="metodo-titulo">{marca.metodo}</h2>
-      <p class="metodo-sub">El cuerpo no funciona por departamentos.</p>
+      <span class="eyebrow">The Layer Method™</span>
+      <h2>El cuerpo no funciona por departamentos.</h2>
       <p>
         Cada capa de tu salud está conectada con las demás. No es una lista de pasos que sigues en
         orden — es un mapa que se trabaja en conjunto, para que sepas en cuál capa enfocarte
@@ -41,7 +36,11 @@ const conexiones = [
           layers.map((l, i) => (
             <button
               type="button"
-              class:list={['slab', 'sd-lift', { activo: i === 0, claro: l.oscuro }]}
+              class:list={[
+                'slab',
+                'sd-lift',
+                { activo: i === 0, claro: claroSobreOscuro.has(l.color) },
+              ]}
               style={`--slab: var(--color-${l.color}); --i: ${i}`}
               data-layer={l.num}
               aria-pressed={i === 0 ? 'true' : 'false'}
@@ -65,12 +64,7 @@ const conexiones = [
             <div class="insp-panel" data-panel={l.num} data-inicial={i === 0 ? '' : undefined}>
               <div>
                 <div class="insp-header">
-                  <div
-                    class:list={['insp-badge', { claro: l.oscuro }]}
-                    style={`--slab: var(--color-${l.color})`}
-                  >
-                    {l.num}
-                  </div>
+                  <div class="insp-badge">{l.num}</div>
                   <div>
                     <span class="eyebrow">Capa explorada</span>
                     <h3 class="insp-title">{l.nombre}</h3>
@@ -92,21 +86,15 @@ const conexiones = [
     <div class="sintesis spot reveal">
       <span class="eyebrow">Cómo se conectan</span>
       <p class="sintesis-text">
-        {
-          conexiones.map((c, i) => (
-            <>
-              <strong
-                class:list={['capa', { claro: layers[i].oscuro }]}
-                style={`--slab: var(--color-${layers[i].color})`}
-              >
-                {c.capa}
-              </strong>
-              {` ${c.texto} `}
-            </>
-          ))
-        }
+        <strong>Nutrición</strong> aporta las materias primas; <strong
+          >las vías de eliminación</strong
+        > permiten procesar y eliminar; <strong>el terreno</strong> describe el entorno regulatorio;
+        <strong>la célula</strong> profundiza en energía y resiliencia; y <strong
+          >los hábitos</strong
+        >
+        determinan cuánto de la estrategia puede sostenerse en la vida real.
+        <em>Se mapean en conjunto, no una por una.</em>
       </p>
-      <p class="sintesis-cierre">Se mapean y trabajan en conjunto, no una por una.</p>
     </div>
   </div>
 </section>
@@ -124,23 +112,6 @@ const conexiones = [
     flex-direction: column;
     align-items: center;
     gap: 16px;
-  }
-  .metodo-titulo {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    font-size: clamp(44px, 6.2vw, 84px);
-    line-height: 1;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    color: var(--color-charcoal);
-  }
-  .metodo-sub {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 500;
-    font-size: clamp(24px, 2.6vw, 34px);
-    line-height: 1.2;
-    color: var(--color-clay-rich);
   }
   .stamp {
     display: inline-block;
@@ -262,13 +233,6 @@ const conexiones = [
     color: var(--color-white);
     transform: rotate(90deg);
   }
-  .slab.claro .slab-badge {
-    background: rgb(255 255 255 / 0.18);
-  }
-  .slab.claro.activo .slab-badge {
-    background: var(--color-bone);
-    color: var(--color-charcoal);
-  }
   @media (max-width: 520px) {
     .slab {
       padding: 20px 22px;
@@ -350,17 +314,14 @@ const conexiones = [
     width: 46px;
     height: 46px;
     border-radius: 50%;
-    background: var(--slab);
+    background: var(--color-clay);
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 800;
     font-size: 15px;
     color: var(--color-charcoal);
-    box-shadow: 0 4px 14px rgb(35 34 30 / 0.12);
-  }
-  .insp-badge.claro {
-    color: var(--color-white);
+    box-shadow: 0 4px 14px rgb(214 154 124 / 0.3);
   }
   .insp-title {
     font-size: 34px;
@@ -428,24 +389,17 @@ const conexiones = [
     color: var(--color-charcoal);
     font-weight: 500;
   }
-  .sintesis-text .capa {
+  .sintesis-text strong {
+    color: var(--color-clay-deep);
     font-weight: 800;
-    padding: 1px 8px;
-    border-radius: 8px;
-    background: var(--slab);
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
   }
-  .sintesis-text .capa.claro {
-    color: var(--color-white);
-  }
-  .sintesis-cierre {
+  .sintesis-text em {
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: clamp(22px, 2.2vw, 26px);
-    text-align: center;
-    margin-top: 22px;
-    color: var(--color-charcoal);
+    font-size: 21px;
+    display: block;
+    margin-top: 10px;
+    color: rgb(35 34 30 / 0.85);
   }
 </style>
 

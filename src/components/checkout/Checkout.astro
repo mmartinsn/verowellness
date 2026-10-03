@@ -2,23 +2,20 @@
 /**
  * Five-step checkout: datos → resumen → pago → consentimiento → confirmar, then the confirmation
  * screen. It sells either one cycle (fixed price, booking embed on confirmation) or, with
- * `carrito`, the selection made on /examenes/ or /tienda/, read from localStorage. Extras
- * (guides offered before paying, the exam-reading appointment, the store pop-up) are their own
- * components; they announce their order lines through the events in ./eventos.ts and this script
- * recomputes every amount with `totalesPedido` (lib/precio).
+ * `carrito`, the lab tests the visitor picked on /examenes/: the script then reads the selection
+ * from localStorage and rewrites the summary and every amount on the page.
  *
  * This is the presentation prototype Mari designed. Payment providers, the CRM calls and the
  * Calendly widget are NOT wired: every place where a real integration mounts is marked
  * `INTEGRATION POINT` in the markup or the script, and the "payment" is simulated client-side.
+ *
+ * Amounts are rendered on the server from data/oferta so the page is correct without JS; the
+ * script re-reads them from `data-config` for the dynamic bits (button label, Zelle total).
  */
 import { zelle } from '../../data/oferta';
-import { totalesPedido, usd, type LineaPedido } from '../../lib/precio';
+import { desglose, usd } from '../../lib/precio';
 import { href } from '../../lib/url';
 import { legal, marca } from '../../data/site';
-import OfertaGuias from './OfertaGuias.astro';
-import LecturaExamenes from './LecturaExamenes.astro';
-import PopupGuia from './PopupGuia.astro';
-import type { GuiaOferta, OpcionLectura } from './tipos';
 
 /** What the checkout sells. A `Ciclo` from data/oferta satisfies it as is. */
 export interface ProductoCheckout {
@@ -28,15 +25,13 @@ export interface ProductoCheckout {
   descripcionCorta: string;
   subtotal: number;
   incluyeCheckout: string[];
-  bonus?: string;
   confirmacion: { titulo: string; texto: string; calendlyUrl?: string; calendlyEtiqueta?: string };
 }
 
-/** Cart mode: the catalogue (id → name, price), what each item is, and where to send an empty cart. */
+/** Lab-test mode: the catalogue (id → name, price) and where to send an empty cart. */
 export interface CarritoCheckout {
   clave: string;
   volver: string;
-  tipo: 'examen' | 'producto';
   catalogo: { id: string; nombre: string; precio: number }[];
 }
 
@@ -56,32 +51,19 @@ interface Props {
   textos?: TextosCheckout;
   /** Label of the product row in the reviews ("Programa" for cycles). */
   etiquetaProducto?: string;
-  guias?: GuiaOferta[];
-  lectura?: OpcionLectura[];
-  sugerencias?: GuiaOferta[];
 }
-const {
-  ciclo,
-  carrito,
-  textos = {},
-  etiquetaProducto = 'Programa',
-  guias,
-  lectura,
-  sugerencias,
-} = Astro.props;
-
-const lineasIniciales: LineaPedido[] = carrito
-  ? []
-  : [{ id: ciclo.id, nombre: ciclo.nombre, precio: ciclo.subtotal, tipo: 'base' }];
-const p = totalesPedido(lineasIniciales);
+const { ciclo, carrito, textos = {}, etiquetaProducto = 'Programa' } = Astro.props;
+const p = desglose(ciclo.subtotal);
 const impuestoPct = Math.round(p.taxRate * 100);
 
 const config = {
   cycle_type: ciclo.id,
   cycle_label: ciclo.nombre,
+  subtotal: p.subtotal,
   tax_rate: p.taxRate,
+  tax_amount: p.impuesto,
+  total: p.total,
   currency: 'USD',
-  lineas: lineasIniciales,
 };
 
 const pasos = [
@@ -218,37 +200,20 @@ const metodos = [
       <p class="step-eyebrow">Paso 2</p>
       <h1 class="step-title">Resumen de tu compra</h1>
       <p class="step-subtitle">
-        Revisa los detalles de tu {textos.pedido ?? ciclo.nombre} antes de continuar al pago.
+        Revisa los detalles de tu {ciclo.nombre} antes de continuar al pago.
       </p>
 
       <div class="review-card">
         <div class="review-row"><span>{etiquetaProducto}</span><span>{ciclo.nombre}</span></div>
         <p class="review-note" data-desc-corta>{ciclo.descripcionCorta}</p>
-        <ul class="lineas" data-lineas hidden={!carrito}></ul>
-        {
-          ciclo.bonus && (
-            <p class="bonus-linea">
-              <strong>Bonus</strong> {ciclo.bonus}
-            </p>
-          )
-        }
         <div class="review-row">
           <span>Subtotal</span><span data-subtotal>{usd(p.subtotal)}</span>
         </div>
         <div class="review-row">
           <span>Impuesto ({impuestoPct}%)</span><span data-impuesto>{usd(p.impuesto)}</span>
         </div>
-        <div class="review-row" data-fila-fees hidden>
-          <span
-            >Fee del laboratorio por examen <small>(service fee + authorization network)</small>
-            <small data-fees-detalle></small></span
-          ><span data-fees></span>
-        </div>
         <div class="review-row"><span>Total</span><span data-total>{usd(p.total)}</span></div>
       </div>
-
-      {guias && <OfertaGuias guias={guias} />}
-      {lectura && <LecturaExamenes opciones={lectura} />}
 
       <div class="step-actions">
         <button type="button" class="link-btn" data-goto="1">&larr; Editar mis datos</button>
@@ -443,46 +408,25 @@ const metodos = [
   <aside class="summary-card" id="summary-card">
     <span class="summary-tag">{ciclo.etiqueta}</span>
     <h2 class="summary-title">{ciclo.nombre}</h2>
-    <p class="summary-desc" data-desc-corta>{ciclo.descripcionCorta}</p>
-    <ul class="lineas" data-lineas hidden={!carrito}></ul>
-    {
-      ciclo.bonus && (
-        <p class="bonus-linea">
-          <strong>Bonus</strong> {ciclo.bonus}
-        </p>
-      )
-    }
+    <p class="summary-desc">{ciclo.descripcionCorta}</p>
     <div class="summary-line">
       <span>Subtotal</span><span data-subtotal>{usd(p.subtotal)}</span>
     </div>
     <div class="summary-line">
       <span>Impuesto ({impuestoPct}%)</span><span data-impuesto>{usd(p.impuesto)}</span>
     </div>
-    <div class="summary-line" data-fila-fees hidden>
-      <span>Fee del laboratorio <small data-fees-detalle></small></span><span data-fees></span>
-    </div>
     <div class="summary-line total"><span>Total</span><span data-total>{usd(p.total)}</span></div>
-    {
-      !carrito && (
-        <ul class="summary-includes">
-          {ciclo.incluyeCheckout.map((i) => (
-            <li>{i}</li>
-          ))}
-        </ul>
-      )
-    }
+    <ul class="summary-includes" data-incluye>
+      {ciclo.incluyeCheckout.map((i) => <li>{i}</li>)}
+    </ul>
     {
       carrito && (
         <p class="summary-empty" data-carrito-vacio hidden>
-          Tu selección está vacía.{' '}
-          <a href={carrito.volver}>
-            {carrito.tipo === 'examen' ? 'Elige tus exámenes' : 'Vuelve a la tienda'}
-          </a>
+          Tu selección está vacía. <a href={carrito.volver}>Elige tus exámenes</a>
         </p>
       )
     }
   </aside>
-  {sugerencias && <PopupGuia sugerencias={sugerencias} />}
 </div>
 
 <style>
@@ -728,63 +672,6 @@ const metodos = [
     text-underline-offset: 3px;
     font-weight: 800;
   }
-  .lineas {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 12px;
-    border-bottom: 1px solid rgb(48 47 42 / 0.1);
-  }
-  .lineas :global(li) {
-    display: grid;
-    grid-template-columns: 1fr auto auto;
-    gap: 10px;
-    align-items: baseline;
-    padding: 7px 0;
-    font-size: 14px;
-    line-height: 1.4;
-  }
-  .lineas :global(.linea-precio) {
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  .lineas :global(.linea-precio s) {
-    font-weight: 500;
-    color: rgb(48 47 42 / 0.45);
-  }
-  .lineas :global(.linea-quitar) {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 0;
-    background: rgb(48 47 42 / 0.07);
-    font-size: 16px;
-    line-height: 1;
-    color: var(--color-charcoal);
-  }
-  .lineas :global(.linea-quitar:hover) {
-    background: rgb(48 47 42 / 0.14);
-  }
-  .bonus-linea {
-    margin: 4px 0 14px;
-    padding: 10px 14px;
-    border-radius: var(--radius-md);
-    border: 1px dashed rgb(48 47 42 / 0.28);
-    font-size: 13.5px;
-    line-height: 1.5;
-  }
-  .bonus-linea strong {
-    font-weight: 800;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-right: 6px;
-  }
-  .summary-line small,
-  .review-row small {
-    font-size: 12px;
-    font-weight: 500;
-    color: rgb(48 47 42 / 0.55);
-  }
   .summary-includes {
     list-style: none;
     padding: 0;
@@ -875,7 +762,6 @@ const metodos = [
     text-align: center;
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     line-height: 1.6;
-    overflow-wrap: anywhere;
   }
   .zelle-box {
     background: var(--color-white);
@@ -1060,7 +946,7 @@ const metodos = [
   }
   @media (max-width: 900px) {
     .checkout-shell {
-      grid-template-columns: minmax(0, 1fr);
+      grid-template-columns: 1fr;
       padding: 24px 22px 100px;
       gap: 0;
     }
@@ -1089,75 +975,31 @@ const metodos = [
    * Checkout behaviour — a client-side prototype. Every `INTEGRATION POINT` comment marks where a
    * real system (CRM, Stripe, PayPal, Zelle verification, Calendly) plugs in.
    */
-  import { totalesPedido, usd, type LineaPedido, type TotalesPedido } from '../../lib/precio';
-  import {
-    EVENTO_CARRITO,
-    EVENTO_EXTRA,
-    EVENTO_QUITADO,
-    emitir,
-    escuchar,
-    type DetalleExtra,
-    type DetalleQuitado,
-  } from './eventos';
-  import { pintarLineas, pintarTotales } from './pintarPedido';
-
   type Config = {
     cycle_type: string;
     cycle_label: string;
+    subtotal: number;
     tax_rate: number;
+    tax_amount: number;
+    total: number;
     currency: string;
-    lineas: LineaPedido[];
-  };
-  type Carrito = {
-    clave: string;
-    volver: string;
-    tipo: 'examen' | 'producto';
-    catalogo: { id: string; nombre: string; precio: number }[];
   };
   type Metodo = 'stripe' | 'apple_pay' | 'paypal' | 'zelle';
 
   const root = document.getElementById('checkout');
   if (root) {
     const config: Config = JSON.parse(root.dataset.config ?? '{}');
-    const carrito: Carrito | null = root.dataset.carrito ? JSON.parse(root.dataset.carrito) : null;
+    const usd = (n: number) => `$${n.toFixed(2)}`;
     const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
 
-    let base: LineaPedido[] = config.lineas;
-    const extras: Record<string, LineaPedido[]> = {};
-    const lineas = () => [...base, ...Object.values(extras).flat()];
-    let totales: TotalesPedido = totalesPedido(base, config.tax_rate);
-
-    // In-memory state. In production: client_id / order_id returned by the CRM API, kept in a
-    // signed session, not client-side state.
-    const state: {
-      client: Record<string, string> | null;
-      order: Record<string, unknown> | null;
-      payment_method: Metodo | null;
-    } = { client: null, order: null, payment_method: null };
-
-    const importes = () => ({
-      items: lineas().map((l) => ({
-        id: l.id,
-        type: l.tipo,
-        price: l.precio,
-        list_price: l.precioLista ?? l.precio,
-      })),
-      subtotal: totales.subtotal,
-      tax_rate: totales.taxRate,
-      tax_amount: totales.impuesto,
-      lab_fees: totales.fees,
-      total: totales.total,
-    });
-
-    const recalcular = () => {
-      const todas = lineas();
-      totales = totalesPedido(todas, config.tax_rate);
-      pintarLineas(root, todas, !!carrito || todas.length > 1);
-      pintarTotales(root, totales);
-      if (state.order) Object.assign(state.order, importes());
-    };
-
-    if (carrito) {
+    /* ── Lab-test mode: the order is whatever the visitor picked on /examenes/ ── */
+    let items: { id: string; nombre: string; precio: number }[] = [];
+    if (root.dataset.carrito) {
+      const carrito: {
+        clave: string;
+        volver: string;
+        catalogo: { id: string; nombre: string; precio: number }[];
+      } = JSON.parse(root.dataset.carrito);
       const porId = new Map(carrito.catalogo.map((i) => [i.id, i]));
       let ids: string[] = [];
       try {
@@ -1166,41 +1008,43 @@ const metodos = [
       } catch {
         // Storage unavailable: the cart reads as empty and the page says so.
       }
-      const items = ids.map((id) => porId.get(id)).filter((i): i is NonNullable<typeof i> => !!i);
-      base = items.map((i) => ({
-        id: i.id,
-        nombre: i.nombre,
-        precio: i.precio,
-        tipo: carrito.tipo,
-      }));
+      items = ids.map((id) => porId.get(id)).filter((i): i is NonNullable<typeof i> => !!i);
+      const round = (n: number) => Math.round(n * 100) / 100;
+      config.subtotal = round(items.reduce((sum, i) => sum + i.precio, 0));
+      config.tax_amount = round(config.subtotal * config.tax_rate);
+      config.total = round(config.subtotal + config.tax_amount);
+      root
+        .querySelectorAll('[data-subtotal]')
+        .forEach((el) => (el.textContent = usd(config.subtotal)));
+      root
+        .querySelectorAll('[data-impuesto]')
+        .forEach((el) => (el.textContent = usd(config.tax_amount)));
+      root.querySelectorAll('[data-total]').forEach((el) => (el.textContent = usd(config.total)));
+      const lista = root.querySelector('[data-incluye]');
+      lista?.replaceChildren(
+        ...items.map((i) => {
+          const li = document.createElement('li');
+          li.textContent = `${i.nombre} · ${usd(i.precio)}`;
+          return li;
+        })
+      );
       const n = items.length;
-      const [uno, varios] =
-        carrito.tipo === 'examen' ? ['examen', 'exámenes'] : ['producto', 'productos'];
       root
         .querySelectorAll('[data-desc-corta]')
-        .forEach((el) => (el.textContent = `${n} ${n === 1 ? uno : varios}`));
+        .forEach((el) => (el.textContent = `${n} ${n === 1 ? 'examen' : 'exámenes'}`));
       const vacio = root.querySelector<HTMLElement>('[data-carrito-vacio]');
       if (vacio) vacio.hidden = n > 0;
       const enviar = root.querySelector<HTMLButtonElement>('#form-datos button[type="submit"]');
       if (enviar) enviar.disabled = n === 0;
-      const enCarrito = items.map((i) => i.id);
-      root.dataset.ids = JSON.stringify(enCarrito);
-      emitir(EVENTO_CARRITO, { ids: enCarrito });
     }
 
-    escuchar<DetalleExtra>(EVENTO_EXTRA, ({ grupo, lineas: nuevas }) => {
-      extras[grupo] = nuevas;
-      recalcular();
-    });
-    root.addEventListener('click', (e) => {
-      const boton = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-quitar]');
-      if (!boton) return;
-      const { grupo, id }: DetalleQuitado = JSON.parse(boton.dataset.quitar ?? '{}');
-      extras[grupo] = (extras[grupo] ?? []).filter((l) => l.id !== id);
-      emitir(EVENTO_QUITADO, { grupo, id });
-      recalcular();
-    });
-    recalcular();
+    // In-memory state. In production: client_id / order_id returned by the CRM API, kept in a
+    // signed session, not client-side state.
+    const state: {
+      client: Record<string, string> | null;
+      order: Record<string, unknown> | null;
+      payment_method: Metodo | null;
+    } = { client: null, order: null, payment_method: null };
 
     /* ── Step navigation ── */
     const stepLabels: Record<number, string> = {
@@ -1232,20 +1076,8 @@ const metodos = [
       if (n === 5) prepareStep5();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    const pendiente = (destino: number) => {
-      const actual = root!.querySelector<HTMLElement>('.step.active');
-      if (!actual || destino <= Number(actual.id.replace('step-', ''))) return false;
-      const bloque = actual.querySelector<HTMLElement>('[data-valida="false"]');
-      if (!bloque) return false;
-      bloque.querySelector<HTMLElement>('[role="alert"]')?.removeAttribute('hidden');
-      bloque.querySelector<HTMLInputElement>('input')?.focus();
-      return true;
-    };
     root.querySelectorAll<HTMLButtonElement>('[data-goto]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const destino = Number(btn.dataset.goto);
-        if (!pendiente(destino)) goToStep(destino);
-      });
+      btn.addEventListener('click', () => goToStep(Number(btn.dataset.goto)));
     });
 
     /* ── Step 1: validate and (INTEGRATION POINT) upsert the CRM client ── */
@@ -1281,7 +1113,11 @@ const metodos = [
       state.order = {
         client_id: null,
         cycle_type: config.cycle_type,
-        ...importes(),
+        items: items.map((i) => ({ id: i.id, price: i.precio })),
+        subtotal: config.subtotal,
+        tax_rate: config.tax_rate,
+        tax_amount: config.tax_amount,
+        total: config.total,
         currency: config.currency,
         payment_method: null,
         payment_status: 'STARTED',
@@ -1341,7 +1177,7 @@ const metodos = [
       $('step5-continue-actions')?.setAttribute('hidden', '');
       const btn = $<HTMLButtonElement>('btn-pay')!;
       btn.disabled = false;
-      btn.textContent = `Confirmar y pagar ${usd(totales.total)}`;
+      btn.textContent = `Confirmar y pagar ${usd(config.total)}`;
     }
 
     $('btn-pay')?.addEventListener('click', () => {

@@ -1,0 +1,302 @@
+---
+/**
+ * Between sessions (Implementar + Observar), Sesión 02 (Revisar + Ajustar) and what happens
+ * after the first cycle, with the Initial → Next → Next continuity flow.
+ */
+const ecuacion = ['Plan', 'Implementar', 'Observar', 'Ajustar'];
+const revision = ['Qué cambió', 'Qué aprendimos', 'Qué necesita ajuste', 'Qué sigue'];
+const ciclos = ['Initial Layer Cycle', 'Next Layer Cycle', 'Next Layer Cycle'];
+---
+
+<section class="reveal">
+  <div class="wrap">
+    <span class="eyebrow">Entre sesiones</span>
+    <h2>Implementar + Observar</h2>
+    <div class="between">
+      <p class="lead">
+        Espaciado recomendado entre sesiones: aproximadamente 30 días. Implementas tu Layer Plan™ y
+        observas respuesta, tolerancia, cambios, obstáculos, qué fue realista, qué fue difícil y qué
+        información nueva aparece. Este período es parte del Método — no es simplemente "esperar la
+        próxima cita".
+      </p>
+      <div class="equation">
+        {
+          ecuacion.map((n, i) => (
+            <>
+              {i > 0 && (
+                <span class="eq-arrow" aria-hidden="true">
+                  →
+                </span>
+              )}
+              <div class:list={['eq-node', { plan: i === 0 }]}>{n}</div>
+            </>
+          ))
+        }
+      </div>
+      <div class="weekly-note">
+        <span class="wn-dot" aria-hidden="true"></span>
+        Acompañamiento por correo una vez a la semana para resolver tus dudas durante la implementación.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="wrap">
+    <div class="session2-panel">
+      <div class="session2-copy">
+        <span class="eyebrow dark">Sesión 02 · 90 min</span>
+        <h2>Revisar + Ajustar</h2>
+        <div class="session2-quote">
+          Ahora tenemos algo que la primera sesión no tenía: respuesta.
+        </div>
+        <p>
+          Revisamos qué mejoró, qué no cambió, qué se implementó, qué fue difícil de implementar,
+          tolerancia, respuesta, información nueva y si las prioridades cambiaron. Después,
+          actualizamos el Layer Plan™.
+        </p>
+        <ul class="session2-list">
+          {revision.map((r) => <li>{r}</li>)}
+        </ul>
+        <div class="review-tag">
+          Sales con <strong>The Layer Review™</strong> — tu Layer Plan™ revisado y ajustado con base en
+          tu respuesta real.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="wrap">
+    <span class="eyebrow">¿Y después del primer ciclo?</span>
+    <h2>Tu primer ciclo te da el mapa.<br />El siguiente ciclo te permite seguir avanzando.</h2>
+    <p class="lead">
+      Completaste tu primer ciclo. Ahora decidimos cuál es tu Next Layer. No empezamos desde cero —
+      usamos el contexto ya construido para revisar tu evolución, reevaluar prioridades, ajustar el
+      Layer Plan™, profundizar donde corresponda y definir la siguiente Layer o prioridad que merece
+      atención.
+    </p>
+    <div class="continuity-explainer">
+      <p class="continuity-lede">
+        El proceso evoluciona por ciclos, a tu ritmo — sin convertirse en una membresía ni
+        comprometerte con un programa predefinido a largo plazo.
+      </p>
+      <div class="cycle-flow">
+        {
+          ciclos.map((c, i) => (
+            <>
+              {i > 0 && (
+                <span class="flow-arrow" aria-hidden="true">
+                  →
+                </span>
+              )}
+              <span class:list={['flow-node', { on: i === 0 }]}>{c}</span>
+            </>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    padding: 64px 0;
+  }
+  @media (max-width: 760px) {
+    section {
+      padding: 36px 0;
+    }
+  }
+  .eyebrow {
+    margin-bottom: 16px;
+  }
+  .eyebrow.dark {
+    color: var(--color-charcoal);
+  }
+  h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4.2vw, 46px);
+    line-height: 1.1;
+  }
+  .lead {
+    font-size: 19px;
+    line-height: 1.65;
+    font-weight: 500;
+    color: rgb(48 47 42 / 0.72);
+    max-width: 620px;
+    margin-top: 16px;
+  }
+  .between {
+    max-width: 720px;
+  }
+  .equation {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  .eq-node {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(18px, 2.4vw, 24px);
+    background: var(--color-ivory);
+    padding: 16px 26px;
+    border-radius: var(--radius-pill);
+    transition:
+      transform 0.35s var(--ease-out-soft),
+      box-shadow 0.35s var(--ease-out-soft),
+      background 0.3s ease;
+  }
+  .eq-node:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+    background: var(--color-sand);
+  }
+  .eq-node.plan:hover {
+    background: var(--color-clay-deep);
+  }
+  .eq-node.plan {
+    background: var(--color-clay);
+  }
+  .eq-arrow {
+    color: rgb(48 47 42 / 0.45);
+    font-size: 22px;
+  }
+  @media (max-width: 640px) {
+    .equation {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .eq-arrow {
+      transform: rotate(90deg);
+      margin-left: 26px;
+    }
+  }
+  .weekly-note {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 26px;
+    background: var(--color-sand);
+    border-radius: var(--radius-pill);
+    padding: 14px 22px;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .wn-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-clay-deep);
+    flex: 0 0 auto;
+  }
+
+  .session2-panel {
+    background: var(--color-rose);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .session2-copy {
+    padding: 56px;
+    max-width: 760px;
+  }
+  @media (max-width: 640px) {
+    .session2-copy {
+      padding: 30px 24px;
+    }
+  }
+  .session2-quote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(24px, 3.2vw, 34px);
+    line-height: 1.35;
+    margin: 16px 0 24px;
+  }
+  .session2-copy p {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--color-charcoal);
+  }
+  .session2-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 0;
+  }
+  @media (max-width: 520px) {
+    .session2-list {
+      grid-template-columns: 1fr;
+    }
+  }
+  .session2-list li {
+    background: rgb(251 250 246 / 0.55);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--color-charcoal);
+  }
+  .review-tag {
+    margin-top: 22px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-charcoal);
+    background: rgb(251 250 246 / 0.55);
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+  }
+  .review-tag strong {
+    font-weight: 800;
+  }
+
+  .continuity-explainer {
+    margin-top: 36px;
+    background: var(--color-ivory);
+    border-radius: var(--radius-lg);
+    padding: 44px;
+    text-align: center;
+  }
+  @media (max-width: 640px) {
+    .continuity-explainer {
+      padding: 32px 24px;
+    }
+  }
+  .continuity-lede {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--color-charcoal);
+    max-width: 640px;
+    line-height: 1.5;
+    margin: 0 auto;
+  }
+  .cycle-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+  .flow-node {
+    font-weight: 800;
+    font-size: 13px;
+    background: var(--color-bone);
+    border: 1.5px solid rgb(48 47 42 / 0.1);
+    padding: 12px 18px;
+    border-radius: var(--radius-pill);
+  }
+  .flow-node.on {
+    background: var(--color-sage);
+    border-color: transparent;
+  }
+  .flow-arrow {
+    color: rgb(48 47 42 / 0.45);
+  }
+</style>

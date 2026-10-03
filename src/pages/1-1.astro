@@ -1,19 +1,45 @@
 ---
-import { href } from '../lib/url';
-
-const destino = href('/asesorias');
+/**
+ * The Layer Method™ 1:1 — the offer page: what the Initial Layer Cycle is (told once, in four
+ * steps), what you leave with, the two prices and the CTA into the checkout (the «lo que no es» box left on 2026-09-24, Mari).
+ * Shortened from ~11 screens to about half (Mari, 2026-09-23).
+ */
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Hero11 from '../components/uno-a-uno/Hero11.astro';
+import Reconocimiento from '../components/uno-a-uno/Reconocimiento.astro';
+import Insight from '../components/Insight.astro';
+import Proceso from '../components/uno-a-uno/Proceso.astro';
+import Entregables from '../components/uno-a-uno/Entregables.astro';
+import Precios from '../components/uno-a-uno/Precios.astro';
+import CtaFinal from '../components/uno-a-uno/CtaFinal.astro';
+import { marca } from '../data/site';
+import { grafoSitio, grafoServicio } from '../lib/schema';
 ---
 
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="robots" content="noindex" />
-    <meta http-equiv="refresh" content={`0; url=${destino}`} />
-    <link rel="canonical" href={destino} />
-    <title>Asesorías — Veronica Wellness</title>
-  </head>
-  <body>
-    <a href={destino}>Asesorías</a>
-  </body>
-</html>
+<SiteLayout
+  title="Asesoría 1:1 de nutrición funcional online — The Layer Method™ | Veronica Wellness"
+  jsonLd={[...grafoSitio(Astro.site), grafoServicio(Astro.site)]}
+  description="Un proceso 1:1 para organizar tu contexto, identificar prioridades y construir una estrategia personalizada con The Layer Method™. Initial Layer Cycle: dos sesiones privadas de 90 minutos."
+  mobileCta={{ label: 'Agenda conmigo', path: '/1-1#cta' }}
+>
+  <Hero11 />
+  <Reconocimiento />
+  <Insight a="No necesitas necesariamente hacer más." b="Necesitas saber qué priorizar." />
+  <Proceso />
+  <Entregables />
+  <Precios />
+  <CtaFinal />
+  <p class="lema">{marca.lema}</p>
+</SiteLayout>
+
+<style>
+  .lema {
+    text-align: center;
+    padding: 40px 0 24px;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 18px;
+    color: rgb(48 47 42 / 0.72);
+  }
+</style>

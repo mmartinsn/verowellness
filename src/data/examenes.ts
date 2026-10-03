@@ -9,9 +9,6 @@
  * `muestras` and `enCasa` are filled only where the description itself says how the sample is
  * taken; an empty list means the sheet does not say.
  */
-import { ciclos, precioCard } from './oferta';
-import { FEE_AUTORIZACION, FEE_SERVICIO, TAX_RATE, usd } from '../lib/precio';
-
 export type Muestra = 'heces' | 'orina' | 'sangre' | 'saliva' | 'aliento' | 'hisopo' | 'ambiente';
 
 export interface Area {
@@ -19,7 +16,6 @@ export interface Area {
   nombre: string;
   /** A token from `@theme` in global.css (`--color-<name>`), used for the area's accent. */
   color: string;
-  icono: string;
 }
 
 export interface Examen {
@@ -53,86 +49,23 @@ export const muestras: Record<Muestra, string> = {
 };
 
 export const areas: Area[] = [
-  {
-    id: 'gastrointestinal',
-    nombre: 'Gastrointestinal',
-    color: 'sage-deep',
-    icono: 'M9 3v4.5A4.5 4.5 0 0 0 13.5 12h.5a4 4 0 0 1 0 8h-3A6 6 0 0 1 5 14v-1',
-  },
-  {
-    id: 'alimentos',
-    nombre: 'Reacciones a alimentos',
-    color: 'clay-deep',
-    icono:
-      'M12 7.5c-1.6-1.6-5.2-1.4-6.6 1.2C4 11.3 4.6 15.4 7 18.4c1.6 2 3.4 2.6 5 1.6 1.6 1 3.4.4 5-1.6 2.4-3 3-7.1 1.6-9.7-1.4-2.6-5-2.8-6.6-1.2zM12 7.5c0-2 1-3.4 3-4.5',
-  },
-  {
-    id: 'hormonales',
-    nombre: 'Hormonales',
-    color: 'rose-deep',
-    icono: 'M12 14a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 14v7M9 18h6',
-  },
-  {
-    id: 'toxinas',
-    nombre: 'Toxinas y metales pesados',
-    color: 'olive',
-    icono: 'M3 21V11l5 3v-3l5 3V7l8-4v18H3zM7 17h2M12 17h2M17 17h1',
-  },
-  {
-    id: 'anti-aging',
-    nombre: 'Anti-aging',
-    color: 'clay-rich',
-    icono:
-      'M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3zM18.5 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7.7-1.8z',
-  },
-  {
-    id: 'salud-vaginal',
-    nombre: 'Salud vaginal',
-    color: 'rose',
-    icono:
-      'M12 21c-4 0-7-3-7-7 3 0 5.2 1.6 7 4.2 1.8-2.6 4-4.2 7-4.2 0 4-3 7-7 7zM12 18.2c-2.2-3.2-2.2-7.6 0-11.2 2.2 3.6 2.2 8 0 11.2z',
-  },
-  {
-    id: 'moho',
-    nombre: 'Moho y micotoxinas',
-    color: 'sage-deep',
-    icono:
-      'M4 11l8-7 8 7M6 9.5V20h12V9.5M12 11.5s-2.6 2.8-2.6 4.5a2.6 2.6 0 0 0 5.2 0c0-1.7-2.6-4.5-2.6-4.5z',
-  },
-  {
-    id: 'salud-mental',
-    nombre: 'Salud mental',
-    color: 'olive',
-    icono: 'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5zM16 3h3l-3 3h3',
-  },
-  {
-    id: 'cardiovascular',
-    nombre: 'Cardiovascular',
-    color: 'rose-deep',
-    icono:
-      'M12 20s-7-4.4-9-9a4.5 4.5 0 0 1 9-3 4.5 4.5 0 0 1 9 3c-.3.7-.7 1.4-1.2 2M3 12h4l2-3 3 6 2-3h2.5',
-  },
-  {
-    id: 'peso',
-    nombre: 'Peso',
-    color: 'clay',
-    icono:
-      'M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM8 10a4 4 0 0 1 8 0M12 10l1.6-2.2',
-  },
-  {
-    id: 'acidos-organicos',
-    nombre: 'Ácidos orgánicos',
-    color: 'sage',
-    icono: 'M9 3h6M10 3v5l-5 9a3 3 0 0 0 2.6 4.5h8.8A3 3 0 0 0 19 17l-5-9V3M7 14h10',
-  },
+  { id: 'infecciones', nombre: 'Infecciones', color: 'sage-deep' },
+  { id: 'hormonales', nombre: 'Hormonales', color: 'rose' },
+  { id: 'alimentos', nombre: 'Alimentos', color: 'clay' },
+  { id: 'cardiovascular', nombre: 'Cardiovascular', color: 'rose-deep' },
+  { id: 'salud-vaginal', nombre: 'Salud vaginal', color: 'clay-deep' },
+  { id: 'salud-mental', nombre: 'Salud mental', color: 'olive' },
+  { id: 'moho', nombre: 'Moho y micotoxinas', color: 'sage' },
+  { id: 'longevidad', nombre: 'Longevidad', color: 'clay-rich' },
+  { id: 'peso', nombre: 'Peso', color: 'sand' },
+  { id: 'intoxicaciones', nombre: 'Intoxicaciones', color: 'charcoal' },
+  { id: 'acidos-organicos', nombre: 'Ácidos orgánicos', color: 'sage-deep' },
 ];
-
-export const areaPorId = new Map(areas.map((a) => [a.id, a]));
 
 export const examenes: Examen[] = [
   {
     id: 'comprehensive-stool-analysis-parasitology',
-    area: 'gastrointestinal',
+    area: 'infecciones',
     nombre: 'Comprehensive Stool Analysis + Parasitology',
     laboratorio: "Doctor's Data",
     precio: 449.55,
@@ -143,7 +76,7 @@ export const examenes: Examen[] = [
   },
   {
     id: 'gi-effects-3-days',
-    area: 'gastrointestinal',
+    area: 'infecciones',
     nombre: 'GI Effects – 3 days',
     laboratorio: 'Genova',
     precio: 592.65,
@@ -154,7 +87,7 @@ export const examenes: Examen[] = [
   },
   {
     id: 'sibo-en-aliento-3h',
-    area: 'gastrointestinal',
+    area: 'infecciones',
     nombre: 'SIBO en aliento 3H',
     laboratorio: 'Genova',
     precio: 303.75,
@@ -165,7 +98,7 @@ export const examenes: Examen[] = [
   },
   {
     id: 'microbiology-profile',
-    area: 'gastrointestinal',
+    area: 'infecciones',
     nombre: 'Microbiology Profile',
     laboratorio: "Doctor's Data",
     precio: 151.2,
@@ -176,7 +109,7 @@ export const examenes: Examen[] = [
   },
   {
     id: 'h-pylori',
-    area: 'gastrointestinal',
+    area: 'infecciones',
     nombre: 'H. pylori',
     laboratorio: "Doctor's Data",
     precio: 147.15,
@@ -187,7 +120,7 @@ export const examenes: Examen[] = [
   },
   {
     id: 'culture-pcr-parasitology-cpp',
-    area: 'gastrointestinal',
+    area: 'infecciones',
     nombre: 'Culture, PCR, Parasitology (CPP)',
     laboratorio: "Doctor's Data",
     precio: 253.8,
@@ -198,7 +131,7 @@ export const examenes: Examen[] = [
   },
   {
     id: 'yeast-culture-sensitivities',
-    area: 'gastrointestinal',
+    area: 'infecciones',
     nombre: 'Yeast Culture & Sensitivities',
     laboratorio: "Doctor's Data",
     precio: 94.5,
@@ -209,7 +142,7 @@ export const examenes: Examen[] = [
   },
   {
     id: 'gi-advanced-profile-includes-zonulin-and-h-pylori',
-    area: 'gastrointestinal',
+    area: 'infecciones',
     nombre: 'GI-Advanced Profile (includes Zonulin and H. pylori)',
     laboratorio: 'US BioTek',
     precio: 525.15,
@@ -220,7 +153,7 @@ export const examenes: Examen[] = [
   },
   {
     id: 'candida-albicans-en-sangre',
-    area: 'gastrointestinal',
+    area: 'infecciones',
     nombre: 'Candida albicans en sangre',
     laboratorio: 'Alletess',
     precio: 168.75,
@@ -482,7 +415,7 @@ export const examenes: Examen[] = [
   },
   {
     id: 'dna-oxidative-damage',
-    area: 'anti-aging',
+    area: 'longevidad',
     nombre: 'DNA Oxidative Damage',
     laboratorio: "Doctor's Data",
     precio: 156.6,
@@ -504,7 +437,7 @@ export const examenes: Examen[] = [
   },
   {
     id: 'metales-pesados-minerales',
-    area: 'toxinas',
+    area: 'intoxicaciones',
     nombre: 'Metales pesados + minerales',
     laboratorio: "Doctor's Data",
     precio: 168.75,
@@ -515,7 +448,7 @@ export const examenes: Examen[] = [
   },
   {
     id: 'hepatic-detox-profile',
-    area: 'toxinas',
+    area: 'intoxicaciones',
     nombre: 'Hepatic Detox Profile',
     laboratorio: "Doctor's Data",
     precio: 178.2,
@@ -526,7 +459,7 @@ export const examenes: Examen[] = [
   },
   {
     id: 'all-tox',
-    area: 'toxinas',
+    area: 'intoxicaciones',
     nombre: 'All Tox',
     laboratorio: 'US BioTek',
     precio: 552.15,
@@ -576,7 +509,7 @@ export const pasosPedido = [
   {
     titulo: 'Recibe tus resultados',
     texto:
-      'Entre 15 y 25 días hábiles desde que tu muestra llega al laboratorio, por email. Si agregaste tu cita de lectura, los revisamos juntas.',
+      'Entre 15 y 25 días hábiles desde que tu muestra llega al laboratorio, por email; los revisamos juntas en tu asesoría 1:1.',
   },
 ];
 
@@ -590,17 +523,11 @@ export const CLAVE_SELECCION = 'vw-examenes-seleccion';
 /**
  * FAQ of /examenes/ — adapted from nutriwhitesalud.com/politicas/examenes (read 2026-09-24) at
  * Mari's request («la logística es tal como ellos lo tienen»): the same windows, rules and fees,
- * with «Embajador NutriWhite» turned into the advisory with Verónica. Wording by Codex (2026-09-24);
- * the first question and the three about the reading appointment and the lab fees follow
- * Verónica's notes of 2026-10-02. Prices, fees and tax are read from data/oferta and lib/precio.
+ * with «Embajador NutriWhite» turned into the 1:1 advisory with Verónica. Wording by Codex (2026-09-24).
  * PENDIENTE (Verónica): confirm each figure for her own logistics (days, the $30 kit fee, the 20%
  * refund deduction, the international fee).
  */
 export const preguntasExamenes = [
-  {
-    q: '¿Necesito hacerme exámenes para empezar mi asesoría?',
-    a: 'No. Los exámenes no son obligatorios para tus asesorías. Si no sabes cuál elegir o priorizar, no te preocupes: identificar si necesitas estudios, y su prioridad, forma parte de tu asesoría.',
-  },
   {
     q: '¿Cuándo recibiré mis resultados?',
     a: 'Los resultados tardan entre 15 y 25 días hábiles desde que tu muestra llega al laboratorio. Si contamos también el envío del kit y el de tu muestra, el proceso completo suele tomar de 4 a 6 semanas.',
@@ -615,15 +542,7 @@ export const preguntasExamenes = [
   },
   {
     q: '¿El precio incluye la interpretación de mis resultados?',
-    a: `No. Antes de pagar puedes agregar una cita para la lectura de tu examen: 1 cita (${precioCard(ciclos.LAYER_SESSION)}), con lectura de exámenes y plan de acción, o 2 citas (${precioCard(ciclos.INITIAL_LAYER_CYCLE)}), para asegurar el seguimiento de los pasos del plan de acción en base a tus resultados.`,
-  },
-  {
-    q: '¿Cuántos exámenes se leen en cada cita?',
-    a: 'Se lee 1 examen por cita. Además de leer tu examen, escuchamos tu historia y analizamos tus formularios para crear un plan de acción integral.',
-  },
-  {
-    q: '¿Hay cargos adicionales además del precio del examen?',
-    a: `Sí. Cada examen lleva dos cargos del laboratorio que se suman al finalizar la compra: service fee (${usd(FEE_SERVICIO)}) y authorization network (${usd(FEE_AUTORIZACION)}). Al pedido se le agrega además el impuesto del ${Math.round(TAX_RATE * 100)} %.`,
+    a: 'No. El precio del examen no incluye la interpretación de los resultados. Los revisamos y te los explicamos en consulta, dentro de un plan de asesoría 1:1. Si tu plan tiene más de una sesión, la interpretación se incluye durante el plan. Es el caso de Initial Layer Cycle y Next Layer Cycle, de dos sesiones cada uno.',
   },
   {
     q: '¿Puedo pedir exámenes desde fuera de Estados Unidos?',

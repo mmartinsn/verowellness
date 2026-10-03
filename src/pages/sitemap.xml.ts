@@ -6,15 +6,7 @@
 import type { APIRoute } from 'astro';
 import { href } from '../lib/url';
 
-const paginas = [
-  '/',
-  '/sobre-mi',
-  '/el-metodo',
-  '/asesorias',
-  '/examenes',
-  '/tienda',
-  '/suplementos',
-];
+const paginas = ['/', '/el-metodo', '/1-1', '/examenes', '/tienda', '/suplementos'];
 
 export const GET: APIRoute = ({ site }) => {
   const urls = paginas

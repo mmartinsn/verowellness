@@ -7,7 +7,7 @@
 import BaseLayout from './BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import StickyCta from '../components/StickyCta.astro';
+import MobileCta from '../components/MobileCta.astro';
 
 interface Props {
   title: string;
@@ -16,10 +16,11 @@ interface Props {
   theme?: 'editorial' | 'stitch' | 'inicio';
   /** Structured data for this page (see BaseLayout). */
   jsonLd?: Record<string, unknown>[];
-  stickyCta?: { label?: string; path?: string } | false;
+  /** Show the sticky bottom CTA on small screens (label/path default to "Trabaja conmigo"). */
+  mobileCta?: { label?: string; path?: string } | false;
 }
 
-const { title, description, noindex, theme = 'editorial', stickyCta = {}, jsonLd } = Astro.props;
+const { title, description, noindex, theme = 'editorial', mobileCta = {}, jsonLd } = Astro.props;
 ---
 
 <BaseLayout
@@ -28,7 +29,7 @@ const { title, description, noindex, theme = 'editorial', stickyCta = {}, jsonLd
   noindex={noindex}
   theme={theme}
   jsonLd={jsonLd}
-  bodyClass={stickyCta ? 'has-sticky-cta' : undefined}
+  bodyClass={mobileCta ? 'has-mobile-cta' : undefined}
 >
   <a class="skip-link" href="#main">Saltar al contenido</a>
   <SiteHeader />
@@ -36,16 +37,16 @@ const { title, description, noindex, theme = 'editorial', stickyCta = {}, jsonLd
     <slot />
   </main>
   <SiteFooter />
-  {stickyCta && <StickyCta {...stickyCta} />}
+  {mobileCta && <MobileCta {...mobileCta} />}
 </BaseLayout>
 
 <style is:global>
-  body.has-sticky-cta {
+  body.has-mobile-cta {
     padding-bottom: 78px;
   }
   @media (min-width: 1024px) {
-    body.has-sticky-cta {
-      padding-bottom: 96px;
+    body.has-mobile-cta {
+      padding-bottom: 0;
     }
   }
 </style>

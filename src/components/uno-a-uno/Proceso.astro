@@ -1,4 +1,12 @@
 ---
+/**
+ * "Cómo funciona — Initial Layer Cycle": the whole cycle told once, in four steps, each with its
+ * detail inline. Replaces the stepper + Assessment panel + Sesión 01 + Entre sesiones + Sesión 02
+ * sections, which told the same process twice (Mari, 2026-09-23: "la sección 1:1 es demasiado
+ * larga"). Copy is the existing copy, trimmed of repetitions. Drawn as a vertical route (Mari,
+ * same day): a centre line that draws itself on scroll, steps alternating left and right; on
+ * phones the line runs down the left.
+ */
 const temas = [
   'Objetivos',
   'Historia de salud y bienestar',
@@ -10,42 +18,29 @@ const temas = [
   'Laboratorios relevantes',
 ];
 
-interface Paso {
-  snum: string;
-  titulo: string;
-  parrafos: string[];
-  cita?: string;
-  chips?: boolean;
-  nota?: string;
-  tono: string;
-}
-
-const pasos: Paso[] = [
+// The four stops of the cycle, in order.
+const pasos = [
   {
     snum: 'Antes de la sesión 01',
-    titulo: 'The Layer Assessment',
-    parrafos: [
+    titulo: 'The Layer Assessment™',
+    texto:
       'Completas una evaluación estructurada para no pasar la sesión recopilando información básica. Puede incluir:',
-    ],
     chips: true,
     tono: 'clay-deep',
   },
   {
     snum: 'Sesión 01 · 90 min',
     titulo: 'Mapear + Priorizar',
-    parrafos: [
-      'Revisamos tu contexto a través de las cinco Layers. Se crea un plan de acción por fases para trabajar las capas según prioridad, y ese será tu Layer Map.',
-      'El objetivo no es abordar todo a la vez. Es determinar qué merece atención ahora y qué puede estar conectado.',
-    ],
-    nota: 'Sales con tu Layer Map, tus Top 3 Priorities y tu Layer Plan.',
+    texto:
+      'Revisamos tu contexto a través de las cinco Layers. El objetivo no es abordar todo a la vez — es determinar qué merece atención ahora y qué puede estar conectado.',
+    nota: 'Sales con tu Layer Map™, tus Top 3 Priorities y tu Layer Plan™.',
     tono: 'sage-deep',
   },
   {
-    snum: 'Entre sesiones · 30–60 días',
+    snum: 'Entre sesiones · ~30 días',
     titulo: 'Implementar + Observar',
-    parrafos: [
-      'Pones en marcha tu Layer Plan y observas respuesta, tolerancia, cambios y obstáculos. Este período es parte del Método. No es simplemente "esperar la próxima cita".',
-    ],
+    texto:
+      'Pones en marcha tu Layer Plan™ y observas respuesta, tolerancia, cambios y obstáculos. Este período es parte del Método — no es simplemente "esperar la próxima cita".',
     nota: 'Acompañamiento por correo una vez a la semana para resolver tus dudas.',
     tono: 'rose-deep',
   },
@@ -53,55 +48,27 @@ const pasos: Paso[] = [
     snum: 'Sesión 02 · 90 min',
     titulo: 'Revisar + Ajustar',
     cita: 'Ahora tenemos algo que la primera sesión no tenía: respuesta.',
-    parrafos: [
-      'Revisamos qué cambió, qué fue difícil y si las prioridades se movieron. Sales con <strong>The Layer Review</strong>: tu Layer Plan ajustado con base en tu respuesta real.',
-    ],
+    texto:
+      'Revisamos qué cambió, qué fue difícil y si las prioridades se movieron. Sales con <strong>The Layer Review™</strong> — tu Layer Plan™ ajustado con base en tu respuesta real.',
     tono: 'olive',
   },
-  {
-    snum: 'Siguiente paso',
-    titulo: 'Next Layer Cycle',
-    parrafos: [
-      'Agenda tu próximo paquete de asesorías para continuar trabajando las capas del plan establecido en tu Layer Map.',
-    ],
-    tono: 'charcoal',
-  },
-];
-
-const luces = [
-  { tono: 'clay', x: '78%', y: '6%' },
-  { tono: 'sage', x: '6%', y: '34%' },
-  { tono: 'rose', x: '88%', y: '58%' },
-  { tono: 'sage-deep', x: '18%', y: '84%' },
 ];
 ---
 
-<section id="proceso" class="proceso">
-  <div class="fondo" aria-hidden="true">
-    {
-      luces.map((l, i) => (
-        <span class="luz" style={`--tono:var(--color-${l.tono});--x:${l.x};--y:${l.y};--i:${i};`} />
-      ))
-    }
-  </div>
+<section id="proceso" class="reveal">
   <div class="wrap">
-    <div class="cabeza reveal">
-      <span class="eyebrow">Cómo funciona</span>
-      <h2 class="upcase">Initial Layer Cycle</h2>
-      <p class="lead">
-        Para nuevos clientes. Es el punto de partida para aplicar The Layer Method a tu contexto
-        individual: no una consulta aislada, sino un ciclo completo con estructura.
-      </p>
-    </div>
+    <span class="eyebrow">Cómo funciona</span>
+    <h2 class="upcase">Initial Layer Cycle</h2>
+    <p class="lead">
+      Para nuevos clientes. Es el punto de partida para aplicar The Layer Method™ a tu contexto
+      individual — no una consulta aislada, sino un ciclo completo con estructura.
+    </p>
 
     <div class="ruta">
-      <ol class="paradas">
+      <ol class="paradas reveal-stagger reveal">
         {
           pasos.map((p, i) => (
-            <li
-              class:list={['parada', i % 2 === 0 ? 'reveal-left' : 'reveal-right']}
-              style={`--tono:var(--color-${p.tono});`}
-            >
+            <li class="parada" style={`--tono:var(--color-${p.tono});`}>
               <div class="hito" aria-hidden="true">
                 <span class="marca">{`0${i + 1}`}</span>
               </div>
@@ -109,9 +76,7 @@ const luces = [
                 <span class="snum">{p.snum}</span>
                 <h3>{p.titulo}</h3>
                 {p.cita && <p class="cita">{p.cita}</p>}
-                {p.parrafos.map((t) => (
-                  <p set:html={t} />
-                ))}
+                <p set:html={p.texto} />
                 {p.chips && (
                   <div class="chips">
                     {temas.map((t) => (
@@ -130,54 +95,13 @@ const luces = [
 </section>
 
 <style>
-  .proceso {
-    position: relative;
-    overflow: hidden;
-    padding: 72px 0;
+  section {
+    padding: 64px 0;
   }
   @media (max-width: 760px) {
-    .proceso {
-      padding: 40px 0;
+    section {
+      padding: 36px 0;
     }
-  }
-  .fondo {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-  .luz {
-    position: absolute;
-    left: var(--x);
-    top: var(--y);
-    width: clamp(320px, 42vw, 620px);
-    aspect-ratio: 1;
-    translate: -50% -50%;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--tono) 0%, transparent 68%);
-    opacity: 0.55;
-    animation: deriva calc(26s + var(--i) * 6s) ease-in-out infinite alternate;
-  }
-  .luz:nth-child(even) {
-    animation-direction: alternate-reverse;
-  }
-  @keyframes deriva {
-    0% {
-      transform: translate(0, 0) scale(1);
-    }
-    50% {
-      transform: translate(6vw, -4vh) scale(1.12);
-    }
-    100% {
-      transform: translate(-5vw, 5vh) scale(0.94);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .luz {
-      animation: none;
-    }
-  }
-  .wrap {
-    position: relative;
   }
   .eyebrow {
     margin-bottom: 16px;
@@ -200,6 +124,8 @@ const luces = [
     max-width: 620px;
     margin-top: 16px;
   }
+
+  /* ── The route ── */
   .ruta {
     position: relative;
     margin-top: 48px;
@@ -235,14 +161,6 @@ const luces = [
     color: var(--color-bone);
     transform: scale(1.12);
   }
-  .texto {
-    padding: 22px 24px 24px;
-    border-radius: 20px;
-    background: rgb(251 250 246 / 0.78);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgb(48 47 42 / 0.07);
-    box-shadow: 0 16px 36px -26px rgb(48 47 42 / 0.4);
-  }
   .snum {
     display: block;
     font-weight: 800;
@@ -276,7 +194,7 @@ const luces = [
     margin-top: 16px;
     padding: 12px 16px;
     border-radius: 14px;
-    background: color-mix(in srgb, var(--tono) 14%, transparent);
+    background: color-mix(in srgb, var(--tono) 12%, transparent);
     font-size: 14px;
     font-weight: 700;
     color: var(--color-charcoal);
@@ -296,13 +214,14 @@ const luces = [
     color: var(--color-charcoal);
   }
 
+  /* Phones and tablets: a vertical track down the left, a stop beside each step. */
   @media (max-width: 999px) {
     .parada {
       position: relative;
       display: grid;
       grid-template-columns: 46px minmax(0, 1fr);
-      gap: 16px;
-      padding-bottom: 28px;
+      gap: 20px;
+      padding-bottom: 36px;
     }
     .parada::before {
       content: '';
@@ -319,10 +238,11 @@ const luces = [
       display: none;
     }
     .texto {
-      padding: 18px 18px 20px;
+      padding-top: 10px;
     }
   }
 
+  /* Desktop: the line down the centre, steps alternating left and right of it. */
   @media (min-width: 1000px) {
     .paradas {
       position: relative;
@@ -348,22 +268,22 @@ const luces = [
       background: linear-gradient(
         180deg,
         var(--color-clay-deep),
-        var(--color-sage-deep) 28%,
-        var(--color-rose-deep) 52%,
-        var(--color-olive) 76%,
-        var(--color-charcoal)
+        var(--color-sage-deep) 36%,
+        var(--color-rose-deep) 64%,
+        var(--color-olive)
       );
       transform-origin: top;
     }
     .parada {
       display: grid;
       grid-template-columns: minmax(0, 1fr) 46px minmax(0, 1fr);
-      column-gap: 40px;
+      column-gap: 44px;
       position: relative;
       z-index: 1;
     }
+    /* Pull each step up beside the previous one so the zig-zag stays compact. */
     .parada + .parada {
-      margin-top: -48px;
+      margin-top: -64px;
     }
     .hito {
       grid-column: 2;
@@ -371,6 +291,7 @@ const luces = [
     }
     .texto {
       grid-row: 1;
+      padding-top: 10px;
     }
     .parada:nth-child(odd) .texto {
       grid-column: 1;
@@ -384,6 +305,7 @@ const luces = [
     }
   }
 
+  /* The centre line draws itself, top to bottom, as the route scrolls by. */
   @supports (animation-timeline: view()) {
     @media (min-width: 1000px) and (prefers-reduced-motion: no-preference) {
       .paradas::after {
