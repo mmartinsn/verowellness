@@ -4,7 +4,8 @@
  * title, hook, paragraph, «Dentro encontrarás» and closing line for each). The fourth guide, «Vuelve
  * a sentirte tú», comes from its manuscript v4 (Mari, 2026-10-03), whose cover note sets USD
  * 19.99; Verónica's document said its price was still to agree with Rosi. Pending: how the PDFs
- * are delivered after paying.
+ * are delivered after paying. Shortened by Claude on 2026-10-03 (Mari: «hay mucho texto»), from
+ * Verónica's own words; Codex will polish it.
  *
  * The anti-inflammatory guide is not sold here: it is the bonus of the Initial Layer Cycle
  * (data/oferta.ts).
@@ -53,17 +54,15 @@ export const productos: Producto[] = [
     precio: 9.99,
     portada: portadaHackear,
     subtitulo:
-      'Ese ciclo de antojo, culpa y «mañana empiezo» puede ocupar más espacio en tu vida del que quisieras. Esta guía te propone una ruta de 14 días para observar qué dispara tus antojos, organizar tus comidas y practicar herramientas para responder de otra manera.',
+      'Una ruta de 14 días para observar qué dispara tus antojos, organizar tus comidas y responder de otra manera.',
     gancho:
       '¿Empiezas el día decidida a comer mejor y terminas la tarde buscando algo dulce que te calme?',
     incluye: [
-      'Dos fases claras: una primera semana de cambios alimentarios y una segunda de reintroducción de frutas y tubérculos.',
-      'La fórmula del plato S.O.S. y un ejemplo de menú para organizar comidas con proteína, vegetales y grasas.',
-      'La regla de los 15 minutos, ejercicios de mindfulness y respiración para hacer una pausa frente al impulso de comer.',
-      'El escáner H.A.L.T. para explorar si estás buscando comida por hambre, ansiedad, soledad o cansancio.',
-      'Orientación sobre frutas, endulzantes y combinaciones de alimentos para la segunda fase.',
+      'Dos fases: cambios alimentarios y reintroducción de frutas y tubérculos.',
+      'La fórmula del plato S.O.S. y un ejemplo de menú.',
+      'La regla de los 15 minutos y el escáner H.A.L.T.',
     ],
-    cita: { texto: 'No hace falta esperar a otro lunes para empezar a entender tus patrones.' },
+    cita: { texto: 'No hace falta esperar a otro lunes.' },
     formato: 'PDF · 34 páginas',
     nota: 'Los 14 días describen la estructura de la propuesta, no un plazo garantizado de resultados. Los cambios de alimentación requieren valorar tu caso.',
     boton: 'Comprar ebook',
@@ -78,17 +77,13 @@ export const productos: Producto[] = [
     precio: 19.99,
     bestSeller: true,
     portada: portadaRecetario,
-    subtitulo:
-      'Resuelve tus mañanas con 30 recetas dulces y saladas que combinan sabor, variedad y entre 26 y 35 g de proteína por porción. Desde rollos de canela y pancakes hasta arepas de yuca y egg wraps: opciones concretas para abrir el recetario, elegir y cocinar.',
+    subtitulo: '30 recetas dulces y saladas, con entre 26 y 35 g de proteína por porción.',
     gancho:
-      'Quieres evitar las harinas, lácteos y el azúcar, empezar tu día con un mejor desayuno, pero ya te aburriste de los huevos de siempre y de buscar recetas que nunca preparas.',
+      'Quieres empezar tu día con un mejor desayuno, pero ya te aburriste de los huevos de siempre.',
     incluye: [
-      'Recetas sin trigo, cebada, centeno, avena, maíz, arroz, soya, lácteos de vaca ni azúcar refinada.',
-      '10 desayunos dulces altos en proteína, 10 con carbohidratos anti-inflamatorios y proteína animal, y 10 salados low carb.',
-      '16 recetas listas en 15 minutos o menos, más opciones para dejar preparadas desde la noche anterior.',
-      'Calorías y macronutrientes estimados por porción, ingredientes con cantidades y preparación paso a paso.',
-      'Tips de meal prep, conservación y congelación para cocinar una vez y resolver varias mañanas.',
-      'Sustituciones, despensa básica y claves para revisar las etiquetas de tus ingredientes.',
+      'Sin trigo, maíz, arroz, soya, lácteos de vaca ni azúcar refinada.',
+      '16 recetas listas en 15 minutos o menos.',
+      'Macronutrientes por porción y tips de meal prep.',
     ],
     cita: {
       texto:
@@ -107,16 +102,13 @@ export const productos: Producto[] = [
     precio: 12.99,
     portada: portadaGlp1,
     subtitulo:
-      'Quizás estás considerando usarlas. Quizás ya empezaste y ahora te preguntas cómo comer con menos apetito, qué hacer con las molestias digestivas o cómo cuidar tu músculo. Esta guía reúne las preguntas que conviene hacer y las bases de alimentación y hábitos que acompañan el proceso.',
+      'Las preguntas que conviene hacer y las bases de alimentación y hábitos que acompañan el proceso.',
     gancho:
       'Antes de tu próxima decisión sobre las inyecciones, entiende qué necesitas cuidar además del peso.',
     incluye: [
-      'Diferencias entre semaglutida, tirzepatida y retatrutida, con una explicación de su funcionamiento y las precauciones descritas para RETA.',
-      'Cálculos orientativos de calorías, proteína, grasas, carbohidratos y fibra, con un ejemplo paso a paso.',
-      'Ideas de comidas y estrategias para cuando la llenura dificulta alimentarte.',
-      'Una tabla de efectos adversos: náuseas, reflujo, estreñimiento, fatiga y otras molestias, con señales para consultar.',
-      'Un esquema semanal de movimiento y fuerza enfocado en conservar músculo.',
-      'Herramientas para abordar el hambre emocional y preparar, junto con tu médico, los hábitos que necesitarás si el tratamiento cambia.',
+      'Diferencias entre semaglutida, tirzepatida y retatrutida.',
+      'Cálculos orientativos de proteína, fibra y calorías.',
+      'Efectos adversos, con señales para consultar.',
     ],
     cita: {
       texto:
@@ -137,15 +129,12 @@ export const productos: Producto[] = [
     bestSeller: true,
     portada: portadaHormonas,
     subtitulo:
-      'Entre los 30 y los 40 muchas mujeres notan cambios: menos energía, un ciclo distinto, peor descanso, más antojos o un cuerpo que ya no responde igual. Los 30 no son un interruptor: nada cambia automáticamente al cumplir años, y ninguno de estos cambios es un diagnóstico por sí solo.',
+      'Entre los 30 y los 40 muchas mujeres notan cambios: menos energía, un ciclo distinto, peor descanso o más antojos.',
     gancho: 'Entiende tus hormonas a partir de los 30 y empieza por lo que sí puedes cambiar.',
     incluye: [
-      'Tu ciclo y tus hormonas sexuales: tu ciclo como una conversación mensual, tus números de referencia y qué mirar cuando el SPM se vuelve incapacitante.',
-      'Tiroides, cortisol e insulina: el termostato de tu metabolismo, tu respuesta al estrés y tu composición corporal.',
-      'Tu plato hormonal, comidas sencillas y cómo ajustar alimentación, entrenamiento y hábitos a cada fase.',
-      'Ovulación y preconcepción, hígado e intestino, y lo que hacen los anticonceptivos.',
-      'Exámenes que podemos evaluar en nuestra asesoría, según tu historia y tus síntomas.',
-      'Un plan de 30 días y workbooks para registrar tu ciclo, tu energía y tu radar premenstrual.',
+      'Tu ciclo, tus hormonas sexuales, tiroides, cortisol e insulina.',
+      'Tu plato hormonal y cómo ajustar hábitos a cada fase.',
+      'Un plan de 30 días y workbooks para registrar tu ciclo.',
     ],
     cita: { texto: 'Tus hormonas son una capa, no toda la historia.' },
     formato: 'PDF · 20 páginas · Libro y workbook',

@@ -199,6 +199,14 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     queda preguntado. Totales probados en navegador (p. ej. 2 exámenes 399.60 + 7 % 27.97 + fee
     50 = 477.57).
 
+21. **2026-10-03 — Ajustes de Mari sobre lo publicado.** Exámenes: más aire alrededor del aviso;
+    una figura de línea por examen en el catálogo (`data/iconos-examenes.ts`, dibujadas por
+    Claude); las tarjetas de síntomas ya no despliegan su lista abajo: llevan al catálogo, que
+    muestra la vista de ese síntoma (preguntas de Verónica, orientación y «Ver todos los
+    grupos»), y `/examenes/#<síntoma>` la abre directo. Asesorías: la foto de «Tres piezas» es la
+    de manos en la laptop que generó Codex el 03-oct (sin cara). Tienda: textos resumidos por
+    Claude con las palabras de Verónica (Codex llegó a su límite de uso; los pule después).
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

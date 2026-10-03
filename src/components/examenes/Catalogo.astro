@@ -6,14 +6,22 @@
  * sheet and has the same «Agregar» as the symptom section; both live in PorSintoma's script, which
  * listens page-wide.
  */
-import { areas, examenes, muestras, productoDe } from '../../data/examenes';
-import { usd } from '../../lib/precio';
+import { areas, examenes, muestras } from '../../data/examenes';
+import { sintomas, examenesDe } from '../../data/sintomas';
+import { href } from '../../lib/url';
+import { cta } from '../../data/site';
+import FilaCatalogo from './FilaCatalogo.astro';
+
+const vistas = sintomas.map((s) => ({
+  ...s,
+  subgrupos: s.grupos.map((g) => ({ pregunta: g.pregunta, items: examenesDe(g) })),
+}));
 
 const grupos = areas
   .map((a) => ({ ...a, items: examenes.filter((e) => e.area === a.id) }))
   .filter((g) => g.items.length > 0);
 
-const textoBusqueda = (e: (typeof examenes)[number]) =>
+const textoBusqueda = (e: (typeof examenes)[number]): string =>
   [e.nombre, e.laboratorio ?? '', e.descripcion, ...e.muestras.map((m) => muestras[m])]
     .join(' ')
     .toLowerCase()
@@ -64,39 +72,67 @@ const textoBusqueda = (e: (typeof examenes)[number]) =>
       {
         grupos.flatMap((g, gi) =>
           g.items.map((e) => (
-            <li
-              class="fila"
-              data-fila
-              data-grupo={g.id}
-              data-texto={textoBusqueda(e)}
-              hidden={gi !== 0}
-              style={`--tono:var(--color-${g.color})`}
-            >
-              <button type="button" class="f-nombre" data-ficha={e.id}>
-                <span class="f-t">{e.nombre}</span>
-                <span class="f-meta">
-                  {[e.laboratorio, e.muestras.map((m) => muestras[m]).join(' · ')]
-                    .filter(Boolean)
-                    .join(' · ')}
-                </span>
-              </button>
-              <span class="f-grupo">{g.nombre}</span>
-              <span class="f-precio">{usd(e.precio)}</span>
-              <button
-                type="button"
-                class="f-add"
-                aria-pressed="false"
-                data-add={productoDe(e)}
-                aria-label={`Agregar ${e.nombre}`}
-              >
-                <span class="no">Agregar</span>
-                <span class="si">✓</span>
-              </button>
-            </li>
+            <FilaCatalogo
+              e={e}
+              color={g.color}
+              grupo={g.id}
+              texto={textoBusqueda(e)}
+              oculta={gi !== 0}
+              nombreGrupo={g.nombre}
+            />
           ))
         )
       }
     </ul>
+
+    <!-- One view per symptom card below: its sub-groups, shown here when a card is chosen. -->
+    {
+      vistas.map((v) => (
+        <div
+          class="vista"
+          data-vista-sintoma={v.id}
+          hidden
+          style={`--tono:var(--color-${v.color})`}
+        >
+          <div class="vista-cab">
+            <span class="vista-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22">
+                <path d={v.icono} />
+              </svg>
+            </span>
+            <div>
+              <p class="vista-eyebrow">Lo que te trae aquí</p>
+              <h3 class="vista-t">{v.titulo}</h3>
+              <p class="vista-e">{v.ejemplos}</p>
+            </div>
+            <button type="button" class="vista-cerrar" data-cerrar-vista>
+              ← Ver todos los grupos
+            </button>
+          </div>
+          {v.orientacion && (
+            <div class="orientacion">
+              <p>
+                En tu caso, lo ideal es elegir con orientación: en tu asesoría revisamos tus
+                síntomas, antecedentes y objetivos para seleccionar los estudios pertinentes.
+              </p>
+              <a class="btn btn-primary" href={href('/asesorias')}>
+                {cta.label}
+              </a>
+            </div>
+          )}
+          {v.subgrupos.map((sg) => (
+            <>
+              <p class="sub-q">{sg.pregunta}</p>
+              <ul class="filas">
+                {sg.items.map((e) => (
+                  <FilaCatalogo e={e} color={v.color} />
+                ))}
+              </ul>
+            </>
+          ))}
+        </div>
+      ))
+    }
     <p class="vacio" data-vacio hidden>
       No encontramos ese examen. Prueba con otra palabra o explora por síntoma más abajo.
     </p>
@@ -215,94 +251,114 @@ const textoBusqueda = (e: (typeof examenes)[number]) =>
     display: grid;
     gap: 8px;
   }
-  .fila {
+  .vista {
+    margin-top: 18px;
+    padding: clamp(20px, 3vw, 30px);
+    border-radius: var(--radius-xl);
+    background: rgb(255 255 255 / 0.6);
+    border: 1px solid color-mix(in srgb, var(--tono) 55%, transparent);
+    animation: vista-in 0.5s var(--ease-out-soft);
+  }
+  @keyframes vista-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+  .vista-cab {
     display: grid;
-    grid-template-columns: 1fr auto auto auto;
-    align-items: center;
-    gap: 18px;
-    padding: 14px 14px 14px 22px;
-    border-radius: 18px;
-    background: rgb(255 255 255 / 0.85);
-    border: 1px solid rgb(48 47 42 / 0.07);
-    border-left: 4px solid var(--tono);
-    transition:
-      transform 0.25s var(--ease-out-soft),
-      box-shadow 0.25s;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: start;
   }
-  .fila[hidden] {
-    display: none;
+  .vista-ico {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--tono) 40%, white);
   }
-  .fila:hover {
-    transform: translateX(4px);
-    box-shadow: 0 14px 30px -24px rgb(48 47 42 / 0.5);
+  .vista-ico svg {
+    fill: none;
+    stroke: var(--color-charcoal);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
-  .fila.elegido {
-    background: color-mix(in srgb, var(--color-sage) 40%, white);
-  }
-  .f-nombre {
-    all: unset;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-  }
-  .f-t {
-    font-weight: 700;
-    font-size: 15.5px;
-    color: var(--color-charcoal);
-  }
-  .f-nombre:hover .f-t,
-  .f-nombre:focus-visible .f-t {
-    color: var(--color-clay-deep);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-  .f-meta {
-    font-size: 12.5px;
-    color: rgb(48 47 42 / 0.55);
-  }
-  .f-grupo {
-    display: none;
-    font-size: 12px;
-    font-weight: 700;
-    color: rgb(48 47 42 / 0.6);
-  }
-  .filas[data-buscando] .f-grupo {
-    display: inline;
-  }
-  .f-precio {
+  .vista-eyebrow {
+    font-size: 11.5px;
     font-weight: 800;
-    font-size: 16px;
-    color: var(--color-charcoal);
-    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-clay-deep);
+    margin: 0;
   }
-  .f-add {
+  .vista-t {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(26px, 3vw, 36px);
+    line-height: 1.1;
+    margin: 4px 0 6px;
+  }
+  .vista-e {
+    font-size: 14.5px;
+    color: rgb(48 47 42 / 0.65);
+    margin: 0;
+  }
+  .vista-cerrar {
     font: inherit;
     font-size: 13px;
     font-weight: 800;
-    min-width: 96px;
     padding: 10px 16px;
     border-radius: var(--radius-pill);
-    border: 1px solid var(--color-charcoal);
-    background: transparent;
-    color: var(--color-charcoal);
+    border: 1px solid rgb(48 47 42 / 0.2);
+    background: var(--color-white);
     cursor: pointer;
-    transition: background 0.2s;
+    white-space: nowrap;
   }
-  .f-add:hover {
-    background: rgb(48 47 42 / 0.06);
+  .sub-q {
+    margin: 22px 0 10px;
+    font-weight: 700;
+    font-size: 15px;
   }
-  .f-add .si,
-  .f-add[aria-pressed='true'] .no {
+  .sub-q::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--tono);
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .orientacion {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--tono) 20%, white);
+  }
+  .orientacion p {
+    flex: 1 1 300px;
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  @media (max-width: 640px) {
+    .vista-cab {
+      grid-template-columns: auto 1fr;
+    }
+    .vista-cerrar {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+  }
+  .filas[hidden] {
     display: none;
-  }
-  .f-add[aria-pressed='true'] {
-    background: var(--color-charcoal);
-    color: var(--color-bone);
-  }
-  .f-add[aria-pressed='true'] .si {
-    display: inline;
   }
   .vacio {
     margin-top: 18px;
@@ -310,17 +366,6 @@ const textoBusqueda = (e: (typeof examenes)[number]) =>
     color: rgb(48 47 42 / 0.65);
   }
   @media (max-width: 640px) {
-    .fila {
-      grid-template-columns: 1fr auto;
-      gap: 10px 14px;
-    }
-    .f-grupo {
-      grid-column: 1 / -1;
-      order: -1;
-    }
-    .f-precio {
-      grid-column: 1;
-    }
     .buscador input {
       padding-right: 20px;
     }
@@ -359,6 +404,30 @@ const textoBusqueda = (e: (typeof examenes)[number]) =>
       contador.textContent = `${vistos} ${vistos === 1 ? 'resultado' : 'resultados'}`;
       vacio.hidden = !(buscando && vistos === 0);
     };
+
+    const vistas = [...raiz.querySelectorAll<HTMLElement>('[data-vista-sintoma]')];
+    const buscador = raiz.querySelector<HTMLElement>('.buscador')!;
+    const verVista = (id: string | null) => {
+      vistas.forEach((v) => (v.hidden = v.dataset.vistaSintoma !== id));
+      const enVista = !!id;
+      lista.hidden = enVista;
+      barra.toggleAttribute('data-oculto', enVista);
+      buscador.hidden = enVista;
+      if (enVista) {
+        input.value = '';
+        contador.hidden = true;
+        vacio.hidden = true;
+      }
+    };
+    // A symptom card below sends its id here: show that view and bring the catalogue into sight.
+    window.addEventListener('vw:sintoma', (ev) => {
+      verVista((ev as CustomEvent<string>).detail);
+      const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      raiz.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
+    });
+    raiz
+      .querySelectorAll('[data-cerrar-vista]')
+      .forEach((b) => b.addEventListener('click', () => verVista(null)));
 
     pestanas.forEach((p) =>
       p.addEventListener('click', () => {
