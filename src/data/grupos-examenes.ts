@@ -56,63 +56,91 @@ export const presentacionGrupo: Record<string, { icono: string; descripcion: str
 };
 
 /**
- * «Reacciones a alimentos» is shown as a comparison table (Mari, 2026-10-03): its twelve panels
- * differ only by these facts, all read from each test's own name.
+ * «Reacciones a alimentos» as a guided choice (Mari, 2026-10-03: «más fácil de entender
+ * visualmente»): four questions in the visitor's words, each opening only its panels. What each
+ * panel looks at is said plainly, with Verónica's own explanations from the descriptions: IgG/IgG4
+ * «reacciones retardadas que aparecen horas o días después», IgE «alergia verdadera, reacción
+ * inmediata», and the coeliac markers.
  */
-export const comparadorAlimentos: Record<
-  string,
-  { alimentos: string; anticuerpos: string; incluye: string }
-> = {
-  'celiac-and-gluten-sensitivity-blood-spot': {
-    alimentos: '—',
-    anticuerpos: 'Celiaquía y gluten',
-    incluye: 'Gota de sangre',
+export const caminosAlimentos: { id: string; pregunta: string; ayuda: string; ids: string[] }[] = [
+  {
+    id: 'gluten',
+    pregunta: '¿El gluten me afecta?',
+    ayuda: 'Para saber si es celiaquía, alergia al trigo o sensibilidad al gluten.',
+    ids: [
+      'celiac-and-gluten-sensitivity-blood-spot',
+      '96-igg-food-gluten-related-disorders-panel',
+      '184-igg-food-gluten-related-disorders-panel',
+    ],
   },
-  '198-vegetarian-food-panel-iga-igg-igg4': {
-    alimentos: '198',
-    anticuerpos: 'IgA · IgG · IgG4',
-    incluye: 'Vegetariano',
+  {
+    id: 'inflaman',
+    pregunta: '¿Qué alimentos me inflaman o me hinchan?',
+    ayuda: 'Sensibilidades con reacciones retardadas, que aparecen horas o días después de comer.',
+    ids: [
+      '96-igg-food-sensitivity-panel',
+      '184-igg-food-sensitivity-panel',
+      '240-food-panel-iga-igg-igg4',
+    ],
   },
-  '96-vegetarian-food-panel-iga-igg-igg4': {
-    alimentos: '96',
-    anticuerpos: 'IgA · IgG · IgG4',
-    incluye: 'Vegetariano',
+  {
+    id: 'plantas',
+    pregunta: 'Como mayormente plantas',
+    ayuda: 'Paneles de alimentos vegetales, lácteos y huevo, sin carnes ni pescados.',
+    ids: ['96-vegetarian-food-panel-iga-igg-igg4', '198-vegetarian-food-panel-iga-igg-igg4'],
   },
-  '240-food-panel-iga-igg-igg4': {
-    alimentos: '240',
-    anticuerpos: 'IgA · IgG · IgG4',
-    incluye: '—',
+  {
+    id: 'inmediatas',
+    pregunta: 'Además tengo reacciones inmediatas',
+    ayuda: 'Urticaria, picazón, congestión o hinchazón de labios después de comer.',
+    ids: [
+      '184-igg-food-sensitivity-25-comprehensive-ige-combo-panel',
+      '184-igg-food-sensitivity-50-expanded-ige-combo-panel',
+      '205-igg-food-sensitivity-25-comprehensive-ige-combo-panel',
+      '205-igg-food-sensitivity-50-expanded-ige-combo-panel',
+    ],
   },
-  '96-igg-food-sensitivity-panel': { alimentos: '96', anticuerpos: 'IgG', incluye: '—' },
-  '184-igg-food-sensitivity-panel': { alimentos: '184', anticuerpos: 'IgG', incluye: '—' },
+];
+
+/** What each panel measures, in plain words (from its description). */
+export const mideAlimentos: Record<string, { alimentos?: number; mide: string[] }> = {
+  'celiac-and-gluten-sensitivity-blood-spot': { mide: ['Celiaquía', 'Sensibilidad al gluten'] },
   '96-igg-food-gluten-related-disorders-panel': {
-    alimentos: '96',
-    anticuerpos: 'IgG',
-    incluye: '+ Gluten',
+    alimentos: 96,
+    mide: ['Reacción retardada', 'Celiaquía', 'Alergia al trigo y gluten'],
   },
   '184-igg-food-gluten-related-disorders-panel': {
-    alimentos: '184',
-    anticuerpos: 'IgG',
-    incluye: '+ Gluten',
+    alimentos: 184,
+    mide: ['Reacción retardada', 'Celiaquía', 'Alergia al trigo y gluten'],
+  },
+  '96-igg-food-sensitivity-panel': { alimentos: 96, mide: ['Reacción retardada'] },
+  '184-igg-food-sensitivity-panel': { alimentos: 184, mide: ['Reacción retardada'] },
+  '240-food-panel-iga-igg-igg4': {
+    alimentos: 240,
+    mide: ['Reacción retardada', 'Mucosa intestinal (IgA)'],
+  },
+  '96-vegetarian-food-panel-iga-igg-igg4': {
+    alimentos: 96,
+    mide: ['Reacción retardada', 'Mucosa intestinal (IgA)'],
+  },
+  '198-vegetarian-food-panel-iga-igg-igg4': {
+    alimentos: 198,
+    mide: ['Reacción retardada', 'Mucosa intestinal (IgA)'],
   },
   '184-igg-food-sensitivity-25-comprehensive-ige-combo-panel': {
-    alimentos: '184',
-    anticuerpos: 'IgG + IgE',
-    incluye: '25 alérgenos IgE',
+    alimentos: 184,
+    mide: ['Reacción retardada', 'Alergia inmediata a 25 alimentos'],
   },
   '184-igg-food-sensitivity-50-expanded-ige-combo-panel': {
-    alimentos: '184',
-    anticuerpos: 'IgG + IgE',
-    incluye: '50 alérgenos IgE',
+    alimentos: 184,
+    mide: ['Reacción retardada', 'Alergia inmediata a 50 alimentos'],
   },
   '205-igg-food-sensitivity-25-comprehensive-ige-combo-panel': {
-    alimentos: '205',
-    anticuerpos: 'IgG + IgE',
-    incluye: '25 alérgenos IgE',
+    alimentos: 205,
+    mide: ['Reacción retardada', 'Alergia inmediata a 25 alimentos'],
   },
   '205-igg-food-sensitivity-50-expanded-ige-combo-panel': {
-    alimentos: '205',
-    anticuerpos: 'IgG + IgE',
-    incluye: '50 alérgenos IgE',
+    alimentos: 205,
+    mide: ['Reacción retardada', 'Alergia inmediata a 50 alimentos'],
   },
 };

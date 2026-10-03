@@ -230,6 +230,14 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     escuchándote» (tres pilares y a quién acompaña) → +8 años y +5.000 casos → testimonios
     reservados → nota final firmada «Vero». Fotos con el pelo oscurecido: té, bowl y bata.
 
+25. **2026-10-03 — «Reacciones a alimentos» como elección guiada** (en lugar de la tabla; Mari:
+    «más fácil de entender visualmente»). «¿Qué quieres saber?» con cuatro caminos: «¿El gluten
+    me afecta?», «¿Qué alimentos me inflaman o me hinchan?», «Como mayormente plantas», «Además
+    tengo reacciones inmediatas»; cada uno muestra solo sus paneles, con la cantidad de alimentos
+    en barra y qué miden en palabras simples tomadas de las descripciones de Verónica (IgG =
+    reacción retardada, IgE = alergia inmediata, celiaquía). Datos en `caminosAlimentos` y
+    `mideAlimentos` (`data/grupos-examenes.ts`).
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
