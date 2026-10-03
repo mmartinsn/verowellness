@@ -243,7 +243,8 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     grande; Mari pidió otra propuesta): frase literal destacada en grande, extracto con «Leer
     más», y al pie foto pequeña de 56 px (o inicial), nombre, lugar y motivo. Tres columnas que se
     llenan de izquierda a derecha por `prioridad` (los más potentes en la primera fila; la
-    primera tarjeta en clay); en el teléfono, una fila que se desliza. Van en Sobre mí y en
+    tarjetas alternan tonos suaves de la paleta: salvia, arena, rosa y blanco); en el teléfono, una
+    fila que se desliza. Van en Sobre mí y en
     Asesorías antes de los precios (los tres primeros). Textos tal cual los mandó Mari, solo con
     ortografía corregida: Lorena González, Liza Koutcharyan (foto), Fabiana de Luca (foto), Mouna
     Harbie, Sofía Molina, Patricia Medel (foto), Mariexis Palacios (foto), Margarita Medel (foto) y

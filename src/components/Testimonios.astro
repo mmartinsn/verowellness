@@ -3,8 +3,8 @@
  * Testimonials (data/testimonios) as a wall of quote cards (Mari, 2026-10-03: the photos come
  * from chat screenshots and pixelate when large). The words lead: her sentence set large, a short
  * excerpt with «Leer más», and at the foot a small round photo (or initial) with name, place and
- * reason. Masonry columns on wide screens, a sideways swipe on phones. The first (most powerful)
- * card is tinted. Used on Sobre mí and Asesorías.
+ * reason. Masonry columns on wide screens, a sideways swipe on phones. Cards alternate soft
+ * tones of the palette. Used on Sobre mí and Asesorías.
  */
 import { Image } from 'astro:assets';
 import { testimonios } from '../data/testimonios';
@@ -48,10 +48,7 @@ const extracto = (p = '') => {
                 const ex = extracto(t.texto[0]);
                 const hayMas = ex.cortado || t.texto.length > 1;
                 return (
-                  <article
-                    class:list={['t-card', 'reveal', { destacada: i === 0 }]}
-                    style={`order:${i}`}
-                  >
+                  <article class:list={['t-card', 'reveal', `tono-${i % 4}`]} style={`order:${i}`}>
                     <span class="t-comillas" aria-hidden="true">
                       “
                     </span>
@@ -158,11 +155,18 @@ const extracto = (p = '') => {
     transform: translateY(-4px);
     box-shadow: 0 30px 60px -40px rgb(35 34 30 / 0.55);
   }
-  .t-card.destacada {
-    background:
-      radial-gradient(80% 60% at 100% 0%, rgb(255 255 255 / 0.45), transparent 60%),
-      linear-gradient(160deg, var(--color-clay), var(--color-rose));
-    border-color: transparent;
+  /* Soft tones of the palette, alternating, so the wall has rhythm and no card is singled out. */
+  .tono-0 {
+    background: color-mix(in srgb, var(--color-sage) 38%, white);
+  }
+  .tono-1 {
+    background: color-mix(in srgb, var(--color-sand) 70%, white);
+  }
+  .tono-2 {
+    background: color-mix(in srgb, var(--color-rose) 30%, white);
+  }
+  .tono-3 {
+    background: var(--color-white);
   }
   .t-comillas {
     display: block;
@@ -172,9 +176,6 @@ const extracto = (p = '') => {
     height: 30px;
     color: var(--color-clay);
   }
-  .destacada .t-comillas {
-    color: rgb(255 255 255 / 0.75);
-  }
   .t-destacado {
     margin: 0;
     font-family: var(--font-serif);
@@ -183,18 +184,12 @@ const extracto = (p = '') => {
     line-height: 1.25;
     color: var(--color-charcoal);
   }
-  .destacada .t-destacado {
-    font-size: clamp(25px, 2.3vw, 31px);
-  }
   .t-texto {
     display: block;
     margin: 0 0 10px;
     font-size: 15px;
     line-height: 1.65;
     color: rgb(35 34 30 / 0.78);
-  }
-  .destacada .t-texto {
-    color: rgb(35 34 30 / 0.85);
   }
   .t-mas summary {
     list-style: none;
@@ -233,9 +228,6 @@ const extracto = (p = '') => {
     gap: 12px;
     padding-top: 14px;
     border-top: 1px solid rgb(35 34 30 / 0.08);
-  }
-  .destacada .t-pie {
-    border-top-color: rgb(35 34 30 / 0.12);
   }
   .t-avatar {
     flex-shrink: 0;
@@ -288,10 +280,8 @@ const extracto = (p = '') => {
     font-weight: 700;
     padding: 4px 10px;
     border-radius: var(--radius-pill);
-    background: color-mix(in srgb, var(--color-sage) 50%, white);
-  }
-  .destacada .t-motivo li {
-    background: rgb(255 255 255 / 0.6);
+    background: rgb(255 255 255 / 0.75);
+    border: 1px solid rgb(35 34 30 / 0.08);
   }
 
   .t-desliza {
