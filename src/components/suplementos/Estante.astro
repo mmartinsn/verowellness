@@ -13,6 +13,13 @@ import { recomendaciones, tipOrden } from '../../data/suplementos';
 
 // Bottle heights vary a little, like a real shelf.
 const altos = ['188px', '206px', '176px', '198px', '184px'];
+
+// Nutrición's ATLAS colour is charcoal, which on a bottle reads as black against the light shelf
+// (Mari, 2026-10-03): the label takes a softer graphite of the same colour, with light text.
+const etiqueta = (color: string) =>
+  color === 'charcoal'
+    ? 'color-mix(in srgb, var(--color-charcoal) 68%, var(--color-bone))'
+    : `var(--color-${color})`;
 ---
 
 <section class="estante-sec" aria-labelledby="estante-titulo">
@@ -29,11 +36,11 @@ const altos = ['188px', '206px', '176px', '198px', '184px'];
           layers.map((l, i) => (
             <button
               type="button"
-              class:list={['frasco', { activo: i === 0 }]}
+              class:list={['frasco', { activo: i === 0, oscuro: l.oscuro }]}
               data-num={l.num}
               aria-pressed={i === 0 ? 'true' : 'false'}
               aria-controls={`ficha-${l.num}`}
-              style={`--tono:var(--color-${l.color});--h:${altos[i]};--i:${i}`}
+              style={`--tono:${etiqueta(l.color)};--h:${altos[i]};--i:${i}`}
             >
               <span class="tapa" aria-hidden="true" />
               <span class="cuerpo" aria-hidden="true">
@@ -219,9 +226,8 @@ const altos = ['188px', '206px', '176px', '198px', '184px'];
       inset 0 -1px 0 rgb(0 0 0 / 0.08);
     transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
   }
-  /* The two darker Layer colours (03 sage-deep, 05 olive) take light text. */
-  .frasco:nth-child(3) .etiqueta,
-  .frasco:nth-child(5) .etiqueta {
+  /* The darker Layer colours (01 graphite, 05 olive) take light text. */
+  .frasco.oscuro .etiqueta {
     color: var(--color-bone);
   }
   .e-marca {
