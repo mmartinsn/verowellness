@@ -222,7 +222,10 @@
       canvas.width = W * dpr;
       canvas.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      R = parseFloat(getComputedStyle(lupa).getPropertyValue('--lr')) || 130;
+      // The drawn world follows the rim as it is actually rendered (on phones the rim is smaller,
+      // and in-app browsers can lay the page out at desktop width first).
+      R =
+        lente.offsetWidth / 2 || parseFloat(getComputedStyle(lupa).getPropertyValue('--lr')) || 130;
       // dense enough that the magnified lens always holds a dozen or more
       const n = Math.round((W * H) / 1700);
       seres = Array.from({ length: n }, () => {
@@ -526,6 +529,7 @@
 
     medir();
     addEventListener('resize', medir);
+    new ResizeObserver(() => medir()).observe(lupa);
     new IntersectionObserver((e) => {
       const antes = visible;
       visible = e[0].isIntersecting;
