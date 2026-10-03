@@ -2,15 +2,20 @@
 /**
  * "Tres piezas, construidas para ti." — The Layer Map, Top 3 Priorities, The Layer Plan. Since
  * 2026-10-03 (Verónica, change 34) the section is split: the three pieces on one side and a
- * minimal image (hands on the laptop, no face) on the other, the pieces arriving one by one.
+ * designed mock-up of what you receive on the other (Mari, 2026-10-03: the photo «no comunica
+ * nada»): a Layer Map sheet with the five Layers and their priority, the Top 3 and the Plan. While
+ * a piece is in view, its part of the sheet lights up. The sheet is labelled «Ejemplo».
  */
-import { Image } from 'astro:assets';
-import manos from '../../assets/fotos/veronica-manos-laptop-cocina.jpg';
+import { layers } from '../../data/layers';
+
+/** An illustrative map (not anyone's result): a priority per Layer, for the mock-up only. */
+const ejemplo = ['Alta', 'Secundaria', 'Alta', 'Mantenimiento', 'Secundaria'];
+const oscuras = new Set(['charcoal', 'olive']);
 const tiers = ['Alta prioridad', 'Prioridad secundaria', 'Mantenimiento'];
 const planTags = [
   'Nutrición',
   'Hábitos',
-  'Lifestyle',
+  'Estilo de vida',
   'Suplementación',
   'Educación',
   'Laboratorios',
@@ -28,7 +33,7 @@ const planExtra = [
       <h2>Tres piezas, construidas para ti.</h2>
 
       <div class="list reveal-stagger">
-        <div class="deliverable">
+        <div class="deliverable" data-pieza="mapa">
           <div class="dnum" aria-hidden="true">01</div>
           <div class="dbody">
             <span class="dtag">Propietario</span>
@@ -43,7 +48,7 @@ const planExtra = [
           </div>
         </div>
 
-        <div class="deliverable d-sage">
+        <div class="deliverable d-sage" data-pieza="top">
           <div class="dnum" aria-hidden="true">02</div>
           <div class="dbody">
             <span class="dtag">Enfoque</span>
@@ -55,7 +60,7 @@ const planExtra = [
           </div>
         </div>
 
-        <div class="deliverable d-rose">
+        <div class="deliverable d-rose" data-pieza="plan">
           <div class="dnum" aria-hidden="true">03</div>
           <div class="dbody">
             <span class="dtag">Estrategia</span>
@@ -69,14 +74,51 @@ const planExtra = [
         </div>
       </div>
     </div>
-    <figure class="imagen reveal-scale">
-      <Image
-        src={manos}
-        alt="Manos sobre una laptop durante una asesoría online"
-        widths={[420, 560]}
-        sizes="(min-width: 960px) 40vw, 100vw"
-      />
-    </figure>
+    <div class="hoja-zona reveal-scale" aria-hidden="true">
+      <div class="hoja" data-hoja>
+        <div class="hoja-cab">
+          <span class="hoja-marca">VERONICA WELLNESS</span>
+          <span class="hoja-ejemplo">Ejemplo</span>
+        </div>
+        <p class="hoja-titulo">The Layer Map</p>
+        <p class="hoja-sub">Tu plan por capas</p>
+
+        <div class="zona z-mapa">
+          {
+            layers.map((l, i) => (
+              <div class="capa-fila">
+                <span
+                  class="capa-barra"
+                  style={`--c:var(--color-${l.color});--t:${oscuras.has(l.color) ? 'var(--color-bone)' : 'var(--color-charcoal)'}`}
+                >
+                  {l.num} · {l.nombre}
+                </span>
+                <span class:list={['prio', `p-${ejemplo[i].toLowerCase()}`]}>{ejemplo[i]}</span>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="zona z-top">
+          <p class="zona-t">Top 3 Priorities</p>
+          {
+            [1, 2, 3].map((n) => (
+              <div class="top-fila">
+                <span class="top-n">{n}</span>
+                <span class="top-linea" />
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="zona z-plan">
+          <p class="zona-t">The Layer Plan</p>
+          <div class="plan-chips">
+            {planTags.map((t) => <span>{t}</span>)}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -104,31 +146,187 @@ const planExtra = [
     gap: clamp(28px, 4vw, 56px);
     align-items: start;
   }
-  .imagen {
+  /* ── The Layer Map mock-up ── */
+  .hoja-zona {
     position: sticky;
     top: 110px;
-    margin: 0;
+    display: flex;
+    justify-content: center;
   }
-  .imagen :global(img) {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    object-position: 70% 55%;
-    border-radius: var(--radius-xl);
-    display: block;
-    box-shadow: 0 30px 60px -34px rgb(48 47 42 / 0.5);
+  .hoja {
+    width: min(420px, 100%);
+    padding: 26px 26px 24px;
+    border-radius: 26px;
+    background:
+      radial-gradient(90% 60% at 100% 0%, rgb(231 183 160 / 0.25), transparent 60%),
+      var(--color-white);
+    border: 1px solid rgb(48 47 42 / 0.08);
+    box-shadow:
+      0 2px 0 rgb(48 47 42 / 0.03),
+      0 40px 80px -46px rgb(48 47 42 / 0.55);
+    transform: rotate(1.5deg);
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .hoja:hover {
+    transform: rotate(0deg) translateY(-4px);
+  }
+  .hoja-cab {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .hoja-marca {
+    font-family: var(--font-serif);
+    font-size: 11.5px;
+    letter-spacing: 0.22em;
+    color: rgb(48 47 42 / 0.6);
+  }
+  .hoja-ejemplo {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: var(--radius-pill);
+    border: 1px dashed rgb(48 47 42 / 0.3);
+    color: rgb(48 47 42 / 0.55);
+  }
+  .hoja-titulo {
+    margin: 14px 0 0;
+    font-family: var(--font-serif);
+    font-size: 30px;
+    line-height: 1.1;
+    color: var(--color-charcoal);
+  }
+  .hoja-sub {
+    margin: 2px 0 16px;
+    font-size: 13px;
+    color: rgb(48 47 42 / 0.55);
+  }
+  /* Each part dims until its piece is in view, then lights up. */
+  .zona {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 16px;
+    border: 1.5px solid transparent;
+    opacity: 0.45;
+    filter: saturate(0.6);
+    transition:
+      opacity 0.5s,
+      filter 0.5s,
+      border-color 0.5s,
+      background 0.5s;
+  }
+  .hoja:global([data-activa='mapa']) .z-mapa,
+  .hoja:global([data-activa='top']) .z-top,
+  .hoja:global([data-activa='plan']) .z-plan {
+    opacity: 1;
+    filter: none;
+    border-color: rgb(214 154 124 / 0.55);
+    background: rgb(250 246 239 / 0.8);
+  }
+  .capa-fila {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .capa-fila + .capa-fila {
+    margin-top: 6px;
+  }
+  .capa-barra {
+    flex: 1;
+    padding: 7px 12px;
+    border-radius: 10px;
+    background: var(--c);
+    color: var(--t);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .prio {
+    flex-shrink: 0;
+    width: 104px;
+    text-align: center;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 0;
+    border-radius: var(--radius-pill);
+  }
+  .p-alta {
+    background: var(--color-charcoal);
+    color: var(--color-bone);
+  }
+  .p-secundaria {
+    background: var(--color-sand);
+    color: var(--color-charcoal);
+  }
+  .p-mantenimiento {
+    border: 1px solid rgb(48 47 42 / 0.25);
+    color: rgb(48 47 42 / 0.7);
+  }
+  .zona-t {
+    margin: 0 0 10px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-clay-deep);
+  }
+  .top-fila {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .top-fila + .top-fila {
+    margin-top: 8px;
+  }
+  .top-n {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    font-weight: 800;
+    background: var(--color-clay);
+  }
+  .top-linea {
+    flex: 1;
+    height: 9px;
+    border-radius: var(--radius-pill);
+    background: rgb(48 47 42 / 0.1);
+  }
+  .top-fila:nth-child(3) .top-linea {
+    flex: 0.8;
+  }
+  .top-fila:nth-child(4) .top-linea {
+    flex: 0.6;
+  }
+  .plan-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .plan-chips span {
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--color-sage) 45%, white);
   }
   @media (max-width: 959px) {
     .mitades {
       grid-template-columns: 1fr;
     }
-    .imagen {
+    .hoja-zona {
       position: static;
       order: -1;
     }
-    .imagen :global(img) {
-      aspect-ratio: 16 / 10;
+    .zona {
+      opacity: 1;
+      filter: none;
     }
   }
   .list {
@@ -250,3 +448,22 @@ const planExtra = [
     color: var(--color-bone);
   }
 </style>
+
+<script>
+  // Light up the part of the sheet that matches the piece being read.
+  const hoja = document.querySelector<HTMLElement>('[data-hoja]');
+  const piezas = [...document.querySelectorAll<HTMLElement>('[data-pieza]')];
+  if (hoja && piezas.length) {
+    hoja.dataset.activa = 'mapa';
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) hoja.dataset.activa = (visible.target as HTMLElement).dataset.pieza;
+      },
+      { rootMargin: '-35% 0px -35% 0px', threshold: [0, 0.5, 1] }
+    );
+    piezas.forEach((p) => obs.observe(p));
+  }
+</script>

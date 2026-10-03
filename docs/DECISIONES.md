@@ -259,6 +259,11 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     resaltaba» y Verónica pidió que sonara «tipo membership». La tarjeta del Initial lleva
     «Recomendada».
 
+28. **2026-10-03 — «Tres piezas»: maqueta del Layer Map en lugar de la foto** (Mari: la foto de
+    manos «no comunica nada»). Una hoja diseñada con las cinco capas en sus colores y una prioridad
+    de ejemplo, el Top 3 y el Layer Plan, marcada «Ejemplo»; al leer cada pieza se ilumina su
+    parte. La foto generada de manos queda sin uso.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
