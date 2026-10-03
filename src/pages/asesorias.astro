@@ -1,6 +1,6 @@
 ---
 /**
- * The Layer Method 1:1 — the offer page: what the Initial Layer Cycle is (told once, in four
+ * Asesorías (was «1:1» until 2026-10-03) — the offer page: what the Initial Layer Cycle is (told once, in four
  * steps), what you leave with, the two prices and the CTA into the checkout (the «lo que no es» box left on 2026-09-24, Mari).
  * Shortened from ~11 screens to about half (Mari, 2026-09-23).
  */
@@ -17,14 +17,14 @@ import { grafoSitio, grafoServicio } from '../lib/schema';
 ---
 
 <SiteLayout
-  title="Asesoría 1:1 de nutrición funcional online — The Layer Method | Veronica Wellness"
+  title="Asesorías de nutrición funcional online · The Layer Method | Veronica Wellness"
   jsonLd={[...grafoSitio(Astro.site), grafoServicio(Astro.site)]}
-  description="Un proceso 1:1 para organizar tu contexto, identificar prioridades y construir una estrategia personalizada con The Layer Method. Initial Layer Cycle: dos sesiones privadas de 90 minutos."
-  mobileCta={{ label: 'Agenda conmigo', path: '/1-1#cta' }}
+  description="Un proceso individual y personalizado para organizar tu contexto, identificar prioridades y construir una estrategia personalizada con The Layer Method. Initial Layer Cycle: dos sesiones privadas de 90 minutos."
+  mobileCta={{ path: '/asesorias#cta' }}
 >
   <Hero11 />
   <Reconocimiento />
-  <Insight a="No necesitas necesariamente hacer más." b="Necesitas saber qué priorizar." />
+  <Insight a="No necesitas hacer más." b="Necesitas saber qué priorizar." />
   <Proceso />
   <Entregables />
   <Precios />

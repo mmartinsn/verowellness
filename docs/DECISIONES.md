@@ -152,6 +152,25 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     Los textos de la Layer Session y las FAQ nuevas son de Codex; la Layer Session no dice
     duración porque no está confirmada.
 
+18. **2026-10-03 — Mi método, Asesorías, fotos y fichas de exámenes.** **Mi método (19–27):**
+    menú «Mi método»; hero sin «del terreno a la célula», con la frase del síntoma y el botón
+    del sitio; orden hero → Cinco capas → El principio → La idea central → puente; «Entender cada
+    detalle de tu historia y crear un plan de acción» y «capa» en el punto 2; nota del mapa en
+    grande; tarjetas sin «Se conecta con»; herramientas con «Suplementos, técnicas vanguardistas,
+    sueros de vitaminas, péptidos…»; el puente desglosa los pasos y muestra los precios
+    (componentes compartidos `components/oferta/PasosProceso` y `BloquePrecios`, usados también
+    en el inicio y Asesorías). **Asesorías (28–35):** «1:1» → «Asesorías» (`/asesorias`, `/1-1`
+    redirige); «un proceso individual y personalizado»; las cuatro preguntas en tarjetas; «No
+    necesitas hacer más»; el proceso con fondo en movimiento, pasos que aparecen al desplazarse,
+    30–60 días, Layer Map como plan por fases y un 5.º paso Next Layer Cycle; entregables mitad
+    texto y mitad imagen (recorte de manos de ZGPH1218, sin cara ni sticker) con la explicación
+    nueva del Layer Map; precios compartidos y «el siguiente paso» con las dos opciones.
+    **Fotos:** las originales con el pelo oscurecido por Codex (retoque por color con máscara,
+    cara intacta; fuentes en `fuentes/fotos-pelo-2026-10-03/`). **Exámenes:** cada examen abre
+    una ficha (nombre, gancho, precio y agregar, qué mide, por qué importa, ideal si, lo que
+    obtienes); textos de Codex en `src/data/fichas-examenes.ts`, solo desde la descripción de
+    Verónica. «Clic» sin k (Mari).
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

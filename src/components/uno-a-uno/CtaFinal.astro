@@ -1,12 +1,11 @@
 ---
 /**
- * Closing dark block with the Initial Layer Cycle summary line and the "Agenda conmigo" button,
- * which leads to that cycle's checkout.
+ * Closing dark block: «el siguiente paso», now both offers side by side (1 consulta, 2 consultas),
+ * each with its price and the site's button into its checkout (Verónica, change 35).
  */
-import { ciclos, checkoutPath, precioCard } from '../../data/oferta';
+import { listaCiclos, checkoutPath, precioCard } from '../../data/oferta';
 import { href } from '../../lib/url';
-
-const ciclo = ciclos.INITIAL_LAYER_CYCLE;
+import { cta } from '../../data/site';
 ---
 
 <section id="final-cta-section" class="reveal">
@@ -19,12 +18,18 @@ const ciclo = ciclos.INITIAL_LAYER_CYCLE;
       </p>
       <div class="fc-divider" aria-hidden="true"></div>
       <div class="fc-bottom">
-        <div class="fc-offer-block">
-          <span class="fc-offer-label">{ciclo.nombre}</span>
-          <span class="fc-offer-meta">2 × 90 min</span>
-          <span class="fc-offer-price">{precioCard(ciclo)}</span>
-        </div>
-        <a class="btn btn-primary" href={href(checkoutPath(ciclo))}>Agenda conmigo</a>
+        {
+          listaCiclos.map((c) => (
+            <div class:list={['fc-opcion', { destacada: c.id === 'INITIAL_LAYER_CYCLE' }]}>
+              <span class="fc-offer-meta">{c.consultas}</span>
+              <span class="fc-offer-label">{c.nombre}</span>
+              <span class="fc-offer-price">{precioCard(c)}</span>
+              <a class="btn btn-primary btn-block" href={href(checkoutPath(c))}>
+                {cta.label}
+              </a>
+            </div>
+          ))
+        }
       </div>
       <small
         >El siguiente paso te mostrará exactamente qué incluye tu ciclo antes de realizar el pago.</small
@@ -77,18 +82,32 @@ const ciclo = ciclos.INITIAL_LAYER_CYCLE;
     margin: 40px auto;
   }
   .fc-bottom {
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 300px));
     justify-content: center;
-    gap: 36px;
-    flex-wrap: wrap;
+    gap: 18px;
   }
-  .fc-offer-block {
+  @media (max-width: 640px) {
+    .fc-bottom {
+      grid-template-columns: 1fr;
+    }
+  }
+  .fc-opcion {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 14px;
-    flex-wrap: wrap;
-    justify-content: center;
+    gap: 8px;
+    padding: 26px 22px;
+    border-radius: 24px;
+    border: 1px solid rgb(251 250 246 / 0.14);
+    background: rgb(251 250 246 / 0.04);
+  }
+  .fc-opcion.destacada {
+    border-color: var(--color-clay);
+    background: rgb(231 183 160 / 0.1);
+  }
+  .fc-opcion .btn {
+    margin-top: 10px;
   }
   .fc-offer-label {
     font-weight: 800;
@@ -104,7 +123,7 @@ const ciclo = ciclos.INITIAL_LAYER_CYCLE;
   }
   .fc-offer-price {
     font-weight: 800;
-    font-size: 20px;
+    font-size: 32px;
     color: var(--color-bone);
   }
   small {

@@ -4,21 +4,21 @@
  */
 import { Image } from 'astro:assets';
 import retrato from '../../assets/fotos/veronica-laptop-de-pie.jpg';
-import { marca } from '../../data/site';
+import { cta, marca } from '../../data/site';
 ---
 
 <section class="tight reveal">
   <div class="wrap">
     <div class="hero-demo">
       <div class="hero-content">
-        <span class="eyebrow">The Layer Method 1:1</span>
+        <span class="eyebrow">Asesorías · The Layer Method</span>
         <h1>Tu salud tiene capas.<br />Tu estrategia también debería tenerlas.</h1>
         <p class="italic-lede">
-          Un proceso 1:1 para organizar tu contexto, identificar prioridades y construir una
-          estrategia personalizada utilizando The Layer Method.
+          Un proceso individual y personalizado para organizar tu contexto, identificar prioridades
+          y construir una estrategia personalizada utilizando The Layer Method.
         </p>
         <div class="btn-row">
-          <a class="btn btn-primary" href="#cta">Agenda conmigo</a>
+          <a class="btn btn-primary" href="#cta">{cta.label}</a>
         </div>
       </div>
       <div class="hero-photo">

@@ -1,39 +1,32 @@
 ---
 /**
- * Dark bridge from the methodology to the 1:1 process: the four-piece chain and the CTA.
+ * Dark bridge from the methodology to the 1:1 process. Since 2026-10-03 (Verónica, change 27) it
+ * breaks the process into the same step cards as the home and closes with the prices and the
+ * private invitation for patients (shared components in components/oferta).
  */
 import { href } from '../../lib/url';
-
-const proceso = ['THE LAYER ASSESSMENT', 'THE LAYER MAP', 'TOP 3 PRIORITIES', 'THE LAYER PLAN'];
+import { cta } from '../../data/site';
+import PasosProceso from '../oferta/PasosProceso.astro';
+import BloquePrecios from '../oferta/BloquePrecios.astro';
 ---
 
 <section id="bridge">
   <div class="wrap">
     <div class="bridge">
       <span class="eyebrow">De la metodología a tu proceso</span>
-      <h2>THE LAYER METHOD 1:1</h2>
+      <h2>ASESORÍAS</h2>
       <p class="lede">
-        El proceso personalizado comienza mapeando tu contexto individual — no una plantilla, no un
+        El proceso personalizado comienza mapeando tu contexto individual: no una plantilla, no un
         protocolo genérico.
       </p>
 
-      <div class="process-row" aria-label="Proceso del Layer Method 1:1">
-        {
-          proceso.map((p, i) => (
-            <>
-              {i > 0 && (
-                <span class="process-arrow" aria-hidden="true">
-                  →
-                </span>
-              )}
-              <span class="process-step">{p}</span>
-            </>
-          ))
-        }
+      <div class="bridge-pasos">
+        <PasosProceso />
       </div>
+      <BloquePrecios />
 
       <div class="bridge-actions">
-        <a class="btn btn-primary" href={href('/1-1')}>Conoce el proceso 1:1</a>
+        <a class="btn btn-primary" href={href('/asesorias')}>{cta.label}</a>
       </div>
     </div>
   </div>
@@ -75,32 +68,8 @@ const proceso = ['THE LAYER ASSESSMENT', 'THE LAYER MAP', 'TOP 3 PRIORITIES', 'T
     margin-top: 18px;
     font-weight: 500;
   }
-  .process-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin: 36px 0;
-  }
-  .process-step {
-    font-weight: 800;
-    font-size: 14px;
-    padding: 12px 20px;
-    border-radius: var(--radius-pill);
-    background: rgb(251 250 246 / 0.1);
-    white-space: nowrap;
-    transition:
-      background 0.3s ease,
-      transform 0.3s var(--ease-out-soft);
-  }
-  .process-step:hover {
-    background: rgb(251 250 246 / 0.22);
-    transform: translateY(-2px);
-  }
-  .process-arrow {
-    color: rgb(251 250 246 / 0.45);
-    font-family: var(--font-serif);
-    font-size: 18px;
+  .bridge-pasos {
+    margin: 40px 0 0;
   }
   .bridge-actions {
     display: flex;

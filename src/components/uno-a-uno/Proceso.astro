@@ -32,15 +32,15 @@ const pasos = [
     snum: 'Sesión 01 · 90 min',
     titulo: 'Mapear + Priorizar',
     texto:
-      'Revisamos tu contexto a través de las cinco Layers. El objetivo no es abordar todo a la vez — es determinar qué merece atención ahora y qué puede estar conectado.',
+      'Revisamos tu contexto a través de las cinco capas y creamos un plan de acción por fases para trabajarlas según su prioridad: ese será tu Layer Map. El objetivo no es abordar todo a la vez.<br /><br />Es determinar qué merece atención ahora y qué puede estar conectado.',
     nota: 'Sales con tu Layer Map, tus Top 3 Priorities y tu Layer Plan.',
     tono: 'sage-deep',
   },
   {
-    snum: 'Entre sesiones · ~30 días',
+    snum: 'Entre sesiones · 30–60 días',
     titulo: 'Implementar + Observar',
     texto:
-      'Pones en marcha tu Layer Plan y observas respuesta, tolerancia, cambios y obstáculos. Este período es parte del Método — no es simplemente "esperar la próxima cita".',
+      'Pones en marcha tu Layer Plan y observas respuesta, tolerancia, cambios y obstáculos. Este período es parte del método: no es simplemente "esperar la próxima cita".',
     nota: 'Acompañamiento por correo una vez a la semana para resolver tus dudas.',
     tono: 'rose-deep',
   },
@@ -52,23 +52,35 @@ const pasos = [
       'Revisamos qué cambió, qué fue difícil y si las prioridades se movieron. Sales con <strong>The Layer Review</strong> — tu Layer Plan ajustado con base en tu respuesta real.',
     tono: 'olive',
   },
+  {
+    snum: 'Tu siguiente ciclo',
+    titulo: 'Next Layer Cycle',
+    texto:
+      'Agenda tu próximo paquete de asesorías para continuar trabajando las capas del plan establecido en tu Layer Map.',
+    tono: 'clay',
+  },
 ];
 ---
 
-<section id="proceso" class="reveal">
+<section id="proceso">
+  <div class="fondo" aria-hidden="true">
+    <span class="mancha m1"></span>
+    <span class="mancha m2"></span>
+    <span class="mancha m3"></span>
+  </div>
   <div class="wrap">
     <span class="eyebrow">Cómo funciona</span>
     <h2 class="upcase">Initial Layer Cycle</h2>
     <p class="lead">
       Para nuevos clientes. Es el punto de partida para aplicar The Layer Method a tu contexto
-      individual — no una consulta aislada, sino un ciclo completo con estructura.
+      individual: no una consulta aislada, sino un ciclo completo con estructura.
     </p>
 
     <div class="ruta">
-      <ol class="paradas reveal-stagger reveal">
+      <ol class="paradas">
         {
           pasos.map((p, i) => (
-            <li class="parada" style={`--tono:var(--color-${p.tono});`}>
+            <li class="parada reveal" style={`--tono:var(--color-${p.tono});`}>
               <div class="hito" aria-hidden="true">
                 <span class="marca">{`0${i + 1}`}</span>
               </div>
@@ -97,6 +109,53 @@ const pasos = [
 <style>
   section {
     padding: 64px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  /* A slow-moving warm background so the long route reads lighter (Verónica, change 33). */
+  .fondo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-bone);
+  }
+  .mancha {
+    position: absolute;
+    width: 46vw;
+    height: 46vw;
+    max-width: 640px;
+    max-height: 640px;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.55;
+    animation: deriva 22s ease-in-out infinite alternate;
+  }
+  .m1 {
+    background: rgb(231 183 160 / 0.6);
+    top: 4%;
+    left: -12%;
+  }
+  .m2 {
+    background: rgb(207 215 196 / 0.7);
+    top: 38%;
+    right: -14%;
+    animation-delay: -7s;
+  }
+  .m3 {
+    background: rgb(216 171 166 / 0.5);
+    bottom: -6%;
+    left: 22%;
+    animation-delay: -14s;
+  }
+  @keyframes deriva {
+    to {
+      transform: translate3d(8vw, -6vh, 0) scale(1.15);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mancha {
+      animation: none;
+    }
   }
   @media (max-width: 760px) {
     section {

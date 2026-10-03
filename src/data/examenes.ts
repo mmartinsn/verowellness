@@ -509,7 +509,7 @@ export const pasosPedido = [
   {
     titulo: 'Recibe tus resultados',
     texto:
-      'Entre 15 y 25 días hábiles desde que tu muestra llega al laboratorio, por email; los revisamos juntas en tu asesoría 1:1.',
+      'Entre 15 y 25 días hábiles desde que tu muestra llega al laboratorio, por email; los revisamos juntas en tu asesoría.',
   },
 ];
 
@@ -542,7 +542,7 @@ export const preguntasExamenes = [
   },
   {
     q: '¿El precio incluye la interpretación de mis resultados?',
-    a: 'No. El precio del examen no incluye la interpretación de los resultados. Los revisamos y te los explicamos en consulta, dentro de un plan de asesoría 1:1. Si tu plan tiene más de una sesión, la interpretación se incluye durante el plan. Es el caso de Initial Layer Cycle y Next Layer Cycle, de dos sesiones cada uno.',
+    a: 'No. El precio del examen no incluye la interpretación de los resultados. Los revisamos y te los explicamos en consulta, dentro de un plan de asesoría. Si tu plan tiene más de una sesión, la interpretación se incluye durante el plan. Es el caso de Initial Layer Cycle y Next Layer Cycle, de dos sesiones cada uno.',
   },
   {
     q: '¿Puedo pedir exámenes desde fuera de Estados Unidos?',

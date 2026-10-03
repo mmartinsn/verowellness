@@ -12,5 +12,7 @@ export default defineConfig({
   // Astro 7 defaults compressHTML to 'jsx', which glues adjacent inline elements together.
   // Keep the classic whitespace behaviour: the design relies on inline spacing in a few places.
   compressHTML: true,
+  // «1:1» became «Asesorías» on 2026-10-03 (Verónica, change 28); old links keep working.
+  redirects: { '/1-1': '/asesorias' },
   vite: { plugins: [tailwindcss()] },
 });

@@ -1,7 +1,8 @@
 ---
 /**
- * Four recognition questions. Their landing line ("No necesitas necesariamente hacer más.
- * Necesitas saber qué priorizar.") is now the full-screen Insight right after (Mari, 2026-09-23).
+ * Four recognition questions, set as a 2 × 2 of soft cards on an ivory panel so they no longer
+ * float on the page (Verónica, change 30: «está como en el aire»). Their landing line is the
+ * Insight right after.
  */
 const preguntas = [
   '¿Tienes muchos datos pero poca claridad?',
@@ -11,30 +12,102 @@ const preguntas = [
 ];
 ---
 
-<section class="reveal-stagger reveal">
+<section>
   <div class="wrap">
-    {preguntas.map((q) => <p class="recognition-q">{q}</p>)}
+    <div class="panel reveal">
+      <span class="comillas" aria-hidden="true">“</span>
+      <ul class="preguntas reveal-stagger">
+        {
+          preguntas.map((q, i) => (
+            <li class="pregunta spot">
+              <span class="num">0{i + 1}</span>
+              <p>{q}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </div>
 </section>
 
 <style>
   section {
-    padding: 64px 0;
+    padding: 56px 0;
   }
   @media (max-width: 760px) {
     section {
-      padding: 36px 0;
+      padding: 32px 0;
     }
   }
-  .recognition-q {
+  .panel {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    padding: clamp(28px, 5vw, 56px);
+    background:
+      radial-gradient(ellipse 60% 80% at 100% 0%, rgb(231 183 160 / 0.28), transparent 70%),
+      radial-gradient(ellipse 50% 70% at 0% 100%, rgb(207 215 196 / 0.4), transparent 70%),
+      var(--color-ivory);
+  }
+  .comillas {
+    position: absolute;
+    top: -30px;
+    left: 18px;
+    font-family: var(--font-serif);
+    font-size: 220px;
+    line-height: 1;
+    color: rgb(214 154 124 / 0.22);
+    pointer-events: none;
+  }
+  .preguntas {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 760px) {
+    .preguntas {
+      grid-template-columns: 1fr;
+    }
+  }
+  .pregunta {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    background: rgb(255 255 255 / 0.75);
+    border: 1px solid rgb(48 47 42 / 0.06);
+    border-radius: 22px;
+    padding: 22px 24px;
+    box-shadow: 0 14px 34px -26px rgb(48 47 42 / 0.4);
+    transition:
+      transform 0.3s var(--ease-out-soft),
+      border-color 0.3s ease;
+  }
+  .pregunta:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-clay);
+  }
+  .num {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 12.5px;
+    font-weight: 800;
+    background: var(--color-clay);
+    color: var(--color-charcoal);
+  }
+  .pregunta p {
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: clamp(20px, 2.6vw, 26px);
-    line-height: 1.6;
-    color: rgb(48 47 42 / 0.72);
-    max-width: 720px;
-  }
-  .recognition-q + .recognition-q {
-    margin-top: 14px;
+    font-size: clamp(19px, 1.8vw, 23px);
+    line-height: 1.4;
+    color: rgb(48 47 42 / 0.85);
+    margin: 0;
   }
 </style>

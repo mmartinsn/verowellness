@@ -7,7 +7,7 @@ import { Image } from 'astro:assets';
 import Wordmark from '../Wordmark.astro';
 import retrato from '../../assets/fotos/veronica-riendo-sentada.jpg';
 import { href } from '../../lib/url';
-import { marca } from '../../data/site';
+import { cta, marca } from '../../data/site';
 
 const lineas = [
   { color: 'var(--color-charcoal)', width: '96%' },
@@ -31,12 +31,13 @@ const lineas = [
       <div class="hero-content reveal-stagger">
         <Wordmark link={false} class="hero-wordmark" />
         <h1>THE LAYER METHOD</h1>
-        <p class="hero-sub">Salud por capas.<br />Del terreno a la célula.</p>
+        <p class="hero-sub">Salud por capas.</p>
         <blockquote class="pq">
-          La salud celular empieza mucho antes de llegar a la célula.
+          El síntoma es el punto de partida. Sanar empieza por entender las capas detrás de lo que
+          sientes.
         </blockquote>
         <div class="hero-actions">
-          <a class="btn btn-primary" href={href('/1-1')}>Conoce el proceso 1:1</a>
+          <a class="btn btn-primary" href={href('/asesorias')}>{cta.label}</a>
         </div>
       </div>
       <div class="hero-photo reveal-scale">

@@ -58,7 +58,7 @@ export function grafoServicio(site: URL | undefined): Nodo {
     provider: { '@id': `${inicio}#organizacion` },
     availableChannel: {
       '@type': 'ServiceChannel',
-      serviceUrl: url(site, '/1-1'),
+      serviceUrl: url(site, '/asesorias'),
       name: 'Asesorías 100% online',
     },
     offers: listaCiclos.map((c) => ({

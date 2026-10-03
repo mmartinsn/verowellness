@@ -1,0 +1,123 @@
+---
+/**
+ * «Así funciona el proceso»: the four steps of the Initial Layer Cycle as cards. Shared by the
+ * home offer, Mi método and Asesorías so the steps read the same everywhere (Verónica, change 27:
+ * «desglosar cada punto como en la página de inicio»).
+ */
+const pasos = [
+  {
+    titulo: 'Antes de tu Cita 1',
+    marca: 'The Layer Assessment',
+    texto: 'Historia, objetivos, alimentación, lifestyle, síntomas y laboratorios.',
+  },
+  {
+    titulo: 'Cita 1 · Mapear + Priorizar',
+    dur: '90 min',
+    marca: 'The Layer Map · Top 3 Priorities · The Layer Plan',
+    texto: 'Mapeas tus Layers, conectas la información y defines qué merece atención primero.',
+  },
+  {
+    titulo: 'Entre Citas · Implementar',
+    texto: 'Pones en práctica tu Layer Plan y observamos respuesta y obstáculos.',
+  },
+  {
+    titulo: 'Cita 2 · Revisar + Ajustar',
+    dur: '90 min',
+    texto: 'Revisamos qué mejoró, qué falta, y actualizamos tu Layer Plan.',
+  },
+];
+---
+
+<div class="reveal">
+  <span class="eyebrow proceso-label">Así funciona el proceso:</span>
+  <ol class="proceso">
+    {
+      pasos.map((p, i) => (
+        <li class="paso spot">
+          <div class="paso-num">{i + 1}</div>
+          <div class="paso-titulo">
+            {p.titulo}
+            {p.dur && <span class="paso-dur">{p.dur}</span>}
+          </div>
+          <div class="paso-marca">{p.marca ?? ' '}</div>
+          <div class="paso-texto">{p.texto}</div>
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  /* Block and without the dot, as in the design. */
+  .proceso-label {
+    display: block;
+    margin-bottom: 18px;
+  }
+  .proceso-label::before {
+    display: none;
+  }
+  .proceso {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    margin-bottom: 64px;
+    list-style: none;
+    padding: 0;
+  }
+  .paso {
+    background: var(--color-white);
+    border: 1px solid rgb(35 34 30 / 0.12);
+    border-radius: 22px;
+    padding: 26px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 8px 24px rgb(35 34 30 / 0.03);
+    transition:
+      transform 0.3s var(--ease-out-soft),
+      border-color 0.3s ease;
+  }
+  .paso:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-clay);
+  }
+  .paso-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--color-clay);
+    color: var(--color-charcoal);
+    font-weight: 800;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .paso-titulo {
+    font-weight: 800;
+    font-size: 17px;
+    color: var(--color-charcoal);
+  }
+  .paso-dur {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--color-sand);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    margin-left: 6px;
+  }
+  .paso-marca {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--color-clay-deep);
+    min-height: 18px;
+  }
+  .paso-texto {
+    font-size: 14.5px;
+    color: rgb(35 34 30 / 0.7);
+    line-height: 1.5;
+  }
+</style>

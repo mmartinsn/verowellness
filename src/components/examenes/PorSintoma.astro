@@ -11,6 +11,7 @@
 import { examenes, muestras, productoDe, CLAVE_SELECCION, type Muestra } from '../../data/examenes';
 import { sintomas, examenesDe, paraQuien } from '../../data/sintomas';
 import { usd } from '../../lib/precio';
+import { fichas } from '../../data/fichas-examenes';
 import { href } from '../../lib/url';
 
 const iconoMuestra: Record<Muestra, string> = {
@@ -25,6 +26,22 @@ const iconoMuestra: Record<Muestra, string> = {
 
 const grupos = sintomas.map((s) => ({ ...s, items: examenesDe(s) }));
 const precios = Object.fromEntries(examenes.map((e) => [productoDe(e), e.precio]));
+
+/* What the popup needs per test, sent once as JSON (tests repeat across symptoms). */
+const datosFichas = Object.fromEntries(
+  examenes.map((e) => [
+    e.id,
+    {
+      nombre: e.nombre,
+      laboratorio: e.laboratorio ?? '',
+      precio: usd(e.precio),
+      producto: productoDe(e),
+      muestras: e.muestras.map((m) => muestras[m]),
+      enCasa: e.enCasa,
+      ...fichas[e.id],
+    },
+  ])
+);
 ---
 
 <section
@@ -112,7 +129,11 @@ const precios = Object.fromEntries(examenes.map((e) => [productoDe(e), e.precio]
                   <p class="ex-meta">
                     {e.laboratorio && <span class="ex-lab">{e.laboratorio}</span>}
                   </p>
-                  <h3 class="ex-nombre">{e.nombre}</h3>
+                  <h3 class="ex-nombre">
+                    <button type="button" class="ex-nombre-btn" data-ficha={e.id}>
+                      {e.nombre}
+                    </button>
+                  </h3>
                   <p class="ex-para">{paraQuien(e)}</p>
                   <div class="ex-pie">
                     {e.muestras.map((m) => (
@@ -123,10 +144,9 @@ const precios = Object.fromEntries(examenes.map((e) => [productoDe(e), e.precio]
                         {muestras[m]}
                       </span>
                     ))}
-                    <details class="ex-mas">
-                      <summary>Qué mide</summary>
-                      <p>{e.descripcion}</p>
-                    </details>
+                    <button type="button" class="ex-ver" data-ficha={e.id}>
+                      Ver ficha completa <span aria-hidden="true">→</span>
+                    </button>
                   </div>
                 </div>
                 <div class="ex-compra">
@@ -149,7 +169,7 @@ const precios = Object.fromEntries(examenes.map((e) => [productoDe(e), e.precio]
       ))
     }
     <p class="ps-nota">
-      ¿Tienes dudas sobre cuál elegir? En tu <a href={href('/1-1')}>asesoría 1:1</a> revisamos juntas
+      ¿Tienes dudas sobre cuál elegir? En tu <a href={href('/asesorias')}>asesoría</a> revisamos juntas
       si necesitas un examen y cuál tiene sentido para ti. Los impuestos se calculan al finalizar la compra.
     </p>
   </div>
@@ -162,6 +182,57 @@ const precios = Object.fromEntries(examenes.map((e) => [productoDe(e), e.precio]
     <span class="dock-total" data-dock-total>$0.00</span>
     <a class="dock-btn" href={href('/checkout/examenes')}>Continuar →</a>
   </div>
+  <!-- One popup for every test, filled from data-fichas when a test is opened. -->
+  <dialog
+    class="ficha"
+    data-ficha-dialog
+    aria-labelledby="ficha-nombre"
+    data-fichas={JSON.stringify(datosFichas)}
+  >
+    <div class="ficha-panel">
+      <div class="ficha-glow" aria-hidden="true"></div>
+      <button type="button" class="ficha-cerrar" data-ficha-cerrar aria-label="Cerrar">×</button>
+      <header class="ficha-cab">
+        <p class="ficha-lab" data-f="laboratorio"></p>
+        <h2 class="ficha-nombre" id="ficha-nombre" data-f="nombre"></h2>
+        <p class="ficha-gancho" data-f="gancho"></p>
+        <div class="ficha-compra">
+          <div>
+            <span class="ficha-precio" data-f="precio"></span>
+            <span class="ficha-muestra" data-f="muestra"></span>
+          </div>
+          <button type="button" class="ficha-add" data-ficha-add aria-pressed="false">
+            <span class="ex-add-no">Agregar a mi selección</span>
+            <span class="ex-add-si">Agregado ✓</span>
+          </button>
+        </div>
+      </header>
+      <div class="ficha-cuerpo">
+        <section class="ficha-bloque">
+          <h3 class="ficha-t">Qué mide</h3>
+          <ul class="ficha-mide" data-lista="queMide"></ul>
+        </section>
+        <blockquote class="ficha-importa">
+          <span class="ficha-t">Por qué importa</span>
+          <p data-f="porQueImporta"></p>
+        </blockquote>
+        <div class="ficha-dos">
+          <section class="ficha-bloque">
+            <h3 class="ficha-t">Ideal si…</h3>
+            <ul class="ficha-check" data-lista="ideal"></ul>
+          </section>
+          <section class="ficha-bloque">
+            <h3 class="ficha-t">Lo que obtienes</h3>
+            <ul class="ficha-check" data-lista="obtienes"></ul>
+          </section>
+        </div>
+        <p class="ficha-nota">
+          Contenido educativo. No diagnostica ni sustituye una evaluación médica; en tu asesoría
+          revisamos si este examen tiene sentido para ti.
+        </p>
+      </div>
+    </div>
+  </dialog>
 </section>
 
 <style>
@@ -537,29 +608,350 @@ const precios = Object.fromEntries(examenes.map((e) => [productoDe(e), e.precio]
     stroke-linecap: round;
     stroke-linejoin: round;
   }
-  .ex-mas {
-    flex-basis: 100%;
+  .ex-nombre-btn {
+    all: unset;
+    cursor: pointer;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition:
+      background-size 0.35s var(--ease-out-soft),
+      color 0.2s;
   }
-  .ex-mas summary {
-    display: inline-block;
+  .ex-nombre-btn:hover,
+  .ex-nombre-btn:focus-visible {
+    color: var(--color-clay);
+    background-size: 100% 1px;
+  }
+  .ex-ver {
+    all: unset;
     cursor: pointer;
     font-size: 13px;
     font-weight: 700;
     color: var(--color-clay);
     border-bottom: 1px solid rgb(214 154 124 / 0.4);
-    list-style: none;
+    transition: border-color 0.2s;
   }
-  .ex-mas summary::-webkit-details-marker {
+  .ex-ver span {
+    display: inline-block;
+    transition: transform 0.25s var(--ease-out-soft);
+  }
+  .ex-ver:hover span,
+  .ex-ver:focus-visible span {
+    transform: translateX(4px);
+  }
+  .ex-ver:hover,
+  .ex-ver:focus-visible {
+    border-color: var(--color-clay);
+  }
+
+  /* ── The test popup ── */
+  .ficha {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    width: min(880px, calc(100vw - 32px));
+    max-height: calc(100dvh - 48px);
+    margin: auto;
+    color: var(--color-bone);
+    overflow: visible;
+  }
+  .ficha::backdrop {
+    background: rgb(20 19 16 / 0.62);
+    backdrop-filter: blur(8px);
+  }
+  .ficha[open] {
+    animation: ficha-in 0.45s var(--ease-out-soft);
+  }
+  .ficha[open]::backdrop {
+    animation: ficha-fondo 0.45s ease;
+  }
+  @keyframes ficha-in {
+    from {
+      opacity: 0;
+      transform: translateY(24px) scale(0.97);
+    }
+  }
+  @keyframes ficha-fondo {
+    from {
+      opacity: 0;
+    }
+  }
+  .ficha-panel {
+    position: relative;
+    max-height: calc(100dvh - 48px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: 32px;
+    background:
+      radial-gradient(120% 80% at 100% 0%, rgb(214 154 124 / 0.22), transparent 55%),
+      linear-gradient(170deg, #2b2a25 0%, #1b1a17 70%);
+    border: 1px solid rgb(248 246 241 / 0.1);
+    box-shadow: 0 40px 100px -30px rgb(0 0 0 / 0.7);
+  }
+  .ficha-glow {
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    right: -120px;
+    top: -160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(231 183 160 / 0.28), transparent 65%);
+    pointer-events: none;
+    animation: ficha-latir 7s ease-in-out infinite;
+  }
+  @keyframes ficha-latir {
+    50% {
+      transform: scale(1.12);
+      opacity: 0.7;
+    }
+  }
+  .ficha-cerrar {
+    position: sticky;
+    float: right;
+    top: 16px;
+    margin: 16px 16px 0 0;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgb(248 246 241 / 0.18);
+    background: rgb(27 26 23 / 0.7);
+    backdrop-filter: blur(6px);
+    color: var(--color-bone);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      transform 0.2s,
+      background 0.2s;
+  }
+  .ficha-cerrar:hover {
+    transform: rotate(90deg);
+    background: rgb(248 246 241 / 0.12);
+  }
+  .ficha-cab {
+    position: relative;
+    padding: clamp(28px, 5vw, 52px) clamp(22px, 5vw, 52px) 28px;
+    border-bottom: 1px solid rgb(248 246 241 / 0.08);
+  }
+  .ficha-lab {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-clay);
+    background: rgb(214 154 124 / 0.12);
+    border: 1px solid rgb(214 154 124 / 0.3);
+    border-radius: var(--radius-pill);
+    padding: 5px 12px;
+  }
+  .ficha-lab:empty {
     display: none;
   }
-  .ex-mas[open] summary {
-    margin-bottom: 10px;
+  .ficha-nombre {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(32px, 4.6vw, 52px);
+    line-height: 1.04;
+    color: var(--color-bone);
+    margin: 16px 0 12px;
+    max-width: 680px;
   }
-  .ex-mas p {
-    max-width: 760px;
+  .ficha-gancho {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(20px, 2.2vw, 26px);
+    line-height: 1.3;
+    color: var(--color-clay);
+    max-width: 640px;
+  }
+  .ficha-compra {
+    margin-top: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .ficha-precio {
+    display: block;
+    font-size: clamp(30px, 3.4vw, 40px);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--color-bone);
+  }
+  .ficha-muestra {
+    display: block;
+    font-size: 13px;
+    color: rgb(248 246 241 / 0.6);
+    margin-top: 2px;
+  }
+  .ficha-add {
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    padding: 16px 30px;
+    border-radius: var(--radius-pill);
+    background: var(--color-clay);
+    color: var(--color-charcoal);
+    box-shadow: 0 14px 34px -14px rgb(231 183 160 / 0.7);
+    transition:
+      transform 0.2s,
+      background 0.2s;
+  }
+  .ficha-add:hover {
+    transform: translateY(-2px);
+  }
+  .ficha-add[aria-pressed='true'] {
+    background: var(--color-sage);
+  }
+  .ficha-add .ex-add-si,
+  .ficha-add[aria-pressed='true'] .ex-add-no {
+    display: none;
+  }
+  .ficha-add[aria-pressed='true'] .ex-add-si {
+    display: inline;
+  }
+  .ficha-cuerpo {
+    position: relative;
+    padding: 30px clamp(22px, 5vw, 52px) clamp(28px, 5vw, 48px);
+    display: grid;
+    gap: 30px;
+  }
+  .ficha-t {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgb(248 246 241 / 0.55);
+    margin: 0 0 14px;
+  }
+  .ficha-mide {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 10px;
+  }
+  .ficha-mide :global(li) {
+    position: relative;
+    padding: 16px 16px 16px 46px;
+    border-radius: 18px;
+    background: rgb(248 246 241 / 0.05);
+    border: 1px solid rgb(248 246 241 / 0.08);
     font-size: 14.5px;
-    line-height: 1.65;
-    color: rgb(248 246 241 / 0.66);
+    line-height: 1.45;
+    color: rgb(248 246 241 / 0.9);
+    opacity: 0;
+    transform: translateY(10px);
+    animation: ficha-item 0.5s var(--ease-out-soft) forwards;
+    animation-delay: calc(0.12s + var(--i) * 0.06s);
+  }
+  .ficha-mide :global(li)::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 18px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--color-clay) 35%, rgb(214 154 124 / 0.25) 40%);
+  }
+  @keyframes ficha-item {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .ficha-importa {
+    margin: 0;
+    padding: 24px 26px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, rgb(214 154 124 / 0.18), rgb(207 215 196 / 0.08));
+    border-left: 3px solid var(--color-clay);
+  }
+  .ficha-importa p {
+    font-family: var(--font-serif);
+    font-size: clamp(20px, 2.1vw, 25px);
+    line-height: 1.35;
+    color: var(--color-bone);
+  }
+  .ficha-dos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 26px;
+  }
+  .ficha-check {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  .ficha-check :global(li) {
+    position: relative;
+    padding-left: 28px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: rgb(248 246 241 / 0.85);
+  }
+  .ficha-check :global(li)::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--color-sage);
+    font-weight: 800;
+  }
+  .ficha-nota {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: rgb(248 246 241 / 0.45);
+  }
+  @media (max-width: 680px) {
+    .ficha {
+      width: 100vw;
+      max-width: 100vw;
+      max-height: 92dvh;
+      margin: auto 0 0;
+    }
+    .ficha-panel {
+      max-height: 92dvh;
+      border-radius: 28px 28px 0 0;
+    }
+    .ficha[open] {
+      animation-name: ficha-sube;
+    }
+    .ficha-dos {
+      grid-template-columns: 1fr;
+    }
+    .ficha-compra {
+      position: sticky;
+      bottom: 0;
+    }
+  }
+  @keyframes ficha-sube {
+    from {
+      transform: translateY(100%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ficha[open],
+    .ficha[open]::backdrop,
+    .ficha-glow,
+    .ficha-mide :global(li) {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
   }
   .ex-compra {
     display: flex;
@@ -854,5 +1246,85 @@ const precios = Object.fromEntries(examenes.map((e) => [productoDe(e), e.precio]
       })
     );
     pintar();
+
+    /* ── The test popup ── */
+    const dlg = raiz.querySelector<HTMLDialogElement>('[data-ficha-dialog]');
+    if (dlg) {
+      type Ficha = {
+        nombre: string;
+        laboratorio: string;
+        precio: string;
+        producto: string;
+        muestras: string[];
+        enCasa: boolean;
+        gancho?: string;
+        queMide?: string[];
+        porQueImporta?: string;
+        ideal?: string[];
+        obtienes?: string[];
+      };
+      const datos: Record<string, Ficha> = JSON.parse(dlg.dataset.fichas ?? '{}');
+      const addBtn = dlg.querySelector<HTMLButtonElement>('[data-ficha-add]')!;
+      const panel = dlg.querySelector<HTMLElement>('.ficha-panel')!;
+      let actual: Ficha | null = null;
+      const texto = (k: string, v: string) => {
+        const el = dlg.querySelector<HTMLElement>(`[data-f="${k}"]`);
+        if (el) el.textContent = v;
+      };
+      const lista = (k: string, items: string[] = []) => {
+        const ul = dlg.querySelector<HTMLElement>(`[data-lista="${k}"]`)!;
+        ul.replaceChildren(
+          ...items.map((t, i) => {
+            const li = document.createElement('li');
+            // «Ideal si…» is already the heading: drop the repeated lead-in from each item.
+            const limpio = k === 'ideal' ? t.replace(/^ideal si\s+/i, '') : t;
+            li.textContent = limpio.charAt(0).toUpperCase() + limpio.slice(1);
+            li.style.setProperty('--i', String(i));
+            return li;
+          })
+        );
+        ul.closest('section')!.hidden = items.length === 0;
+      };
+      const estadoAdd = () => {
+        if (actual) addBtn.setAttribute('aria-pressed', String(sel.has(actual.producto)));
+      };
+      const abrir = (id: string) => {
+        const f = datos[id];
+        if (!f) return;
+        actual = f;
+        texto('laboratorio', f.laboratorio);
+        texto('nombre', f.nombre);
+        texto('gancho', f.gancho ?? '');
+        texto('precio', f.precio);
+        texto(
+          'muestra',
+          [f.muestras.join(' · '), f.enCasa ? 'Kit en tu casa' : ''].filter(Boolean).join(' · ')
+        );
+        texto('porQueImporta', f.porQueImporta ?? '');
+        dlg.querySelector<HTMLElement>('.ficha-importa')!.hidden = !f.porQueImporta;
+        lista('queMide', f.queMide);
+        lista('ideal', f.ideal);
+        lista('obtienes', f.obtienes);
+        estadoAdd();
+        dlg.showModal();
+        panel.scrollTop = 0;
+      };
+      raiz
+        .querySelectorAll<HTMLButtonElement>('[data-ficha]')
+        .forEach((b) => b.addEventListener('click', () => abrir(b.dataset.ficha!)));
+      addBtn.addEventListener('click', () => {
+        if (!actual) return;
+        if (sel.has(actual.producto)) sel.delete(actual.producto);
+        else sel.add(actual.producto);
+        guardar();
+        pintar(true);
+        estadoAdd();
+      });
+      dlg.querySelector('[data-ficha-cerrar]')!.addEventListener('click', () => dlg.close());
+      // A click on the backdrop (outside the panel) closes it too.
+      dlg.addEventListener('click', (e) => {
+        if (e.target === dlg) dlg.close();
+      });
+    }
   }
 </script>

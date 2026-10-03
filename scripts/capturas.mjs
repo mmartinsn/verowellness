@@ -40,7 +40,7 @@ const RUTAS = [
   '/inicio-stitch/',
   '/inicio-editorial/',
   '/el-metodo/',
-  '/1-1/',
+  '/asesorias/',
   '/examenes/',
   '/tienda/',
   '/checkout/initial-layer-cycle/',

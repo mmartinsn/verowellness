@@ -1,9 +1,9 @@
 ---
 /**
- * "La oferta completa — Tu ciclo, a tu ritmo." Both price cards from data/oferta.
+ * "La oferta completa — Tu ciclo, a tu ritmo." The same price block as the home and Mi método:
+ * 1 consulta left, 2 consultas right, and the private invitation for patients (change 35).
  */
-import PriceCard from '../PriceCard.astro';
-import { listaCiclos } from '../../data/oferta';
+import BloquePrecios from '../oferta/BloquePrecios.astro';
 ---
 
 <section class="reveal">
@@ -12,10 +12,10 @@ import { listaCiclos } from '../../data/oferta';
     <h2>Tu ciclo, a tu ritmo.</h2>
     <p class="lead">
       Tu primer ciclo te da el mapa; el siguiente te permite seguir avanzando. No empezamos desde
-      cero — usamos el contexto ya construido, a tu ritmo, sin membresía ni programa a largo plazo.
+      cero: usamos el contexto ya construido, a tu ritmo, sin membresía ni programa a largo plazo.
     </p>
-    <div class="pricing-columns">
-      {listaCiclos.map((c) => <PriceCard ciclo={c} featured={c.id === 'INITIAL_LAYER_CYCLE'} />)}
+    <div class="bloque">
+      <BloquePrecios />
     </div>
   </div>
 </section>
@@ -46,16 +46,7 @@ import { listaCiclos } from '../../data/oferta';
     max-width: 640px;
     margin-top: 14px;
   }
-  .pricing-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
+  .bloque {
     margin-top: 40px;
-    align-items: stretch;
-  }
-  @media (max-width: 860px) {
-    .pricing-columns {
-      grid-template-columns: 1fr;
-    }
   }
 </style>

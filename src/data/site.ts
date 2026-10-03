@@ -28,8 +28,8 @@ export interface NavItem {
  */
 export const nav: NavItem[] = [
   { label: 'Inicio', path: '/' },
-  { label: 'The Method', path: '/el-metodo' },
-  { label: '1:1', path: '/1-1' },
+  { label: 'Mi método', path: '/el-metodo' },
+  { label: 'Asesorías', path: '/asesorias' },
   { label: 'Exámenes', path: '/examenes' },
   { label: 'Tienda', path: '/tienda' },
   { label: 'Suplementos', path: '/suplementos' },
@@ -37,10 +37,10 @@ export const nav: NavItem[] = [
 ];
 
 export const cta = {
-  label: 'Trabaja conmigo · Click aquí',
+  label: 'Trabaja conmigo · Clic aquí',
   /** Short form for the header, where the full label does not fit. */
   corto: 'Trabaja conmigo',
-  path: '/1-1',
+  path: '/asesorias',
 };
 
 export const legal = {

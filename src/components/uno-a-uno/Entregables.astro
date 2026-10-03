@@ -1,7 +1,11 @@
 ---
 /**
- * "Tres piezas, construidas para ti." — The Layer Map, Top 3 Priorities, The Layer Plan.
+ * "Tres piezas, construidas para ti." — The Layer Map, Top 3 Priorities, The Layer Plan. Since
+ * 2026-10-03 (Verónica, change 34) the section is split: the three pieces on one side and a
+ * minimal image (hands on the laptop, no face) on the other, the pieces arriving one by one.
  */
+import { Image } from 'astro:assets';
+import manos from '../../assets/fotos/veronica-manos-laptop.jpg';
 const tiers = ['Alta prioridad', 'Prioridad secundaria', 'Mantenimiento'];
 const planTags = [
   'Nutrición',
@@ -17,52 +21,62 @@ const planExtra = [
 ];
 ---
 
-<section class="reveal">
-  <div class="wrap">
-    <span class="eyebrow">Lo que recibes al salir de la sesión 01</span>
-    <h2>Tres piezas, construidas para ti.</h2>
+<section>
+  <div class="wrap mitades">
+    <div class="info">
+      <span class="eyebrow reveal">Lo que recibes al salir de la sesión 01</span>
+      <h2>Tres piezas, construidas para ti.</h2>
 
-    <div class="list">
-      <div class="deliverable">
-        <div class="dnum" aria-hidden="true">01</div>
-        <div class="dbody">
-          <span class="dtag">Propietario</span>
-          <h3>The Layer Map</h3>
-          <p>
-            La organización personalizada de tus Layers relevantes y de cómo se conectan las
-            diferentes piezas de tu contexto de bienestar.
-          </p>
-          <div class="priority-tiers">
-            {tiers.map((t) => <span class="tier">{t}</span>)}
+      <div class="list reveal-stagger">
+        <div class="deliverable">
+          <div class="dnum" aria-hidden="true">01</div>
+          <div class="dbody">
+            <span class="dtag">Propietario</span>
+            <h3>The Layer Map</h3>
+            <p>
+              Un plan de acción personalizado, organizado por fases, para trabajar tus capas de
+              salud y sus conexiones, con prioridades claras para avanzar hacia tus objetivos.
+            </p>
+            <div class="priority-tiers">
+              {tiers.map((t) => <span class="tier">{t}</span>)}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="deliverable d-sage">
-        <div class="dnum" aria-hidden="true">02</div>
-        <div class="dbody">
-          <span class="dtag">Enfoque</span>
-          <h3>Top 3 Priorities</h3>
-          <p>
-            Tres prioridades claramente definidas para tu etapa actual. No veinte cosas que cambiar
-            al mismo tiempo — las que realmente mueven la aguja ahora.
-          </p>
+        <div class="deliverable d-sage">
+          <div class="dnum" aria-hidden="true">02</div>
+          <div class="dbody">
+            <span class="dtag">Enfoque</span>
+            <h3>Top 3 Priorities</h3>
+            <p>
+              Tres prioridades claramente definidas para tu etapa actual. No veinte cosas que
+              cambiar al mismo tiempo: las que realmente mueven la aguja ahora.
+            </p>
+          </div>
         </div>
-      </div>
 
-      <div class="deliverable d-rose">
-        <div class="dnum" aria-hidden="true">03</div>
-        <div class="dbody">
-          <span class="dtag">Estrategia</span>
-          <h3>The Layer Plan</h3>
-          <p>La estrategia personalizada construida alrededor de esas prioridades.</p>
-          <div class="plan-tags">
-            {planTags.map((t) => <span>{t}</span>)}
-            {planExtra.map((t) => <span class="hl">{t}</span>)}
+        <div class="deliverable d-rose">
+          <div class="dnum" aria-hidden="true">03</div>
+          <div class="dbody">
+            <span class="dtag">Estrategia</span>
+            <h3>The Layer Plan</h3>
+            <p>La estrategia personalizada construida alrededor de esas prioridades.</p>
+            <div class="plan-tags">
+              {planTags.map((t) => <span>{t}</span>)}
+              {planExtra.map((t) => <span class="hl">{t}</span>)}
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <figure class="imagen reveal-scale">
+      <Image
+        src={manos}
+        alt="Manos sobre una laptop durante una asesoría online"
+        widths={[420, 560]}
+        sizes="(min-width: 960px) 40vw, 100vw"
+      />
+    </figure>
   </div>
 </section>
 
@@ -83,6 +97,39 @@ const planExtra = [
     font-weight: 500;
     font-size: clamp(30px, 4.2vw, 46px);
     line-height: 1.1;
+  }
+  .mitades {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(28px, 4vw, 56px);
+    align-items: start;
+  }
+  .imagen {
+    position: sticky;
+    top: 110px;
+    margin: 0;
+  }
+  .imagen :global(img) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 45% 50%;
+    border-radius: var(--radius-xl);
+    display: block;
+    box-shadow: 0 30px 60px -34px rgb(48 47 42 / 0.5);
+  }
+  @media (max-width: 959px) {
+    .mitades {
+      grid-template-columns: 1fr;
+    }
+    .imagen {
+      position: static;
+      order: -1;
+    }
+    .imagen :global(img) {
+      aspect-ratio: 16 / 10;
+    }
   }
   .list {
     margin-top: 40px;
