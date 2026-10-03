@@ -195,8 +195,9 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     a confirmar); en exámenes, Sí/No a la cita de lectura (1 consulta USD 150 «Se brinda lectura
     de exámenes y plan de acción», 2 consultas USD 269 «Aseguras el seguimiento…»), con el aviso
     «se lee 1 examen por cita…», y el fee del laboratorio aparte y sin impuesto, USD 25 por examen
-    (tope de lo que dio Verónica, a confirmar). «Overall pick up» del cambio 39 no se entendió;
-    queda preguntado. Totales probados en navegador (p. ej. 2 exámenes 399.60 + 7 % 27.97 + fee
+    (tope de lo que dio Verónica, a confirmar). «Overall pick up» del cambio 39 = la opción que
+    conviene elegir (nota de voz de Verónica, 03-oct): la de 2 consultas lleva «Recomendada» y
+    viene marcada por defecto. Totales probados en navegador (p. ej. 2 exámenes 399.60 + 7 % 27.97 + fee
     50 = 477.57).
 
 21. **2026-10-03 — Ajustes de Mari sobre lo publicado.** Exámenes: más aire alrededor del aviso;
