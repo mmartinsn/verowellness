@@ -45,6 +45,7 @@ import { marca } from '../../data/site';
       </p>
       <blockquote class="firma">"No persigas cada síntoma. Entiende las capas."</blockquote>
       <div class="sobre-cta">
+        <a class="btn btn-secondary" href={href('/sobre-mi')}>Conoce mi historia</a>
         <a class="btn btn-secondary" href={href('/el-metodo')}>Conoce {marca.metodo}</a>
       </div>
     </div>
@@ -130,5 +131,8 @@ import { marca } from '../../data/site';
   }
   .sobre-cta {
     margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 </style>

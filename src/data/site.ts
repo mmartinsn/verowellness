@@ -26,10 +26,11 @@ export interface NavItem {
 /**
  * Main navigation: the home design of 2026-09-22 (Inicio · The Method · Sobre mí · 1:1 · FAQ) plus
  * Exámenes, Tienda and Suplementos (2026-09-23). «Sobre mí» left the menu on 2026-09-24 (Mari): it
- * is a section of the home, reached from there. The FAQ is also a home section and stays.
+ * is a section of the home, reached from there. It came back as its own page on 2026-10-03 (Mari). The FAQ is also a home section and stays.
  */
 export const nav: NavItem[] = [
   { label: 'Inicio', path: '/' },
+  { label: 'Sobre mí', path: '/sobre-mi' },
   { label: 'Mi método', path: '/el-metodo' },
   { label: 'Asesorías', path: '/asesorias' },
   { label: 'Exámenes', path: '/examenes' },

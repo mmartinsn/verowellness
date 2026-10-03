@@ -39,6 +39,7 @@ const RUTAS = [
   '/',
   '/inicio-stitch/',
   '/inicio-editorial/',
+  '/sobre-mi/',
   '/el-metodo/',
   '/asesorias/',
   '/examenes/',

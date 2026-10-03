@@ -189,6 +189,12 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     la cara es fiel.** Siguen en estudio la banda de la premisa, el aviso de Exámenes y el bowl de
     «Sobre Verónica».
 
+20. **2026-10-03 — Página «Sobre mí»** (`/sobre-mi`, de vuelta en el menú). Texto literal de la
+    versión extendida de «Sobre mi Veronica Wellness PAGINA WEB» (sin ™); los títulos de sección
+    son frases de ese mismo texto. La versión breve queda para la sección del inicio, si Mari lo
+    pide. Foto principal: la de cocina que mandó Mari. **Testimonios:** tres huecos reservados
+    hasta tener testimonios reales con permiso de cada paciente; no se escribe nada en su voz.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
