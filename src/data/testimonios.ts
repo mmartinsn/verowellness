@@ -5,6 +5,7 @@
  */
 import type { ImageMetadata } from 'astro';
 import fotoMargarita from '../assets/testimonios/margarita-medel.jpg';
+import fotoSofia from '../assets/testimonios/sofia-molina.jpg';
 
 export interface Testimonio {
   id: string;
@@ -48,7 +49,7 @@ export const testimonios: Testimonio[] = [
       'Hace tres años comencé a trabajar con Veronica en mejorar mi alimentación y salud, y desde entonces he experimentado cambios que van más allá de la pérdida de peso. Este plan de alimentación diseñado específicamente para mis necesidades, me ha ayudado a perder y mantener mi peso de una manera sostenible, pero sobre todo, a sentirme mejor y prestar mucha más atención a lo que mi cuerpo necesita.',
       'Estoy muy agradecida con Vero por su acompañamiento profesional, conocimiento y por la manera cálida y personalizada en la que ha guiado mi proceso. Estos tres años me han enseñado que alimentarse bien no se trata de seguir una dieta temporal, sino de crear hábitos que realmente pueda mantener y que contribuyan a sentirme bien a largo plazo. Sin duda, ha sido una parte muy importante de mi camino hacia una vida más saludable y espero continuar aprendiendo de su experiencia!! 🩷🙏',
     ],
-    prioridad: 3,
+    prioridad: 4,
   },
   {
     id: 'lorena-gonzalez',
@@ -61,5 +62,19 @@ export const testimonios: Testimonio[] = [
       'He confiado tanto en ella y en sus conocimientos que cuando me dijeron que mi niña tenía eczema no dudé en tener una cita con ella y no me equivoqué: siguiendo todas sus recomendaciones, tanto en alimentación como en tratamientos, hoy mi niña tiene meses sin tener brotes.',
     ],
     prioridad: 1,
+  },
+  {
+    id: 'sofia-molina',
+    nombre: 'Sofía Molina',
+    lugar: 'USA',
+    foto: fotoSofia,
+    motivo: ['Cándida'],
+    destacado: 'Fuiste mi oración contestada.',
+    texto: [
+      'Hola Vero, quisiera dejar mi testimonio sin duda. Fuiste mi oración contestada. Mi intención inicial fue tratar el cándida albicans que estuve tratándolo por casi 3 años con medicina alternativa, tratamientos y muchas consultas que no tenían ningún resultado.',
+      'Iniciamos el tratamiento y empezaron a verse los resultados de inmediato con mi cándida, gracias a la ayuda y a los tratamientos con intención y ajustándolo a mi estilo de vida. Yo estoy muy agradecida contigo porque me hicieron el examen de la cándida y me salió negativo. Y de verdad me siento muy feliz por eso. Batallé mucho para poder mejorar mi cándida. Y fuiste tú la que me pudo ayudar a que esté mejor.',
+      'Gracias Vero. Creo en tu trabajo. Y de paso eres un ser increíble. Gracias Verito por tu magia 🙏',
+    ],
+    prioridad: 3,
   },
 ];
