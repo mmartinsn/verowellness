@@ -9,7 +9,7 @@
  * orbs and gradient carry the background alone.
  */
 import { Image } from 'astro:assets';
-import retrato from '../../assets/fotos/veronica-bata-laptop.jpg';
+import retrato from '../../assets/fotos/veronica-cocina-inicio-hero.jpg';
 import { cta, marca } from '../../data/site';
 import { checkoutPrincipal } from '../../data/oferta';
 
@@ -91,7 +91,7 @@ import { href } from '../../lib/url';
         <div class="hero-portrait">
           <Image
             src={retrato}
-            alt={`${marca.creadora}, creadora de ${marca.metodo}, con bata y laptop`}
+            alt={`${marca.creadora}, creadora de ${marca.metodo}, trabajando en su laptop`}
             widths={[440, 660, 880]}
             sizes="(min-width: 992px) 440px, min(90vw, 440px)"
             loading="eager"

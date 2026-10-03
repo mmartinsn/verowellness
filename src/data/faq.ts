@@ -36,7 +36,7 @@ export const faq: Pregunta[] = [
   },
   {
     q: '¿Cómo funciona el Next Layer Cycle?',
-    a: 'Es la continuidad para quienes ya completaron su Initial Layer Cycle: dos sesiones para seguir trabajando las capas de tu plan sin empezar de cero. Al terminar tu primer ciclo te llega por correo tu invitación, con la tarifa preferencial. Si pasan 6 meses o más sin asesoría, se empieza de nuevo con el Initial Layer Cycle.',
+    a: 'Es la continuidad para quienes ya completaron su Initial Layer Cycle: dos sesiones para seguir trabajando las capas de tu plan sin empezar de cero. Si ya eres mi paciente, escríbeme por Instagram y te envío tus planes por correo. Si pasan 6 meses o más sin asesoría, se empieza de nuevo con el Initial Layer Cycle.',
   },
   {
     q: '¿Qué incluye el bonus del Initial Layer Cycle?',

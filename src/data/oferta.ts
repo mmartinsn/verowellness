@@ -39,7 +39,7 @@ export const ciclos: Record<CicloId, Ciclo> = {
     citas: 1,
     destacado: false,
     etiqueta: 'Una sola cita',
-    subtotal: 197,
+    subtotal: 150,
     descripcion:
       'Una sesión privada de 90 minutos: escuchamos tu historia, revisamos tus formularios y sales con un plan de acción.',
     descripcionCorta: '1 sesión privada de 90 min · plan de acción.',
@@ -62,7 +62,7 @@ export const ciclos: Record<CicloId, Ciclo> = {
     etiqueta: 'Para nuevos clientes',
     etiquetaNota:
       'También aplica si tienes 6 meses o más sin asistir a una asesoría y necesitas plantear una nueva estrategia.',
-    subtotal: 247,
+    subtotal: 269,
     descripcion:
       'Dos sesiones privadas de 90 minutos, separadas ~30 días, a completar en un máximo de 60.',
     descripcionCorta:
@@ -96,7 +96,7 @@ export const ciclos: Record<CicloId, Ciclo> = {
     citas: 2,
     destacado: false,
     etiqueta: 'Tarifa de continuidad',
-    subtotal: 197,
+    subtotal: 210,
     descripcion:
       'Para quienes ya completaron su Initial Layer Cycle. Dos sesiones privadas de 90 minutos para continuar profundizando, revisar tu evolución y redefinir prioridades sin empezar de cero.',
     descripcionCorta: '2 sesiones privadas de 60-90 min · para clientes de seguimiento.',
@@ -120,10 +120,12 @@ export const ciclos: Record<CicloId, Ciclo> = {
 export const listaCiclos: Ciclo[] = [ciclos.LAYER_SESSION, ciclos.INITIAL_LAYER_CYCLE];
 
 export const continuidad = {
-  etiqueta: 'Acceso por invitación',
-  titulo: 'Next Layer Cycle',
+  etiqueta: 'Acceso privado',
+  titulo: '¿Ya eres mi paciente?',
   texto:
-    'El Next Layer Cycle no se publica: al completar tu Initial Layer Cycle recibes por correo tu invitación personal, con la tarifa de continuidad reservada para quienes ya trabajan sus capas conmigo.',
+    'Tus planes de continuidad no se publican. Escríbeme por Instagram y te los enviaré por correo para seguir trabajando conmigo.',
+  boton: 'Escríbeme por Instagram',
+  url: 'https://ig.me/m/verodudamell',
 };
 
 export function rotuloCitas(ciclo: Ciclo): string {
@@ -137,7 +139,7 @@ export function checkoutPath(ciclo: Ciclo): string {
 /** Where the home's «Trabaja conmigo» buttons go: the new-client cycle (Mari, 2026-09-22). */
 export const checkoutPrincipal = checkoutPath(ciclos.INITIAL_LAYER_CYCLE);
 
-/** `$247`, as the cards print it. Tax shows only in the checkout (Mari, 2026-09-24). */
+/** `$269`, as the cards print it. Tax shows only in the checkout (Mari, 2026-09-24). */
 export function precioCard(ciclo: Ciclo): string {
   return `$${ciclo.subtotal}`;
 }

@@ -178,6 +178,17 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     recetario y hackear. El documento de ajustes decía «precio a definir con Rosi»: si Rosi
     define otro, se cambia en `tienda.ts`.
 
+19. **2026-10-03 — Precios nuevos, pacientes que vuelven y fotos en la cocina** (Mari). Layer
+    Session (1 consulta) USD 150; Initial Layer Cycle (2 consultas, nuevas) USD 269; Next Layer
+    Cycle (2 consultas de control) USD 210, que no se muestra: solo vive en su checkout. El bloque
+    de continuidad pasa a «Acceso privado · ¿Ya eres mi paciente?» con enlace a mensaje directo de
+    Instagram (copy de Codex, opción 1, con rótulo más exclusivo). Las fotos del hero del inicio,
+    Mi método, Asesorías, «Sobre Verónica» y Entregables son generadas con Codex tomando como guía
+    la foto de cocina que mandó Mari (WhatsApp, 02-oct) y las reales como referencia de cara:
+    `veronica-cocina-*.jpg`, fuentes en `fuentes/fotos-2026-10-03/`. **Verónica debe aprobar que
+    la cara es fiel.** Siguen en estudio la banda de la premisa, el aviso de Exámenes y el bowl de
+    «Sobre Verónica».
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

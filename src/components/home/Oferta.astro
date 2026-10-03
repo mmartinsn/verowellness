@@ -132,6 +132,9 @@ const check =
       <div>
         <p class="exclusivo-titulo">{continuidad.titulo}</p>
         <p class="exclusivo-texto">{continuidad.texto}</p>
+        <a class="exclusivo-link" href={continuidad.url} target="_blank" rel="noopener"
+          >{continuidad.boton} →</a
+        >
       </div>
     </aside>
 
@@ -348,6 +351,14 @@ const check =
     line-height: 1.15;
     margin-bottom: 4px;
     color: var(--color-bone);
+  }
+  .exclusivo-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: 700;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
   .exclusivo-texto {
     font-size: 15.5px;

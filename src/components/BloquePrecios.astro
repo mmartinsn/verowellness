@@ -16,6 +16,9 @@ const { oscuro = false } = Astro.props;
     <span class="bp-tag">{continuidad.etiqueta}</span>
     <p class="bp-titulo">{continuidad.titulo}</p>
     <p class="bp-texto">{continuidad.texto}</p>
+    <a class="bp-link" href={continuidad.url} target="_blank" rel="noopener"
+      >{continuidad.boton} →</a
+    >
   </aside>
 </div>
 
@@ -64,6 +67,14 @@ const { oscuro = false } = Astro.props;
     font-weight: 500;
     font-size: clamp(22px, 2.4vw, 28px);
     line-height: 1.15;
+  }
+  .bp-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: 700;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
   .bp-texto {
     font-size: 16px;
