@@ -4,7 +4,7 @@
  * the text itself, and the `motivo` tags summarise what the patient says she came for.
  */
 import type { ImageMetadata } from 'astro';
-import fotoMouna from '../assets/testimonios/mouna-harbie.jpg';
+import fotoMargarita from '../assets/testimonios/margarita-medel.jpg';
 
 export interface Testimonio {
   id: string;
@@ -25,7 +25,6 @@ export const testimonios: Testimonio[] = [
     id: 'mouna-harbie',
     nombre: 'Mouna Harbie',
     lugar: 'Venezuela',
-    foto: fotoMouna,
     motivo: ['Digestión', 'Infecciones', 'Piel'],
     destacado:
       'Se eliminó por completo la dermatitis/eczema que tenía constantemente en las manos.',
@@ -41,6 +40,7 @@ export const testimonios: Testimonio[] = [
     id: 'margarita-medel',
     nombre: 'Margarita Medel',
     lugar: 'USA',
+    foto: fotoMargarita,
     motivo: ['Peso', 'Hábitos'],
     destacado:
       'Alimentarse bien no se trata de seguir una dieta temporal, sino de crear hábitos que realmente pueda mantener.',
