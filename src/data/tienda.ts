@@ -146,14 +146,12 @@ export const productos: Producto[] = [
     boton: 'Comprar guía educativa',
     tono: 'rose',
   },
-];
-
-export const proximamente: Libro[] = [
   {
     id: 'guia-hormonas-30',
     num: '04',
     nombre: 'Vuelve a sentirte tú',
     titulo: 'Vuelve a sentirte tú',
+    precio: 19.99,
     bestSeller: true,
     portada: portadaHormonas,
     pregunta: 'Entiende tus hormonas a partir de los 30 y empieza por lo que sí puedes cambiar.',
@@ -187,11 +185,14 @@ export const proximamente: Libro[] = [
       ],
     ],
     cierre: 'Tus hormonas son una capa, no toda la historia.',
-    formato: 'PDF · Libro y workbook',
-    nota: 'Contenido educativo. No sustituye una evaluación médica ni sirve para diagnosticar o tratar enfermedades.',
+    formato: 'PDF · 20 páginas · Libro y workbook',
+    nota: 'Contenido educativo. No sustituye una evaluación médica ni sirve para diagnosticar o tratar enfermedades. Esta guía incluye enlaces comerciales a productos que uso y recomiendo; cualquier compra es opcional y separada del precio de la guía.',
+    boton: 'Comprar guía',
     tono: 'clay',
   },
 ];
+
+export const proximamente: Libro[] = [];
 
 export const libros: (Producto | Libro)[] = [...productos, ...proximamente];
 

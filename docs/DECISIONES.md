@@ -158,6 +158,26 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     - **Fotos:** el color del pelo se iguala al de las fotos finales del recetario, retocando por
       color con la cara sin tocar; una edición generativa le cambió las facciones el 16-sep.
 
+18. **2026-10-03 — Textos aprobados y lo que faltaba de los ajustes** (Mari: «aprueba los textos
+    según lo que tú consideres»). Revisión del documento de Verónica contra el sitio, cambio por
+    cambio. **Aprobados tal cual:** descripción de la Layer Session, aviso de lectura de exámenes
+    («se lee 1 examen por cita…»), guías antes de pagar, recuadro de orientación de Exámenes y las
+    FAQ de online, diferencia Session/Initial, exámenes y Next Layer Cycle. **Aprobados con
+    ajuste:** la nota del Next pasa a «Acceso por invitación» («no se publica… tu invitación
+    personal»), que es el tono membresía que ella pidió; el bonus deja de decir «pacientes nuevos»
+    o «si es tu primera vez», porque ella lo quiere en *todas* las ventas del Initial; la FAQ de
+    pago ya no lista pasarelas (no están confirmadas) y menciona el fee de laboratorio; la ventana
+    de la tienda decía el 15 % tres veces, ahora una. **Faltaba:** botón fijo también en
+    Exámenes, Tienda y Suplementos (se oculta mientras se ve la barra de selección propia);
+    «del terreno a la célula» fuera del hero del inicio, del pie y del lema (ella lo quitó porque
+    «lo entienden pocos»); «trabajo 1:1» → «asesorías individuales»; en el tema del inicio, Célula
+    y Hábitos usan ahora el hex exacto de ATLAS (#D8ABA6, #8E9480).
+    **Guía de hormonas a la venta, USD 19.99:** la fuente es el manuscrito v4 («Vuelve a sentirte
+    tú», 29-sep, descargado por Mari el 03-oct), cuyo pie de portada fija ese precio y avisa de los
+    enlaces comerciales (ese aviso va en la nota). Entra en la ventana de la tienda tras el
+    recetario y hackear. El documento de ajustes decía «precio a definir con Rosi»: si Rosi
+    define otro, se cambia en `tienda.ts`.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
@@ -166,10 +186,9 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   Nunito (lo que Verónica pidió para el recetario). ¿Se unifica, y con cuál sans?
 - **¿Paleta de Mari o los siete hex del brand book?** Verónica blindó la paleta; conviene que lo
   vea con la tabla de arriba.
-- **Textos redactados para aprobar** (decisión 17): la nota de acceso al Next Layer Cycle, la
-  descripción de la Layer Session, el aviso de lectura de exámenes, la ventana de guías del
-  checkout y las preguntas frecuentes nuevas.
-- **Precio de la guía de hormonas** (con Rosi) y su portada definitiva.
+- **Confirmar con Verónica:** el nombre «Layer Session» y sus 90 min, el 15 % de descuento en
+  guías, el fee de USD 25 por examen y el precio de la guía de hormonas (19.99 del manuscrito).
+- **Portada definitiva** de la guía de hormonas.
 - **Suplementos:** su documento dice «falta suplementos»; esa página no se tocó en esta ronda.
 - **Textos legales** y **aviso médico**: los redacta Verónica.
 - **Pasarelas**: confirmar cuáles se contratan (Stripe, PayPal, Zelle manual) y si el impuesto es

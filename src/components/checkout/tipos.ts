@@ -17,7 +17,12 @@ export interface OpcionLectura {
   texto: string;
 }
 
-const ORDEN_SUGERENCIAS = ['recetario-30-desayunos', 'hackear-tu-cerebro', 'guia-glp1-retatrutida'];
+const ORDEN_SUGERENCIAS = [
+  'recetario-30-desayunos',
+  'hackear-tu-cerebro',
+  'guia-hormonas-30',
+  'guia-glp1-retatrutida',
+];
 
 function aGuia({ id, nombre, precio, portada }: GuiaOferta): GuiaOferta {
   return { id, nombre, precio, portada };

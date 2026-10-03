@@ -23,8 +23,8 @@ const linea = (g: GuiaOferta): LineaPedido => ({
   <form method="dialog" class="pg-cerrar-form">
     <button class="pg-cerrar" value="cerrar" aria-label="Cerrar">×</button>
   </form>
-  <p class="pg-eyebrow">Solo en este pedido · {pct}% de descuento</p>
-  <h2 class="pg-titulo" id="popup-guia-titulo">Complementa tu compra</h2>
+  <p class="pg-eyebrow">Solo en este pedido</p>
+  <h2 class="pg-titulo" id="popup-guia-titulo">¿La sumas a tu pedido?</h2>
   {
     sugerencias.map((g) => (
       <article class="pg-item" data-candidato={JSON.stringify(linea(g))} hidden>
@@ -35,9 +35,7 @@ const linea = (g: GuiaOferta): LineaPedido => ({
             <s>{usd(g.precio)}</s>
             <strong>{usd(conDescuento(g.precio))}</strong>
           </p>
-          <p class="pg-texto">
-            Agrégala ahora con {pct}% de descuento. El precio especial vale solo para este pedido.
-          </p>
+          <p class="pg-texto">Precio especial con {pct}% de descuento, válido solo ahora.</p>
         </div>
       </article>
     ))

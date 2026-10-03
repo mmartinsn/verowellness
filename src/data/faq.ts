@@ -40,10 +40,10 @@ export const faq: Pregunta[] = [
   },
   {
     q: '¿Qué incluye el bonus del Initial Layer Cycle?',
-    a: 'Si es tu primera vez y eliges el Initial Layer Cycle, recibes gratis la «Guía de alimentación anti-inflamatoria como estilo de vida».',
+    a: 'Con el Initial Layer Cycle recibes gratis la «Guía de alimentación anti-inflamatoria como estilo de vida».',
   },
   {
     q: '¿Cómo puedo pagar?',
-    a: 'Con tarjeta, Apple Pay, PayPal o Zelle. Los precios se muestran antes de impuestos: el 7% se suma en el checkout, donde ves el total antes de pagar.',
+    a: 'Los precios se muestran sin impuestos: el 7% se suma en el checkout, donde ves el total antes de pagar. En los exámenes se suma además el fee del laboratorio.',
   },
 ];

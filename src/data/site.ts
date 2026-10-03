@@ -7,7 +7,7 @@ export const marca = {
   nombre: 'Veronica Wellness',
   metodo: 'The Layer Method',
   lema: 'Health has layers.',
-  firma: 'Salud por capas. Del terreno a la célula.',
+  firma: 'Salud por capas.',
   sintoma:
     'El síntoma es el punto de partida. Sanar empieza por entender las capas detrás de lo que sientes.',
   /** Verónica's Instagram (Mari, 2026-09-23 — not @veronicawellness). */

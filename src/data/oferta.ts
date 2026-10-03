@@ -48,7 +48,7 @@ export const ciclos: Record<CicloId, Ciclo> = {
     confirmacion: {
       titulo: '¡Listo, bienvenida!',
       texto:
-        'Tu Layer Session está confirmada. Agenda tu cita a continuación — recibirás The Layer Assessment por email antes de tu cita.',
+        'Tu Layer Session está confirmada. Agenda tu cita a continuación. Recibirás The Layer Assessment por email antes de tu cita.',
       calendlyUrl: 'https://calendly.com/veronicawellness/layer-session',
       calendlyEtiqueta: 'Calendly — Layer Session booking',
     },
@@ -74,7 +74,7 @@ export const ciclos: Record<CicloId, Ciclo> = {
       'The Layer Plan',
       'The Layer Review',
     ],
-    bonus: 'Pacientes nuevos: «Guía de alimentación anti-inflamatoria como estilo de vida» gratis.',
+    bonus: 'Incluye gratis la «Guía de alimentación anti-inflamatoria como estilo de vida» gratis.',
     incluyeCheckout: [
       'The Layer Assessment',
       'The Layer Map',
@@ -120,10 +120,10 @@ export const ciclos: Record<CicloId, Ciclo> = {
 export const listaCiclos: Ciclo[] = [ciclos.LAYER_SESSION, ciclos.INITIAL_LAYER_CYCLE];
 
 export const continuidad = {
-  etiqueta: 'Acceso exclusivo',
+  etiqueta: 'Acceso por invitación',
   titulo: 'Next Layer Cycle',
   texto:
-    'Al completar tu Initial Layer Cycle te llega por correo tu invitación al Next Layer Cycle, con la tarifa preferencial reservada para quienes ya trabajan sus capas conmigo.',
+    'El Next Layer Cycle no se publica: al completar tu Initial Layer Cycle recibes por correo tu invitación personal, con la tarifa de continuidad reservada para quienes ya trabajan sus capas conmigo.',
 };
 
 export function rotuloCitas(ciclo: Ciclo): string {

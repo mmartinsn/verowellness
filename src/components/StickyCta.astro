@@ -25,6 +25,10 @@ const { label = cta.label, path = cta.path } = Astro.props;
     border-top: 1px solid rgb(48 47 42 / 0.1);
     padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
   }
+  /* Exámenes and Tienda have their own basket bar: while it shows, it is the call to action. */
+  :global(body:has([data-dock]:not([hidden]), #tiendaSeleccion.con-items)) .sticky-cta-bar {
+    display: none;
+  }
   @media (min-width: 1024px) {
     .sticky-cta-bar {
       left: auto;
