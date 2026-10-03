@@ -251,6 +251,14 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     Harbie, Sofía Molina, Patricia Medel (foto), Mariexis Palacios (foto), Margarita Medel (foto) y
     Yisandra Sori (foto).
 
+27. **2026-10-03 — Proceso como ruta y pacientes como membresía.** «Así funciona el proceso» es
+    una ruta: una línea que se dibuja con cuatro hitos (vertical en el teléfono), en el inicio y
+    en Mi método. «¿Ya eres mi paciente?» deja de ser una nota bajo la Layer Session: es una
+    franja propia bajo los dos precios, con una tarjeta de socio «Next Layer Cycle · Solo
+    pacientes» (borde clay, brillo que la recorre) y un botón a Instagram; Mari dijo que «no
+    resaltaba» y Verónica pidió que sonara «tipo membership». La tarjeta del Initial lleva
+    «Recomendada».
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
