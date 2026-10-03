@@ -238,31 +238,60 @@ const pilares = [
     </div>
   </section>
 
-  <!-- 06 · Mi experiencia -->
+  <!-- 06 · Mi experiencia: a contained card; rings draw while the numbers count -->
   <section class="experiencia">
-    <div class="wrap exp-grid">
-      <div class="exp-datos" data-contadores>
-        <span class="eyebrow reveal">Mi experiencia</span>
-        <div class="dato reveal">
-          <strong><span>+</span><span data-cuenta="8">8</span></strong>
-          <small>años de experiencia profesional</small>
+    <div class="wrap">
+      <div class="exp-card" data-contadores>
+        <div class="exp-luz" aria-hidden="true"></div>
+        <div class="exp-texto">
+          <span class="eyebrow">Mi experiencia</span>
+          <div class="anillos">
+            <div class="anillo-dato" style="--p: 0.8">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="pista" cx="60" cy="60" r="54"></circle>
+                <circle class="trazo" cx="60" cy="60" r="54" pathLength="1"></circle>
+              </svg>
+              <strong><span class="mas">+</span><span data-cuenta="8">8</span></strong>
+              <small>años de experiencia profesional</small>
+            </div>
+            <div class="anillo-dato" style="--p: 1">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="pista" cx="60" cy="60" r="54"></circle>
+                <circle class="trazo" cx="60" cy="60" r="54" pathLength="1"></circle>
+              </svg>
+              <strong
+                ><span class="mas">+</span><span data-cuenta="5000" data-miles>5.000</span></strong
+              >
+              <small>casos acompañados</small>
+            </div>
+          </div>
+          <p class="exp-titulo">
+            <span class="exp-diploma" aria-hidden="true">✦</span>
+            Licenciada en Nutrición y Dietética · Universidad Central de Venezuela
+          </p>
         </div>
-        <div class="dato reveal">
-          <strong><span>+</span><span data-cuenta="5000" data-miles>5.000</span></strong>
-          <small>casos acompañados</small>
-        </div>
-        <p class="exp-titulo reveal">
-          Licenciada en Nutrición y Dietética · Universidad Central de Venezuela
-        </p>
+        <figure class="exp-foto">
+          <span class="exp-arco">
+            <Image
+              src={bata}
+              alt={`${marca.creadora} con bata blanca`}
+              widths={[320, 560]}
+              sizes="(min-width: 900px) 300px, 60vw"
+            />
+          </span>
+          <svg class="sello" viewBox="0 0 200 200" aria-hidden="true">
+            <defs>
+              <path id="sello-circulo" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"
+              ></path>
+            </defs>
+            <text>
+              <textPath href="#sello-circulo" textLength="486" lengthAdjust="spacing"
+                >NUTRICIONISTA · UCV · THE LAYER METHOD ·</textPath
+              >
+            </text>
+          </svg>
+        </figure>
       </div>
-      <figure class="exp-foto reveal-scale">
-        <Image
-          src={bata}
-          alt={`${marca.creadora} con bata blanca`}
-          widths={[380, 640]}
-          sizes="(min-width: 900px) 380px, 70vw"
-        />
-      </figure>
     </div>
   </section>
 
@@ -849,72 +878,216 @@ const pilares = [
 
   /* ── 06 · Experiencia ── */
   .experiencia {
-    padding: clamp(56px, 7vw, 100px) 0;
-    background: var(--color-sage);
+    padding: clamp(40px, 6vw, 90px) 0;
+  }
+  .exp-card {
+    position: relative;
     overflow: hidden;
-  }
-  .exp-grid {
+    max-width: 980px;
+    margin: 0 auto;
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: clamp(32px, 5vw, 72px);
+    grid-template-columns: 1.25fr 0.75fr;
     align-items: center;
+    gap: clamp(24px, 4vw, 56px);
+    padding: clamp(28px, 4.5vw, 56px);
+    border-radius: 40px;
+    background:
+      radial-gradient(60% 80% at 0% 0%, rgb(255 255 255 / 0.55), transparent 60%),
+      linear-gradient(140deg, var(--color-sage), #dfe5d6 55%, rgb(231 183 160 / 0.55));
+    box-shadow: 0 40px 90px -60px rgb(35 34 30 / 0.55);
   }
-  .exp-datos {
+  /* A slow light sweeping across the card once it is in view. */
+  .exp-luz {
+    position: absolute;
+    inset: -40%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0 70%,
+      rgb(255 255 255 / 0.45) 80%,
+      transparent 90%
+    );
+    animation: barrido 9s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes barrido {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+  .exp-texto,
+  .exp-foto {
+    position: relative;
+  }
+  .anillos {
+    margin-top: 22px;
+    display: flex;
+    gap: clamp(18px, 3vw, 36px);
+    flex-wrap: wrap;
+  }
+  .anillo-dato {
+    position: relative;
+    width: clamp(170px, 18vw, 210px);
+    aspect-ratio: 1;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 22px 32px;
+    place-content: center;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(18px) scale(0.94);
+    transition:
+      opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+      transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
   }
-  .exp-datos .eyebrow,
-  .exp-titulo {
-    grid-column: 1 / -1;
+  .anillo-dato:nth-child(2) {
+    transition-delay: 0.15s;
   }
-  .dato strong {
-    display: block;
+  .anillo-dato svg {
+    position: absolute;
+    inset: 0;
+    transform: rotate(-90deg);
+  }
+  .anillo-dato circle {
+    fill: none;
+    stroke-width: 3;
+  }
+  .pista {
+    stroke: rgb(35 34 30 / 0.1);
+  }
+  .trazo {
+    stroke: var(--color-clay-rich);
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1.8s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
+  }
+  .anillo-dato strong {
     font-family: var(--font-serif);
     font-weight: 500;
-    font-size: clamp(64px, 8vw, 112px);
-    line-height: 0.95;
+    font-size: clamp(46px, 5vw, 62px);
+    line-height: 1;
     color: var(--color-charcoal);
-    font-variant-numeric: lining-nums;
+    font-variant-numeric: lining-nums tabular-nums;
   }
-  .dato strong span:first-child {
+  .anillo-dato .mas {
     color: var(--color-clay-rich);
   }
-  .dato small {
-    font-size: 15px;
+  .anillo-dato small {
+    max-width: 130px;
+    margin: 6px auto 0;
+    font-size: 12.5px;
     font-weight: 700;
+    line-height: 1.35;
     color: rgb(35 34 30 / 0.7);
   }
+  .exp-card:global(.encendida) .anillo-dato {
+    opacity: 1;
+    transform: none;
+  }
+  .exp-card:global(.encendida) .trazo {
+    stroke-dashoffset: calc(1 - var(--p));
+  }
   .exp-titulo {
-    margin: 10px 0 0;
-    padding-top: 20px;
-    border-top: 1px solid rgb(35 34 30 / 0.15);
+    margin: 26px 0 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 0.65);
+    backdrop-filter: blur(6px);
+    font-size: 14px;
     font-weight: 700;
     color: var(--color-charcoal);
+  }
+  .exp-diploma {
+    color: var(--color-clay-rich);
   }
   .exp-foto {
     margin: 0;
     justify-self: center;
+    width: min(280px, 100%);
   }
   .exp-foto :global(img) {
     display: block;
-    width: min(360px, 100%);
+    width: 100%;
     height: auto;
     aspect-ratio: 3 / 4;
     object-fit: cover;
-    object-position: 50% 15%;
+    object-position: 50% 12%;
+    transform: scale(1.2);
+    transform-origin: 50% 20%;
+  }
+  .exp-arco {
+    display: block;
+    overflow: hidden;
     border-radius: 999px 999px 28px 28px;
-    box-shadow: 0 40px 80px -48px rgb(35 34 30 / 0.6);
+    box-shadow: 0 30px 60px -36px rgb(35 34 30 / 0.6);
+  }
+  /* A seal with her title turning slowly over the corner of the portrait. */
+  .sello {
+    position: absolute;
+    width: 116px;
+    height: 116px;
+    left: -36px;
+    bottom: 18px;
+    padding: 6px;
+    border-radius: 50%;
+    background: var(--color-bone);
+    box-shadow: 0 14px 30px -16px rgb(35 34 30 / 0.5);
+    animation: girar 18s linear infinite;
+  }
+  .sello text {
+    font-size: 15px;
+    font-weight: 800;
+    fill: var(--color-charcoal);
+  }
+  @keyframes girar {
+    to {
+      transform: rotate(1turn);
+    }
   }
   @media (max-width: 800px) {
-    .exp-grid {
+    .exp-card {
       grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .anillos {
+      justify-content: center;
+      flex-wrap: nowrap;
+      gap: 12px;
+    }
+    .anillo-dato {
+      width: calc(50% - 6px);
+      max-width: 160px;
+    }
+    .anillo-dato strong {
+      font-size: clamp(28px, 9vw, 38px);
+    }
+    .anillo-dato small {
+      font-size: 11px;
+      max-width: 100px;
     }
     .exp-foto {
       order: -1;
+      width: min(220px, 64vw);
     }
-    .exp-foto :global(img) {
-      width: min(260px, 70vw);
+    .sello {
+      width: 92px;
+      height: 92px;
+      left: -22px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .exp-luz,
+    .sello {
+      animation: none;
+    }
+    .anillo-dato {
+      opacity: 1;
+      transform: none;
+    }
+    .trazo {
+      transition: none;
+      stroke-dashoffset: calc(1 - var(--p));
     }
   }
 
@@ -1051,12 +1224,14 @@ const pilares = [
 
   // Counters count up once when they come into view; the final number is already in the HTML.
   const box = document.querySelector('[data-contadores]');
+  if (box && calm) box.classList.add('encendida');
   if (box && !calm) {
     const nums = [...box.querySelectorAll<HTMLElement>('[data-cuenta]')];
     nums.forEach((el) => (el.textContent = '0'));
     new IntersectionObserver((entries, obs) => {
       if (!entries.some((e) => e.isIntersecting)) return;
       obs.disconnect();
+      box.classList.add('encendida');
       const t0 = performance.now();
       const tick = (t: number) => {
         const k = Math.min(1, (t - t0) / 1600);
