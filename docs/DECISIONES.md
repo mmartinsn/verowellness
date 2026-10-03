@@ -239,9 +239,11 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     `mideAlimentos` (`data/grupos-examenes.ts`).
 
 26. **2026-10-03 — Testimonios.** Componente `Testimonios.astro` con datos en
-    `data/testimonios.ts`: foto (o inicial), nombre, lugar, motivo, una frase literal destacada,
-    el primer párrafo visible y el resto tras «Leer su historia completa»; varios se deslizan con
-    flechas, ordenados por `prioridad` (Mari: «los más potentes primero»). Van en Sobre mí y en
+    `data/testimonios.ts`, como muro de tarjetas (las fotos vienen de capturas y se pixelaban en
+    grande; Mari pidió otra propuesta): frase literal destacada en grande, extracto con «Leer
+    más», y al pie foto pequeña de 56 px (o inicial), nombre, lugar y motivo. Tres columnas que se
+    llenan de izquierda a derecha por `prioridad` (los más potentes en la primera fila; la
+    primera tarjeta en clay); en el teléfono, una fila que se desliza. Van en Sobre mí y en
     Asesorías antes de los precios (los tres primeros). Textos tal cual los mandó Mari, solo con
     ortografía corregida: Lorena González, Liza Koutcharyan (foto), Fabiana de Luca (foto), Mouna
     Harbie, Sofía Molina, Patricia Medel (foto), Mariexis Palacios (foto), Margarita Medel (foto) y
