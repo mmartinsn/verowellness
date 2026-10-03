@@ -52,6 +52,6 @@ export const faq: Pregunta[] = [
   },
   {
     q: '¿Cómo funcionan los precios y los impuestos?',
-    a: `Publicamos los precios sin impuestos: ${session.nombre} cuesta USD ${session.subtotal} e ${initial.nombre}, USD ${initial.subtotal}. Sumamos el 7% en el checkout, donde puedes ver el total antes de pagar. En los exámenes sumamos además un fee del laboratorio.`,
+    a: `Publicamos los precios sin impuestos: ${session.nombre} cuesta USD ${session.subtotal} e ${initial.nombre}, USD ${initial.subtotal}. Sumamos el 7% al pagar, donde puedes ver el total antes de confirmar. En los exámenes se suma además un cargo del laboratorio.`,
   },
 ];

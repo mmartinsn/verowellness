@@ -21,7 +21,7 @@ import Catalogo from '../components/examenes/Catalogo.astro';
 import PorQue from '../components/examenes/PorQue.astro';
 import Proceso from '../components/examenes/Proceso.astro';
 import FaqExamenes from '../components/examenes/FaqExamenes.astro';
-import { examenes, preguntasExamenes } from '../data/examenes';
+import { preguntasExamenes } from '../data/examenes';
 import { grafoSitio } from '../lib/schema';
 
 const faqLd = {
@@ -32,11 +32,12 @@ const faqLd = {
     acceptedAnswer: { '@type': 'Answer', text: p.a },
   })),
 };
-const description = `${examenes.length} exámenes funcionales organizados por síntoma —digestión, cansancio, hormonas, estrés y más— con para quién es cada uno, su muestra y su precio. Kit en tu casa.`;
+const description =
+  'Explora los exámenes funcionales por categoría. Consulta qué mide cada prueba, cómo se toma la muestra y su precio. Si tienes dudas, revísalas en tu asesoría.';
 ---
 
 <SiteLayout
-  title="Exámenes funcionales — Veronica Wellness"
+  title="Exámenes funcionales: catálogo | Veronica Wellness"
   description={description}
   theme="inicio"
   mobileCta={false}

@@ -33,8 +33,8 @@ const productosLd = productos.map((p) => ({
 ---
 
 <SiteLayout
-  title="Ebooks y recetas de Verónica Dudamell | Veronica Wellness"
-  description="Explora los ebooks de Verónica Dudamell: antojos, 30 desayunos, hormonas a partir de los 30 y una guía educativa sobre GLP-1 y retatrutida. Descarga digital en PDF."
+  title="Guías de nutrición y recetas PDF | Veronica Wellness"
+  description="Explora guías de nutrición, recetas y hormonas después de los 30. Conoce los libros de Verónica Dudamell y elige tu próxima lectura en formato PDF."
   theme="inicio"
   mobileCta={false}
   jsonLd={[...grafoSitio(Astro.site), ...productosLd]}
@@ -43,7 +43,7 @@ const productosLd = productos.map((p) => ({
 
   <nav class="indice" id="indice" aria-label="Índice de la tienda">
     <div class="wrap indice-inner">
-      <h2 class="indice-titulo" data-nosplit>Índice</h2>
+      <h2 class="indice-titulo" data-nosplit>Explora las guías</h2>
       <ol>
         {
           productos.map((p) => (

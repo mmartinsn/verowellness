@@ -271,6 +271,19 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     con las herramientas bajando hacia «El método». La foto de bata con laptop ya no tiene el
     sticker (Codex, retoque local).
 
+30. **2026-10-03 — Auditoría de textos y SEO con Codex.** Aplicado: title y description de las siete
+    páginas con la intención de búsqueda al inicio y la marca al final (p. ej. «Nutricionista
+    funcional online | Veronica Wellness», «Asesoría nutricional online para ti», «Exámenes
+    funcionales: catálogo»); H2 más claros («Cinco capas. Un solo mapa.», «Elige tu asesoría.»,
+    «Preguntas sobre tus exámenes», «Explora las guías»); «Comprar solo este»; «Ir a Wholescripts»
+    (el enlace aún va a la portada); Next Layer Cycle en 90 min en todas partes; «pago» y «cargo»
+    en vez de «checkout» y «fee» en la FAQ. **No aplicado, a propósito:** los textos que Verónica
+    pidió literalmente (subtítulo y frase del hero, «Trabaja conmigo · Clic aquí», H1 THE LAYER
+    METHOD) y los datos clínicos de las tres FAQ originales (decisión 15). **Para el lanzamiento en
+    veronicawellness.com:** quitar `prototipo` (noindex), cambiar robots.txt, revisar sitemap y
+    canónicas; las fichas de examen se cargan al abrir la ventana, así que Google no las ve; una
+    página propia para la guía de hormonas ayudaría a posicionarla.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

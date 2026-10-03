@@ -98,7 +98,7 @@ export const ciclos: Record<CicloId, Ciclo> = {
     subtotal: 210,
     descripcion:
       'Para quienes ya completaron su Initial Layer Cycle. Dos sesiones privadas de 90 minutos para continuar profundizando, revisar tu evolución y redefinir prioridades sin empezar de cero.',
-    descripcionCorta: '2 sesiones privadas de 60-90 min · para clientes de seguimiento.',
+    descripcionCorta: '2 sesiones privadas de 90 min · para pacientes en seguimiento.',
     incluye: ['Revisión de tu evolución', 'Redefinición de prioridades', 'Layer Plan actualizado'],
     incluyeCheckout: [
       'Revisión de tu evolución',
