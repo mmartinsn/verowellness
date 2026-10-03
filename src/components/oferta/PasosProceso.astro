@@ -1,46 +1,57 @@
 ---
 /**
- * «Así funciona el proceso»: the four steps of the Initial Layer Cycle as cards. Shared by the
- * home offer, Mi método and Asesorías so the steps read the same everywhere (Verónica, change 27:
- * «desglosar cada punto como en la página de inicio»).
+ * «Así funciona el proceso»: the four steps of the Initial Layer Cycle as a route (Mari,
+ * 2026-10-03: a line that draws itself with four numbered stops, instead of four tall cards).
+ * Shared by the home offer, Mi método (on its dark bridge: `oscuro`) and Asesorías so the steps
+ * read the same everywhere (Verónica, change 27). Horizontal on wide screens, vertical on phones.
  */
+interface Props {
+  /** On a dark ground (Mi método's bridge). */
+  oscuro?: boolean;
+}
+const { oscuro = false } = Astro.props;
+
 const pasos = [
   {
-    titulo: 'Antes de tu Cita 1',
+    titulo: 'Antes de tu cita 1',
     marca: 'The Layer Assessment',
-    texto: 'Historia, objetivos, alimentación, lifestyle, síntomas y laboratorios.',
+    texto: 'Historia, objetivos, alimentación, estilo de vida, síntomas y laboratorios.',
   },
   {
     titulo: 'Cita 1 · Mapear + Priorizar',
     dur: '90 min',
     marca: 'The Layer Map · Top 3 Priorities · The Layer Plan',
-    texto: 'Mapeas tus Layers, conectas la información y defines qué merece atención primero.',
+    texto: 'Mapeamos tus capas, conectamos la información y definimos qué merece atención primero.',
   },
   {
-    titulo: 'Entre Citas · Implementar',
+    titulo: 'Entre citas · Implementar',
     texto: 'Pones en práctica tu Layer Plan y observamos respuesta y obstáculos.',
   },
   {
     titulo: 'Cita 2 · Revisar + Ajustar',
     dur: '90 min',
+    marca: 'The Layer Review',
     texto: 'Revisamos qué mejoró, qué falta, y actualizamos tu Layer Plan.',
   },
 ];
 ---
 
-<div class="reveal">
+<div class:list={['ruta-proceso', 'reveal', { oscuro }]}>
   <span class="eyebrow proceso-label">Así funciona el proceso:</span>
-  <ol class="proceso">
+  <ol class="ruta">
+    <span class="linea" aria-hidden="true"><span class="linea-llena"></span></span>
     {
       pasos.map((p, i) => (
-        <li class="paso spot">
-          <div class="paso-num">{i + 1}</div>
-          <div class="paso-titulo">
-            {p.titulo}
-            {p.dur && <span class="paso-dur">{p.dur}</span>}
+        <li class="hito" style={`--i:${i}`}>
+          <span class="hito-num">{i + 1}</span>
+          <div class="hito-cuerpo">
+            <p class="hito-titulo">
+              {p.titulo}
+              {p.dur && <span class="hito-dur">{p.dur}</span>}
+            </p>
+            {p.marca && <p class="hito-marca">{p.marca}</p>}
+            <p class="hito-texto">{p.texto}</p>
           </div>
-          <div class="paso-marca">{p.marca ?? ' '}</div>
-          <div class="paso-texto">{p.texto}</div>
         </li>
       ))
     }
@@ -48,76 +59,175 @@ const pasos = [
 </div>
 
 <style>
+  .ruta-proceso {
+    --t: var(--color-charcoal);
+    --t2: rgb(35 34 30 / 0.68);
+    --pista: rgb(35 34 30 / 0.12);
+    --fondo-num: var(--color-white);
+    margin-bottom: 56px;
+  }
+  .ruta-proceso.oscuro {
+    --t: var(--color-bone);
+    --t2: rgb(248 246 241 / 0.68);
+    --pista: rgb(248 246 241 / 0.16);
+    --fondo-num: #2b2a25;
+  }
   /* Block and without the dot, as in the design. */
   .proceso-label {
     display: block;
-    margin-bottom: 18px;
+    margin-bottom: 26px;
   }
   .proceso-label::before {
     display: none;
   }
-  .proceso {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 18px;
-    margin-bottom: 64px;
+  .ruta {
+    position: relative;
     list-style: none;
+    margin: 0;
     padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
   }
-  .paso {
-    background: var(--color-white);
-    border: 1px solid rgb(35 34 30 / 0.12);
-    border-radius: 22px;
-    padding: 26px 24px;
+  /* The track behind the stops, and its clay fill that draws itself when the route comes in. */
+  .linea {
+    position: absolute;
+    top: 23px;
+    left: 24px;
+    right: 24px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--pista);
+    overflow: hidden;
+  }
+  .linea-llena {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--color-clay), var(--color-clay-deep));
+    transition: width 1.6s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
+  }
+  .ruta-proceso:global(.in) .linea-llena {
+    width: 100%;
+  }
+  .hito {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    box-shadow: 0 8px 24px rgb(35 34 30 / 0.03);
+    gap: 16px;
+    opacity: 0;
+    transform: translateY(14px);
     transition:
-      transform 0.3s var(--ease-out-soft),
-      border-color 0.3s ease;
+      opacity 0.7s cubic-bezier(0.19, 1, 0.22, 1),
+      transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+    transition-delay: calc(0.25s + var(--i) * 0.35s);
   }
-  .paso:hover {
-    transform: translateY(-5px);
-    border-color: var(--color-clay);
+  .ruta-proceso:global(.in) .hito {
+    opacity: 1;
+    transform: none;
   }
-  .paso-num {
-    width: 32px;
-    height: 32px;
+  .hito-num {
+    position: relative;
+    z-index: 1;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-serif);
+    font-size: 22px;
+    color: var(--t);
+    background: var(--fondo-num);
+    box-shadow:
+      0 0 0 2px var(--color-clay),
+      0 10px 24px -12px rgb(35 34 30 / 0.5);
+    transition:
+      background 0.3s,
+      transform 0.3s;
+  }
+  .hito:hover .hito-num {
     background: var(--color-clay);
     color: var(--color-charcoal);
-    font-weight: 800;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transform: scale(1.08);
   }
-  .paso-titulo {
-    font-weight: 800;
-    font-size: 17px;
-    color: var(--color-charcoal);
+  .hito-cuerpo p {
+    margin: 0;
   }
-  .paso-dur {
+  .hito-titulo {
+    font-weight: 800;
+    font-size: 16.5px;
+    line-height: 1.3;
+    color: var(--t);
+  }
+  .hito-dur {
     display: inline-block;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    background: var(--color-sand);
+    margin-left: 6px;
     padding: 2px 8px;
     border-radius: var(--radius-pill);
-    margin-left: 6px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    vertical-align: 2px;
+    background: var(--color-clay);
+    color: var(--color-charcoal);
   }
-  .paso-marca {
+  .hito-marca {
+    margin-top: 6px !important;
     font-size: 12.5px;
     font-weight: 700;
     color: var(--color-clay-deep);
-    min-height: 18px;
   }
-  .paso-texto {
+  .oscuro .hito-marca {
+    color: var(--color-clay);
+  }
+  .hito-texto {
+    margin-top: 8px !important;
     font-size: 14.5px;
-    color: rgb(35 34 30 / 0.7);
-    line-height: 1.5;
+    line-height: 1.55;
+    color: var(--t2);
+  }
+
+  /* Phones and narrow tablets: the route runs down the left. */
+  @media (max-width: 860px) {
+    .ruta {
+      grid-template-columns: 1fr;
+      gap: 26px;
+    }
+    .linea {
+      top: 24px;
+      bottom: 24px;
+      left: 23px;
+      right: auto;
+      width: 2px;
+      height: auto;
+    }
+    .linea-llena {
+      width: 100%;
+      height: 0;
+      transition-property: height;
+    }
+    .ruta-proceso:global(.in) .linea-llena {
+      width: 100%;
+      height: 100%;
+    }
+    .hito {
+      flex-direction: row;
+      gap: 18px;
+    }
+    .hito-num {
+      flex-shrink: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hito {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .linea-llena {
+      width: 100%;
+      transition: none;
+    }
   }
 </style>
