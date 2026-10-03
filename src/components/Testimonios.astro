@@ -41,19 +41,21 @@ const inicial = (n: string) => n.trim().charAt(0).toUpperCase();
                   )}
                 </div>
                 <p class="t-nombre">{t.nombre}</p>
-                <p class="t-lugar">{t.lugar}</p>
-                <ul class="t-motivo">
-                  {t.motivo.map((m) => (
-                    <li>{m}</li>
-                  ))}
-                </ul>
+                {t.lugar && <p class="t-lugar">{t.lugar}</p>}
+                {t.motivo.length > 0 && (
+                  <ul class="t-motivo">
+                    {t.motivo.map((m) => (
+                      <li>{m}</li>
+                    ))}
+                  </ul>
+                )}
               </div>
               <div class="t-voz">
                 <span class="t-comillas" aria-hidden="true">
                   “
                 </span>
                 <blockquote class="t-destacado">{t.destacado}</blockquote>
-                <p class="t-texto">{t.texto[0]}</p>
+                {t.texto[0] && <p class="t-texto">{t.texto[0]}</p>}
                 {t.texto.length > 1 && (
                   <details class="t-mas">
                     <summary>
@@ -74,6 +76,9 @@ const inicial = (n: string) => n.trim().charAt(0).toUpperCase();
             <button type="button" data-t-mover="-1" aria-label="Testimonio anterior">
               ←
             </button>
+            <span class="t-contador" data-t-contador aria-live="polite">
+              1 / {lista.length}
+            </span>
             <button type="button" data-t-mover="1" aria-label="Siguiente testimonio">
               →
             </button>
@@ -245,6 +250,15 @@ const inicial = (n: string) => n.trim().charAt(0).toUpperCase();
     justify-content: center;
     gap: 10px;
   }
+  .t-contador {
+    align-self: center;
+    min-width: 56px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: rgb(35 34 30 / 0.6);
+  }
   .t-flechas button {
     width: 46px;
     height: 46px;
@@ -267,6 +281,17 @@ const inicial = (n: string) => n.trim().charAt(0).toUpperCase();
 <script>
   document.querySelectorAll<HTMLElement>('[data-testimonios]').forEach((sec) => {
     const carril = sec.querySelector<HTMLElement>('[data-carril]')!;
+    const contador = sec.querySelector<HTMLElement>('[data-t-contador]');
+    const total = carril.children.length;
+    carril.addEventListener(
+      'scroll',
+      () => {
+        if (!contador) return;
+        const i = Math.round(carril.scrollLeft / carril.clientWidth) + 1;
+        contador.textContent = `${Math.min(i, total)} / ${total}`;
+      },
+      { passive: true }
+    );
     sec.querySelectorAll<HTMLButtonElement>('[data-t-mover]').forEach((b) =>
       b.addEventListener('click', () =>
         carril.scrollBy({

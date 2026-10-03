@@ -242,8 +242,9 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     `data/testimonios.ts`: foto (o inicial), nombre, lugar, motivo, una frase literal destacada,
     el primer párrafo visible y el resto tras «Leer su historia completa»; varios se deslizan con
     flechas, ordenados por `prioridad` (Mari: «los más potentes primero»). Van en Sobre mí y en
-    Asesorías antes de los precios. Textos tal cual los mandó Mari: Mouna Harbie (Venezuela, con
-    foto) y Margarita Medel (USA, sin foto).
+    Asesorías antes de los precios (los tres primeros). Textos tal cual los mandó Mari, solo con
+    ortografía corregida: Lorena González, Liza Koutcharyan (foto), Fabiana de Luca (foto), Mouna
+    Harbie, Sofía Molina, Margarita Medel (foto) y Yisandra Sori (foto).
 
 ## Abiertas — para Mari y Verónica
 

@@ -5,11 +5,15 @@
  */
 import type { ImageMetadata } from 'astro';
 import fotoMargarita from '../assets/testimonios/margarita-medel.jpg';
+import fotoLiza from '../assets/testimonios/liza-koutcharyan.jpg';
+import fotoYisandra from '../assets/testimonios/yisandra-sori.jpg';
+import fotoFabiana from '../assets/testimonios/fabiana-de-luca.jpg';
 
 export interface Testimonio {
   id: string;
   nombre: string;
-  lugar: string;
+  /** Country, when the patient gave it. */
+  lugar?: string;
   foto?: ImageMetadata;
   motivo: string[];
   /** A sentence from the testimonial, set large. */
@@ -34,7 +38,7 @@ export const testimonios: Testimonio[] = [
       'Agradezco tener a Vero como guía, ha sido clave en este camino. La recomiendo totalmente para quien realmente quiere sanar de raíz.',
       'Gracias Vero, eres lo máximo 🫶🏼',
     ],
-    prioridad: 2,
+    prioridad: 4,
   },
   {
     id: 'margarita-medel',
@@ -48,7 +52,7 @@ export const testimonios: Testimonio[] = [
       'Hace tres años comencé a trabajar con Veronica en mejorar mi alimentación y salud, y desde entonces he experimentado cambios que van más allá de la pérdida de peso. Este plan de alimentación diseñado específicamente para mis necesidades, me ha ayudado a perder y mantener mi peso de una manera sostenible, pero sobre todo, a sentirme mejor y prestar mucha más atención a lo que mi cuerpo necesita.',
       'Estoy muy agradecida con Vero por su acompañamiento profesional, conocimiento y por la manera cálida y personalizada en la que ha guiado mi proceso. Estos tres años me han enseñado que alimentarse bien no se trata de seguir una dieta temporal, sino de crear hábitos que realmente pueda mantener y que contribuyan a sentirme bien a largo plazo. Sin duda, ha sido una parte muy importante de mi camino hacia una vida más saludable y espero continuar aprendiendo de su experiencia!! 🩷🙏',
     ],
-    prioridad: 4,
+    prioridad: 6,
   },
   {
     id: 'lorena-gonzalez',
@@ -72,6 +76,50 @@ export const testimonios: Testimonio[] = [
       'Hola Vero, quisiera dejar mi testimonio sin duda. Fuiste mi oración contestada. Mi intención inicial fue tratar el cándida albicans que estuve tratándolo por casi 3 años con medicina alternativa, tratamientos y muchas consultas que no tenían ningún resultado.',
       'Iniciamos el tratamiento y empezaron a verse los resultados de inmediato con mi cándida, gracias a la ayuda y a los tratamientos con intención y ajustándolo a mi estilo de vida. Yo estoy muy agradecida contigo porque me hicieron el examen de la cándida y me salió negativo. Y de verdad me siento muy feliz por eso. Batallé mucho para poder mejorar mi cándida. Y fuiste tú la que me pudo ayudar a que esté mejor.',
       'Gracias Vero. Creo en tu trabajo. Y de paso eres un ser increíble. Gracias Verito por tu magia 🙏',
+    ],
+    prioridad: 5,
+  },
+  {
+    id: 'liza-koutcharyan',
+    nombre: 'Liza Koutcharyan',
+    foto: fotoLiza,
+    motivo: ['Peso', 'Energía', 'Autocuidado'],
+    destacado: 'Con Verónica aprendí que yo también tengo que ser una prioridad.',
+    texto: [
+      'Quiero decir que estoy súper agradecida de haber encontrado a Verónica hace casi dos años. Llegué a ella en una etapa bastante complicada de mi vida, tanto emocionalmente como a nivel físico. Tenía sobrepeso, muchas cosas en mi vida no estaban funcionando como yo quería y, sinceramente, no estaba pasando por mi mejor momento.',
+      'Desde el principio, una de las cosas que más me gustó de Verónica fue que, aunque es muy disciplinada y sabe muy bien lo que hace, nunca sentí que me estuviera poniendo un programa que yo no pudiera seguir. Al contrario. Ella habló mucho conmigo, entendió el momento en el que estaba y la fuerza que tenía en ese momento, y creó un programa que yo realmente podía hacer.',
+      'Para mí eso fue fundamental, porque me dio la posibilidad de tener éxito en lugar de sentir que estaba fallando. Creo que fue muy inteligente por su parte entender qué podía hacer yo en ese momento y empezar desde ahí.',
+      'Mi proceso no fue rápido. Fue un recorrido largo, pero también creo que tenía que ser así. Cuando se trabaja de una manera más holística, no se trata solamente de bajar de peso; hay muchas cosas que mirar y muchas cosas que cambiar poco a poco.',
+      'Hoy estoy en 61 kilos, después de haber empezado en 73, y estoy realmente feliz. Pero más allá del peso, lo que más agradezco es todo lo que aprendí. Verónica me enseñó una manera de comer mucho más saludable y limpia que todavía hoy forma parte de mi vida. Ya no lo veo como una dieta que tengo que hacer, sino como mi manera de alimentarme.',
+      'Y creo que una de las cosas más importantes que aprendí en este proceso fue a quererme y a cuidarme a mí misma. Antes, muchas veces, yo siempre venía última. Primero estaban las necesidades de los demás, el trabajo, la familia, las responsabilidades… y yo quedaba para después. Con Verónica aprendí que yo también tengo que ser una prioridad.',
+      'Entendí que cuidarme no es ser egoísta. Al contrario: si yo estoy bien, las personas que están alrededor mío también están mejor. Para poder cuidar y estar para los demás, primero tenemos que cuidarnos nosotros mismos. Y ese cambio de mentalidad, para mí, ha sido incluso más importante que el cambio físico.',
+      'Me siento con muchísima energía, me siento bien y me veo bien. Y algo que me hace mucha gracia es que mis amigos y mi familia me dicen que ahora, con 53 años, me ven incluso mejor que cuando tenía 30.',
+      'Así que estoy muy agradecida de haber encontrado a Verónica y de haber hecho todo este camino con ella. Para mí no fue simplemente un programa para perder peso; fue aprender a cuidarme, a quererme y a encontrar una forma de sentirme bien que puedo mantener.',
+      'Gracias, Verónica, por haberme acompañado durante todo este proceso y por haber sabido adaptarte a mí y al momento de mi vida en el que te encontré.',
+      'Te mando un beso enorme. ❤️',
+    ],
+    prioridad: 2,
+  },
+  {
+    id: 'yisandra-sori',
+    nombre: 'Yisandra Sori',
+    foto: fotoYisandra,
+    motivo: [],
+    destacado: 'Dios puso a Vero en mi camino para ayudar en mi sanación, ella sabe lo que hace.',
+    texto: [],
+    prioridad: 7,
+  },
+  {
+    id: 'fabiana-de-luca',
+    nombre: 'Fabiana de Luca',
+    lugar: 'USA',
+    foto: fotoFabiana,
+    motivo: ['Hinchazón', 'Acné'],
+    destacado:
+      'Más que una nutricionista, siento que encontré a alguien que realmente se preocupa por entenderme y acompañarme en todo el proceso.',
+    texto: [
+      'Desde mi primera consulta con Vero supe que había llegado al lugar correcto. Llegué buscando ayuda con la hinchazón y acné y terminé aprendiendo muchísimo más de lo que imaginaba. Desde el día 1 supo explicarme cosas que nunca había entendido sobre mi cuerpo y, poco a poco, me ha enseñado a conocerlo, escucharlo y también a entender mejor mi relación con la comida.',
+      'Seguimos descubriendo mi cuerpo poquito a poquito, pero estoy demasiado feliz y agradecida con mis resultados desde el primer mes. Más que una nutricionista, siento que encontré a alguien que realmente se preocupa por entenderme y acompañarme en todo el proceso.',
     ],
     prioridad: 3,
   },
