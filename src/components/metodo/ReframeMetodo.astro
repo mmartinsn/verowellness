@@ -7,8 +7,8 @@ import { layers } from '../../data/layers';
 
 /** Two people, the same five Layers, a different starting point (illustration only). */
 const ordenes = [
-  { quien: 'Persona A', capas: [2, 0, 1, 4, 3] },
-  { quien: 'Persona B', capas: [4, 1, 3, 0, 2] },
+  { quien: 'Una paciente', capas: [2, 0, 1, 4, 3] },
+  { quien: 'Otra paciente', capas: [4, 1, 3, 0, 2] },
 ];
 const herramientas = [
   'Suplementos',
@@ -44,22 +44,25 @@ const herramientas = [
             sentido enfocar primero.
           </p>
         </div>
-        <div class="ordenes" aria-hidden="true">
-          {
-            ordenes.map((o) => (
-              <div class="orden">
-                <span class="orden-t">{o.quien}</span>
-                {o.capas.map((i, k) => (
-                  <span
-                    class:list={['barra', { primera: k === 0 }]}
-                    style={`--c:var(--color-${layers[i].color});--t:${layers[i].oscuro ? 'var(--color-bone)' : 'var(--color-charcoal)'};--k:${k}`}
-                  >
-                    {layers[i].nombre}
-                  </span>
-                ))}
-              </div>
-            ))
-          }
+        <div class="ordenes-zona" aria-hidden="true">
+          <span class="mismo">Mismo síntoma: cansancio</span>
+          <div class="ordenes">
+            {
+              ordenes.map((o) => (
+                <div class="orden">
+                  <span class="orden-t">{o.quien}</span>
+                  {o.capas.map((i, k) => (
+                    <span
+                      class:list={['barra', { primera: k === 0 }]}
+                      style={`--c:var(--color-${layers[i].color});--t:${layers[i].oscuro ? 'var(--color-bone)' : 'var(--color-charcoal)'};--k:${k}`}
+                    >
+                      {layers[i].nombre}
+                    </span>
+                  ))}
+                </div>
+              ))
+            }
+          </div>
         </div>
       </article>
       <article class="strip-panel b reveal">
@@ -178,6 +181,25 @@ const herramientas = [
     background: linear-gradient(transparent 62%, rgb(214 154 124 / 0.5) 62%);
   }
 
+  .ordenes-zona {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .mismo {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--color-charcoal);
+    color: var(--color-clay);
+  }
+  .ordenes-zona .ordenes {
+    width: 100%;
+  }
   /* Two people, same Layers, different order. */
   .ordenes {
     display: grid;
