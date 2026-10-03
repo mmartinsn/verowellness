@@ -1,6 +1,8 @@
 ---
 /**
- * Exámenes — the functional lab tests (data/examenes.ts, from Verónica's price list of 2026-09),
+ * Exámenes (order since 2026-10-03, Verónica's changes 35–42: hero, the «not required» notice,
+ * the order-to-results steps, the catalogue by group with search, the fifteen symptoms, why, FAQ)
+ * — the functional lab tests (data/examenes.ts, from Verónica's price list of 2026-09),
  * presented by symptom on a dark ground (Mari, 2026-09-24): HeroLupa (the lens hero), PorSintoma (hero, the ten symptoms,
  * the tests of the chosen one and the selection dock → /checkout/examenes/), then Proceso, the
  * «¿Por qué estos exámenes?» (PorQue), the logistics after nutriwhitesalud.com/exam, and the FAQ after its exam policy. The earlier orbit + explorer (Constelacion,
@@ -14,6 +16,8 @@ import '@fontsource-variable/plus-jakarta-sans';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import HeroLupa from '../components/examenes/HeroLupa.astro';
 import PorSintoma from '../components/examenes/PorSintoma.astro';
+import AvisoAsesoria from '../components/examenes/AvisoAsesoria.astro';
+import Catalogo from '../components/examenes/Catalogo.astro';
 import PorQue from '../components/examenes/PorQue.astro';
 import Proceso from '../components/examenes/Proceso.astro';
 import FaqExamenes from '../components/examenes/FaqExamenes.astro';
@@ -39,8 +43,10 @@ const description = `${examenes.length} exámenes funcionales organizados por s�
   jsonLd={[...grafoSitio(Astro.site), faqLd]}
 >
   <HeroLupa />
+  <AvisoAsesoria />
+  <Proceso />
+  <Catalogo />
   <PorSintoma />
   <PorQue />
-  <Proceso />
   <FaqExamenes />
 </SiteLayout>

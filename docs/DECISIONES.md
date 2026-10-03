@@ -171,6 +171,19 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     obtienes); textos de Codex en `src/data/fichas-examenes.ts`, solo desde la descripción de
     Verónica. «Clic» sin k (Mari).
 
+19. **2026-10-03 — Exámenes (cambios 35–42).** Orden: hero → aviso «Los exámenes no son
+    obligatorios para tus asesorías…» (frase de Verónica en «tú») → «De tu pedido a tus
+    resultados» → catálogo por grupo con buscador → los quince síntomas e intereses → por qué →
+    FAQ. Grupos con los nombres del documento (Gastrointestinal, Reacciones a alimentos,
+    Hormonales, Toxinas y metales pesados, Anti-aging, Salud vaginal…), uno a la vez en pestañas;
+    el buscador recorre nombre, laboratorio, muestra y descripción. Los quince síntomas, sus
+    ejemplos, preguntas («¿Te conviene…? Estas son nuestras opciones:») y exámenes son el texto
+    rojo literal de Verónica (`data/sintomas.ts`); en ansiedad/depresión, embarazo, articulaciones
+    y autoinmune va primero un recuadro de orientación con el botón a Asesorías. Fondos
+    alternados para aligerar: aviso, proceso, catálogo y FAQ en claro; hero, síntomas y «por
+    qué» en oscuro. Rótulos de interfaz del catálogo (título, buscador, sin resultados) por
+    Claude. «Perfil hepático de tu catálogo» → «de nuestro catálogo».
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

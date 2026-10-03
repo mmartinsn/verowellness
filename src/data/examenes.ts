@@ -49,16 +49,16 @@ export const muestras: Record<Muestra, string> = {
 };
 
 export const areas: Area[] = [
-  { id: 'infecciones', nombre: 'Infecciones', color: 'sage-deep' },
+  { id: 'infecciones', nombre: 'Gastrointestinal', color: 'sage-deep' },
   { id: 'hormonales', nombre: 'Hormonales', color: 'rose' },
-  { id: 'alimentos', nombre: 'Alimentos', color: 'clay' },
+  { id: 'alimentos', nombre: 'Reacciones a alimentos', color: 'clay' },
   { id: 'cardiovascular', nombre: 'Cardiovascular', color: 'rose-deep' },
   { id: 'salud-vaginal', nombre: 'Salud vaginal', color: 'clay-deep' },
   { id: 'salud-mental', nombre: 'Salud mental', color: 'olive' },
   { id: 'moho', nombre: 'Moho y micotoxinas', color: 'sage' },
-  { id: 'longevidad', nombre: 'Longevidad', color: 'clay-rich' },
+  { id: 'longevidad', nombre: 'Anti-aging', color: 'clay-rich' },
   { id: 'peso', nombre: 'Peso', color: 'sand' },
-  { id: 'intoxicaciones', nombre: 'Intoxicaciones', color: 'charcoal' },
+  { id: 'intoxicaciones', nombre: 'Toxinas y metales pesados', color: 'charcoal' },
   { id: 'acidos-organicos', nombre: 'Ácidos orgánicos', color: 'sage-deep' },
 ];
 
