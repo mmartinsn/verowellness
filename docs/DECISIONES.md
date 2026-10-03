@@ -215,6 +215,12 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     la selección y va al checkout). En el teléfono las pastillas se deslizan y las tarjetas se
     apilan. Fuera la nota «Los grupos siguientes organizan…» (Mari).
 
+23. **2026-10-03 — Grupos largos más cortos.** Cada grupo muestra 4 tarjetas y un botón «Ver los N
+    exámenes»; «Reacciones a alimentos» se ve como comparador (alimentos, anticuerpos, qué
+    incluye, precio, Agregar y Solo este), con los datos leídos del nombre de cada panel
+    (`comparadorAlimentos` en `data/grupos-examenes.ts`); en el teléfono cada fila se vuelve una
+    ficha compacta. La búsqueda sigue recorriendo todos los exámenes.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

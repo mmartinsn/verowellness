@@ -1096,7 +1096,7 @@ const datosFichas = Object.fromEntries(
       document.querySelectorAll<HTMLButtonElement>('[data-add]').forEach((b) => {
         const on = sel.has(b.dataset.add!);
         b.setAttribute('aria-pressed', String(on));
-        b.closest('.ex, [data-fila]')?.classList.toggle('elegido', on);
+        b.closest('.ex, [data-fila], [data-comp-fila]')?.classList.toggle('elegido', on);
       });
       const n = sel.size;
       const total = [...sel].reduce((s, id) => s + (precios[id] ?? 0), 0);

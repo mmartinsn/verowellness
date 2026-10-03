@@ -54,3 +54,65 @@ export const presentacionGrupo: Record<string, { icono: string; descripcion: str
     descripcion: 'Una mirada amplia a tu metabolismo, tu energía y tus nutrientes.',
   },
 };
+
+/**
+ * «Reacciones a alimentos» is shown as a comparison table (Mari, 2026-10-03): its twelve panels
+ * differ only by these facts, all read from each test's own name.
+ */
+export const comparadorAlimentos: Record<
+  string,
+  { alimentos: string; anticuerpos: string; incluye: string }
+> = {
+  'celiac-and-gluten-sensitivity-blood-spot': {
+    alimentos: '—',
+    anticuerpos: 'Celiaquía y gluten',
+    incluye: 'Gota de sangre',
+  },
+  '198-vegetarian-food-panel-iga-igg-igg4': {
+    alimentos: '198',
+    anticuerpos: 'IgA · IgG · IgG4',
+    incluye: 'Vegetariano',
+  },
+  '96-vegetarian-food-panel-iga-igg-igg4': {
+    alimentos: '96',
+    anticuerpos: 'IgA · IgG · IgG4',
+    incluye: 'Vegetariano',
+  },
+  '240-food-panel-iga-igg-igg4': {
+    alimentos: '240',
+    anticuerpos: 'IgA · IgG · IgG4',
+    incluye: '—',
+  },
+  '96-igg-food-sensitivity-panel': { alimentos: '96', anticuerpos: 'IgG', incluye: '—' },
+  '184-igg-food-sensitivity-panel': { alimentos: '184', anticuerpos: 'IgG', incluye: '—' },
+  '96-igg-food-gluten-related-disorders-panel': {
+    alimentos: '96',
+    anticuerpos: 'IgG',
+    incluye: '+ Gluten',
+  },
+  '184-igg-food-gluten-related-disorders-panel': {
+    alimentos: '184',
+    anticuerpos: 'IgG',
+    incluye: '+ Gluten',
+  },
+  '184-igg-food-sensitivity-25-comprehensive-ige-combo-panel': {
+    alimentos: '184',
+    anticuerpos: 'IgG + IgE',
+    incluye: '25 alérgenos IgE',
+  },
+  '184-igg-food-sensitivity-50-expanded-ige-combo-panel': {
+    alimentos: '184',
+    anticuerpos: 'IgG + IgE',
+    incluye: '50 alérgenos IgE',
+  },
+  '205-igg-food-sensitivity-25-comprehensive-ige-combo-panel': {
+    alimentos: '205',
+    anticuerpos: 'IgG + IgE',
+    incluye: '25 alérgenos IgE',
+  },
+  '205-igg-food-sensitivity-50-expanded-ige-combo-panel': {
+    alimentos: '205',
+    anticuerpos: 'IgG + IgE',
+    incluye: '50 alérgenos IgE',
+  },
+};

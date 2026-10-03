@@ -17,8 +17,10 @@ interface Props {
   oculta?: boolean;
   /** Group name shown while searching. */
   nombreGrupo?: string;
+  /** Position inside its group, for «Ver los N exámenes». */
+  orden?: number;
 }
-const { e, color, grupo, texto, oculta = false, nombreGrupo } = Astro.props;
+const { e, color, grupo, texto, oculta = false, nombreGrupo, orden } = Astro.props;
 const gancho = fichas[e.id]?.gancho ?? '';
 ---
 
@@ -27,6 +29,7 @@ const gancho = fichas[e.id]?.gancho ?? '';
   data-fila
   data-grupo={grupo}
   data-texto={texto}
+  data-orden={orden}
   hidden={oculta}
   style={`--tono:var(--color-${color})`}
 >
