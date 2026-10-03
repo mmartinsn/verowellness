@@ -221,6 +221,15 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     (`comparadorAlimentos` en `data/grupos-examenes.ts`); en el teléfono cada fila se vuelve una
     ficha compacta. La búsqueda sigue recorriendo todos los exámenes.
 
+24. **2026-10-03 — Página «Sobre mí»** (`/sobre-mi`, en el menú tras Inicio; el inicio enlaza con
+    «Conoce mi historia»). Objetivo de Mari: que la persona conecte y diga «es ella». Hechos de
+    la versión resumida de Verónica; títulos y conectores de Claude (Mari: «eres mi diseñador UX
+    y copywriter»). Recorrido: «Antes de ser nutricionista, fui paciente» con su retrato en arco →
+    «¿Te suena?» (cuatro frases de su historia como espejo) → su historia como capas que se
+    apilan hasta «capa por capa» → «Tu síntoma no es el problema» → «Por eso mi trabajo empieza
+    escuchándote» (tres pilares y a quién acompaña) → +8 años y +5.000 casos → testimonios
+    reservados → nota final firmada «Vero». Fotos con el pelo oscurecido: té, bowl y bata.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

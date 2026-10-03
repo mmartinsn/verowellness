@@ -1,0 +1,1075 @@
+---
+/**
+ * Sobre mí — the page where the visitor should think «es ella» (Mari, 2026-10-03). Facts are the
+ * short version of Verónica's «Sobre mi Veronica Wellness PAGINA WEB»; headlines and connectors
+ * are Claude's (Mari: «eres mi diseñador UX y copywriter»). The arc: who she is → a mirror («¿te
+ * suena?») → her story as layers that pile up until the way out → what she learnt → how she
+ * walks with you → numbers → testimonials (reserved) → a personal note. Same language as the home
+ * (`theme="inicio"`); photos are the originals with the hair darkened.
+ */
+import '@fontsource/cormorant-garamond/300.css';
+import '@fontsource/cormorant-garamond/600-italic.css';
+import '@fontsource-variable/plus-jakarta-sans';
+import { Image } from 'astro:assets';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import retrato from '../assets/fotos/veronica-te-sonrisa.jpg';
+import bowl from '../assets/fotos/veronica-bowl.jpg';
+import bata from '../assets/fotos/veronica-bata-frontal.jpg';
+import { checkoutPrincipal } from '../data/oferta';
+import { cta, marca } from '../data/site';
+import { href } from '../lib/url';
+import { grafoSitio } from '../lib/schema';
+
+const espejo = [
+  'Tienes síntomas que nadie te explica.',
+  'Sales de cada consulta con más preguntas que respuestas.',
+  'Sientes que tu cuerpo no te escucha.',
+  'Tapas el cansancio con café, suplementos y más exigencia.',
+];
+
+const capas = [
+  { pre: 'Crecí con', chips: ['problemas digestivos', 'alergias respiratorias'] },
+  { pre: 'En la adolescencia llegaron', chips: ['la anemia', 'los ovarios poliquísticos'] },
+  {
+    pre: 'Al emigrar a Estados Unidos, el estrés hizo aparecer',
+    chips: ['fatiga', 'caída del cabello', 'ansiedad', 'desbalances hormonales'],
+  },
+  {
+    pre: 'Y yo lo tapaba con',
+    chips: ['cafeína', 'suplementos', 'productos', 'más autoexigencia'],
+    tachado: true,
+  },
+];
+
+const acompano = [
+  'Problemas digestivos',
+  'Alergias',
+  'Fatiga',
+  'Ansiedad',
+  'Desbalances hormonales',
+  'Condiciones autoinmunes',
+  'Y mucho más',
+];
+
+const pilares = [
+  {
+    t: 'Te escucho con detalle',
+    p: 'Tu historia es el punto de partida. Escucho cada detalle y personalizo tu plan según tu estilo de vida.',
+  },
+  {
+    t: 'Vamos a la raíz',
+    p: 'Trabajamos tu salud por capas: infecciones, toxinas, deficiencias de nutrientes, digestión y absorción, alimentación, balance hormonal y más.',
+  },
+  {
+    t: 'Hábitos que se quedan',
+    p: 'Para que construyas hábitos que se sostengan en el tiempo, no una dieta más.',
+  },
+];
+---
+
+<SiteLayout
+  title="Sobre mí · Verónica Dudamell, nutricionista | Veronica Wellness"
+  description="Antes de ser nutricionista, fui paciente. Soy Verónica Dudamell, Licenciada en Nutrición y Dietética (UCV), y acompaño a hombres y mujeres a abordar sus síntomas desde la raíz, capa por capa."
+  jsonLd={grafoSitio(Astro.site)}
+  theme="inicio"
+  mobileCta={{ path: checkoutPrincipal }}
+>
+  <div id="scrollProgress" aria-hidden="true"></div>
+
+  <!-- 01 · Quién soy -->
+  <section class="hero">
+    <div class="hero-fondo" aria-hidden="true"></div>
+    <div class="wrap hero-grid">
+      <div class="hero-texto">
+        <span class="eyebrow reveal">Sobre mí</span>
+        <h1>Antes de ser nutricionista, <em>fui paciente.</em></h1>
+        <p class="hero-intro reveal">
+          Hola, soy Veronica Dudamell. Soy venezolana de corazón y hoy hago vida en Miami. Soy
+          Licenciada en Nutrición y Dietética por la Universidad Central de Venezuela.
+        </p>
+        <p class="hero-cita reveal">
+          Sé lo que es tener síntomas que nadie explica, salir de una consulta más sin respuestas y
+          sentir que tu cuerpo no te escucha.
+        </p>
+        <div class="hero-acciones reveal">
+          <a class="btn btn-primary" href={href(checkoutPrincipal)}>{cta.label}</a>
+          <a class="link-historia" href="#historia">Conoce mi historia ↓</a>
+        </div>
+      </div>
+      <div class="hero-visual reveal-scale">
+        <div class="arco tilt-card">
+          <Image
+            src={retrato}
+            alt={`${marca.creadora} sonriendo con una taza de té`}
+            widths={[460, 760]}
+            sizes="(min-width: 900px) 420px, 80vw"
+            loading="eager"
+          />
+        </div>
+        <div class="pill p1">
+          <span class="pill-ico" aria-hidden="true">♡</span>
+          <span><strong>Venezolana de corazón</strong><small>Hoy en Miami</small></span>
+        </div>
+        <div class="pill p2">
+          <span class="pill-ico pill-sage" aria-hidden="true">✓</span>
+          <span><strong>Nutricionista · UCV</strong><small>+8 años de experiencia</small></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · El espejo -->
+  <section class="espejo">
+    <div class="wrap">
+      <div class="espejo-cab reveal">
+        <span class="eyebrow">¿Te suena?</span>
+        <h2>Si te pasa esto, te entiendo. <em>A mí también me pasó.</em></h2>
+      </div>
+      <ul class="espejo-lista reveal-stagger">
+        {
+          espejo.map((t) => (
+            <li>
+              <span class="comilla" aria-hidden="true">
+                “
+              </span>
+              <p>{t}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 03 · Lo que viví: capas que se acumulan -->
+  <section class="vivi" id="historia">
+    <div class="wrap vivi-grid">
+      <div class="vivi-cab">
+        <span class="eyebrow reveal">Lo que viví</span>
+        <h2>Una capa encima de otra, hasta que mi cuerpo dijo basta.</h2>
+        <div class="barras" aria-hidden="true">
+          {capas.map((_, i) => <span style={`--i:${i}`} />)}
+          <span class="ultima"></span>
+        </div>
+      </div>
+      <ol class="pila">
+        {
+          capas.map((c, i) => (
+            <li class="capa" style={`--i:${i}`}>
+              <span class="capa-num">0{i + 1}</span>
+              <p class="capa-pre">{c.pre}</p>
+              <ul class:list={['capa-chips', { tachado: c.tachado }]}>
+                {c.chips.map((ch) => (
+                  <li>{ch}</li>
+                ))}
+              </ul>
+            </li>
+          ))
+        }
+        <li class="capa capa-colapso" style={`--i:${capas.length}`}>
+          <span class="capa-num">05</span>
+          <p class="capa-grande">
+            Después de años así, mi cuerpo colapsó tras un período de estrés sostenido y exposición
+            a moho.
+          </p>
+          <p class="capa-nota">Los tratamientos que probé solo apagaban un síntoma a la vez.</p>
+        </li>
+        <li class="capa capa-salida" style={`--i:${capas.length + 1}`}>
+          <span class="capa-num">06</span>
+          <p class="capa-grande">
+            Fue trabajando <em>capa por capa</em>, con mi propio método, {marca.metodo}, como mi
+            cuerpo finalmente logró recuperarse.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 04 · Lo que aprendí -->
+  <section class="aprendi">
+    <div class="wrap">
+      <div class="banda reveal">
+        <div class="banda-brillo" aria-hidden="true"></div>
+        <span class="eyebrow">Lo que aprendí</span>
+        <h2>Tu síntoma no es el problema.</h2>
+        <p class="banda-sub">
+          Es una señal de que tu cuerpo está sobrecargado y te está pidiendo ayuda.
+        </p>
+        <p class="banda-lema">No persigas cada síntoma, entiende las capas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · Cómo trabajo contigo -->
+  <section class="trabajo">
+    <div class="wrap trabajo-grid">
+      <figure class="trabajo-foto reveal-scale">
+        <Image
+          src={bowl}
+          alt={`${marca.creadora} riendo con un bowl de ensalada`}
+          widths={[420, 720]}
+          sizes="(min-width: 900px) 420px, 100vw"
+        />
+        <figcaption>Incluso lo que es común <em>no es normal.</em></figcaption>
+      </figure>
+      <div>
+        <span class="eyebrow reveal">Cómo trabajo contigo</span>
+        <h2 class="reveal">Por eso mi trabajo empieza <em>escuchándote.</em></h2>
+        <ul class="pilares reveal-stagger">
+          {
+            pilares.map((p, i) => (
+              <li>
+                <span class="pilar-num">0{i + 1}</span>
+                <div>
+                  <p class="pilar-t">{p.t}</p>
+                  <p>{p.p}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="acompano-t reveal">
+          Acompaño a hombres y mujeres a abordar desde la raíz cualquier síntoma o condición que
+          estén viviendo:
+        </p>
+        <ul class="chips reveal-stagger">
+          {acompano.map((a) => <li>{a}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · Mi experiencia -->
+  <section class="experiencia">
+    <div class="wrap exp-grid">
+      <div class="exp-datos" data-contadores>
+        <span class="eyebrow reveal">Mi experiencia</span>
+        <div class="dato reveal">
+          <strong><span>+</span><span data-cuenta="8">8</span></strong>
+          <small>años de experiencia profesional</small>
+        </div>
+        <div class="dato reveal">
+          <strong><span>+</span><span data-cuenta="5000" data-miles>5.000</span></strong>
+          <small>casos acompañados</small>
+        </div>
+        <p class="exp-titulo reveal">
+          Licenciada en Nutrición y Dietética · Universidad Central de Venezuela
+        </p>
+      </div>
+      <figure class="exp-foto reveal-scale">
+        <Image
+          src={bata}
+          alt={`${marca.creadora} con bata blanca`}
+          widths={[380, 640]}
+          sizes="(min-width: 900px) 380px, 70vw"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <!-- 07 · Testimonios (reservado hasta tener testimonios reales, con permiso) -->
+  <section class="testimonios" id="testimonios">
+    <div class="wrap">
+      <div class="test-cab reveal">
+        <span class="eyebrow">Testimonios</span>
+        <h2>Lo que dicen quienes ya empezaron.</h2>
+        <span class="pronto">Próximamente</span>
+      </div>
+      <div class="test-fila" aria-hidden="true">
+        {
+          [1, 2, 3].map(() => (
+            <div class="test-card">
+              <span class="comilla">“</span>
+              <span class="linea" />
+              <span class="linea" />
+              <span class="linea corta" />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 · Nota final -->
+  <section class="nota">
+    <div class="wrap">
+      <div class="nota-caja reveal">
+        <h2>Si te viste en esta historia, <em>empecemos por escucharte.</em></h2>
+        <p>Tu cuerpo te está hablando. Vamos a entender, capa por capa, qué te está pidiendo.</p>
+        <p class="firma">Vero</p>
+        <a class="btn btn-primary" href={href(checkoutPrincipal)}>{cta.label}</a>
+      </div>
+      <p class="aviso">
+        Los resultados varían según cada persona. Este acompañamiento no sustituye el diagnóstico ni
+        el tratamiento médico.
+      </p>
+    </div>
+  </section>
+</SiteLayout>
+
+<style is:global>
+  #scrollProgress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      var(--color-clay-deep),
+      var(--color-rose-deep),
+      var(--color-clay)
+    );
+    z-index: 9999;
+    pointer-events: none;
+  }
+</style>
+
+<style>
+  h1,
+  h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-charcoal);
+    line-height: 1.05;
+  }
+  h2 {
+    font-size: clamp(34px, 4.4vw, 58px);
+    margin: 14px 0 0;
+  }
+  p {
+    font-size: clamp(16px, 1.25vw, 18.5px);
+    line-height: 1.68;
+    color: rgb(35 34 30 / 0.82);
+  }
+  em {
+    font-style: italic;
+    color: var(--color-clay-rich);
+  }
+  section {
+    position: relative;
+  }
+
+  /* ── 01 · Hero ── */
+  .hero {
+    padding: clamp(36px, 6vw, 90px) 0 clamp(56px, 7vw, 110px);
+    overflow: hidden;
+  }
+  .hero-fondo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(55% 70% at 85% 25%, rgb(231 183 160 / 0.5), transparent 70%),
+      radial-gradient(45% 60% at 5% 95%, rgb(207 215 196 / 0.55), transparent 70%),
+      linear-gradient(180deg, var(--color-bone), var(--color-ivory));
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(32px, 5vw, 80px);
+    align-items: center;
+  }
+  h1 {
+    font-size: clamp(46px, 6.6vw, 92px);
+    margin: 18px 0 24px;
+  }
+  h1 em {
+    display: block;
+  }
+  .hero-intro {
+    max-width: 540px;
+  }
+  .hero-cita {
+    max-width: 560px;
+    margin: 22px 0 0;
+    padding-left: 20px;
+    border-left: 3px solid var(--color-clay);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(22px, 2.3vw, 29px);
+    line-height: 1.35;
+    color: var(--color-charcoal);
+  }
+  .hero-acciones {
+    margin-top: 32px;
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .link-historia {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--color-charcoal);
+    text-decoration: none;
+    border-bottom: 1px solid rgb(35 34 30 / 0.3);
+  }
+  .hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  /* An arched frame: soft and editorial, a window into her. */
+  .arco {
+    width: min(420px, 100%);
+    border-radius: 999px 999px 32px 32px;
+    overflow: hidden;
+    box-shadow: 0 50px 90px -50px rgb(35 34 30 / 0.6);
+    outline: 10px solid rgb(255 255 255 / 0.55);
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .arco :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    object-position: 50% 30%;
+    /* The portrait has a lot of white wall: come a little closer to her. */
+    transform: scale(1.28);
+    transform-origin: 50% 32%;
+  }
+  .pill {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 18px 8px 8px;
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 0.88);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 16px 34px -18px rgb(35 34 30 / 0.45);
+    animation: flotar 6s ease-in-out infinite;
+  }
+  .pill strong {
+    display: block;
+    font-size: 13px;
+    color: var(--color-charcoal);
+  }
+  .pill small {
+    display: block;
+    font-size: 11.5px;
+    color: rgb(35 34 30 / 0.6);
+  }
+  .p1 {
+    top: 14%;
+    left: -2%;
+  }
+  .p2 {
+    bottom: 12%;
+    right: -2%;
+    animation-delay: -3s;
+  }
+  .pill-ico {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--color-clay);
+    font-size: 15px;
+  }
+  .pill-sage {
+    background: var(--color-sage);
+  }
+  @keyframes flotar {
+    50% {
+      translate: 0 -8px;
+    }
+  }
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-visual {
+      order: -1;
+    }
+    .arco {
+      width: min(320px, 78%);
+    }
+    .p1 {
+      left: 0;
+    }
+    .p2 {
+      right: 0;
+    }
+  }
+
+  /* ── 02 · Espejo ── */
+  .espejo {
+    padding: clamp(56px, 7vw, 100px) 0;
+    background: var(--color-bone);
+  }
+  .espejo-cab {
+    max-width: 760px;
+  }
+  .espejo-lista {
+    list-style: none;
+    margin: 36px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .espejo-lista li {
+    position: relative;
+    padding: 26px 22px 24px;
+    border-radius: 26px;
+    background: var(--color-white);
+    border: 1px solid rgb(35 34 30 / 0.06);
+    box-shadow: 0 20px 44px -36px rgb(35 34 30 / 0.5);
+    transition: transform 0.35s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .espejo-lista li:hover {
+    transform: translateY(-6px) rotate(-0.6deg);
+  }
+  .comilla {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 72px;
+    line-height: 0.6;
+    height: 30px;
+    color: var(--color-clay);
+  }
+  .espejo-lista p {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(21px, 1.9vw, 25px);
+    line-height: 1.3;
+    color: var(--color-charcoal);
+  }
+  @media (max-width: 1000px) {
+    .espejo-lista {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .espejo-lista {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── 03 · Historia ── */
+  .vivi {
+    padding: clamp(56px, 7vw, 110px) 0;
+    background: var(--color-sand-light);
+  }
+  .vivi-grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: start;
+  }
+  .vivi-cab {
+    position: sticky;
+    top: 120px;
+  }
+  .barras {
+    margin-top: 30px;
+    display: grid;
+    gap: 8px;
+    max-width: 320px;
+  }
+  .barras span {
+    height: 14px;
+    border-radius: var(--radius-pill);
+    background: color-mix(
+      in srgb,
+      var(--color-sand) calc(100% - var(--i) * 18%),
+      var(--color-clay-deep)
+    );
+    width: calc(100% - var(--i) * 9%);
+  }
+  .barras .ultima {
+    background: var(--color-charcoal);
+    width: 52%;
+  }
+  .pila {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 22px;
+  }
+  .capa {
+    position: sticky;
+    top: calc(110px + var(--i) * 16px);
+    background: var(--color-white);
+    border-radius: 32px;
+    padding: clamp(24px, 3vw, 38px);
+    border: 1px solid rgb(35 34 30 / 0.05);
+    box-shadow: 0 24px 50px -30px rgb(35 34 30 / 0.45);
+    min-height: 190px;
+  }
+  .capa-num {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: var(--color-clay-deep);
+  }
+  .capa-pre {
+    margin: 10px 0 18px;
+    font-family: var(--font-serif);
+    font-size: clamp(24px, 2.4vw, 32px);
+    line-height: 1.2;
+    color: var(--color-charcoal);
+  }
+  .capa-chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .capa-chips li {
+    padding: 9px 18px;
+    border-radius: var(--radius-pill);
+    background: var(--color-sand-light);
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .capa-chips.tachado li {
+    background: transparent;
+    border: 1.5px dashed rgb(35 34 30 / 0.25);
+    text-decoration: line-through;
+    text-decoration-color: var(--color-clay-deep);
+    text-decoration-thickness: 2px;
+    color: rgb(35 34 30 / 0.6);
+  }
+  .capa-grande {
+    margin: 12px 0 10px;
+    font-family: var(--font-serif);
+    font-size: clamp(26px, 2.8vw, 38px);
+    line-height: 1.18;
+    color: var(--color-charcoal);
+  }
+  .capa-colapso {
+    background: linear-gradient(160deg, #2b2a25, #1e1d1a);
+  }
+  .capa-colapso .capa-grande {
+    color: var(--color-bone);
+  }
+  .capa-colapso .capa-nota {
+    margin: 0;
+    color: rgb(251 250 246 / 0.7);
+  }
+  .capa-salida {
+    background: linear-gradient(150deg, var(--color-clay), var(--color-rose));
+  }
+  .capa-salida em {
+    color: var(--color-charcoal);
+  }
+  @media (max-width: 900px) {
+    .vivi-grid {
+      grid-template-columns: 1fr;
+    }
+    .vivi-cab {
+      position: static;
+    }
+    .barras {
+      display: none;
+    }
+    .capa {
+      top: calc(84px + var(--i) * 10px);
+    }
+  }
+
+  /* ── 04 · Aprendí ── */
+  .aprendi {
+    padding: clamp(48px, 6vw, 96px) 0;
+  }
+  .banda {
+    position: relative;
+    overflow: hidden;
+    border-radius: 36px;
+    padding: clamp(48px, 7vw, 110px) clamp(24px, 6vw, 96px);
+    text-align: center;
+    background:
+      radial-gradient(70% 90% at 80% 10%, rgb(214 154 124 / 0.35), transparent 60%),
+      linear-gradient(160deg, #2b2a25, #191814);
+  }
+  .banda-brillo {
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(231 183 160 / 0.22), transparent 65%);
+    animation: latir 8s ease-in-out infinite;
+  }
+  @keyframes latir {
+    50% {
+      scale: 1.15;
+      opacity: 0.7;
+    }
+  }
+  .banda .eyebrow {
+    position: relative;
+    color: var(--color-clay);
+  }
+  .banda h2 {
+    position: relative;
+    color: var(--color-bone);
+    font-size: clamp(40px, 6.4vw, 88px);
+    margin: 18px 0;
+  }
+  .banda-sub {
+    position: relative;
+    max-width: 640px;
+    margin: 0 auto 34px;
+    font-size: clamp(18px, 1.8vw, 24px);
+    color: rgb(251 250 246 / 0.78);
+  }
+  .banda-lema {
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    padding: 12px 28px;
+    border-radius: var(--radius-pill);
+    background: var(--color-clay);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(20px, 2vw, 26px);
+    color: var(--color-charcoal);
+  }
+
+  /* ── 05 · Trabajo ── */
+  .trabajo {
+    padding: clamp(40px, 5vw, 80px) 0 clamp(56px, 7vw, 110px);
+  }
+  .trabajo-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: start;
+  }
+  .trabajo-foto {
+    position: sticky;
+    top: 110px;
+    margin: 0;
+  }
+  .trabajo-foto :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 25%;
+    border-radius: 32px;
+    box-shadow: 0 40px 80px -48px rgb(35 34 30 / 0.6);
+  }
+  .trabajo-foto figcaption {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    padding: 18px 20px;
+    border-radius: 22px;
+    background: rgb(251 250 246 / 0.88);
+    backdrop-filter: blur(10px);
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 2.2vw, 28px);
+    line-height: 1.2;
+    color: var(--color-charcoal);
+  }
+  .pilares {
+    list-style: none;
+    margin: 30px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+  .pilares li {
+    display: flex;
+    gap: 18px;
+    padding: 22px 24px;
+    border-radius: 24px;
+    background: var(--color-white);
+    border: 1px solid rgb(35 34 30 / 0.06);
+    box-shadow: 0 18px 40px -34px rgb(35 34 30 / 0.45);
+  }
+  .pilar-num {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--color-clay);
+    font-size: 13px;
+    font-weight: 800;
+  }
+  .pilar-t {
+    margin: 0 0 4px;
+    font-weight: 800;
+    font-size: 17px;
+    color: var(--color-charcoal);
+  }
+  .pilares li p:not(.pilar-t) {
+    margin: 0;
+    font-size: 15.5px;
+  }
+  .acompano-t {
+    margin: 30px 0 14px;
+    font-weight: 700;
+    color: var(--color-charcoal);
+  }
+  .chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .chips li {
+    padding: 10px 18px;
+    border-radius: var(--radius-pill);
+    background: var(--color-sand-light);
+    font-size: 14.5px;
+    font-weight: 600;
+  }
+  .chips li:last-child {
+    background: var(--color-charcoal);
+    color: var(--color-bone);
+  }
+  @media (max-width: 900px) {
+    .trabajo-grid {
+      grid-template-columns: 1fr;
+    }
+    .trabajo-foto {
+      position: relative;
+      top: 0;
+    }
+  }
+
+  /* ── 06 · Experiencia ── */
+  .experiencia {
+    padding: clamp(56px, 7vw, 100px) 0;
+    background: var(--color-sage);
+    overflow: hidden;
+  }
+  .exp-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .exp-datos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 32px;
+  }
+  .exp-datos .eyebrow,
+  .exp-titulo {
+    grid-column: 1 / -1;
+  }
+  .dato strong {
+    display: block;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(64px, 8vw, 112px);
+    line-height: 0.95;
+    color: var(--color-charcoal);
+    font-variant-numeric: lining-nums;
+  }
+  .dato strong span:first-child {
+    color: var(--color-clay-rich);
+  }
+  .dato small {
+    font-size: 15px;
+    font-weight: 700;
+    color: rgb(35 34 30 / 0.7);
+  }
+  .exp-titulo {
+    margin: 10px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid rgb(35 34 30 / 0.15);
+    font-weight: 700;
+    color: var(--color-charcoal);
+  }
+  .exp-foto {
+    margin: 0;
+    justify-self: center;
+  }
+  .exp-foto :global(img) {
+    display: block;
+    width: min(360px, 100%);
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    object-position: 50% 15%;
+    border-radius: 999px 999px 28px 28px;
+    box-shadow: 0 40px 80px -48px rgb(35 34 30 / 0.6);
+  }
+  @media (max-width: 800px) {
+    .exp-grid {
+      grid-template-columns: 1fr;
+    }
+    .exp-foto {
+      order: -1;
+    }
+    .exp-foto :global(img) {
+      width: min(260px, 70vw);
+    }
+  }
+
+  /* ── 07 · Testimonios ── */
+  .testimonios {
+    padding: clamp(56px, 7vw, 100px) 0 0;
+  }
+  .test-cab {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 18px;
+  }
+  .test-cab .eyebrow {
+    flex-basis: 100%;
+  }
+  .test-cab h2 {
+    margin: 0;
+  }
+  .pronto {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--color-sand);
+  }
+  .test-fila {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .test-card {
+    display: grid;
+    gap: 12px;
+    padding: 26px;
+    border-radius: 26px;
+    background: var(--color-ivory);
+    border: 1.5px dashed rgb(35 34 30 / 0.15);
+    min-height: 200px;
+    align-content: start;
+  }
+  .test-card .comilla {
+    margin-bottom: 8px;
+  }
+  .linea {
+    height: 12px;
+    border-radius: var(--radius-pill);
+    background: rgb(35 34 30 / 0.07);
+  }
+  .linea.corta {
+    width: 55%;
+  }
+  @media (max-width: 800px) {
+    .test-fila {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── 08 · Nota final ── */
+  .nota {
+    padding: clamp(56px, 7vw, 100px) 0 24px;
+  }
+  .nota-caja {
+    max-width: 860px;
+    margin: 0 auto;
+    text-align: center;
+    padding: clamp(40px, 6vw, 80px) clamp(22px, 5vw, 70px);
+    border-radius: 36px;
+    background:
+      radial-gradient(70% 90% at 50% 0%, rgb(231 183 160 / 0.45), transparent 70%),
+      var(--color-ivory);
+  }
+  .nota-caja h2 {
+    margin: 0;
+  }
+  .nota-caja h2 em {
+    display: block;
+  }
+  .nota-caja p {
+    max-width: 560px;
+    margin: 18px auto 0;
+  }
+  .firma {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 38px !important;
+    color: var(--color-clay-rich) !important;
+    margin: 14px auto 26px !important;
+  }
+  .aviso {
+    margin: 26px auto 0;
+    max-width: 640px;
+    text-align: center;
+    font-size: 13px;
+    color: rgb(35 34 30 / 0.55);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pill,
+    .banda-brillo {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  const bar = document.getElementById('scrollProgress');
+  if (bar) {
+    const update = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = max > 0 ? `${(window.scrollY / max) * 100}%` : '0%';
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+
+  if (fine && !calm) {
+    document.querySelectorAll<HTMLElement>('.tilt-card').forEach((card) => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const rx = -((e.clientY - r.top - r.height / 2) / (r.height / 2)) * 4;
+        const ry = ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 4;
+        card.style.transform = `perspective(1000px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+      });
+      card.addEventListener('mouseleave', () => (card.style.transform = ''));
+    });
+  }
+
+  // Counters count up once when they come into view; the final number is already in the HTML.
+  const box = document.querySelector('[data-contadores]');
+  if (box && !calm) {
+    const nums = [...box.querySelectorAll<HTMLElement>('[data-cuenta]')];
+    nums.forEach((el) => (el.textContent = '0'));
+    new IntersectionObserver((entries, obs) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      obs.disconnect();
+      const t0 = performance.now();
+      const tick = (t: number) => {
+        const k = Math.min(1, (t - t0) / 1600);
+        const ease = 1 - Math.pow(1 - k, 3);
+        nums.forEach((el) => {
+          const n = Math.round(Number(el.dataset.cuenta) * ease);
+          // 5.000 with a dot, as in Spanish (es-ES does not group four digits).
+          el.textContent =
+            'miles' in el.dataset ? String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.') : String(n);
+        });
+        if (k < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }).observe(box);
+  }
+</script>
