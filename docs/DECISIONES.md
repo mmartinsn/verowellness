@@ -165,7 +165,7 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     FAQ de online, diferencia Session/Initial, exámenes y Next Layer Cycle. **Aprobados con
     ajuste:** la nota del Next pasa a «Acceso por invitación» («no se publica… tu invitación
     personal»), que es el tono membresía que ella pidió; el bonus deja de decir «pacientes nuevos»
-    o «si es tu primera vez», porque ella lo quiere en *todas* las ventas del Initial; la FAQ de
+    o «si es tu primera vez», porque ella lo quiere en _todas_ las ventas del Initial; la FAQ de
     pago ya no lista pasarelas (no están confirmadas) y menciona el fee de laboratorio; la ventana
     de la tienda decía el 15 % tres veces, ahora una. **Faltaba:** botón fijo también en
     Exámenes, Tienda y Suplementos (se oculta mientras se ve la barra de selección propia);
