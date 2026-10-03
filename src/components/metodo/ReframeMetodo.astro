@@ -3,6 +3,14 @@
  * The central idea — "No persigas cada síntoma. Entiende las capas." — followed by the two
  * distinctions side by side: the order changes; tools inform, the method decides.
  */
+import { layers } from '../../data/layers';
+
+/** Two people, the same five Layers, a different starting point (illustration only). */
+const ordenes = [
+  { quien: 'Persona A', capas: [2, 0, 1, 4, 3] },
+  { quien: 'Persona B', capas: [4, 1, 3, 0, 2] },
+];
+const herramientas = ['Suplementos', 'Sueros', 'Péptidos', 'Técnicas vanguardistas'];
 ---
 
 <section class="reframe">
@@ -20,24 +28,56 @@
 <section class="strip-section">
   <div class="wrap">
     <div class="split-strip">
-      <div class="strip-panel a">
-        <span class="eyebrow">Una distinción central</span>
-        <h3>El orden cambia.</h3>
-        <p class="lede-sm">
-          Dos personas pueden tener síntomas parecidos y necesitar prioridades completamente
-          distintas. The Layer Method no asume que todas las personas empiezan en la misma Layer —
-          el contexto de cada quien determina dónde tiene sentido enfocar primero.
-        </p>
-      </div>
-      <div class="strip-panel b">
-        <span class="eyebrow">Herramientas ≠ estrategia</span>
-        <h3>Las herramientas informan. El método decide.</h3>
-        <p class="lede-sm">
-          Suplementos, técnicas vanguardistas, sueros de vitaminas, péptidos y cualquier recurso del
-          wellness pueden aportar información o soporte útil. Pero es el método el que determina qué
-          importa, por qué importa, cuándo tiene sentido y qué merece prioridad.
-        </p>
-      </div>
+      <article class="strip-panel a reveal">
+        <div class="panel-texto">
+          <span class="eyebrow">Una distinción central</span>
+          <h3>El orden cambia.</h3>
+          <p class="lede-sm">
+            Síntomas parecidos pueden requerir prioridades distintas.
+            <strong>No todos empezamos en la misma capa</strong>: tu contexto determina dónde tiene
+            sentido enfocar primero.
+          </p>
+        </div>
+        <div class="ordenes" aria-hidden="true">
+          {
+            ordenes.map((o) => (
+              <div class="orden">
+                <span class="orden-t">{o.quien}</span>
+                {o.capas.map((i, k) => (
+                  <span
+                    class:list={['barra', { primera: k === 0 }]}
+                    style={`--c:var(--color-${layers[i].color});--t:${layers[i].oscuro ? 'var(--color-bone)' : 'var(--color-charcoal)'};--k:${k}`}
+                  >
+                    {layers[i].nombre}
+                  </span>
+                ))}
+              </div>
+            ))
+          }
+        </div>
+      </article>
+      <article class="strip-panel b reveal">
+        <div class="panel-texto">
+          <span class="eyebrow">Herramientas ≠ estrategia</span>
+          <h3>Las herramientas informan. El método decide.</h3>
+          <p class="lede-sm">
+            Suplementos, técnicas vanguardistas, sueros de vitaminas, péptidos y cualquier recurso
+            del wellness pueden aportar información o soporte útil. El método marca prioridades:
+            <strong>qué importa, por qué y cuándo</strong>.
+          </p>
+        </div>
+        <div class="embudo" aria-hidden="true">
+          <div class="herr">
+            {herramientas.map((h) => <span>{h}</span>)}
+          </div>
+          <span class="flecha">↓</span>
+          <span class="metodo-pill">El método</span>
+          <span class="flecha">↓</span>
+          <div class="decide">
+            <span>Qué importa</span><span>Por qué</span><span>Cuándo</span>
+          </div>
+        </div>
+      </article>
     </div>
   </div>
 </section>
@@ -72,46 +112,193 @@
     font-weight: 500;
   }
   .strip-section {
-    padding: 24px 0 64px;
+    padding: 24px 0 72px;
   }
   .split-strip {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
+    gap: 20px;
   }
-  @media (max-width: 820px) {
+  @media (max-width: 900px) {
     .split-strip {
       grid-template-columns: 1fr;
     }
   }
   .strip-panel {
-    padding: 56px 44px;
-  }
-  @media (max-width: 640px) {
-    .strip-panel {
-      padding: 36px 26px;
-    }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 28px;
+    padding: clamp(28px, 3.5vw, 44px);
+    border-radius: 32px;
   }
   .strip-panel.a {
-    background: var(--color-ivory);
+    background: var(--color-sand-light);
   }
   .strip-panel.b {
-    background: var(--color-sand);
+    background:
+      radial-gradient(70% 80% at 100% 0%, rgb(214 154 124 / 0.25), transparent 60%),
+      linear-gradient(160deg, #2b2a25, #1b1a17);
+    color: var(--color-bone);
   }
   .strip-panel h3 {
     font-family: var(--font-serif);
-    font-weight: 600;
-    font-size: clamp(24px, 3vw, 32px);
-    line-height: 1.18;
-    margin-bottom: 14px;
+    font-weight: 500;
+    font-size: clamp(30px, 3.2vw, 42px);
+    line-height: 1.08;
+    margin: 0 0 14px;
+  }
+  .strip-panel.b h3 {
+    color: var(--color-bone);
+  }
+  .strip-panel.b .eyebrow {
+    color: var(--color-clay);
   }
   .lede-sm {
-    font-size: 17px;
+    margin: 0;
+    font-size: 16px;
     line-height: 1.65;
-    color: rgb(48 47 42 / 0.72);
-    max-width: 520px;
-    font-weight: 500;
+    color: rgb(48 47 42 / 0.78);
+  }
+  .strip-panel.b .lede-sm {
+    color: rgb(248 246 241 / 0.75);
+  }
+  .lede-sm strong {
+    font-weight: 800;
+    color: var(--color-charcoal);
+    background: linear-gradient(transparent 62%, rgb(231 183 160 / 0.6) 62%);
+  }
+  .strip-panel.b .lede-sm strong {
+    color: var(--color-bone);
+    background: linear-gradient(transparent 62%, rgb(214 154 124 / 0.5) 62%);
+  }
+
+  /* Two people, same Layers, different order. */
+  .ordenes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .orden {
+    display: grid;
+    gap: 6px;
+    padding: 14px;
+    border-radius: 20px;
+    background: rgb(255 255 255 / 0.7);
+  }
+  .orden-t {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgb(48 47 42 / 0.55);
+    margin-bottom: 2px;
+  }
+  .barra {
+    padding: 7px 12px;
+    border-radius: 10px;
+    background: var(--c);
+    color: var(--t);
+    font-size: 12.5px;
+    font-weight: 700;
+    opacity: 0.55;
+    transform: translateX(-8px);
+    transition:
+      opacity 0.6s,
+      transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    transition-delay: calc(0.2s + var(--k) * 0.12s);
+  }
+  .barra.primera {
+    position: relative;
+    opacity: 1;
+    box-shadow: 0 0 0 2px var(--color-charcoal);
+  }
+  .barra.primera {
+    margin-top: 8px;
+  }
+  .barra.primera::after {
+    content: 'Empieza aquí';
+    position: absolute;
+    right: 8px;
+    top: -9px;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    background: var(--color-charcoal);
+    color: var(--color-clay);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .strip-panel:global(.in) .barra {
+    transform: none;
+  }
+  .strip-panel:global(.in) .barra:not(.primera) {
+    opacity: 0.75;
+  }
+
+  /* Tools flowing into the method, out come priorities. */
+  .embudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .herr {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+  .herr span {
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgb(248 246 241 / 0.25);
+    color: rgb(248 246 241 / 0.85);
+  }
+  .flecha {
+    font-size: 18px;
+    color: var(--color-clay);
+    animation: bajar 2s ease-in-out infinite;
+  }
+  @keyframes bajar {
+    50% {
+      transform: translateY(4px);
+    }
+  }
+  .metodo-pill {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    padding: 8px 26px;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(135deg, #f0c4ae, var(--color-clay-deep));
+    color: var(--color-charcoal);
+    box-shadow: 0 12px 28px -14px rgb(231 183 160 / 0.7);
+  }
+  .decide {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .decide span {
+    font-size: 12.5px;
+    font-weight: 800;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--color-bone);
+    color: var(--color-charcoal);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flecha {
+      animation: none;
+    }
+    .barra {
+      transform: none;
+      transition: none;
+    }
   }
 </style>

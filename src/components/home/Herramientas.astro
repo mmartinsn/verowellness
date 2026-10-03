@@ -60,16 +60,29 @@ const filas = [herramientas.slice(0, 6), herramientas.slice(6)];
       <div>
         <p>
           Cada semana aparece una herramienta nueva (y cada semana sientes que deberías estar
-          usándola). Pero una herramienta sin estrategia es solo una cosa más que probar. Un
-          suplemento, un ayuno o un protocolo pueden tener sentido, pero solo dentro de un mapa que
-          entienda tu cuerpo completo. Fuera de él, es ruido.
+          usándola).
         </p>
+        <p>
+          Suplementos, ayunos o protocolos pueden tener sentido dentro de un mapa que entienda todo
+          tu cuerpo.
+        </p>
+        <p class="ruido">Sin estrategia, son algo más que probar: ruido.</p>
       </div>
     </div>
   </div>
 </section>
 
 <style>
+  .duo p + p {
+    margin-top: 12px;
+  }
+  .duo .ruido {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(22px, 2vw, 27px);
+    line-height: 1.25;
+    color: var(--color-clay-rich);
+  }
   .herramientas {
     padding: 100px 0;
     background: var(--color-bone);

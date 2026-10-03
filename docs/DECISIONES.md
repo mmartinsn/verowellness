@@ -259,10 +259,17 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     resaltaba» y Verónica pidió que sonara «tipo membership». La tarjeta del Initial lleva
     «Recomendada».
 
-28. **2026-10-03 — «Tres piezas»: maqueta del Layer Map en lugar de la foto** (Mari: la foto de
-    manos «no comunica nada»). Una hoja diseñada con las cinco capas en sus colores y una prioridad
-    de ejemplo, el Top 3 y el Layer Plan, marcada «Ejemplo»; al leer cada pieza se ilumina su
-    parte. La foto generada de manos queda sin uso.
+28. **2026-10-03 — «Tres piezas»: foto de Verónica con su laptop** (la de bata, pelo oscuro).
+    Antes fueron unas manos en la laptop («no comunica nada») y una maqueta del Layer Map («no se
+    entiende a la primera»); su cara conecta más (Mari eligió esta opción).
+
+29. **2026-10-03 — Menos texto y frases clave resaltadas.** Con Codex (versiones cortas) y una
+    frase en negrita con subrayado clay por bloque: «Herramientas ≠ estrategia» del inicio en tres
+    párrafos que cierran con «ruido»; «El principio» de Mi método en tres frases («entender el mapa
+    completo»); «El orden cambia» («No todos empezamos en la misma capa») con dos columnas de capas
+    en distinto orden, Persona A y B; «Las herramientas informan» («qué importa, por qué y cuándo»)
+    con las herramientas bajando hacia «El método». La foto de bata con laptop ya no tiene el
+    sticker (Codex, retoque local).
 
 ## Abiertas — para Mari y Verónica
 
