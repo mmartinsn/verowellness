@@ -207,6 +207,14 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     de manos en la laptop que generó Codex el 03-oct (sin cara). Tienda: textos resumidos por
     Claude con las palabras de Verónica (Codex llegó a su límite de uso; los pule después).
 
+22. **2026-10-03 — Catálogo de exámenes al estilo de la referencia de NutriWhite** (captura de
+    Mari). Sin figuras por examen (a Mari no le gustaron). Pastillas de grupo con ícono, centradas;
+    encabezado del grupo con ícono, nombre y una línea de qué evalúa (`data/grupos-examenes.ts`,
+    líneas de Claude para pulir con Codex); tarjetas anchas de a dos con nombre, precio grande,
+    el gancho de la ficha, «Ver ficha completa», «Agregar» y «Solo este» (deja solo ese examen en
+    la selección y va al checkout). En el teléfono las pastillas se deslizan y las tarjetas se
+    apilan. Fuera la nota «Los grupos siguientes organizan…» (Mari).
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

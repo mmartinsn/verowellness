@@ -1,11 +1,12 @@
 ---
 /**
- * One test as a catalogue row: its figure, name (opens the fact sheet), lab and sample, price and
- * «Agregar». Used by the groups and by the symptom views of Catalogo; the clicks are handled
- * page-wide by PorSintoma's script.
+ * One test as a wide catalogue card, after the NutriWhite reference Mari sent (2026-10-03): name
+ * and big price on top, the fact sheet's one-line hook, a link to the full sheet, and two buttons,
+ * «Agregar» (to the selection) and «Solo este» (straight to the checkout with only this test).
+ * Clicks are handled page-wide: sheet and selection by PorSintoma, «Solo este» by Catalogo.
  */
-import { muestras, productoDe, type Examen } from '../../data/examenes';
-import { iconoExamen } from '../../data/iconos-examenes';
+import { productoDe, type Examen } from '../../data/examenes';
+import { fichas } from '../../data/fichas-examenes';
 import { usd } from '../../lib/precio';
 
 interface Props {
@@ -18,165 +19,208 @@ interface Props {
   nombreGrupo?: string;
 }
 const { e, color, grupo, texto, oculta = false, nombreGrupo } = Astro.props;
+const gancho = fichas[e.id]?.gancho ?? '';
 ---
 
 <li
-  class="fila"
+  class="tarjeta"
   data-fila
   data-grupo={grupo}
   data-texto={texto}
   hidden={oculta}
   style={`--tono:var(--color-${color})`}
 >
-  <span class="f-ico" aria-hidden="true">
-    <svg viewBox="0 0 24 24" width="24" height="24"><path d={iconoExamen(e.id)}></path></svg>
-  </span>
-  <button type="button" class="f-nombre" data-ficha={e.id}>
-    <span class="f-t">{e.nombre}</span>
-    <span class="f-meta">
-      {[e.laboratorio, e.muestras.map((m) => muestras[m]).join(' · ')].filter(Boolean).join(' · ')}
-    </span>
-  </button>
-  {nombreGrupo && <span class="f-grupo">{nombreGrupo}</span>}
-  <span class="f-precio">{usd(e.precio)}</span>
-  <button
-    type="button"
-    class="f-add"
-    aria-pressed="false"
-    data-add={productoDe(e)}
-    aria-label={`Agregar ${e.nombre}`}
-  >
-    <span class="no">Agregar</span>
-    <span class="si">✓</span>
-  </button>
+  <div class="t-cab">
+    <div>
+      {nombreGrupo && <span class="t-grupo">{nombreGrupo}</span>}
+      <h3 class="t-nombre">
+        <button type="button" data-ficha={e.id}>{e.nombre}</button>
+      </h3>
+      {e.laboratorio && <span class="t-lab">{e.laboratorio}</span>}
+    </div>
+    <span class="t-precio">{usd(e.precio)}</span>
+  </div>
+  {gancho && <p class="t-texto">{gancho}</p>}
+  <button type="button" class="t-ver" data-ficha={e.id}>Ver ficha completa →</button>
+  <div class="t-botones">
+    <button
+      type="button"
+      class="t-add"
+      aria-pressed="false"
+      data-add={productoDe(e)}
+      aria-label={`Agregar ${e.nombre}`}
+    >
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path
+          class="mas"
+          d="M3 4h2l2.2 10.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2M10 20h.01M17 20h.01"
+        ></path>
+        <path class="ok" d="M5 12.5l4.5 4.5L19 7.5"></path>
+      </svg>
+      <span class="no">Agregar</span>
+      <span class="si">Agregado</span>
+    </button>
+    <button type="button" class="t-solo" data-solo={productoDe(e)}>Solo este</button>
+  </div>
 </li>
 
 <style>
-  .fila {
-    display: grid;
-    grid-template-columns: auto 1fr auto auto auto;
-    align-items: center;
-    gap: 16px;
-    padding: 12px 14px 12px 12px;
-    border-radius: 18px;
-    background: rgb(255 255 255 / 0.85);
-    border: 1px solid rgb(48 47 42 / 0.07);
-    transition:
-      transform 0.25s var(--ease-out-soft),
-      box-shadow 0.25s;
-  }
-  .fila[hidden] {
-    display: none;
-  }
-  .fila:hover {
-    transform: translateX(4px);
-    box-shadow: 0 14px 30px -24px rgb(48 47 42 / 0.5);
-  }
-  .fila:global(.elegido) {
-    background: color-mix(in srgb, var(--color-sage) 40%, white);
-  }
-  .f-ico {
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background:
-      radial-gradient(circle at 30% 25%, rgb(255 255 255 / 0.9), transparent 60%),
-      color-mix(in srgb, var(--tono) 35%, white);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tono) 60%, transparent);
-    color: var(--color-charcoal);
-    transition: transform 0.35s var(--ease-out-soft);
-  }
-  .fila:hover .f-ico {
-    transform: rotate(-8deg) scale(1.06);
-  }
-  .f-ico svg {
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.4;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  .f-nombre {
-    all: unset;
-    cursor: pointer;
+  .tarjeta {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    min-width: 0;
+    gap: 14px;
+    padding: clamp(22px, 2.6vw, 32px);
+    border-radius: 26px;
+    background: var(--color-white);
+    border: 1px solid rgb(48 47 42 / 0.06);
+    box-shadow: 0 18px 40px -34px rgb(48 47 42 / 0.45);
+    transition:
+      transform 0.35s var(--ease-out-soft),
+      box-shadow 0.35s var(--ease-out-soft);
   }
-  .f-t {
-    font-weight: 700;
-    font-size: 15.5px;
+  .tarjeta[hidden] {
+    display: none;
+  }
+  .tarjeta:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 30px 60px -36px rgb(48 47 42 / 0.5);
+  }
+  .tarjeta:global(.elegido) {
+    box-shadow:
+      0 0 0 2px var(--color-sage-deep),
+      0 30px 60px -36px rgb(48 47 42 / 0.5);
+  }
+  .t-cab {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .t-grupo {
+    display: none;
+    margin-bottom: 8px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--tono) 35%, white);
+  }
+  :global([data-buscando]) .t-grupo {
+    display: inline-block;
+  }
+  .t-nombre {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: clamp(17px, 1.5vw, 20px);
+    line-height: 1.25;
     color: var(--color-charcoal);
   }
-  .f-nombre:hover .f-t,
-  .f-nombre:focus-visible .f-t {
-    color: var(--color-clay-deep);
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  .t-nombre button {
+    all: unset;
+    cursor: pointer;
   }
-  .f-meta {
+  .t-nombre button:hover,
+  .t-nombre button:focus-visible {
+    color: var(--color-clay-deep);
+  }
+  .t-lab {
+    display: block;
+    margin-top: 4px;
     font-size: 12.5px;
     color: rgb(48 47 42 / 0.55);
   }
-  .f-grupo {
-    display: none;
-    font-size: 12px;
-    font-weight: 700;
-    color: rgb(48 47 42 / 0.6);
+  .t-precio {
+    flex-shrink: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(30px, 3vw, 40px);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--color-clay-rich);
+    font-variant-numeric: lining-nums tabular-nums;
   }
-  :global([data-buscando]) .f-grupo {
-    display: inline;
+  .t-texto {
+    margin: 0;
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: rgb(48 47 42 / 0.75);
+    flex: 1;
   }
-  .f-precio {
-    font-weight: 800;
-    font-size: 16px;
-    color: var(--color-charcoal);
-    font-variant-numeric: tabular-nums;
-  }
-  .f-add {
-    font: inherit;
+  .t-ver {
+    all: unset;
+    cursor: pointer;
+    align-self: flex-start;
     font-size: 13px;
     font-weight: 800;
-    min-width: 96px;
-    padding: 10px 16px;
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--color-charcoal);
-    background: transparent;
     color: var(--color-charcoal);
+    border-bottom: 1px solid rgb(48 47 42 / 0.25);
+    transition: border-color 0.2s;
+  }
+  .t-ver:hover,
+  .t-ver:focus-visible {
+    border-color: var(--color-charcoal);
+  }
+  .t-botones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 6px;
+  }
+  .t-add,
+  .t-solo {
+    font: inherit;
+    font-size: 14.5px;
+    font-weight: 800;
+    padding: 15px 14px;
+    border-radius: var(--radius-pill);
     cursor: pointer;
-    transition: background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition:
+      background 0.25s,
+      color 0.25s,
+      transform 0.2s;
   }
-  .f-add:hover {
-    background: rgb(48 47 42 / 0.06);
+  .t-add:hover,
+  .t-solo:hover {
+    transform: translateY(-1px);
   }
-  .f-add .si,
-  .f-add[aria-pressed='true'] .no {
+  .t-add {
+    background: color-mix(in srgb, var(--color-sage) 30%, white);
+    border: 1px solid rgb(48 47 42 / 0.14);
+    color: var(--color-charcoal);
+  }
+  .t-add svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .t-add .ok,
+  .t-add .si,
+  .t-add[aria-pressed='true'] .mas,
+  .t-add[aria-pressed='true'] .no {
     display: none;
   }
-  .f-add[aria-pressed='true'] {
-    background: var(--color-charcoal);
-    color: var(--color-bone);
-  }
-  .f-add[aria-pressed='true'] .si {
+  .t-add[aria-pressed='true'] .ok,
+  .t-add[aria-pressed='true'] .si {
     display: inline;
   }
-  @media (max-width: 640px) {
-    .fila {
-      grid-template-columns: auto 1fr auto;
-      gap: 10px 12px;
-    }
-    .f-grupo {
-      display: none !important;
-    }
-    .f-precio {
-      grid-column: 2;
-    }
-    .f-add {
-      grid-column: 3;
-      grid-row: 1 / span 2;
-    }
+  .t-add[aria-pressed='true'] {
+    background: var(--color-sage-deep);
+    border-color: var(--color-sage-deep);
+  }
+  .t-solo {
+    background: var(--color-charcoal);
+    border: 1px solid var(--color-charcoal);
+    color: var(--color-bone);
+  }
+  .t-solo:hover {
+    background: #1b1a17;
   }
 </style>
