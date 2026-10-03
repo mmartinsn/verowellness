@@ -149,8 +149,8 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     checkout queda para el enlace del correo. Nuevo checkout `/checkout/layer-session`. «Evolución
     continua», «¿Completas tu primer ciclo?» y «Ahora decidimos cuál es tu Next Layer con un
     segundo ciclo.». Botón fijo también en escritorio. Seis preguntas frecuentes nuevas (Codex).
-    Los textos de la Layer Session y las FAQ nuevas son de Codex; la Layer Session no dice
-    duración porque no está confirmada.
+    Los textos de la Layer Session y las FAQ nuevas son de Codex; la Layer Session dura 90 minutos
+    (Mari, 03-oct).
 
 18. **2026-10-03 — Mi método, Asesorías, fotos y fichas de exámenes.** **Mi método (19–27):**
     menú «Mi método»; hero sin «del terreno a la célula», con la frase del síntoma y el botón

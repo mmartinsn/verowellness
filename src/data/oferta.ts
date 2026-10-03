@@ -42,9 +42,8 @@ export const ciclos: Record<CicloId, Ciclo> = {
     etiqueta: 'Consulta individual',
     subtotal: 150,
     descripcion:
-      'Una consulta para escuchar tu historia, revisar tus formularios y definir tu plan de acción.',
-    descripcionCorta:
-      'Una consulta con revisión de tu historia y formularios, y un plan de acción.',
+      'Una consulta de 90 minutos para escuchar tu historia, revisar tus formularios y definir tu plan de acción.',
+    descripcionCorta: '1 consulta de 90 min · historia, formularios y plan de acción.',
     incluye: ['Escucha de tu historia', 'Revisión de tus formularios', 'Plan de acción'],
     incluyeCheckout: ['Escucha de tu historia', 'Revisión de tus formularios', 'Plan de acción'],
     confirmacion: {

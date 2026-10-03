@@ -36,7 +36,7 @@ export const faq: Pregunta[] = [
   },
   {
     q: `¿Qué diferencia hay entre ${session.nombre} e ${initial.nombre}?`,
-    a: `En ${session.nombre} trabajamos en una consulta. ${initial.nombre} está dirigido a pacientes nuevas e incluye dos consultas de 90 minutos, separadas aproximadamente 30 días. Las completamos en un máximo de 60 días.`,
+    a: `En ${session.nombre} trabajamos en una consulta de 90 minutos. ${initial.nombre} está dirigido a pacientes nuevas e incluye dos consultas de 90 minutos, separadas aproximadamente 30 días. Las completamos en un máximo de 60 días.`,
   },
   {
     q: '¿Tengo que hacerme exámenes antes de la asesoría?',
