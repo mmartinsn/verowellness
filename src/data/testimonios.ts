@@ -5,7 +5,6 @@
  */
 import type { ImageMetadata } from 'astro';
 import fotoMargarita from '../assets/testimonios/margarita-medel.jpg';
-import fotoSofia from '../assets/testimonios/sofia-molina.jpg';
 
 export interface Testimonio {
   id: string;
@@ -67,7 +66,6 @@ export const testimonios: Testimonio[] = [
     id: 'sofia-molina',
     nombre: 'Sofía Molina',
     lugar: 'USA',
-    foto: fotoSofia,
     motivo: ['Cándida'],
     destacado: 'Fuiste mi oración contestada.',
     texto: [
