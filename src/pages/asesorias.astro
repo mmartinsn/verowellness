@@ -11,6 +11,7 @@ import Insight from '../components/Insight.astro';
 import Proceso from '../components/uno-a-uno/Proceso.astro';
 import Entregables from '../components/uno-a-uno/Entregables.astro';
 import Precios from '../components/uno-a-uno/Precios.astro';
+import Testimonios from '../components/Testimonios.astro';
 import CtaFinal from '../components/uno-a-uno/CtaFinal.astro';
 import { marca } from '../data/site';
 import { grafoSitio, grafoServicio } from '../lib/schema';
@@ -27,6 +28,7 @@ import { grafoSitio, grafoServicio } from '../lib/schema';
   <Insight a="No necesitas hacer más." b="Necesitas saber qué priorizar." />
   <Proceso />
   <Entregables />
+  <Testimonios eyebrow="Testimonios" titulo="Quienes ya empezaron, en sus palabras." />
   <Precios />
   <CtaFinal />
   <p class="lema">{marca.lema}</p>

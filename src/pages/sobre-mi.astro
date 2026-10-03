@@ -12,6 +12,7 @@ import '@fontsource/cormorant-garamond/600-italic.css';
 import '@fontsource-variable/plus-jakarta-sans';
 import { Image } from 'astro:assets';
 import SiteLayout from '../layouts/SiteLayout.astro';
+import Testimonios from '../components/Testimonios.astro';
 import retrato from '../assets/fotos/veronica-te-sonrisa.jpg';
 import bowl from '../assets/fotos/veronica-bowl.jpg';
 import bata from '../assets/fotos/veronica-bata-frontal.jpg';
@@ -295,28 +296,8 @@ const pilares = [
     </div>
   </section>
 
-  <!-- 07 · Testimonios (reservado hasta tener testimonios reales, con permiso) -->
-  <section class="testimonios" id="testimonios">
-    <div class="wrap">
-      <div class="test-cab reveal">
-        <span class="eyebrow">Testimonios</span>
-        <h2>Lo que dicen quienes ya empezaron.</h2>
-        <span class="pronto">Próximamente</span>
-      </div>
-      <div class="test-fila" aria-hidden="true">
-        {
-          [1, 2, 3].map(() => (
-            <div class="test-card">
-              <span class="comilla">“</span>
-              <span class="linea" />
-              <span class="linea" />
-              <span class="linea corta" />
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+  <!-- 07 · Testimonios -->
+  <Testimonios />
 
   <!-- 08 · Nota final -->
   <section class="nota">
@@ -1092,64 +1073,6 @@ const pilares = [
     .trazo {
       transition: none;
       stroke-dashoffset: calc(1 - var(--p));
-    }
-  }
-
-  /* ── 07 · Testimonios ── */
-  .testimonios {
-    padding: clamp(56px, 7vw, 100px) 0 0;
-  }
-  .test-cab {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 6px 18px;
-  }
-  .test-cab .eyebrow {
-    flex-basis: 100%;
-  }
-  .test-cab h2 {
-    margin: 0;
-  }
-  .pronto {
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 6px 12px;
-    border-radius: var(--radius-pill);
-    background: var(--color-sand);
-  }
-  .test-fila {
-    margin-top: 28px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  .test-card {
-    display: grid;
-    gap: 12px;
-    padding: 26px;
-    border-radius: 26px;
-    background: var(--color-ivory);
-    border: 1.5px dashed rgb(35 34 30 / 0.15);
-    min-height: 200px;
-    align-content: start;
-  }
-  .test-card .comilla {
-    margin-bottom: 8px;
-  }
-  .linea {
-    height: 12px;
-    border-radius: var(--radius-pill);
-    background: rgb(35 34 30 / 0.07);
-  }
-  .linea.corta {
-    width: 55%;
-  }
-  @media (max-width: 800px) {
-    .test-fila {
-      grid-template-columns: 1fr;
     }
   }
 

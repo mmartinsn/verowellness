@@ -238,6 +238,13 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     reacción retardada, IgE = alergia inmediata, celiaquía). Datos en `caminosAlimentos` y
     `mideAlimentos` (`data/grupos-examenes.ts`).
 
+26. **2026-10-03 — Testimonios.** Componente `Testimonios.astro` con datos en
+    `data/testimonios.ts`: foto (o inicial), nombre, lugar, motivo, una frase literal destacada,
+    el primer párrafo visible y el resto tras «Leer su historia completa»; varios se deslizan con
+    flechas, ordenados por `prioridad` (Mari: «los más potentes primero»). Van en Sobre mí y en
+    Asesorías antes de los precios. Textos tal cual los mandó Mari: Mouna Harbie (Venezuela, con
+    foto) y Margarita Medel (USA, sin foto).
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
