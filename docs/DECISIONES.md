@@ -295,6 +295,12 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     «Estas son algunas de sus voces.»: los números quedan respaldados por las personas. El título
     de la UCV sigue en la etiqueta del inicio de la página.
 
+33. **2026-10-04 — Síntomas que piden consulta.** En ansiedad/depresión, embarazo, articulaciones y
+    autoinmune, la vista del catálogo abre con «Empieza por una consulta»: el texto de orientación
+    y las dos opciones (1 consulta $150, 2 consultas $269 «Recomendada») con su botón directo al
+    pago; debajo, «Si ya sabes qué quieres explorar:» y los exámenes. Corregido también que las
+    vistas por síntoma no mostraban sus exámenes (el filtro de grupos los ocultaba).
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

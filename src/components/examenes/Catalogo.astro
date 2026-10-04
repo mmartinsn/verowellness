@@ -9,11 +9,11 @@
 import { areas, examenes, muestras } from '../../data/examenes';
 import { sintomas, examenesDe } from '../../data/sintomas';
 import { href } from '../../lib/url';
-import { cta } from '../../data/site';
 import FilaCatalogo from './FilaCatalogo.astro';
 import { presentacionGrupo, caminosAlimentos, mideAlimentos } from '../../data/grupos-examenes';
 import { productoDe, examenPorId } from '../../data/examenes';
 import { usd } from '../../lib/precio';
+import { listaCiclos, checkoutPath, precioCard } from '../../data/oferta';
 
 /** Cards shown per group before «Ver los N exámenes». */
 const VISIBLES = 4;
@@ -235,16 +235,32 @@ const textoBusqueda = (e: (typeof examenes)[number]): string =>
             </button>
           </div>
           {v.orientacion && (
-            <div class="orientacion">
-              <p>
-                En tu caso, lo ideal es elegir con orientación: en tu asesoría revisamos tus
-                síntomas, antecedentes y objetivos para seleccionar los estudios pertinentes.
-              </p>
-              <a class="btn btn-primary" href={href('/asesorias')}>
-                {cta.label}
-              </a>
+            <div class="consulta">
+              <div class="consulta-texto">
+                <span class="consulta-tag">Empieza por una consulta</span>
+                <p class="consulta-t">En tu caso, lo ideal es elegir con orientación.</p>
+                <p>
+                  En tu asesoría revisamos tus síntomas, antecedentes y objetivos para seleccionar
+                  los estudios pertinentes.
+                </p>
+              </div>
+              <div class="consulta-opciones">
+                {listaCiclos.map((c) => (
+                  <a
+                    class:list={['opcion-c', { rec: c.id === 'INITIAL_LAYER_CYCLE' }]}
+                    href={href(checkoutPath(c))}
+                  >
+                    {c.id === 'INITIAL_LAYER_CYCLE' && <span class="opcion-rec">Recomendada</span>}
+                    <span class="opcion-citas">{c.consultas}</span>
+                    <span class="opcion-nombre">{c.nombre}</span>
+                    <span class="opcion-precio">{precioCard(c)}</span>
+                    <span class="opcion-ir">Reservar →</span>
+                  </a>
+                ))}
+              </div>
             </div>
           )}
+          {v.orientacion && <p class="ya-sabes">Si ya sabes qué quieres explorar:</p>}
           {v.subgrupos.map((sg) => (
             <>
               <p class="sub-q">{sg.pregunta}</p>
@@ -857,6 +873,117 @@ const textoBusqueda = (e: (typeof examenes)[number]): string =>
   }
   .filas[hidden] {
     display: none;
+  }
+  /* Cases where Verónica asks to start with a consultation: the two options right here. */
+  .consulta {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    align-items: center;
+    padding: clamp(20px, 3vw, 30px);
+    border-radius: 24px;
+    background:
+      radial-gradient(70% 90% at 100% 0%, rgb(214 154 124 / 0.3), transparent 60%),
+      linear-gradient(160deg, #2b2a25, #1b1a17);
+    color: var(--color-bone);
+  }
+  .consulta-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgb(231 183 160 / 0.6);
+    color: var(--color-clay);
+  }
+  .consulta-t {
+    margin: 12px 0 6px;
+    font-family: var(--font-serif);
+    font-size: clamp(24px, 2.4vw, 30px);
+    line-height: 1.15;
+    color: var(--color-bone);
+  }
+  .consulta-texto p:not(.consulta-t) {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: rgb(248 246 241 / 0.75);
+  }
+  .consulta-opciones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .opcion-c {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 18px 16px 16px;
+    border-radius: 18px;
+    border: 1px solid rgb(248 246 241 / 0.18);
+    background: rgb(248 246 241 / 0.05);
+    color: var(--color-bone);
+    text-decoration: none;
+    transition:
+      transform 0.25s,
+      border-color 0.25s;
+  }
+  .opcion-c:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-clay);
+  }
+  .opcion-c.rec {
+    border-color: var(--color-clay);
+    background: rgb(231 183 160 / 0.12);
+  }
+  .opcion-rec {
+    position: absolute;
+    top: -10px;
+    left: 14px;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: var(--radius-pill);
+    background: var(--color-clay);
+    color: var(--color-charcoal);
+  }
+  .opcion-citas {
+    font-size: 12px;
+    color: rgb(248 246 241 / 0.6);
+  }
+  .opcion-nombre {
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--color-clay);
+  }
+  .opcion-precio {
+    font-family: var(--font-serif);
+    font-size: 30px;
+    line-height: 1.1;
+  }
+  .opcion-ir {
+    margin-top: 6px;
+    font-size: 12.5px;
+    font-weight: 800;
+  }
+  .ya-sabes {
+    margin: 26px 0 0;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(48 47 42 / 0.55);
+  }
+  @media (max-width: 860px) {
+    .consulta {
+      grid-template-columns: 1fr;
+    }
   }
   .vacio {
     margin-top: 18px;
