@@ -116,7 +116,8 @@ const datosFichas = Object.fromEntries(
       aria-label="Ver y editar tu selección"
       ><strong data-dock-n>0</strong>
       <span data-dock-palabra>exámenes</span>
-      <span class="dock-flecha" aria-hidden="true">▴</span></button
+      <span class="dock-editar">Editar <span class="dock-flecha" aria-hidden="true">▴</span></span
+      ></button
     >
     <span class="dock-total" data-dock-total>$0.00</span>
     <a class="dock-btn" href={href('/checkout/examenes')}>Continuar →</a>
@@ -982,7 +983,18 @@ const datosFichas = Object.fromEntries(
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    border-bottom: 1px dashed rgb(248 246 241 / 0.4);
+  }
+  .dock-editar {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 4px;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgb(214 154 124 / 0.6);
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--color-clay);
   }
   .dock-flecha {
     font-size: 11px;
@@ -1063,6 +1075,26 @@ const datosFichas = Object.fromEntries(
     font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
+  }
+  .dock-btn {
+    white-space: nowrap;
+  }
+  @media (max-width: 480px) {
+    .dock {
+      gap: 8px;
+      padding: 8px 8px 8px 16px;
+    }
+    .dock [data-dock-palabra] {
+      display: none;
+    }
+    .dock-total {
+      font-size: 17px;
+    }
+    .dock-btn {
+      padding: 0 14px;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+    }
   }
   .dock.bump {
     animation: dock-bump 0.4s ease;

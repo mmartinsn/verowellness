@@ -21,10 +21,18 @@ import { cta } from '../../data/site';
         {
           listaCiclos.map((c) => (
             <div class:list={['fc-opcion', { destacada: c.id === 'INITIAL_LAYER_CYCLE' }]}>
+              {c.id === 'INITIAL_LAYER_CYCLE' && <span class="fc-rec">Recomendada</span>}
               <span class="fc-offer-meta">{c.consultas}</span>
               <span class="fc-offer-label">{c.nombre}</span>
               <span class="fc-offer-price">{precioCard(c)}</span>
-              <a class="btn btn-primary btn-block" href={href(checkoutPath(c))}>
+              <a
+                class:list={[
+                  'btn',
+                  'btn-block',
+                  c.id === 'INITIAL_LAYER_CYCLE' ? 'btn-primary' : 'fc-btn-contorno',
+                ]}
+                href={href(checkoutPath(c))}
+              >
                 {cta.label}
               </a>
             </div>
@@ -101,6 +109,33 @@ import { cta } from '../../data/site';
     border-radius: 24px;
     border: 1px solid rgb(251 250 246 / 0.14);
     background: rgb(251 250 246 / 0.04);
+  }
+  .fc-opcion {
+    position: relative;
+  }
+  .fc-rec {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    translate: -50% 0;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--color-clay);
+    color: var(--color-charcoal);
+    white-space: nowrap;
+  }
+  .fc-btn-contorno {
+    background: transparent;
+    color: var(--color-clay);
+    border: 1.5px solid var(--color-clay);
+  }
+  .fc-btn-contorno:hover {
+    background: var(--color-clay);
+    color: var(--color-charcoal);
   }
   .fc-opcion.destacada {
     border-color: var(--color-clay);
