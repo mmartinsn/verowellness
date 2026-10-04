@@ -99,10 +99,21 @@ const check =
     <span class="membresia-tag">{continuidad.etiqueta}</span>
     <p class="membresia-titulo">{continuidad.titulo}</p>
     <p class="membresia-sub">{continuidad.texto}</p>
-    <a class="membresia-btn" href={continuidad.url} target="_blank" rel="noopener">
-      {continuidad.boton}
-      <span aria-hidden="true">→</span>
-    </a>
+    <div class="membresia-botones">
+      {
+        continuidad.canales.map((c, i) => (
+          <a
+            class:list={['membresia-btn', { secundario: i > 0 }]}
+            href={c.url}
+            target="_blank"
+            rel="noopener"
+          >
+            Escríbeme por {c.nombre}
+            <span aria-hidden="true">→</span>
+          </a>
+        ))
+      }
+    </div>
   </div>
 </aside>
 
@@ -379,6 +390,21 @@ const check =
     font-size: 16px;
     line-height: 1.6;
     color: rgb(248 246 241 / 0.75);
+  }
+  .membresia-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  @media (max-width: 760px) {
+    .membresia-botones {
+      justify-content: center;
+    }
+  }
+  .membresia-btn.secundario {
+    background: transparent;
+    color: var(--color-clay);
+    box-shadow: inset 0 0 0 1.5px var(--color-clay);
   }
   .membresia-btn {
     display: inline-flex;

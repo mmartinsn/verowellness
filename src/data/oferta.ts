@@ -124,9 +124,9 @@ export const continuidad = {
   etiqueta: 'Acceso privado',
   titulo: '¿Ya eres mi paciente?',
   texto:
-    'Tus planes de continuidad no se publican. Escríbeme por Instagram y te los enviaré por correo para seguir trabajando conmigo.',
-  boton: 'Escríbeme por Instagram',
-  url: 'https://ig.me/m/verodudamell',
+    'Next Layer Cycle está reservado para quienes ya completaron su primer ciclo conmigo. Escríbeme y te enviaré tus opciones por correo.',
+  /** Where existing patients write. Only Instagram: her WhatsApp number stays private (Mari). */
+  canales: [{ nombre: 'Instagram', url: 'https://ig.me/m/verodudamell' }],
 };
 
 export function checkoutPath(ciclo: Ciclo): string {
