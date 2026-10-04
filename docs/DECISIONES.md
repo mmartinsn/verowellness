@@ -289,6 +289,12 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     pie con laptop. Codex borró después el sticker de la laptop y los dos tomacorrientes (cambios 2
     y 20 de Verónica). Copias con nombre en `Fotos/pelo-oscuro-2026-10-03/`.
 
+32. **2026-10-04 — Sobre mí: la experiencia abre los testimonios.** Fuera la tarjeta de «Mi
+    experiencia» (anillos y foto); a Mari no la convencía. Ahora el muro de testimonios empieza
+    con «+5.000 casos acompañados · +8 años de experiencia» en grande (cuentan al aparecer) y
+    «Estas son algunas de sus voces.»: los números quedan respaldados por las personas. El título
+    de la UCV sigue en la etiqueta del inicio de la página.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

@@ -14,8 +14,15 @@ interface Props {
   eyebrow?: string;
   /** Show only these ids (default: all). */
   ids?: string[];
+  /** Open with her numbers (+5.000 casos, +8 años) as the proof the voices back up. */
+  cifras?: boolean;
 }
-const { titulo = 'Lo que dicen quienes ya empezaron.', eyebrow = 'Testimonios', ids } = Astro.props;
+const {
+  titulo = 'Lo que dicen quienes ya empezaron.',
+  eyebrow = 'Testimonios',
+  ids,
+  cifras = false,
+} = Astro.props;
 const lista = (ids ? testimonios.filter((t) => ids.includes(t.id)) : testimonios)
   .slice()
   .sort((a, b) => a.prioridad - b.prioridad);
@@ -39,7 +46,24 @@ const extracto = (p = '') => {
       <div class="wrap">
         <div class="t-cab reveal">
           <span class="eyebrow">{eyebrow}</span>
-          <h2>{titulo}</h2>
+          {cifras && (
+            <div class="cifras" data-cifras>
+              <p class="cifra">
+                <strong>
+                  +<span data-cuenta="5000">5.000</span>
+                </strong>
+                <span>casos acompañados</span>
+              </p>
+              <span class="cifra-sep" aria-hidden="true" />
+              <p class="cifra">
+                <strong>
+                  +<span data-cuenta="8">8</span>
+                </strong>
+                <span>años de experiencia</span>
+              </p>
+            </div>
+          )}
+          <h2 class:list={{ 'con-cifras': cifras }}>{titulo}</h2>
         </div>
         <div class="muro">
           {columnas.map((col) => (
@@ -109,6 +133,54 @@ const extracto = (p = '') => {
 <style>
   .testimonios {
     padding: clamp(56px, 7vw, 100px) 0 0;
+  }
+  .cifras {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px 34px;
+  }
+  .cifra {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .cifra strong {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(64px, 9vw, 120px);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--color-charcoal);
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  .cifra strong::first-letter {
+    color: var(--color-clay-rich);
+  }
+  .cifra > span {
+    max-width: 120px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: rgb(35 34 30 / 0.65);
+  }
+  .cifra-sep {
+    width: 1px;
+    height: 70px;
+    background: rgb(35 34 30 / 0.15);
+  }
+  @media (max-width: 640px) {
+    .cifra-sep {
+      display: none;
+    }
+  }
+  .t-cab h2.con-cifras {
+    font-style: italic;
+    font-size: clamp(26px, 3vw, 38px);
+    color: var(--color-clay-rich);
+    margin-top: 22px;
   }
   .t-cab h2 {
     font-family: var(--font-serif);
@@ -323,3 +395,25 @@ const extracto = (p = '') => {
     }
   }
 </style>
+
+<script>
+  // Her numbers count up once when they come into view; the final number is already in the HTML.
+  const caja = document.querySelector<HTMLElement>('[data-cifras]');
+  if (caja && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const nums = [...caja.querySelectorAll<HTMLElement>('[data-cuenta]')];
+    const fmt = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    nums.forEach((el) => (el.textContent = '0'));
+    new IntersectionObserver((entries, obs) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      obs.disconnect();
+      const t0 = performance.now();
+      const tick = (t: number) => {
+        const k = Math.min(1, (t - t0) / 1600);
+        const ease = 1 - Math.pow(1 - k, 3);
+        nums.forEach((el) => (el.textContent = fmt(Math.round(Number(el.dataset.cuenta) * ease))));
+        if (k < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }).observe(caja);
+  }
+</script>
