@@ -250,7 +250,7 @@ const metodos = [
           <span>Impuesto ({impuestoPct}%)</span><span data-impuesto>{usd(p.impuesto)}</span>
         </div>
         <div class="review-row" data-fila-fee hidden>
-          <span>Fee del laboratorio (servicio y autorización)</span><span data-fee></span>
+          <span>Cargo del laboratorio (servicio y autorización)</span><span data-fee></span>
         </div>
         <div class="review-row"><span>Total</span><span data-total>{usd(p.total)}</span></div>
       </div>
@@ -522,7 +522,7 @@ const metodos = [
       <span>Impuesto ({impuestoPct}%)</span><span data-impuesto>{usd(p.impuesto)}</span>
     </div>
     <div class="summary-line" data-fila-fee hidden>
-      <span>Fee del laboratorio</span><span data-fee></span>
+      <span>Cargo del laboratorio</span><span data-fee></span>
     </div>
     <div class="summary-line total"><span>Total</span><span data-total>{usd(p.total)}</span></div>
     <ul class="summary-includes" data-incluye>
@@ -833,6 +833,27 @@ const metodos = [
     color: rgb(48 47 42 / 0.7);
     padding: 5px 0 5px 20px;
     position: relative;
+  }
+  .summary-includes :global(li.item-quitable) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .summary-includes :global(.item-quitar) {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid rgb(48 47 42 / 0.2);
+    background: var(--color-white);
+    color: rgb(48 47 42 / 0.7);
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .summary-includes :global(.item-quitar:hover) {
+    background: var(--color-charcoal);
+    color: var(--color-bone);
   }
   .summary-includes li::before {
     content: '—';
@@ -1454,7 +1475,16 @@ const metodos = [
       lista?.replaceChildren(
         ...items.map((i) => {
           const li = document.createElement('li');
-          li.textContent = `${i.nombre} · ${usd(i.precio)}`;
+          li.className = 'item-quitable';
+          const t = document.createElement('span');
+          t.textContent = `${i.nombre} · ${usd(i.precio)}`;
+          const x = document.createElement('button');
+          x.type = 'button';
+          x.className = 'item-quitar';
+          x.textContent = '✕';
+          x.dataset.quitarItem = i.id;
+          x.setAttribute('aria-label', `Quitar ${i.nombre}`);
+          li.append(t, x);
           return li;
         })
       );
@@ -1484,7 +1514,7 @@ const metodos = [
       lectura?: { id: string; rotulo: string; nombre: string; precio: number; texto: string }[];
       feePorItem?: number;
     } | null = root.dataset.extras ? JSON.parse(root.dataset.extras) : null;
-    const base = config.subtotal;
+    let base = config.subtotal;
     const lineas: Linea[] = [];
     let fee = 0;
     const r2 = (n: number) => Math.round(n * 100) / 100;
@@ -1607,6 +1637,39 @@ const metodos = [
       }
     }
     recalc();
+
+    // Remove one item from the cart right here (Mari, 2026-10-04): storage, list, counts and totals.
+    if (root.dataset.carrito) {
+      const clave = (JSON.parse(root.dataset.carrito) as { clave: string }).clave;
+      const palabra = (n: number) =>
+        root.dataset.pedido?.includes('exámenes')
+          ? `${n} ${n === 1 ? 'examen' : 'exámenes'}`
+          : `${n} ${n === 1 ? 'guía' : 'guías'}`;
+      root.addEventListener('click', (ev) => {
+        const x = (ev.target as HTMLElement).closest<HTMLButtonElement>('[data-quitar-item]');
+        if (!x) return;
+        const id = x.dataset.quitarItem!;
+        const i = items.findIndex((it) => it.id === id);
+        if (i < 0) return;
+        base = Math.round((base - items[i].precio) * 100) / 100;
+        items.splice(i, 1);
+        try {
+          localStorage.setItem(clave, JSON.stringify(items.map((it) => it.id)));
+        } catch {
+          // Storage blocked: the change still applies to this page.
+        }
+        x.closest('li')?.remove();
+        const n = items.length;
+        root.querySelectorAll('[data-desc-corta]').forEach((el) => (el.textContent = palabra(n)));
+        const vacio = root.querySelector<HTMLElement>('[data-carrito-vacio]');
+        if (vacio) vacio.hidden = n > 0;
+        if (state.order) state.order.items = items.map((it) => ({ id: it.id, price: it.precio }));
+        recalc();
+        if (n === 0) goToStep(1);
+        const enviar = root.querySelector<HTMLButtonElement>('#form-datos button[type="submit"]');
+        if (enviar) enviar.disabled = n === 0;
+      });
+    }
 
     /* ── Step navigation ── */
     const stepLabels: Record<number, string> = {
