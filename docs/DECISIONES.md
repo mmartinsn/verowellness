@@ -284,6 +284,11 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     canónicas; las fichas de examen se cargan al abrir la ventana, así que Google no las ve; una
     página propia para la guía de hormonas ayudaría a posicionarla.
 
+31. **2026-10-04 — Fotos nuevas, más naturales** (generadas por Codex a pedido de Mari: las mismas
+    cinco fotos con el pelo oscuro): bata con laptop, té, sentada con bowl, comiendo del bowl y de
+    pie con laptop. Codex borró después el sticker de la laptop y los dos tomacorrientes (cambios 2
+    y 20 de Verónica). Copias con nombre en `Fotos/pelo-oscuro-2026-10-03/`.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
