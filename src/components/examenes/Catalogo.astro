@@ -877,7 +877,8 @@ const textoBusqueda = (e: (typeof examenes)[number]): string =>
   const raiz = document.querySelector<HTMLElement>('[data-catalogo]');
   if (raiz) {
     const pestanas = [...raiz.querySelectorAll<HTMLButtonElement>('[data-grupo].pestana')];
-    const filas = [...raiz.querySelectorAll<HTMLElement>('[data-fila]')];
+    // Only the group rows: the symptom views have their own rows, always visible.
+    const filas = [...raiz.querySelectorAll<HTMLElement>('[data-filas] [data-fila]')];
     const lista = raiz.querySelector<HTMLElement>('[data-filas]')!;
     const barra = raiz.querySelector<HTMLElement>('[data-pestanas]')!;
     const input = raiz.querySelector<HTMLInputElement>('[data-buscar]')!;
@@ -964,6 +965,7 @@ const textoBusqueda = (e: (typeof examenes)[number]): string =>
       if (enVista) input.value = '';
       lista.hidden = enVista;
       buscador.hidden = enVista;
+      raiz.querySelector<HTMLElement>('.cab')!.hidden = enVista;
       pintar();
     };
     // A symptom card below sends its id here: show that view and bring the catalogue into sight.
