@@ -4,8 +4,6 @@
  * breaks the process into the same step cards as the home and closes with the prices and the
  * private invitation for patients (shared components in components/oferta).
  */
-import { href } from '../../lib/url';
-import { cta } from '../../data/site';
 import PasosProceso from '../oferta/PasosProceso.astro';
 import BloquePrecios from '../oferta/BloquePrecios.astro';
 ---
@@ -24,10 +22,6 @@ import BloquePrecios from '../oferta/BloquePrecios.astro';
         <PasosProceso oscuro />
       </div>
       <BloquePrecios />
-
-      <div class="bridge-actions">
-        <a class="btn btn-primary" href={href('/asesorias')}>{cta.label}</a>
-      </div>
     </div>
   </div>
 </section>
