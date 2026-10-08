@@ -301,6 +301,12 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     pago; debajo, «Si ya sabes qué quieres explorar:» y los exámenes. Corregido también que las
     vistas por síntoma no mostraban sus exámenes (el filtro de grupos los ocultaba).
 
+34. **2026-10-07 — Tienda: el «Más vendido» resalta.** A pedido de Mari, la etiqueta deja de ser
+    una pastilla gris pequeña: es terracota (`#8a4b31`) con estrella, más grande y con halo; la
+    portada de cada más vendido lleva un sello redondo en la esquina y un resplandor cálido
+    detrás, y el índice «Explora las guías» marca también esos dos productos. En el teléfono la
+    etiqueta va en su propia línea, sobre el capítulo y el precio.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

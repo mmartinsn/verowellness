@@ -15,19 +15,30 @@ const { producto: p, espejo = false } = Astro.props;
 ---
 
 <article
-  class:list={['capitulo', `tono-${p.tono}`, { espejo }]}
+  class:list={['capitulo', `tono-${p.tono}`, { espejo, 'es-best': p.bestSeller }]}
   id={p.id}
   aria-labelledby={`${p.id}-titulo`}
 >
   <div class="wrap cap-grid">
     <div class="cap-libro-col">
-      <div class="cap-libro reveal-scale">
-        <Image
-          src={p.portada}
-          alt={`Portada de «${p.tituloPortada}»`}
-          widths={[360, 720]}
-          sizes="(min-width: 1000px) 360px, 62vw"
-        />
+      <div class="cap-libro-wrap">
+        <div class="cap-libro reveal-scale">
+          <Image
+            src={p.portada}
+            alt={`Portada de «${p.tituloPortada}»`}
+            widths={[360, 720]}
+            sizes="(min-width: 1000px) 360px, 62vw"
+          />
+        </div>
+        {
+          p.bestSeller && (
+            <span class="cap-sello" aria-hidden="true">
+              <span class="sello-estrella">★</span>
+              <span>Más</span>
+              <span>vendido</span>
+            </span>
+          )
+        }
       </div>
       <div class="cap-chips">
         <span class="chip-a">{p.formato}</span>
@@ -39,7 +50,13 @@ const { producto: p, espejo = false } = Astro.props;
       <div class="cap-top">
         <span class="cap-eyebrow">Capítulo {p.num}</span>
         <span class="cap-linea" aria-hidden="true"></span>
-        {p.bestSeller && <span class="cap-best">Más vendido</span>}
+        {
+          p.bestSeller && (
+            <span class="cap-best">
+              <span aria-hidden="true">★</span> Más vendido
+            </span>
+          )
+        }
         <span class="cap-precio">{precioTienda(p.precio)}</span>
       </div>
       <h2 id={`${p.id}-titulo`} class="cap-nombre">{p.nombre}</h2>
@@ -219,15 +236,87 @@ const { producto: p, espejo = false } = Astro.props;
     background: rgb(35 34 30 / 0.15);
   }
   .cap-best {
-    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12.5px;
     font-weight: 800;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    padding: 5px 11px;
+    padding: 9px 16px;
     border-radius: var(--radius-pill);
-    background: var(--color-charcoal);
+    background: #8a4b31;
     color: var(--color-bone);
     white-space: nowrap;
+    box-shadow:
+      0 0 0 4px rgb(214 154 124 / 0.28),
+      0 10px 24px rgb(138 75 49 / 0.28);
+  }
+
+  /* Best sellers: a warm halo behind the cover and a seal pinned to its corner. */
+  .cap-libro-wrap {
+    position: relative;
+  }
+  .es-best .cap-libro-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -14% -18%;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(214 154 124 / 0.55), transparent);
+  }
+  .cap-sello {
+    position: absolute;
+    top: -26px;
+    right: -26px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    background: #8a4b31;
+    color: var(--color-bone);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    box-shadow:
+      0 0 0 5px var(--color-bone),
+      0 0 0 6px rgb(138 75 49 / 0.4),
+      0 14px 30px rgb(35 34 30 / 0.3);
+    transform: rotate(10deg);
+  }
+  .sello-estrella {
+    font-size: 18px;
+    letter-spacing: 0;
+    color: var(--color-clay);
+  }
+  @media (max-width: 600px) {
+    .cap-top {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 14px 16px;
+    }
+    .cap-best {
+      grid-row: 1;
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+    .cap-eyebrow,
+    .cap-precio {
+      white-space: nowrap;
+    }
+    .cap-sello {
+      top: -18px;
+      right: -14px;
+      width: 86px;
+      height: 86px;
+      font-size: 10.5px;
+    }
   }
   .cap-precio {
     font-family: var(--font-serif);
