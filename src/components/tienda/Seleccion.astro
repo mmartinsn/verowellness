@@ -374,8 +374,11 @@ const checkout = href('/checkout/tienda');
         pintar();
       })
     );
+    // «Comprar» buys that one book only (Mari, 2026-10-07): the checkout's add-on popup then offers
+    // the recipe book, or the hormones guide when the book is the recipe book.
     document.querySelectorAll<HTMLButtonElement>('[data-tienda-comprar]').forEach((b) =>
       b.addEventListener('click', () => {
+        sel.clear();
         sel.add(b.dataset.tiendaComprar!);
         guardar();
         window.location.href = root.dataset.checkout!;

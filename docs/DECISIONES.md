@@ -321,6 +321,13 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     también?». Probado en navegador con las seis combinaciones; hackear + recetario aceptado =
     9.99 + 16.99 + 7 % = USD 28.87.
 
+37. **2026-10-07 — «Comprar» lleva solo ese libro.** El botón «Comprar …» de cada guía sumaba el
+    libro a la selección guardada en el navegador, así que una selección vieja con el recetario
+    viajaba al checkout y la ventana ofrecía hormonas en vez del recetario (lo vio Mari). Ahora
+    «Comprar» deja en el pedido solo ese libro, como «Comprar solo este» en exámenes; para llevar
+    varios está «Añadir a mi selección». Probado con una selección vieja (recetario + GLP-1): cada
+    libro llega solo y la ventana ofrece el recetario, o hormonas si el libro es el recetario.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
