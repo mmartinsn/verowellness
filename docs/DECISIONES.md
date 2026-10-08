@@ -314,6 +314,13 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     tarjeta brilla dos veces (nada si la persona pidió reducir el movimiento). En el teléfono los
     dos botones ocupan todo el ancho y el «Sí» va primero.
 
+36. **2026-10-07 — Tienda: una sola oferta al llegar al checkout.** Mari: todos los libros llevan
+    el recetario como add-on con el descuento (15 %), y el recetario lleva la guía de hormonas.
+    La ventana ya no encadena las guías una tras otra (decisión 20): ofrece el recetario si no está
+    en el pedido; si está, «Vuelve a sentirte tú»; si están los dos, no aparece. Fuera el «¿Y esta
+    también?». Probado en navegador con las seis combinaciones; hackear + recetario aceptado =
+    9.99 + 16.99 + 7 % = USD 28.87.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

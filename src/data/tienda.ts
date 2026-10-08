@@ -159,13 +159,11 @@ export function guiasCheckout() {
   }));
 }
 
-/** Order of the shop popup (Verónica, change 46: the recipe book first, then «hackear»). */
-export const ordenPopupGuias = [
-  'recetario-30-desayunos',
-  'hackear-tu-cerebro',
-  'guia-hormonas-30',
-  'guia-glp1-retatrutida',
-];
+/**
+ * The one guide the shop checkout offers at a discount: the recipe book with any guide, and the
+ * hormones guide when the recipe book is already in the order (Mari, 2026-10-07).
+ */
+export const ofertaPopupGuias = ['recetario-30-desayunos', 'guia-hormonas-30'];
 
 /** Discount on guides added from the popup. Proposed, to confirm with Verónica. */
 export const DESCUENTO_POPUP = 0.15;

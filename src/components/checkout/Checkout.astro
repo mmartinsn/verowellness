@@ -585,9 +585,6 @@ const metodos = [
             </p>
           </div>
         </div>
-        <p class="pg-agregada" data-pg-agregada hidden>
-          Listo, la agregamos a tu pedido. ¿Y esta también?
-        </p>
         <div class="pg-acciones">
           <button type="button" class="btn btn-primary" data-pg-si>
             Agregar a mi pedido
@@ -1519,12 +1516,6 @@ const metodos = [
     color: rgb(48 47 42 / 0.7);
     margin: 0;
   }
-  .pg-agregada {
-    margin: 16px 0 0;
-    font-size: 13.5px;
-    font-weight: 700;
-    color: var(--color-sage-deep);
-  }
   .pg-acciones {
     display: flex;
     gap: 14px;
@@ -1710,11 +1701,13 @@ const metodos = [
       };
       bloqueLectura.querySelectorAll('input').forEach((i) => i.addEventListener('change', leer));
     }
-    // Shop: on arrival, offer the next guide not in the cart, at a discount, one after another.
+    // Shop: on arrival, offer one guide at a discount — the first in `orden` not already in the cart.
     const popup = root.querySelector<HTMLDialogElement>('[data-popup-guia]');
     if (popup && extras?.popupGuias && items.length > 0) {
       const enCarrito = new Set(items.map((i) => i.id));
-      const cola = extras.popupGuias.orden.filter((id) => !enCarrito.has(id) && guiaPorId.has(id));
+      const cola = extras.popupGuias.orden
+        .filter((id) => !enCarrito.has(id) && guiaPorId.has(id))
+        .slice(0, 1);
       const desc = extras.popupGuias.descuento;
       let actual = '';
       const siguiente = () => {
@@ -1740,7 +1733,6 @@ const metodos = [
           c.checked = true;
           c.disabled = true;
         }
-        popup.querySelector<HTMLElement>('[data-pg-agregada]')!.hidden = false;
         siguiente();
       });
       popup.querySelector('[data-pg-no]')!.addEventListener('click', () => popup.close());

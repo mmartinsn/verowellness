@@ -10,7 +10,7 @@ import {
   productos,
   CLAVE_TIENDA,
   guiasCheckout,
-  ordenPopupGuias,
+  ofertaPopupGuias,
   DESCUENTO_POPUP,
 } from '../../data/tienda';
 import { href } from '../../lib/url';
@@ -39,7 +39,7 @@ const pedido = {
     etiquetaProducto="Pedido"
     extras={{
       guias: guiasCheckout(),
-      popupGuias: { orden: ordenPopupGuias, descuento: DESCUENTO_POPUP },
+      popupGuias: { orden: ofertaPopupGuias, descuento: DESCUENTO_POPUP },
     }}
     textos={{
       datos: 'Esta información crea tu perfil como cliente de Veronica Wellness.',
