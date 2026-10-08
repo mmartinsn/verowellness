@@ -307,6 +307,13 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     detrás, y el índice «Explora las guías» marca también esos dos productos. En el teléfono la
     etiqueta va en su propia línea, sobre el capítulo y el precio.
 
+35. **2026-10-07 — Checkout de exámenes: la cita de lectura resalta.** A pedido de Mari, para que
+    nadie la pase por alto. Mismos textos; el bloque es una tarjeta terracota con borde, sombra e
+    ícono de examen con lupa, la pregunta más grande, y «Sí, quiero agregarla» es el botón con
+    color. «No, por ahora» sigue marcado por defecto, pero se ve discreto. Al llegar al paso 2 la
+    tarjeta brilla dos veces (nada si la persona pidió reducir el movimiento). En el teléfono los
+    dos botones ocupan todo el ancho y el «Sí» va primero.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

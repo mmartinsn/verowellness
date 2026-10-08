@@ -257,8 +257,29 @@ const metodos = [
 
       {
         extras?.lectura && (
-          <div class="extra-bloque" data-lectura>
-            <p class="extra-titulo">¿Quieres agregar una cita para la lectura de tu examen?</p>
+          <div class="extra-bloque lectura" data-lectura>
+            <div class="lectura-cab">
+              <span class="lectura-icono" aria-hidden="true">
+                <svg
+                  viewBox="0 0 32 32"
+                  width="28"
+                  height="28"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M8 4h11l5 5v9" />
+                  <path d="M19 4v5h5" />
+                  <path d="M8 4v24h9" />
+                  <path d="M12 13h8M12 17h6M12 21h3" />
+                  <circle cx="23" cy="23" r="4.5" />
+                  <path d="m26.3 26.3 3.2 3.2" />
+                </svg>
+              </span>
+              <p class="extra-titulo">¿Quieres agregar una cita para la lectura de tu examen?</p>
+            </div>
             <div class="extra-sino" role="radiogroup" aria-label="Agregar cita de lectura">
               <label class="sino">
                 <input type="radio" name="lectura-sino" value="no" checked />
@@ -1153,6 +1174,98 @@ const metodos = [
     font-size: 22px;
     line-height: 1.2;
     margin: 0 0 14px;
+  }
+  /* The reading add-on is the one extra that must not be missed: warm card, icon, glow on arrival. */
+  .extra-bloque.lectura {
+    position: relative;
+    padding: 26px 28px 24px;
+    border: 1.5px solid var(--color-clay-deep);
+    background:
+      linear-gradient(135deg, rgb(231 183 160 / 0.38), rgb(216 171 166 / 0.2) 70%),
+      var(--color-white);
+    box-shadow: 0 18px 44px rgb(138 75 49 / 0.16);
+  }
+  .lectura-cab {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+  .lectura-icono {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #8a4b31;
+    color: var(--color-bone);
+    box-shadow: 0 0 0 5px rgb(231 183 160 / 0.45);
+  }
+  .lectura .extra-titulo {
+    margin: 0;
+    font-size: clamp(23px, 2.2vw, 28px);
+    line-height: 1.15;
+    font-weight: 500;
+  }
+  .lectura .sino span {
+    padding: 13px 22px;
+    font-size: 15px;
+  }
+  .lectura .sino input[value='si'] + span {
+    border: 1.5px solid #8a4b31;
+    background: var(--color-white);
+    color: #8a4b31;
+    box-shadow: 0 8px 20px rgb(138 75 49 / 0.16);
+  }
+  .lectura .sino input[value='si']:checked + span {
+    background: #8a4b31;
+    color: var(--color-bone);
+  }
+  .lectura .sino input[value='no'] + span {
+    border-color: rgb(48 47 42 / 0.25);
+    background: transparent;
+    color: rgb(48 47 42 / 0.75);
+    font-weight: 600;
+  }
+  .lectura .sino input[value='no']:checked + span {
+    background: rgb(255 255 255 / 0.7);
+    color: var(--color-charcoal);
+    border-color: rgb(48 47 42 / 0.45);
+  }
+  .step.active .lectura {
+    animation: lectura-llama 1.8s ease-in-out 0.5s 2;
+  }
+  @keyframes lectura-llama {
+    50% {
+      box-shadow:
+        0 0 0 8px rgb(214 154 124 / 0.35),
+        0 18px 44px rgb(138 75 49 / 0.22);
+    }
+  }
+  @media (max-width: 600px) {
+    .extra-bloque.lectura {
+      padding: 22px 18px 20px;
+    }
+    .lectura-cab {
+      align-items: flex-start;
+    }
+    .lectura-icono {
+      width: 46px;
+      height: 46px;
+    }
+    .lectura .extra-sino {
+      flex-direction: column-reverse;
+    }
+    .lectura .sino span {
+      display: block;
+      text-align: center;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .step.active .lectura {
+      animation: none;
+    }
   }
   .extra-sino {
     display: flex;
