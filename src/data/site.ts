@@ -1,3 +1,4 @@
+import type { Comercio } from '../lib/comercio/pedido';
 /**
  * Site-wide strings and navigation. Copy is Verónica's / Mari's; nothing here is invented.
  * Paths are base-relative and go through `href()` when rendered.
@@ -67,3 +68,8 @@ export const imagenSocial = {
 };
 
 export const copyright = `© ${new Date().getFullYear()} Veronica Wellness. Todos los derechos reservados.`;
+
+export const comercio: Comercio = {
+  modo: 'prototipo',
+  pago: 'https://veronicas-radical-site-497b87.webflow.io',
+};

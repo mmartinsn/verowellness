@@ -123,6 +123,24 @@ export class ApiWebflow {
     return this.c.get<{ id: string; hostedUrl: string }>(`/assets/${id}`);
   }
 
+  paginas() {
+    return this.c.todas<{ id: string; slug: string | null; title: string; draft: boolean }>(
+      `/sites/${this.c.sitio}/pages`,
+      'pages'
+    );
+  }
+
+  async codigoLibre(pagina: string, lugar: 'head' | 'footer'): Promise<string> {
+    const bloques = await this.c.get<{ location: string; content: string }[]>(
+      `/pages/${pagina}/custom_code/freeform`
+    );
+    return bloques.find((b) => b.location === lugar)?.content ?? '';
+  }
+
+  escribirCodigoLibre(pagina: string, lugar: 'head' | 'footer', content: string) {
+    return this.c.pedir('PUT', `/pages/${pagina}/custom_code/freeform/${lugar}`, { content });
+  }
+
   publicarSitio() {
     return this.c.post(`/sites/${this.c.sitio}/publish`, { publishToWebflowSubdomain: true });
   }

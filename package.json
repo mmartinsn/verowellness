@@ -12,15 +12,16 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "lint": "eslint src scripts",
-    "format": "prettier --write src scripts docs README.md",
-    "format:check": "prettier --check src scripts docs README.md",
+    "lint": "eslint src scripts webflow tests",
+    "format": "prettier --write src scripts docs tests webflow/puente.ts README.md",
+    "format:check": "prettier --check src scripts docs tests webflow/puente.ts README.md",
     "capturas": "node scripts/capturas.mjs",
     "empaquetar": "node scripts/empaquetar.mjs",
     "verificar:entrega": "node scripts/verificar-entrega.mjs",
     "entrega": "npm run build && npm run empaquetar && npm run verificar:entrega",
-    "verify": "npm run lint && npm run format:check && npm run check && npm run build",
-    "vw": "node --env-file-if-exists=.env --import ./scripts/vw/cargador/registrar.ts scripts/vw/cli.ts"
+    "verify": "npm run lint && npm run format:check && npm run check && npm test && npm run build",
+    "vw": "node --env-file-if-exists=.env --import ./scripts/vw/cargador/registrar.ts scripts/vw/cli.ts",
+    "test": "node --test \"tests/**/*.test.ts\""
   },
   "dependencies": {
     "astro": "7.3.3",

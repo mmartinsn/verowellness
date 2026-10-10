@@ -46,4 +46,15 @@ export const comandos: Entrada[] = [
     descripcion: 'Trae lo publicado en Webflow al snapshot canónico; --comprobar solo compara',
     cargar: () => import('./bajar.ts'),
   },
+  {
+    nombre: 'puente',
+    descripcion:
+      'Genera webflow/pedido.html: el puente que carga el pedido en el carrito de Webflow',
+    cargar: () => import('./puente.ts'),
+  },
+  {
+    nombre: 'probar-puente',
+    descripcion: 'Matriz de pedidos contra el puente de Webflow: el checkout debe dar lo esperado',
+    cargar: () => import('./probar-puente.ts'),
+  },
 ];
