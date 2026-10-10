@@ -29,15 +29,15 @@ function csv(t: Tabla, carpeta: string) {
   }
 }
 
-export function documentos(t: Tabla) {
-  return { modelo: diccionario(t), sql: ddl() };
+export function documentos() {
+  return { modelo: diccionario(), sql: ddl() };
 }
 
 export async function ejecutar(args: string[]): Promise<number> {
   const que = args[0];
   const t = leerSnapshot();
   if (que === 'docs' || que === 'sql') {
-    const { modelo, sql } = documentos(t);
+    const { modelo, sql } = documentos();
     writeFileSync(ARCHIVO_MODELO, modelo);
     writeFileSync(ARCHIVO_SQL, sql);
     console.log('docs/MODELO.md y docs/modelo.sql generados desde el modelo.');

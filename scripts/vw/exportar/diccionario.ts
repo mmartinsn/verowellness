@@ -1,9 +1,7 @@
 import type { Campo } from '../../../src/modelo/campos.ts';
-import { siempreConValor } from '../../../src/modelo/campos.ts';
 import type { Entidad } from '../../../src/modelo/entidad.ts';
 import { VERSION_ESQUEMA, entidadPorClave, listaEntidades } from '../../../src/modelo/esquema.ts';
 import { etiquetaCampo, slugCampo } from '../../../src/modelo/etiquetas.ts';
-import type { Tabla } from '../comun/snapshot.ts';
 
 const ALMACEN: Record<Entidad['almacen'], string> = {
   cms: 'Webflow CMS',
@@ -32,6 +30,12 @@ const describirTipo = (c: Campo): string => {
   }
 };
 
+const obligatorio = (c: Campo): string => {
+  if (c.tipo === 'booleano') return 'siempre (sí o no)';
+  if (c.tipo === 'referencias' || !c.requerido) return 'no';
+  return c.tipo === 'lista' || c.tipo === 'parrafos' ? 'sí, al menos uno' : 'sí';
+};
+
 const ident = (e: Entidad) => e.coleccion.replaceAll('-', '_');
 
 function mermaid(): string {
@@ -49,7 +53,7 @@ function mermaid(): string {
   return lineas.join('\n');
 }
 
-export function diccionario(t: Tabla): string {
+export function diccionario(): string {
   const partes = [
     '# Modelo de datos de Veronica Wellness',
     '',
@@ -65,12 +69,9 @@ export function diccionario(t: Tabla): string {
     '',
     '## Entidades',
     '',
-    '| Entidad | Registros | Dónde vive | Para qué |',
-    '|---|---|---|---|',
-    ...listaEntidades().map(
-      (e) =>
-        `| ${e.titulo} | ${e.almacen === 'operacion' ? '—' : (t[e.clave] ?? []).length} | ${ALMACEN[e.almacen]} | ${e.descripcion} |`
-    ),
+    '| Entidad | Dónde vive | Para qué |',
+    '|---|---|---|',
+    ...listaEntidades().map((e) => `| ${e.titulo} | ${ALMACEN[e.almacen]} | ${e.descripcion} |`),
     '',
   ];
   for (const e of listaEntidades()) {
@@ -86,7 +87,7 @@ export function diccionario(t: Tabla): string {
     );
     for (const [clave, c] of Object.entries(e.campos))
       partes.push(
-        `| ${etiquetaCampo(clave)} | \`${slugCampo(clave)}\` | ${describirTipo(c)} | ${c.requerido && !siempreConValor(c) ? 'sí' : 'no'} | ${c.ayuda} |`
+        `| ${etiquetaCampo(clave)} | \`${slugCampo(clave)}\` | ${describirTipo(c)} | ${obligatorio(c)} | ${c.ayuda} |`
       );
     partes.push('');
   }

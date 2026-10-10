@@ -34,7 +34,7 @@ export const auditarDatos: Auditoria = async ({ conWebflow }) => {
     resultados.push(ok(D, `conteo ${e.coleccion}`, (tabla[e.clave] ?? []).length));
   resultados.push(
     ...(await medir(D, 'documentación del modelo al día', async () => {
-      const { modelo, sql } = documentos(tabla);
+      const { modelo, sql } = documentos();
       const actual = (f: string) => (existsSync(f) ? readFileSync(f, 'utf8') : '');
       const viejos = [
         actual(ARCHIVO_MODELO) !== modelo && 'docs/MODELO.md',

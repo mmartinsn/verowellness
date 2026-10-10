@@ -30,26 +30,26 @@ erDiagram
 
 ## Entidades
 
-| Entidad | Registros | Dónde vive | Para qué |
-|---|---|---|---|
-| Productos | 47 | Webflow Ecommerce (producto + SKU) | Lo que se vende: el nombre, el precio y cómo se cobra. Cada asesoría, guía, examen, oferta y cargo es un producto; su presentación vive en su propia colección. |
-| Asesorías | 3 | Webflow CMS | Las consultas y ciclos 1:1: lo que incluye cada uno y lo que pasa después de pagar. |
-| Guías | 4 | Webflow CMS | Las guías y recetarios en PDF de la tienda. |
-| Ajustes | 1 | Webflow CMS | Valores de funcionamiento del sitio. Hay un solo registro. |
-| Áreas de exámenes | 11 | Webflow CMS | Los grupos del catálogo de exámenes (Gastrointestinal, Hormonales…). |
-| Tipos de muestra | 7 | Webflow CMS | Cómo se toma la muestra de un examen (heces, sangre, saliva…). |
-| Exámenes | 38 | Webflow CMS | Cada tarjeta del catálogo de exámenes con su ficha completa. Un mismo producto puede tener dos tarjetas en áreas distintas. |
-| Síntomas | 15 | Webflow CMS | Las tarjetas «por síntoma» que llevan a los exámenes. |
-| Rutas de síntoma | 45 | Webflow CMS | Cada pregunta dentro de un síntoma, con los exámenes que propone en orden. |
-| Caminos de alimentos | 4 | Webflow CMS | Las preguntas guiadas para elegir un panel de reacciones a alimentos. |
-| Testimonios | 9 | Webflow CMS | Las voces de pacientes, con su foto cuando la hay. |
-| Preguntas frecuentes | 20 | Webflow CMS | Preguntas del inicio y de exámenes. Los nombres y precios se escriben como {nombre:id} y {precio:id} y se completan solos. |
-| Layers | 5 | Webflow CMS | Las cinco capas de The Layer Method™. |
-| Suplementos | 17 | Webflow CMS | Los suplementos recomendados en el estante de cada capa. |
-| Textos de sección | 40 | Webflow CMS | Los textos de cada sección del sitio: pasos, pilares, listas y avisos. Se filtran por página y sección; el orden decide la posición. |
-| Clientes | — | Pedidos de Webflow (solo modelada; datos personales fuera del repo) | Quien compra. Datos personales: nunca en el repositorio ni en reportes. |
-| Pedidos | — | Pedidos de Webflow (solo modelada; datos personales fuera del repo) | Cada compra, con sus montos en centavos. |
-| Líneas de pedido | — | Pedidos de Webflow (solo modelada; datos personales fuera del repo) | Cada producto dentro de un pedido. |
+| Entidad | Dónde vive | Para qué |
+|---|---|---|
+| Productos | Webflow Ecommerce (producto + SKU) | Lo que se vende: el nombre, el precio y cómo se cobra. Cada asesoría, guía, examen, oferta y cargo es un producto; su presentación vive en su propia colección. |
+| Asesorías | Webflow CMS | Las consultas y ciclos 1:1: lo que incluye cada uno y lo que pasa después de pagar. |
+| Guías | Webflow CMS | Las guías y recetarios en PDF de la tienda. |
+| Ajustes | Webflow CMS | Valores de funcionamiento del sitio. Hay un solo registro. |
+| Áreas de exámenes | Webflow CMS | Los grupos del catálogo de exámenes (Gastrointestinal, Hormonales…). |
+| Tipos de muestra | Webflow CMS | Cómo se toma la muestra de un examen (heces, sangre, saliva…). |
+| Exámenes | Webflow CMS | Cada tarjeta del catálogo de exámenes con su ficha completa. Un mismo producto puede tener dos tarjetas en áreas distintas. |
+| Síntomas | Webflow CMS | Las tarjetas «por síntoma» que llevan a los exámenes. |
+| Rutas de síntoma | Webflow CMS | Cada pregunta dentro de un síntoma, con los exámenes que propone en orden. |
+| Caminos de alimentos | Webflow CMS | Las preguntas guiadas para elegir un panel de reacciones a alimentos. |
+| Testimonios | Webflow CMS | Las voces de pacientes, con su foto cuando la hay. |
+| Preguntas frecuentes | Webflow CMS | Preguntas del inicio y de exámenes. Los nombres y precios se escriben como {nombre:id} y {precio:id} y se completan solos. |
+| Layers | Webflow CMS | Las cinco capas de The Layer Method™. |
+| Suplementos | Webflow CMS | Los suplementos recomendados en el estante de cada capa. |
+| Textos de sección | Webflow CMS | Los textos de cada sección del sitio: pasos, pilares, listas y avisos. Se filtran por página y sección; el orden decide la posición. |
+| Clientes | Pedidos de Webflow (solo modelada; datos personales fuera del repo) | Quien compra. Datos personales: nunca en el repositorio ni en reportes. |
+| Pedidos | Pedidos de Webflow (solo modelada; datos personales fuera del repo) | Cada compra, con sus montos en centavos. |
+| Líneas de pedido | Pedidos de Webflow (solo modelada; datos personales fuera del repo) | Cada producto dentro de un pedido. |
 
 ### Productos
 
@@ -62,7 +62,7 @@ Lo que se vende: el nombre, el precio y cómo se cobra. Cada asesoría, guía, e
 | Tipo | `tipo` | opción: `asesoria`, `guia`, `examen`, `oferta`, `cargo` | sí | Qué clase de producto es; define su categoría. |
 | Precio | `precio` | dinero (centavos de USD) | sí | Precio de venta antes de impuestos, en centavos de USD. |
 | Impuesto | `impuesto` | opción: `service-professional`, `digital-goods`, `standard-exempt`, `standard-taxable` | sí | Clase de impuesto para el cálculo automático. |
-| Enviable | `enviable` | booleano | no | Si el pedido necesita dirección de envío. |
+| Enviable | `enviable` | booleano | siempre (sí o no) | Si el pedido necesita dirección de envío. |
 | Sku | `sku` | texto | sí | Código interno único del producto. |
 | Descripción | `descripcion` | texto | no | Descripción comercial. |
 | Descarga | `descarga` | enlace | no | Enlace que recibe quien compra (PDF de la guía o página de agenda). |
@@ -82,15 +82,15 @@ Las consultas y ciclos 1:1: lo que incluye cada uno y lo que pasa después de pa
 | Etiqueta nota | `etiqueta-nota` | texto | no | Nota pequeña bajo la etiqueta. |
 | Descripción | `descripcion` | texto | sí | Descripción de la tarjeta de precio. |
 | Descripción corta | `descripcion-corta` | texto | sí | Descripción del resumen del pago. |
-| Incluye | `incluye` | lista (una línea por elemento) | no | Lo que incluye, una línea por punto. |
-| Incluye checkout | `incluye-checkout` | lista (una línea por elemento) | no | Lo que incluye en el resumen del pago, una línea por punto. |
+| Incluye | `incluye` | lista (una línea por elemento) | sí, al menos uno | Lo que incluye, una línea por punto. |
+| Incluye checkout | `incluye-checkout` | lista (una línea por elemento) | sí, al menos uno | Lo que incluye en el resumen del pago, una línea por punto. |
 | Nota pie | `nota-pie` | texto | no | Nota al pie de la tarjeta. |
 | Bonus | `bonus` | texto | no | Regalo que acompaña al ciclo. |
 | Confirmación título | `confirmacion-titulo` | texto | sí | Título de la pantalla después de pagar. |
 | Confirmación texto | `confirmacion-texto` | texto | sí | Texto de la pantalla después de pagar. |
 | Calendly url | `calendly-url` | enlace | sí | Enlace de Calendly para agendar. |
 | Calendly etiqueta | `calendly-etiqueta` | texto | sí | Rótulo del enlace de Calendly. |
-| Pública | `publica` | booleano | no | Si se muestra con precio en el sitio. |
+| Pública | `publica` | booleano | siempre (sí o no) | Si se muestra con precio en el sitio. |
 | Orden | `orden` | entero | sí | Posición en el sitio, de menor a mayor. |
 
 ### Guías
@@ -107,11 +107,11 @@ Las guías y recetarios en PDF de la tienda. Colección `guias`, ordenada por `o
 | Páginas | `paginas` | entero | sí | Páginas del PDF. |
 | Título portada | `titulo-portada` | texto | sí | Título impreso en la portada. |
 | Portada | `portada` | imagen en src/assets/tienda/ | sí | Imagen de la portada. |
-| Más vendido | `mas-vendido` | booleano | no | Marca «Más vendido». |
+| Más vendido | `mas-vendido` | booleano | siempre (sí o no) | Marca «Más vendido». |
 | Subtítulo | `subtitulo` | texto | sí | Subtítulo bajo el nombre. |
 | Gancho | `gancho` | texto | sí | Pregunta o frase de entrada. |
 | Para ti | `para-ti` | lista (una línea por elemento) | no | «Para ti si…», una línea por punto. |
-| Incluye | `incluye` | lista (una línea por elemento) | no | «Dentro encontrarás», una línea por punto. |
+| Incluye | `incluye` | lista (una línea por elemento) | sí, al menos uno | «Dentro encontrarás», una línea por punto. |
 | Cita | `cita` | texto | sí | Frase de cierre. |
 | Cita página | `cita-pagina` | entero | no | Página del libro de donde sale la cita. |
 | Formato | `formato` | texto | sí | «PDF · 34 páginas»… |
@@ -134,7 +134,7 @@ Valores de funcionamiento del sitio. Hay un solo registro. Colección `ajustes`;
 | Wholescripts registro | `wholescripts-registro` | enlace | sí | Página de registro en Wholescripts. |
 | Wholescripts codigo | `wholescripts-codigo` | texto | no | Código de la cuenta en Wholescripts. |
 | Wholescripts apellido | `wholescripts-apellido` | texto | no | Apellido para buscar la cuenta. |
-| Wholescripts pendiente | `wholescripts-pendiente` | booleano | no | Si la cuenta de Wholescripts está por confirmar. |
+| Wholescripts pendiente | `wholescripts-pendiente` | booleano | siempre (sí o no) | Si la cuenta de Wholescripts está por confirmar. |
 | Zelle titular | `zelle-titular` | texto | sí | Titular de la cuenta de Zelle. |
 | Zelle correo | `zelle-correo` | texto | sí | Correo de la cuenta de Zelle. |
 
@@ -173,14 +173,14 @@ Cada tarjeta del catálogo de exámenes con su ficha completa. Un mismo producto
 | Área | `area` | → Área | sí | Área del catálogo. |
 | Laboratorio | `laboratorio` | opción: `Doctor's Data`, `Alletess`, `US BioTek`, `DUTCH`, `Genova` | no | Laboratorio que lo procesa. |
 | Muestras | `muestras` | ⇉ Tipos de muestra (ordenadas) | no | Tipos de muestra que pide. |
-| En casa | `en-casa` | booleano | no | Si la muestra se toma en casa. |
+| En casa | `en-casa` | booleano | siempre (sí o no) | Si la muestra se toma en casa. |
 | Descripción | `descripcion` | texto | sí | Descripción del examen. |
 | Instructivo | `instructivo` | enlace | no | PDF con las instrucciones. |
 | Gancho | `gancho` | texto | sí | Frase de entrada de la ficha. |
-| Qué mide | `que-mide` | lista (una línea por elemento) | no | Qué mide, una línea por punto. |
+| Qué mide | `que-mide` | lista (una línea por elemento) | sí, al menos uno | Qué mide, una línea por punto. |
 | Por qué importa | `por-que-importa` | texto | sí | Por qué importa. |
-| Ideal | `ideal` | lista (una línea por elemento) | no | Ideal si…, una línea por punto. |
-| Obtienes | `obtienes` | lista (una línea por elemento) | no | Qué obtienes, una línea por punto. |
+| Ideal | `ideal` | lista (una línea por elemento) | sí, al menos uno | Ideal si…, una línea por punto. |
+| Obtienes | `obtienes` | lista (una línea por elemento) | sí, al menos uno | Qué obtienes, una línea por punto. |
 | Alimentos | `alimentos` | entero | no | Cuántos alimentos evalúa (paneles). |
 | Mide | `mide` | lista (una línea por elemento) | no | Qué evalúa el panel de alimentos, una línea por punto. |
 | Orden | `orden` | entero | sí | Posición en el catálogo, de menor a mayor. |
@@ -196,7 +196,7 @@ Las tarjetas «por síntoma» que llevan a los exámenes. Colección `sintomas`,
 | Ejemplos | `ejemplos` | texto | sí | Ejemplos en la voz de la visitante. |
 | Color | `color` | opción: `clay`, `clay-deep`, `clay-rich`, `rose`, `rose-deep`, `sage`, `sage-deep`, `olive`, `sand`, `charcoal` | sí | Color de la tarjeta. |
 | Ícono | `icono` | texto | sí | Trazo SVG del ícono. |
-| Orientación | `orientacion` | booleano | no | Si propone empezar por una consulta. |
+| Orientación | `orientacion` | booleano | siempre (sí o no) | Si propone empezar por una consulta. |
 | Orden | `orden` | entero | sí | Posición, de menor a mayor. |
 
 ### Rutas de síntoma
@@ -239,7 +239,7 @@ Las voces de pacientes, con su foto cuando la hay. Colección `testimonios`, ord
 | Destacado | `destacado` | texto | sí | La frase que se destaca. |
 | Texto | `texto` | párrafos (línea vacía entre párrafos) | no | El testimonio completo; una línea vacía separa los párrafos. |
 | Prioridad | `prioridad` | entero | sí | Orden en el muro, de menor a mayor. |
-| En asesorías | `en-asesorias` | booleano | no | Si aparece también en la página de Asesorías. |
+| En asesorías | `en-asesorias` | booleano | siempre (sí o no) | Si aparece también en la página de Asesorías. |
 
 ### Preguntas frecuentes
 
@@ -264,12 +264,12 @@ Las cinco capas de The Layer Method™. Colección `layers`, ordenada por `orden
 | Nombre | `name` | texto | sí | Nombre visible. |
 | Pregunta | `pregunta` | texto | sí | La pregunta de la capa. |
 | Observa texto | `observa-texto` | texto | sí | Introducción a lo que observa. |
-| Observa | `observa` | lista (una línea por elemento) | no | Lo que observa, una línea por punto. |
+| Observa | `observa` | lista (una línea por elemento) | sí, al menos uno | Lo que observa, una línea por punto. |
 | Cita | `cita` | texto | sí | Cita de la capa. |
 | Conecta | `conecta` | ⇉ Layers (ordenadas) | no | Capas con las que se conecta. |
 | Rol | `rol` | texto | sí | Rol de la capa. |
 | Color | `color` | opción: `clay`, `clay-deep`, `clay-rich`, `rose`, `rose-deep`, `sage`, `sage-deep`, `olive`, `sand`, `charcoal` | sí | Color de la capa. |
-| Oscuro | `oscuro` | booleano | no | Si la capa va sobre fondo oscuro. |
+| Oscuro | `oscuro` | booleano | siempre (sí o no) | Si la capa va sobre fondo oscuro. |
 | Orden | `orden` | entero | sí | Posición, de menor a mayor. |
 
 ### Suplementos
@@ -303,7 +303,7 @@ Los textos de cada sección del sitio: pasos, pilares, listas y avisos. Se filtr
 | Cita | `cita` | texto | no | Frase destacada. |
 | Tono | `tono` | opción: `clay`, `clay-deep`, `clay-rich`, `rose`, `rose-deep`, `sage`, `sage-deep`, `olive`, `sand`, `charcoal` | no | Color del bloque. |
 | Ícono | `icono` | texto | no | Trazo SVG del ícono. |
-| Marcado | `marcado` | booleano | no | Variante marcada del bloque (etiquetas visibles o tachado). |
+| Marcado | `marcado` | booleano | siempre (sí o no) | Variante marcada del bloque (etiquetas visibles o tachado). |
 | Enlace | `enlace` | enlace | no | Enlace del bloque. |
 | Enlace texto | `enlace-texto` | texto | no | Texto del enlace. |
 
