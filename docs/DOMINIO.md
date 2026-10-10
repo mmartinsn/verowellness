@@ -44,9 +44,14 @@ sesión: qué hay hoy, qué se cambia, quién lo hace y cómo se comprueba.
    - CNAME `www` → `mmartinsn.github.io`.
 3. **GitHub Pages:** Settings → Pages → Custom domain = `veronicawellness.com`; cuando aparezca
    el certificado, «Enforce HTTPS». Con despliegue por Actions no hace falta un archivo `CNAME`.
-4. **Código:** mergear la rama `dominio` (un solo archivo, `src/lib/despliegue.ts`: sitio, base,
-   URL pública y dominio de pago). El sitio sigue con `prototipo = true`, o sea con `noindex`, y
-   `public/robots.txt` sigue en `Disallow: /`, que en la raíz del dominio pasa a valer.
+4. **Código:** mergear la rama local `dominio` (commit `5f7c45d`, sobre `7e6068d`): cambia
+   `src/lib/despliegue.ts` (sitio, base, URL pública y dominio de pago) y regenera
+   `webflow/pedido.html` con la nueva URL de regreso. El sitio sigue con `prototipo = true`, o sea
+   con `noindex`, y `public/robots.txt` sigue en `Disallow: /`, que en la raíz del dominio pasa a
+   valer. Su `dist/` se comprobó idéntico al de `cfdc54d` construido en esa misma dirección. **Al
+   mergearla, `vw paridad` da 185 diferencias** (su línea base, `capturas/base/dist`, es de la
+   dirección vieja): se rehace la línea base con la receta de `cerebro/revision-2026-10-10.md`,
+   cambiando `site` y `base` en el `astro.config.mjs` de la copia de `cfdc54d`.
 5. **Webflow:** agregar `pago.veronicawellness.com` como dominio propio. Webflow muestra el CNAME
    (hoy suele ser `cdn.webflow.com`) y a veces un TXT de verificación; ambos van en GoDaddy. Publicar
    también en ese dominio.
