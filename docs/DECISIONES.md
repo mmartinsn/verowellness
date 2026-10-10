@@ -354,6 +354,11 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     - **Mantenimiento**: `npm run vw -- auditar` mide datos, comercio, límites del plan, sitio y
       repo (`MANTENIMIENTO.md`). Primera corrida: las tres URL de Calendly dan 404 y las guías no
       tienen PDF.
+    - **Textos de sección, primera parte**: 40 bloques (listas, pasos, pilares, avisos) ya vienen
+      de Webflow, con el `dist/` idéntico. Lo que sigue en el código lo mide `vw censo` (722
+      textos en 71 archivos el 10-oct); los títulos y párrafos sueltos del marcado se trasladan
+      con Mari, porque cambian cómo ella edita los componentes. La colección nueva deja el plan al
+      85 % de sus colecciones (17 de 20).
 
 ## Abiertas — para Mari y Verónica
 

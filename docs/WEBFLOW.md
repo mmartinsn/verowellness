@@ -6,7 +6,8 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
 
 ## Hecho por API (repetible con `npm run vw -- …`)
 
-- [x] 13 colecciones del CMS con sus campos, relaciones y textos de ayuda (`esquema`).
+- [x] 14 colecciones del CMS con sus campos, relaciones y textos de ayuda (`esquema`), incluida
+      «Textos de sección» con 40 bloques.
 - [x] 5 categorías de producto: Asesorías, Guías, Exámenes, Ofertas, Cargos.
 - [x] 47 productos con su SKU, precio, clase de impuesto y si piden envío (`sembrar`).
 - [x] 179 ítems del CMS con referencias e imágenes (`sembrar`).
@@ -30,6 +31,7 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
   - Áreas: descripción. Síntomas: ejemplos. Rutas de síntoma: pregunta. Caminos: ayuda.
   - Testimonios: motivos, destacado, texto. Preguntas frecuentes: pregunta, respuesta.
   - Layers: pregunta, observa texto, observa, cita.
+  - Textos de sección: texto, ítems, nota, cita.
 - [ ] **Pasarela** (Verónica): Settings → Ecommerce → Payments → conectar Stripe (empresa de
       EE. UU.) y PayPal. Sin esto el checkout no cobra.
 - [ ] **Impuesto** (Verónica): Settings → Ecommerce → Taxes → cálculo automático en EE. UU. Las

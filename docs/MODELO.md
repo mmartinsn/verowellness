@@ -46,7 +46,7 @@ erDiagram
 | Preguntas frecuentes | 20 | Webflow CMS | Preguntas del inicio y de exámenes. Los nombres y precios se escriben como {nombre:id} y {precio:id} y se completan solos. |
 | Layers | 5 | Webflow CMS | Las cinco capas de The Layer Method™. |
 | Suplementos | 17 | Webflow CMS | Los suplementos recomendados en el estante de cada capa. |
-| Textos de sección | 32 | Webflow CMS | Los textos de cada sección del sitio: pasos, pilares, listas y avisos. Se filtran por página y sección; el orden decide la posición. |
+| Textos de sección | 40 | Webflow CMS | Los textos de cada sección del sitio: pasos, pilares, listas y avisos. Se filtran por página y sección; el orden decide la posición. |
 | Clientes | — | Pedidos de Webflow (solo modelada; datos personales fuera del repo) | Quien compra. Datos personales: nunca en el repositorio ni en reportes. |
 | Pedidos | — | Pedidos de Webflow (solo modelada; datos personales fuera del repo) | Cada compra, con sus montos en centavos. |
 | Líneas de pedido | — | Pedidos de Webflow (solo modelada; datos personales fuera del repo) | Cada producto dentro de un pedido. |

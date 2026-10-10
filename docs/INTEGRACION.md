@@ -33,6 +33,21 @@ Webflow (CMS + Ecommerce)  ──vw bajar──▶  src/data/canonico/*.json  �
 - **`src/data/*.ts` conservan exactamente sus exportaciones** (`ciclos`, `productos`, `examenes`,
   `fichas`, `sintomas`, `testimonios`, `layers`…): los componentes no se enteraron del cambio.
 
+## Los textos de sección
+
+Además de los registros (precios, productos, exámenes…), los textos con forma de lista o de
+tarjeta viven en la colección **«Textos de sección»** (`bloque` en el modelo): cada bloque tiene
+página, sección y orden, y los campos que haga falta (etiqueta, título, texto, ítems, nota, cita,
+tono, ícono, enlace). Un componente los lee con `bloques(pagina, seccion)`, `items(…)` o
+`texto(…)` (`src/lib/datos/bloques.ts`). Hoy son 40 bloques: los pasos del proceso y los temas del
+Assessment, las listas de «Sobre mí», los pilares y listas de Exámenes y Suplementos, las listas
+de inicio, método y Asesorías, los avisos y el bloque de continuidad.
+
+Lo que sigue escrito en los componentes lo mide `npm run vw -- censo` (también en la auditoría):
+títulos y párrafos sueltos del marcado, listas que mezclan copy con diseño, el checkout (cambia
+con el comercio) y los inicios alternativos. Cada traslado se hace igual: leer la constante del
+commit base, sembrarla, reemplazar la constante por su lectura y exigir `vw paridad` en 0.
+
 ## Cómo fluye el cobro
 
 ```
