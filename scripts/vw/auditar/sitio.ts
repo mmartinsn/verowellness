@@ -1,12 +1,12 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
+import { BASE } from '../../../src/lib/despliegue.ts';
 import { leerSnapshot } from '../comun/snapshot.ts';
 import { hallazgo, medir, npm, ok, type Auditoria, type Verificacion } from './tipos.ts';
 
 const S = 'sitio';
 const DIST = path.resolve('dist');
-const BASE = '/verowellness';
 const PESO_MAXIMO = 2_500_000;
 const EXTERNOS_VIGILADOS =
   /^https:\/\/(calendly\.com|ig\.me|www\.instagram\.com|www\.wholescripts\.com)/;

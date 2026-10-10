@@ -55,3 +55,12 @@ export const entidadPorClave = (clave: string): Entidad => {
   if (!e) throw new Error(`Entidad desconocida: ${clave}`);
   return e;
 };
+
+export const carpetasImagen = (): string[] =>
+  [
+    ...new Set(
+      listaEntidades().flatMap((e) =>
+        Object.values(e.campos).flatMap((c) => (c.tipo === 'imagen' ? [c.carpeta] : []))
+      )
+    ),
+  ].sort();

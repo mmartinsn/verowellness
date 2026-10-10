@@ -1,9 +1,8 @@
-import { CARPETAS_IMAGEN } from '../cargador/imagenes-node.ts';
 import { bandera } from '../comun/args.ts';
 import { comparar } from '../comun/comparar.ts';
 import { informarProblemas, problemasDe } from '../comun/problemas.ts';
 import { escribirSnapshot, leerSnapshot } from '../comun/snapshot.ts';
-import { entidadesDeContenido } from '../../../src/modelo/esquema.ts';
+import { carpetasImagen, entidadesDeContenido } from '../../../src/modelo/esquema.ts';
 import { ordenar } from '../../../src/modelo/serializar.ts';
 import { leerSitio } from '../webflow/conexion.ts';
 import { bajar, escribirImagenes, imagenesHuerfanas } from '../webflow/bajar.ts';
@@ -43,7 +42,7 @@ export async function ejecutar(args: string[]): Promise<number> {
   }
   escribirImagenes(imagenes);
   const cambiados = escribirSnapshot(tabla);
-  const huerfanas = imagenesHuerfanas(tabla, CARPETAS_IMAGEN);
+  const huerfanas = imagenesHuerfanas(tabla, carpetasImagen());
   console.log(
     `Snapshot actualizado desde Webflow: ${cambiados.length ? cambiados.join(', ') : 'sin cambios'}.`
   );

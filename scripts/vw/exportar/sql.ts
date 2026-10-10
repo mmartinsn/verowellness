@@ -3,6 +3,7 @@ import { siempreConValor } from '../../../src/modelo/campos.ts';
 import type { Entidad, RegistroLibre } from '../../../src/modelo/entidad.ts';
 import { VERSION_ESQUEMA, entidadPorClave, listaEntidades } from '../../../src/modelo/esquema.ts';
 import { slugCampo } from '../../../src/modelo/etiquetas.ts';
+import { ordenTopologico } from '../../../src/modelo/orden.ts';
 import type { Tabla } from '../comun/snapshot.ts';
 
 const tabla = (e: Entidad) => e.coleccion.replaceAll('-', '_');
@@ -82,20 +83,7 @@ export function datos(t: Tabla): string {
     const valores = [texto(r.id), texto(r.nombre), ...campos.map(([k, c]) => valorSql(c, r[k]))];
     return `INSERT INTO ${tabla(e)} (${nombres.join(', ')}) VALUES (${valores.join(', ')});`;
   };
-  const orden = [
-    'producto',
-    'area',
-    'tipoMuestra',
-    'layer',
-    'sintoma',
-    'asesoria',
-    'guia',
-    'examen',
-  ];
-  const ordenadas = [
-    ...orden.map((k) => entidadPorClave(k)),
-    ...entidades.filter((e) => !orden.includes(e.clave)),
-  ];
+  const ordenadas = ordenTopologico(entidades, false);
   for (const e of ordenadas) for (const r of t[e.clave] ?? []) lineas.push(insertar(e, r));
   for (const e of entidades)
     for (const [clave, c] of Object.entries(e.campos))

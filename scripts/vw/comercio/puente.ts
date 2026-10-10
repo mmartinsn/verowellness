@@ -3,12 +3,13 @@ import { stripTypeScriptTypes } from 'node:module';
 import path from 'node:path';
 import type { Catalogo } from '../../../src/lib/comercio/reglas.ts';
 import type { Tabla } from '../comun/snapshot.ts';
+import { URL_PUBLICA, WEBFLOW_IO } from '../../../src/lib/despliegue.ts';
 
 export const ARCHIVO_PUENTE = path.resolve('webflow', 'pedido.html');
 
-export const VOLVER = 'https://mmartinsn.github.io/verowellness/';
+export const VOLVER = URL_PUBLICA;
 
-export const TIENDA = 'https://veronicas-radical-site-497b87.webflow.io';
+export const TIENDA = WEBFLOW_IO;
 
 const TEXTOS = {
   preparando: 'Preparando tu pedido…',

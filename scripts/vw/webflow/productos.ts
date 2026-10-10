@@ -3,6 +3,7 @@ import { entidadPorClave } from '../../../src/modelo/esquema.ts';
 import { normalizar } from '../../../src/modelo/serializar.ts';
 import { CATEGORIAS } from './esquema.ts';
 import type { ItemWf, PrecioWf, ProductoWf } from './tipos.ts';
+import { mismoValor } from './valores.ts';
 
 export interface Deseado {
   producto: Record<string, unknown>;
@@ -82,20 +83,18 @@ export const registrosDeProductos = (
     normalizar(entidadPorClave('producto'), productoDesdeWebflow(p, tipoPorCategoria))
   );
 
-const igual = (a: unknown, b: unknown) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
-
 export function diferencias(actual: Record<string, unknown>, deseado: Record<string, unknown>) {
   return Object.keys(deseado).filter((k) => {
     if (k === 'price')
       return (actual.price as PrecioWf | undefined)?.value !== (deseado.price as PrecioWf).value;
     if (k === 'download-files')
-      return !igual(
+      return !mismoValor(
         ((actual[k] as { url: string; name: string }[]) ?? []).map(({ name, url }) => ({
           name,
           url,
         })),
         deseado[k]
       );
-    return !igual(actual[k] ?? (k === 'description' ? '' : null), deseado[k]);
+    return !mismoValor(actual[k], deseado[k]);
   });
 }

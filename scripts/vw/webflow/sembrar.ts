@@ -1,6 +1,7 @@
 import type { Campo } from '../../../src/modelo/campos.ts';
 import type { Entidad, RegistroLibre } from '../../../src/modelo/entidad.ts';
 import { entidadPorClave } from '../../../src/modelo/esquema.ts';
+import { ordenTopologico } from '../../../src/modelo/orden.ts';
 import type { Tabla } from '../comun/snapshot.ts';
 import type { Sitio } from './conexion.ts';
 import { aWebflow, type Indices } from './convertir.ts';
@@ -8,6 +9,7 @@ import { camposDeseados, coleccionesCms, slugColeccion } from './esquema.ts';
 import { mismaImagen, subirImagen } from './imagenes.ts';
 import { diferencias, productoAWebflow } from './productos.ts';
 import type { ImagenWf, ItemWf } from './tipos.ts';
+import { camposDistintos } from './valores.ts';
 
 export interface Resumen {
   coleccion: string;
@@ -29,41 +31,6 @@ const destinoDe = (c: Campo) =>
   c.tipo === 'referencia' || c.tipo === 'referencias'
     ? slugColeccion(entidadPorClave(c.entidad))
     : '';
-
-export function ordenTopologico(entidades: Entidad[]): Entidad[] {
-  const pendientes = new Map(entidades.map((e) => [e.clave, e]));
-  const salida: Entidad[] = [];
-  while (pendientes.size) {
-    const lista = [...pendientes.values()].filter((e) =>
-      Object.values(e.campos).every(
-        (c) =>
-          c.tipo !== 'referencia' ||
-          !c.requerido ||
-          c.entidad === e.clave ||
-          !pendientes.has(c.entidad)
-      )
-    );
-    if (lista.length === 0) throw new Error('Las referencias obligatorias forman un ciclo');
-    for (const e of lista) {
-      salida.push(e);
-      pendientes.delete(e.clave);
-    }
-  }
-  return salida;
-}
-
-const vacio = (v: unknown) =>
-  v === undefined || v === null || v === '' || (Array.isArray(v) && v.length === 0);
-
-function cambiados(actual: Record<string, unknown>, deseado: Record<string, unknown>): string[] {
-  return Object.keys(deseado).filter((k) => {
-    const a = actual[k];
-    const d = deseado[k];
-    if (vacio(a) && vacio(d)) return false;
-    if (typeof d === 'boolean') return Boolean(a) !== d;
-    return JSON.stringify(a) !== JSON.stringify(d);
-  });
-}
 
 function indices(items: Map<string, ItemWf[]>): Indices {
   const idPorSlug = new Map<string, Map<string, string>>();
@@ -196,7 +163,7 @@ export async function sembrar(sitio: Sitio, tabla: Tabla, aplicar: boolean) {
         continue;
       }
       const imagenes = await imagenesDeseadas(sitio, e, r, actual, aplicar);
-      const distintos = [...cambiados(actual.fieldData, deseado), ...Object.keys(imagenes)];
+      const distintos = [...camposDistintos(actual.fieldData, deseado), ...Object.keys(imagenes)];
       if (distintos.length === 0) {
         resumen.iguales++;
         continue;

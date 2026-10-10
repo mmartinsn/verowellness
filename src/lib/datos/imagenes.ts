@@ -1,7 +1,5 @@
 import type { ImageMetadata } from 'astro';
 
-export const CARPETAS_IMAGEN = ['testimonios', 'tienda'] as const;
-
 const archivos = import.meta.glob<ImageMetadata>(
   '/src/assets/{testimonios,tienda}/*.{jpg,jpeg,png,webp,avif}',
   { eager: true, import: 'default' }
