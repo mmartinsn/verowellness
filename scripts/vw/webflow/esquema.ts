@@ -70,6 +70,7 @@ export type Accion =
       campo: CampoDeseado;
       cambios: Record<string, unknown>;
     }
+  | { tipo: 'tipo-distinto'; entidad: Entidad; campo: CampoDeseado; actual: string }
   | { tipo: 'crear-categoria'; slug: string; nombre: string }
   | { tipo: 'manual'; detalle: string }
   | { tipo: 'aviso'; detalle: string };
@@ -93,10 +94,7 @@ export function planEsquema(existentes: ColeccionWf[], categorias: { slug: strin
         continue;
       }
       if (f.type !== campo.tipo) {
-        acciones.push({
-          tipo: 'manual',
-          detalle: `${e.coleccion}.${campo.slug}: es ${f.type} en Webflow y el modelo pide ${campo.tipo}`,
-        });
+        acciones.push({ tipo: 'tipo-distinto', entidad: e, campo, actual: f.type });
         continue;
       }
       const cambios: Record<string, unknown> = {};
@@ -137,7 +135,7 @@ export function planEsquema(existentes: ColeccionWf[], categorias: { slug: strin
   return acciones;
 }
 
-export function faltantes(acciones: Accion[]): string[] {
+export function incompatibles(acciones: Accion[]): string[] {
   return acciones.flatMap((a) => {
     switch (a.tipo) {
       case 'crear-coleccion':
@@ -146,6 +144,8 @@ export function faltantes(acciones: Accion[]): string[] {
         return [`campo ${a.entidad.coleccion}.${a.campo.slug}`];
       case 'crear-categoria':
         return [`categoría ${a.slug}`];
+      case 'tipo-distinto':
+        return [`campo ${a.entidad.coleccion}.${a.campo.slug} con tipo ${a.actual}`];
       default:
         return [];
     }

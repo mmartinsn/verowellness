@@ -1,7 +1,18 @@
 import type { Sitio } from './conexion.ts';
 import { coleccionesCms } from './esquema.ts';
-import { estadoProducto } from './productos.ts';
-import type { ItemWf } from './tipos.ts';
+import type { ColeccionWf, ItemWf } from './tipos.ts';
+
+export interface Lectura {
+  vivos: Map<string, ItemWf[]>;
+  borradores: Map<string, ItemWf[]>;
+}
+
+export interface Fechas {
+  lastUpdated?: string | null;
+  lastPublished?: string | null;
+}
+
+export type Paso = 'seco' | 'nada' | 'negar' | 'aplicar';
 
 const despues = (a: string | null | undefined, b: string | null | undefined) =>
   !!a && (!b || Date.parse(a) > Date.parse(b));
@@ -23,28 +34,43 @@ export function itemsSinPublicar(coleccion: string, vivos: ItemWf[], borradores:
   return [...cambiados, ...borrados];
 }
 
-export function sitioSinPublicar(sitio: {
-  lastUpdated?: string | null;
-  lastPublished?: string | null;
-}): string[] {
+export function sitioSinPublicar(sitio: Fechas): string[] {
   return despues(sitio.lastUpdated, sitio.lastPublished)
     ? [`sitio: cambios del ${sitio.lastUpdated} sin publicar (Designer, páginas o ajustes)`]
     : [];
 }
 
-export async function pendientesDePublicar({ api, colecciones }: Sitio): Promise<string[]> {
-  const pendientes = sitioSinPublicar(await api.sitio());
-  for (const p of await api.productos())
-    if (estadoProducto(p) === 'pendiente') pendientes.push(`productos/${p.product.fieldData.slug}`);
-  for (const e of coleccionesCms()) {
-    const c = colecciones.get(e.coleccion);
-    if (c)
-      pendientes.push(
-        ...itemsSinPublicar(e.coleccion, await api.items(c.id, true), await api.items(c.id))
-      );
-  }
-  return pendientes;
+export function coleccionesLeidas(sitio: Sitio): ColeccionWf[] {
+  const cms = coleccionesCms().map((e) => {
+    const c = sitio.colecciones.get(e.coleccion);
+    if (!c) throw new Error(`Falta la colección ${e.coleccion} en Webflow`);
+    return c;
+  });
+  return [...cms, sitio.productos, sitio.skus];
 }
+
+export async function leerColecciones(sitio: Sitio): Promise<Lectura> {
+  const vivos = new Map<string, ItemWf[]>();
+  const borradores = new Map<string, ItemWf[]>();
+  for (const c of coleccionesLeidas(sitio)) {
+    vivos.set(c.slug, await sitio.api.items(c.id, true));
+    borradores.set(c.slug, await sitio.api.items(c.id));
+  }
+  return { vivos, borradores };
+}
+
+export const sinPublicar = (fechas: Fechas, { vivos, borradores }: Lectura): string[] => [
+  ...sitioSinPublicar(fechas),
+  ...[...borradores.keys()].flatMap((slug) =>
+    itemsSinPublicar(slug, vivos.get(slug) ?? [], borradores.get(slug) ?? [])
+  ),
+];
+
+export const pendientesDePublicar = async (sitio: Sitio): Promise<string[]> =>
+  sinPublicar(await sitio.api.sitio(), await leerColecciones(sitio));
+
+export const decidir = (aplicar: boolean, escrituras: number, pendientes: number): Paso =>
+  !aplicar ? 'seco' : escrituras === 0 ? 'nada' : pendientes > 0 ? 'negar' : 'aplicar';
 
 export function avisoPendientes(pendientes: string[], aplicar: boolean): string {
   const lista = `${pendientes.length} cambio(s) en Webflow sin publicar: ${pendientes.slice(0, 10).join(', ')}`;

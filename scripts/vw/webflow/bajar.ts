@@ -7,11 +7,11 @@ import { normalizar } from '../../../src/modelo/serializar.ts';
 import type { Tabla } from '../comun/snapshot.ts';
 import type { Sitio } from './conexion.ts';
 import { desdeWebflow, type Indices } from './convertir.ts';
-import { CATEGORIAS, coleccionesCms, faltantes, planEsquema } from './esquema.ts';
+import { CATEGORIAS, coleccionesCms, incompatibles, planEsquema } from './esquema.ts';
 import { CARPETA_ASSETS, descargar, md5 } from './imagenes.ts';
-import { productosPublicados } from './productos.ts';
-import { itemsSinPublicar } from './publicacion.ts';
-import type { ImagenWf, ItemWf } from './tipos.ts';
+import { productosVivos, registrosDeProductos } from './productos.ts';
+import { leerColecciones, sinPublicar } from './publicacion.ts';
+import type { ImagenWf } from './tipos.ts';
 
 const PRESENTACIONES = ['asesoria', 'guia', 'examen'];
 
@@ -46,7 +46,7 @@ async function resolverImagen(
 export async function bajar(sitio: Sitio, anterior: Tabla): Promise<ResultadoBajada> {
   const { api } = sitio;
   const categorias = await api.items(sitio.categorias.id);
-  const faltan = faltantes(
+  const faltan = incompatibles(
     planEsquema(
       [...sitio.colecciones.values()],
       categorias.map((c) => c.fieldData)
@@ -56,19 +56,14 @@ export async function bajar(sitio: Sitio, anterior: Tabla): Promise<ResultadoBaj
     throw new Error(
       `A Webflow le falta lo que el modelo declara (${faltan.join(', ')}); corre vw esquema`
     );
-  const productos = await api.productos();
-  const vivos = new Map<string, ItemWf[]>();
-  for (const e of coleccionesCms()) {
-    const c = sitio.colecciones.get(e.coleccion);
-    if (!c) throw new Error(`Falta la colección ${e.coleccion} en Webflow`);
-    vivos.set(e.coleccion, await api.items(c.id, true));
-  }
-  const borradores = new Map<string, ItemWf[]>();
-  for (const e of coleccionesCms())
-    borradores.set(e.coleccion, await api.items(sitio.colecciones.get(e.coleccion)!.id));
+  const lectura = await leerColecciones(sitio);
+  const { vivos } = lectura;
+  const productos = productosVivos(
+    vivos.get(sitio.productos.slug) ?? [],
+    vivos.get(sitio.skus.slug) ?? []
+  );
 
   const slugPorId = new Map<string, string>();
-  for (const p of productos) slugPorId.set(p.product.id, p.product.fieldData.slug);
   for (const lista of vivos.values()) for (const i of lista) slugPorId.set(i.id, i.fieldData.slug);
   const indices: Indices = { idPorSlug: new Map(), slugPorId };
 
@@ -78,8 +73,7 @@ export async function bajar(sitio: Sitio, anterior: Tabla): Promise<ResultadoBaj
       Object.entries(CATEGORIAS).find(([, v]) => v.slug === c.fieldData.slug)?.[0] ?? '?',
     ])
   );
-  const publicados = productosPublicados(productos, anterior.producto ?? [], tipoPorCategoria);
-  const tabla: Tabla = { producto: publicados.registros };
+  const tabla: Tabla = { producto: registrosDeProductos(productos, tipoPorCategoria) };
   const nombrePorProducto = new Map(tabla.producto.map((p) => [p.id, p.nombre]));
   const imagenes = new Map<string, Buffer>();
 
@@ -108,13 +102,7 @@ export async function bajar(sitio: Sitio, anterior: Tabla): Promise<ResultadoBaj
     tabla[e.clave] = registros;
   }
 
-  const sinPublicar = [
-    ...publicados.pendientes,
-    ...coleccionesCms().flatMap((e) =>
-      itemsSinPublicar(e.coleccion, vivos.get(e.coleccion) ?? [], borradores.get(e.coleccion) ?? [])
-    ),
-  ];
-  return { tabla, imagenes, sinPublicar };
+  return { tabla, imagenes, sinPublicar: sinPublicar(await api.sitio(), lectura) };
 }
 
 export function escribirImagenes(imagenes: Map<string, Buffer>) {

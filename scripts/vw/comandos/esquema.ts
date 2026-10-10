@@ -12,6 +12,8 @@ const describir = (a: Accion) => {
       return `ajustar campo     ${a.entidad.coleccion}.${a.campo.slug}: ${Object.keys(a.cambios).join(', ')}`;
     case 'crear-categoria':
       return `crear categoría   ${a.slug}`;
+    case 'tipo-distinto':
+      return `MANUAL            ${a.entidad.coleccion}.${a.campo.slug}: es ${a.actual} en Webflow y el modelo pide ${a.campo.tipo}`;
     case 'manual':
       return `MANUAL            ${a.detalle}`;
     case 'aviso':
@@ -20,7 +22,7 @@ const describir = (a: Accion) => {
 };
 
 const pendientes = (acciones: Accion[]) =>
-  acciones.filter((a) => a.tipo !== 'manual' && a.tipo !== 'aviso');
+  acciones.filter((a) => a.tipo !== 'manual' && a.tipo !== 'tipo-distinto' && a.tipo !== 'aviso');
 
 async function plan() {
   const sitio = await leerSitio();

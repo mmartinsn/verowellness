@@ -5,7 +5,7 @@ import type { Problema } from './validar.ts';
 type Lector = (clave: string) => readonly RegistroLibre[];
 type Anota = (entidad: string, id: string, campo: string, mensaje: string) => void;
 
-const MARCA = /<[^>]*>|[<>]/g;
+const MARCA = /<\/?[a-z!][^>]*>?/gi;
 
 const conValor = (v: unknown) =>
   Array.isArray(v) ? v.length > 0 : typeof v === 'string' ? v.trim() !== '' : v !== undefined;

@@ -53,42 +53,34 @@ export function productoDesdeWebflow(
   };
 }
 
-export type EstadoProducto = 'vivo' | 'pendiente' | 'fuera';
-
-const sinPublicar = (i: ItemWf) =>
-  !i.lastPublished || (!!i.lastUpdated && Date.parse(i.lastUpdated) > Date.parse(i.lastPublished));
-
-export function estadoProducto(p: ProductoWf): EstadoProducto {
-  const fueraDeLinea = p.product.isDraft || p.product.isArchived;
-  if (!p.product.lastPublished && fueraDeLinea) return 'fuera';
-  if (sinPublicar(p.product) || p.skus.some(sinPublicar)) return 'pendiente';
-  return fueraDeLinea ? 'fuera' : 'vivo';
-}
-
-export function productosPublicados(
-  productos: ProductoWf[],
-  anteriores: readonly RegistroLibre[],
-  tipoPorCategoria: Map<string, string>
-): { registros: RegistroLibre[]; pendientes: string[] } {
-  const previos = new Map(anteriores.map((r) => [r.id, r]));
-  const registros: RegistroLibre[] = [];
-  const pendientes: string[] = [];
-  for (const p of productos) {
-    const slug = p.product.fieldData.slug;
-    const estado = estadoProducto(p);
-    if (estado === 'fuera') continue;
-    if (estado === 'pendiente') {
-      pendientes.push(`productos/${slug}`);
-      const previo = previos.get(slug);
-      if (previo) registros.push(previo);
-      continue;
-    }
-    registros.push(
-      normalizar(entidadPorClave('producto'), productoDesdeWebflow(p, tipoPorCategoria))
-    );
+export function productosVivos(productos: ItemWf[], skus: ItemWf[]): ProductoWf[] {
+  const porProducto = new Map<string, ItemWf[]>();
+  for (const s of skus) {
+    const id = s.fieldData.product as string;
+    porProducto.set(id, [...(porProducto.get(id) ?? []), s]);
   }
-  return { registros, pendientes };
+  return productos
+    .filter((p) => !p.isDraft && !p.isArchived)
+    .map((p) => {
+      const principal = p.fieldData['default-sku'];
+      const propios = porProducto.get(p.id) ?? [];
+      return {
+        product: p,
+        skus: [
+          ...propios.filter((s) => s.id === principal),
+          ...propios.filter((s) => s.id !== principal),
+        ],
+      };
+    });
 }
+
+export const registrosDeProductos = (
+  productos: ProductoWf[],
+  tipoPorCategoria: Map<string, string>
+): RegistroLibre[] =>
+  productos.map((p) =>
+    normalizar(entidadPorClave('producto'), productoDesdeWebflow(p, tipoPorCategoria))
+  );
 
 const igual = (a: unknown, b: unknown) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
 

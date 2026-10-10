@@ -37,8 +37,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          abierto="$(gh pr list --head "$RAMA" --state open --json number --jq length)"
           if git diff --quiet -- src/data/canonico src/assets && [ -z "$(git ls-files --others --exclude-standard src/assets)" ]; then
             echo "Webflow publicado = main."
+            if [ "$abierto" != "0" ]; then
+              gh pr close "$RAMA" --delete-branch --comment "Webflow volvió a coincidir con main; este PR ya no hace falta."
+            fi
             exit 0
           fi
           git config user.name "github-actions[bot]"
@@ -46,12 +50,12 @@ jobs:
           git switch -c "$RAMA"
           git add src/data/canonico src/assets
           git commit -m "Datos: lo publicado en Webflow"
-          if git fetch -q origin "$RAMA" 2>/dev/null && git diff --quiet FETCH_HEAD HEAD -- src/data/canonico src/assets; then
-            echo "El PR ya tiene estos datos."
+          if [ "$abierto" != "0" ] && git fetch -q origin "$RAMA" 2>/dev/null && git diff --quiet FETCH_HEAD HEAD -- src/data/canonico src/assets; then
+            echo "El PR abierto ya tiene estos datos."
             exit 0
           fi
           git push --force origin "$RAMA"
-          if [ "$(gh pr list --head "$RAMA" --state open --json number --jq length)" != "0" ]; then
+          if [ "$abierto" != "0" ]; then
             echo "El PR abierto quedó al día."
             exit 0
           fi

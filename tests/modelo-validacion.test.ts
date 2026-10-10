@@ -162,3 +162,13 @@ test('una sección que no pinta HTML no acepta marcas, que se verían literales'
     ]
   );
 });
+
+test('una flecha o un signo menor que en el texto no se toman por marcas', () => {
+  const [paso] = enSeccion(real, 'pasos-pedido');
+  assert.deepEqual(
+    problemas((t) => {
+      buscar(t, 'bloque', paso.id).texto = 'Pide tu kit -> recíbelo; si a < b, escribe';
+    }),
+    []
+  );
+});
