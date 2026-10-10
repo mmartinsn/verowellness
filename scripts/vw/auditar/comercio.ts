@@ -1,8 +1,9 @@
 import { existsSync, readFileSync } from 'node:fs';
-import { leerSnapshot } from '../comun/snapshot.ts';
+import { leerSnapshot, type Tabla } from '../comun/snapshot.ts';
+import type { ApiWebflow } from '../webflow/api.ts';
 import { ARCHIVO_PUENTE, generarPuente, VOLVER } from '../comercio/puente.ts';
 import { conectar } from '../webflow/conexion.ts';
-import { hallazgo, medir, ok, type Auditoria, type Verificacion } from './tipos.ts';
+import { error, hallazgo, medir, ok, type Auditoria, type Verificacion } from './tipos.ts';
 
 const C = 'comercio';
 const DIAS_SIN_CUMPLIR = 3;
@@ -13,7 +14,12 @@ interface PedidoWf {
 }
 
 export const auditarComercio: Auditoria = async ({ conWebflow }) => {
-  const tabla = leerSnapshot();
+  let tabla: Tabla;
+  try {
+    tabla = leerSnapshot();
+  } catch (causa) {
+    return [error(C, 'snapshot legible', causa)];
+  }
   const resultados: Verificacion[] = [];
   const guias = tabla.producto.filter((p) => p.tipo === 'guia');
   const sinDescarga = guias.filter((p) => !p.descarga).map((p) => p.id);
@@ -41,7 +47,12 @@ export const auditarComercio: Auditoria = async ({ conWebflow }) => {
     }))
   );
   if (!conWebflow) return resultados;
-  const api = conectar();
+  let api: ApiWebflow;
+  try {
+    api = conectar();
+  } catch (causa) {
+    return [...resultados, error(C, 'conexión con Webflow', causa)];
+  }
   resultados.push(
     ...(await medir(C, 'moneda de la tienda', async () => {
       const { defaultCurrency } = await api.c.get<{ defaultCurrency: string }>(

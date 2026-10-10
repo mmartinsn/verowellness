@@ -4,7 +4,7 @@ import { entidadesDeContenido } from '../../../src/modelo/esquema.ts';
 import { ordenar } from '../../../src/modelo/serializar.ts';
 import { comparar } from '../comun/comparar.ts';
 import { problemasDe } from '../comun/problemas.ts';
-import { leerSnapshot } from '../comun/snapshot.ts';
+import { leerSnapshot, type Tabla } from '../comun/snapshot.ts';
 import { bajar } from '../webflow/bajar.ts';
 import { leerSitio, type Sitio } from '../webflow/conexion.ts';
 import { planEsquema } from '../webflow/esquema.ts';
@@ -14,7 +14,12 @@ import { error, hallazgo, medir, ok, type Auditoria } from './tipos.ts';
 const D = 'datos';
 
 export const auditarDatos: Auditoria = async ({ conWebflow }) => {
-  const tabla = leerSnapshot();
+  let tabla: Tabla;
+  try {
+    tabla = leerSnapshot();
+  } catch (causa) {
+    return [error(D, 'snapshot legible', causa)];
+  }
   const resultados = await medir(D, 'snapshot válido', async () => {
     const problemas = problemasDe(tabla);
     const total = Object.values(tabla).reduce((n, r) => n + r.length, 0);

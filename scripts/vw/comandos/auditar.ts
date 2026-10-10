@@ -19,7 +19,8 @@ const DIMENSIONES: Record<string, Auditoria> = {
 
 export async function ejecutar(args: string[]): Promise<number> {
   const sinWebflow = bandera(args, '--sin-webflow');
-  const hayToken = Boolean(process.env.WEBFLOW_SITE_TOKEN);
+  const faltan = ['WEBFLOW_SITE_TOKEN', 'WEBFLOW_SITE_ID'].filter((v) => !process.env[v]);
+  const hayToken = faltan.length === 0;
   const contexto: Contexto = {
     conWebflow: !sinWebflow && hayToken,
     conBuild: !bandera(args, '--sin-build'),
@@ -29,7 +30,7 @@ export async function ejecutar(args: string[]): Promise<number> {
   const lista: Verificacion[] =
     sinWebflow || hayToken
       ? []
-      : [error('datos', 'conexión con Webflow', 'falta WEBFLOW_SITE_TOKEN en .env')];
+      : [error('datos', 'conexión con Webflow', `falta ${faltan.join(' y ')} en .env`)];
   for (const [nombre, auditar] of Object.entries(DIMENSIONES)) {
     if (solo && !solo.includes(nombre)) continue;
     lista.push(...(await auditar(contexto)));

@@ -1,5 +1,5 @@
 import { leerSitio } from '../webflow/conexion.ts';
-import { coleccionesCms } from '../webflow/esquema.ts';
+import { coleccionesCms, SLUG_CATEGORIAS, SLUG_PRODUCTOS, SLUG_SKUS } from '../webflow/esquema.ts';
 import { hallazgo, medir, ok, type Auditoria, type Verificacion } from './tipos.ts';
 
 const L = 'límites';
@@ -35,6 +35,43 @@ function contra(nombre: string, usado: number, tope: number, unidad: string): Ve
       );
 }
 
+export function colecciones(enWebflow: string[], tope: number): Verificacion {
+  const esperadas = [
+    ...coleccionesCms().map((e) => e.coleccion),
+    SLUG_PRODUCTOS,
+    SLUG_SKUS,
+    SLUG_CATEGORIAS,
+  ];
+  const valor = `${enWebflow.length}/${tope}`;
+  const sobran = enWebflow.filter((c) => !esperadas.includes(c));
+  const faltan = esperadas.filter((c) => !enWebflow.includes(c));
+  if (sobran.length || faltan.length)
+    return hallazgo(
+      L,
+      'colecciones',
+      [
+        sobran.length && `sobran ${sobran.join(', ')}`,
+        faltan.length && `faltan ${faltan.join(', ')}`,
+      ]
+        .filter(Boolean)
+        .join('; '),
+      valor
+    );
+  return esperadas.length > tope
+    ? hallazgo(
+        L,
+        'colecciones',
+        `el modelo pide ${esperadas.length} y el plan admite ${tope}`,
+        valor
+      )
+    : ok(
+        L,
+        'colecciones',
+        valor,
+        `las ${esperadas.length} que declara el modelo; quedan ${tope - esperadas.length} libres`
+      );
+}
+
 export const auditarLimites: Auditoria = async ({ conWebflow }) => {
   if (!conWebflow) return [];
   return medir(L, 'uso del plan', async () => {
@@ -61,7 +98,7 @@ export const auditarLimites: Auditoria = async ({ conWebflow }) => {
     return [
       contra('ítems de ecommerce', itemsComercio, PLAN.itemsComercio, 'los ítems de ecommerce'),
       contra('ítems de CMS', itemsCms, PLAN.itemsCms, 'los ítems de CMS'),
-      contra('colecciones', sitio.colecciones.size, PLAN.colecciones, 'las colecciones'),
+      colecciones([...sitio.colecciones.keys()], PLAN.colecciones),
       contra('campos por colección (máximo)', maxCampos, PLAN.campos, 'los campos'),
       contra(
         'referencias por colección (máximo)',
