@@ -63,9 +63,8 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
 - [ ] **Correos de la tienda** (Mari y Verónica): la confirmación de pedido y los demás salen en
       inglés y con el diseño de Webflow. El texto es de Verónica.
 - [ ] **Enable Checkout** (Santiago, al final): es el interruptor del cobro real. Va después de la
-      pasarela, el impuesto, el envío, la decisión sobre ofertas y cargo (`DECISIONES.md` §
-      Abiertas), los mensajes del puente y los correos, y de conectar el paso de resumen del sitio
-      (`comercio.modo`).
+      pasarela, el impuesto, el envío, los mensajes del puente y los correos, y de conectar el paso
+      de resumen del sitio (`comercio.modo`).
 
 ## Dónde se edita cada página
 

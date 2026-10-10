@@ -1,7 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { leerSnapshot, type Tabla } from '../comun/snapshot.ts';
 import type { ApiWebflow } from '../webflow/api.ts';
-import { ARCHIVO_PUENTE, generarPuente, VOLVER } from '../comercio/puente.ts';
+import { diferenciasDePedido, type ItemPedido } from '../comercio/pedidos.ts';
+import { ARCHIVO_PUENTE, catalogoDe, generarPuente, VOLVER } from '../comercio/puente.ts';
 import { conectar } from '../webflow/conexion.ts';
 import { error, hallazgo, medir, ok, type Auditoria, type Verificacion } from './tipos.ts';
 
@@ -9,8 +10,10 @@ const C = 'comercio';
 const DIAS_SIN_CUMPLIR = 3;
 
 interface PedidoWf {
+  orderId?: string;
   status: string;
   acceptedOn?: string;
+  purchasedItems?: ItemPedido[];
 }
 
 export const auditarComercio: Auditoria = async ({ conWebflow }) => {
@@ -129,6 +132,30 @@ export const auditarComercio: Auditoria = async ({ conWebflow }) => {
             'pedidos sin cumplir',
             `${viejos} con más de ${DIAS_SIN_CUMPLIR} días`,
             viejos
+          );
+    })),
+    ...(await medir(C, 'pedidos con las reglas del sitio', async () => {
+      const pedidos = await api.c.todas<PedidoWf>(
+        `/sites/${api.c.sitio}/orders?status=unfulfilled`,
+        'orders'
+      );
+      const catalogo = catalogoDe(tabla);
+      const rotos = pedidos.flatMap((p) => {
+        const diferencias = diferenciasDePedido(p.purchasedItems ?? [], catalogo);
+        return diferencias.length ? [`pedido ${p.orderId}: ${diferencias.join(', ')}`] : [];
+      });
+      return rotos.length === 0
+        ? ok(
+            C,
+            'pedidos con las reglas del sitio',
+            pedidos.length,
+            `${pedidos.length} pedido(s) sin enviar revisados: oferta y cargo de laboratorio en orden`
+          )
+        : hallazgo(
+            C,
+            'pedidos con las reglas del sitio',
+            `revisar antes de enviar: ${rotos.join(' · ')}`,
+            rotos.length
           );
     }))
   );

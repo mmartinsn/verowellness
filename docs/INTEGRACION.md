@@ -76,9 +76,10 @@ veronicawellness.com (Astro)                       pago.veronicawellness.com (We
   lógica de oferta y cargo y no llama a `urlPedido()`. Se conecta cuando Mari diseñe el paso de
   resumen: ese paso arma la URL con `urlPedido()` y, con `modo = 'webflow'`, manda al puente. Hasta
   entonces el sitio no cobra.
-- **Lo que Webflow no impide** (decisión pendiente en `DECISIONES.md` § Abiertas): las reglas del
-  pedido corren en el navegador; la tienda nativa permite comprar la oferta sola por su URL y quitar
-  el cargo de laboratorio del carrito antes de pagar.
+- **Lo que Webflow no impide, lo vigila la auditoría** (`DECISIONES.md` § 40): las reglas del
+  pedido corren en el navegador, y la tienda nativa permite comprar la oferta sola por su URL o
+  quitar el cargo de laboratorio del carrito. Cada día, «pedidos con las reglas del sitio» compara
+  cada pedido pagado y sin enviar con lo que arma el sitio y avisa antes de enviar.
 
 ## Recetas
 

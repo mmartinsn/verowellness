@@ -383,6 +383,15 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
       ejecuta en una sesión propia; los pasos, los registros DNS y lo que no se toca (el correo de
       Google Workspace) están en `DOMINIO.md`.
 
+40. **2026-10-10 — Ofertas y cargo en la tienda de Webflow: nada cambia, cada pedido se revisa.**
+    Webflow cobra el precio de cada producto, pero no conoce las reglas que combinan productos: la
+    oferta del 15 % solo con otra guía y un cargo de laboratorio por examen. Saltárselas pide entrar a
+    propósito a páginas de Webflow que no están enlazadas. Santiago decidió no cambiar la tienda (ni
+    códigos de descuento ni precios con el cargo incluido): la auditoría diaria compara cada pedido
+    pagado y sin enviar con lo que arma el sitio (`scripts/vw/comercio/pedidos.ts`, con la misma
+    `normalizarPedido` del puente) y avisa antes de enviar si alguno no cuadra. Mari y Verónica no
+    tienen que decidir nada.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
@@ -405,9 +414,6 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   pedido…», «No encontramos productos en tu pedido.», «No pudimos preparar tu pedido.», «Intentar de
   nuevo» y «Volver a Veronica Wellness» son provisionales, escritos al armar el puente; no son de
   Mari ni de Verónica. Hacen falta los suyos, o su OK, antes del cobro real.
-- **Ofertas y cargo en la tienda nativa**: Webflow no valida el pedido en su servidor, así que una
-  oferta del 15 % se puede comprar sola por su URL y el cargo de laboratorio se puede quitar del
-  carrito. ¿La oferta pasa a código de descuento y el cargo se revisa antes de cumplir el pedido?
 - **Página de producto y correos de la tienda en Webflow**: la plantilla de producto se ve en
   blanco y cualquiera llega a ella por URL; los correos de confirmación de pedido salen en inglés
   y con el diseño de Webflow. Diseño de Mari y texto de Verónica. Si se rediseña la plantilla, tiene
