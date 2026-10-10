@@ -1,3 +1,5 @@
+import type { Fuente, Modulo } from './entradas.ts';
+
 export interface Diferencia {
   ruta: string;
   antes: string;
@@ -53,17 +55,34 @@ export function comparar(antes: unknown, despues: unknown, ruta = '$'): Diferenc
   return Object.is(antes, despues) ? [] : [{ ruta, antes: corto(antes), despues: corto(despues) }];
 }
 
+export interface Comparables {
+  valores: Record<string, unknown>;
+  sinEntradas: string[];
+}
+
 export async function exportsComparables(
-  modulo: Record<string, unknown>
-): Promise<Record<string, unknown>> {
-  const salida: Record<string, unknown> = {};
+  modulo: Modulo,
+  entradas: Record<string, (m: Modulo, otro: Fuente) => Promise<unknown[]> | unknown[]> = {},
+  otro: Fuente = async () => ({})
+): Promise<Comparables> {
+  const valores: Record<string, unknown> = {};
+  const sinEntradas: string[] = [];
   for (const [nombre, valor] of Object.entries(modulo)) {
-    if (typeof valor === 'function') {
-      if ((valor as (...a: unknown[]) => unknown).length === 0)
-        salida[`${nombre}()`] = (valor as () => unknown)();
+    if (typeof valor !== 'function') {
+      valores[nombre] = valor;
       continue;
     }
-    salida[nombre] = valor;
+    const funcion = valor as (...a: unknown[]) => unknown;
+    if (funcion.length === 0) {
+      valores[`${nombre}()`] = funcion();
+      continue;
+    }
+    const generar = entradas[nombre];
+    if (!generar) {
+      sinEntradas.push(nombre);
+      continue;
+    }
+    valores[`${nombre}(…)`] = (await generar(modulo, otro)).map((x) => funcion(x));
   }
-  return salida;
+  return { valores, sinEntradas };
 }

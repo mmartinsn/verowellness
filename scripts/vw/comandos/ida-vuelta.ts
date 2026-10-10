@@ -4,6 +4,7 @@ import { pathToFileURL } from 'node:url';
 import { extraerArbol } from '../comun/arbol.ts';
 import { opcion } from '../comun/args.ts';
 import { comparar, exportsComparables } from '../comun/comparar.ts';
+import { ENTRADAS, EXPORTS_NUEVOS } from '../comun/entradas.ts';
 
 const ORDEN_LIBRE: Record<string, string[]> = {
   testimonios: ['testimonios'],
@@ -34,18 +35,32 @@ export async function ejecutar(args: string[]): Promise<number> {
       .filter((f) => f.endsWith('.ts'))
       .map((f) => f.replace(/\.ts$/, ''))
       .filter((n) => !solo || solo.split(',').includes(n));
+    const modulo = (raiz: string) => (n: string) =>
+      import(pathToFileURL(path.join(raiz, 'src', 'data', `${n}.ts`)).href);
+    const deBase = modulo(base);
+    const actual = modulo(path.resolve('.'));
     let diferencias = 0;
     for (const nombre of nombres) {
-      const antes = await import(
-        pathToFileURL(path.join(base, 'src', 'data', `${nombre}.ts`)).href
-      );
-      const despues = await import(pathToFileURL(path.resolve('src', 'data', `${nombre}.ts`)).href);
-      const ea = sinOrden(nombre, await exportsComparables(antes));
-      const ed = sinOrden(nombre, await exportsComparables(despues));
+      const a = await exportsComparables(await deBase(nombre), ENTRADAS[nombre], deBase);
+      const d = await exportsComparables(await actual(nombre), ENTRADAS[nombre], actual);
+      const ea = sinOrden(nombre, a.valores);
+      const ed = sinOrden(nombre, d.valores);
       const faltan = Object.keys(ea).filter((k) => !(k in ed));
+      const declarados = EXPORTS_NUEVOS[nombre] ?? [];
       const nuevos = Object.keys(ed).filter((k) => !(k in ea));
+      const sinDeclarar = nuevos.filter((k) => !declarados.includes(k));
       if (nuevos.length) console.log(`    nuevos en ${nombre}.ts: ${nuevos.join(', ')}`);
       const lista = [
+        ...[...new Set([...a.sinEntradas, ...d.sinEntradas])].map((k) => ({
+          ruta: `${k}(…)`,
+          antes: 'función con parámetros',
+          despues: 'sin entradas en scripts/vw/comun/entradas.ts',
+        })),
+        ...sinDeclarar.map((k) => ({
+          ruta: k,
+          antes: 'no existe',
+          despues: 'export nuevo sin declarar en EXPORTS_NUEVOS',
+        })),
         ...faltan.map((k) => ({ ruta: k, antes: 'existe', despues: 'falta' })),
         ...Object.keys(ea)
           .filter((k) => k in ed)
