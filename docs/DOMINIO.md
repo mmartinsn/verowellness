@@ -21,13 +21,13 @@ sesión: qué hay hoy, qué se cambia, quién lo hace y cómo se comprueba.
 
 ## Quién hace qué
 
-| Paso                                                         | Lo hace                            | Por qué esa persona                                                         |
-| ------------------------------------------------------------ | ---------------------------------- | --------------------------------------------------------------------------- |
-| Registros en GoDaddy                                         | Santiago                           | Tiene la cuenta                                                             |
-| Dominio propio en GitHub Pages (Settings → Pages)            | Mari, o quien tenga admin          | Santiago tiene permiso de escritura, no de administrador (medido el 10-oct) |
-| Dominio `pago.` en Webflow (Site settings → Publishing)      | Santiago, con la sesión de Webflow | Lo hace la interfaz; la API no lo expone                                    |
-| Conectar Stripe en Webflow (Settings → Ecommerce → Payments) | Santiago                           | El inicio de sesión de Stripe es suyo                                       |
-| Código, publicación del puente, pruebas                      | La sesión                          | Rama `dominio`, ya preparada                                                |
+| Paso                                                         | Lo hace                            | Por qué esa persona                                                                                                                     |
+| ------------------------------------------------------------ | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Registros en GoDaddy                                         | Santiago                           | Tiene la cuenta                                                                                                                         |
+| Dominio propio en GitHub Pages (Settings → Pages)            | Mari                               | El repo es de una cuenta personal: GitHub no tiene rol de admin para colaboradores, solo la dueña cambia los ajustes (medido el 10-oct) |
+| Dominio `pago.` en Webflow (Site settings → Publishing)      | Santiago, con la sesión de Webflow | Lo hace la interfaz; la API no lo expone                                                                                                |
+| Conectar Stripe en Webflow (Settings → Ecommerce → Payments) | Santiago                           | El inicio de sesión de Stripe es suyo                                                                                                   |
+| Código, publicación del puente, pruebas                      | La sesión                          | Rama `dominio`, ya preparada                                                                                                            |
 
 ## Pasos, en orden
 
