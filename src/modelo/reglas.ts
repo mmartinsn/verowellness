@@ -1,3 +1,4 @@
+import { precioOferta } from '../lib/precio.ts';
 import type { RegistroLibre } from './entidad.ts';
 import { validarSitio } from './reglas-sitio.ts';
 import type { Problema } from './validar.ts';
@@ -5,9 +6,6 @@ import type { Problema } from './validar.ts';
 type Lector = (clave: string) => readonly RegistroLibre[];
 
 export const TOKEN = /\{(nombre|precio):([a-z0-9-]+)\}/g;
-
-export const precioOferta = (base: number, descuento: number): number =>
-  Math.round((base * (100 - descuento)) / 100);
 
 const presentaciones = [
   { entidad: 'examen', tipo: 'examen' },

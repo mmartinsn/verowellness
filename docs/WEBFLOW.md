@@ -36,8 +36,9 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
       Integrations → API access → Generate API token, con CMS, Ecommerce y Sites en «Read-only».
       Va como secret `WEBFLOW_SITE_TOKEN` del repo (lo pone Mari). El token de escritura no sale
       de la máquina de quien siembra.
-- [ ] **Pasarela** (Verónica): Settings → Ecommerce → Payments → conectar Stripe (empresa de
-      EE. UU.) y PayPal. Sin esto el checkout no cobra.
+- [ ] **Pasarela**: Settings → Ecommerce → Payments → conectar Stripe (empresa de EE. UU.) y
+      PayPal. Santiago ya tiene acceso a Stripe (10-oct); se conecta en modo prueba en la sesión del
+      dominio (`DOMINIO.md`). Sin pasarela el checkout no cobra.
 - [ ] **Impuesto** (Verónica): Settings → Ecommerce → Taxes → cálculo automático en EE. UU. Las
       clases ya están puestas en cada producto (`service-professional`, `digital-goods`,
       `standard-exempt` para el cargo de laboratorio). El 7 % fijo del prototipo no existe en Webflow.
@@ -49,7 +50,41 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
 - [ ] **Checkout** (Mari): vestirlo con la marca (Cormorant + Nunito, ivory, charcoal, clay) y
       agregar los campos extra (teléfono, «¿cómo me conociste?», consentimiento). Apple Pay y Google
       Pay se saltan esos campos.
-- [ ] **Dominio** (`pago.veronicawellness.com`) y redirigir el inicio y las categorías del sitio
+- [ ] **Dominio** (`pago.veronicawellness.com`; pasos y registros en `DOMINIO.md`) y redirigir el inicio y las categorías del sitio
       de Webflow al sitio de Astro. **Las páginas de producto no se redirigen**: el puente abre
       `/product/<slug>` en un marco para usar su «Add to Cart», y con una redirección deja de
       poder leerlo.
+
+- [ ] **Moneda**: ya es USD (10-oct). En la guía de Webflow solo falta abrir «Review currency
+      settings» y confirmar el formato.
+- [ ] **Página de producto** (Mari): la plantilla se ve en blanco y se llega a ella por URL. Si se
+      diseña, tiene que conservar el botón «Add to Cart» y el campo de cantidad, que usa el puente;
+      `npm run vw -- probar-puente` avisa si se rompen.
+- [ ] **Correos de la tienda** (Mari y Verónica): la confirmación de pedido y los demás salen en
+      inglés y con el diseño de Webflow. El texto es de Verónica.
+- [ ] **Enable Checkout** (Santiago, al final): es el interruptor del cobro real. Va después de la
+      pasarela, el impuesto, el envío, la decisión sobre ofertas y cargo (`DECISIONES.md` §
+      Abiertas), los mensajes del puente y los correos, y de conectar el paso de resumen del sitio
+      (`comercio.modo`).
+
+## Dónde se edita cada página
+
+Para Mari y Verónica: qué colección de Webflow alimenta cada página del sitio. Sale del código (los
+`import` de cada página hasta sus datos), no de memoria. Los títulos y párrafos sueltos que todavía
+están escritos en los componentes no están en Webflow; los mide `npm run vw -- censo`.
+
+| Página      | Colecciones                                                                                                                                                                                                                                                                                   |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Todas       | Ajustes; Textos de sección › `sitio` / `continuidad`                                                                                                                                                                                                                                          |
+| Inicio      | Asesorías y sus Productos (precios); Layers; Preguntas frecuentes (página «inicio»); Textos de sección › `inicio` (`problema`, `otra-mirada`, `herramientas`)                                                                                                                                 |
+| Sobre mí    | Testimonios; Textos de sección › `sobre-mi` (`espejo`, `capas`, `acompano`, `pilares`)                                                                                                                                                                                                        |
+| El método   | Layers; Textos de sección › `metodo` (`reframe-herramientas`)                                                                                                                                                                                                                                 |
+| Asesorías   | Asesorías y Productos; Testimonios (los marcados «En asesorías»); Textos de sección › `asesorias` (`reconocimiento`, `proceso-temas`, `proceso-pasos`, `entregables-niveles`, `entregables-plan`, `entregables-extra`)                                                                        |
+| Exámenes    | Exámenes, Áreas de exámenes, Tipos de muestra, Síntomas, Rutas de síntoma, Caminos de alimentos y Productos (precio y cargo de laboratorio); Preguntas frecuentes (página «exámenes»); Textos de sección › `examenes` (`porque-rutina`, `porque-funcional`, `porque-pilares`, `pasos-pedido`) |
+| Tienda      | Guías y sus Productos (precio y ofertas); Textos de sección › `tienda` (`aviso-legal`)                                                                                                                                                                                                        |
+| Suplementos | Suplementos y Layers; Preguntas frecuentes (la `inicio-01`); Textos de sección › `suplementos` (`etiqueta-si`, `etiqueta-no`, `principios`, `aviso`)                                                                                                                                          |
+| Checkout    | Asesorías, Guías y Productos; Ajustes (Zelle y descuento)                                                                                                                                                                                                                                     |
+
+**Cómo invitar a Mari:** en el espacio de trabajo de Verónica en Webflow, la sección de miembros del
+workspace → invitar con su correo. El tipo de asiento (editar o solo revisar) decide si tiene costo;
+lo elige Verónica. Con acceso de revisión ya ve todas las colecciones y los productos.

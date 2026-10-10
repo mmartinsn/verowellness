@@ -26,6 +26,9 @@ export function usd(n: number): string {
   return `$${n.toFixed(2)}`;
 }
 
+export const precioOferta = (centavos: number, descuento: number): number =>
+  Math.round((centavos * (100 - descuento)) / 100);
+
 export function desdeCentavos(centavos: number): number {
   return centavos / 100;
 }

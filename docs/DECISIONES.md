@@ -360,6 +360,29 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
       con Mari, porque cambian cómo ella edita los componentes. La colección nueva deja el plan al
       85 % de sus colecciones (17 de 20).
 
+39. **2026-10-10 — La revisión de la integración, cerrada; lo que decidió Santiago.** Un revisor sin
+    contexto encontró 17 problemas en la rama `webflow` y un segundo revisor, 8 más en los arreglos;
+    están resueltos o asignados en `cerebro/revision-2026-10-10.md`. El `dist/` sigue idéntico al de
+    `cfdc54d`. Lo que cambia cómo se trabaja:
+    - **El workflow «Datos desde Webflow» abre o actualiza un PR** en vez de comitear a `main`
+      (Santiago): nada que se edite en Webflow llega al sitio sin que una persona mergee.
+    - **`sembrar` y `puente` no aplican con cambios sin publicar en Webflow**, porque `--aplicar`
+      publica el sitio entero. El 10-oct había uno del sitio, fuera del CMS, a las 14:20 UTC.
+    - **Los productos bajan de lo publicado** (`/items/live` de Products y SKUs), como el CMS.
+    - **El precio de la oferta se calcula en `src/lib/precio.ts`** (`precioOferta`), donde vive todo el
+      dinero; `reglas.ts` lo usa para validar.
+    - **`vw migrar` se retiró**: la siembra desde los `.ts` de `cfdc54d` ya se hizo, y volver a
+      correrla pisaría lo editado en Webflow.
+    - **El testimonio sin texto completo es válido**: `yisandra-sori` solo tiene la frase destacada
+      desde el original, así que el texto es optativo en el modelo.
+    - **Mari ve el contenido en Webflow** (colecciones, textos de sección y productos); las páginas
+      siguen en Astro. Guía de qué colección alimenta cada página: `WEBFLOW.md` § Dónde se edita
+      cada página.
+    - **Dominio y Stripe**: el sitio va a `veronicawellness.com`, con el noindex mientras siga siendo
+      prototipo, y la caja a `pago.veronicawellness.com`; Stripe se conecta en modo prueba. Se
+      ejecuta en una sesión propia; los pasos, los registros DNS y lo que no se toca (el correo de
+      Google Workspace) están en `DOMINIO.md`.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
@@ -385,3 +408,11 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
 - **Ofertas y cargo en la tienda nativa**: Webflow no valida el pedido en su servidor, así que una
   oferta del 15 % se puede comprar sola por su URL y el cargo de laboratorio se puede quitar del
   carrito. ¿La oferta pasa a código de descuento y el cargo se revisa antes de cumplir el pedido?
+- **Página de producto y correos de la tienda en Webflow**: la plantilla de producto se ve en
+  blanco y cualquiera llega a ella por URL; los correos de confirmación de pedido salen en inglés
+  y con el diseño de Webflow. Diseño de Mari y texto de Verónica. Si se rediseña la plantilla, tiene
+  que conservar el botón «Add to Cart» y el campo de cantidad (los usa el puente).
+- **Dos desbordes del front que ya estaban en `cfdc54d`**: en el teléfono el inicio se corre 2–4
+  px de lado (los adornos del hero y la cinta de logos) y `/inicio-stitch/` en escritorio tiene el
+  botón del encabezado 93 px fuera. Además, las páginas de checkout tienen seis `h1` cada una.
+  Se arreglan con Mari porque tocan su diseño.
