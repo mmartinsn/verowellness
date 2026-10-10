@@ -378,3 +378,10 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   de cargo de laboratorio por examen.
 - **Apple Pay y Google Pay** se saltan teléfono, «¿cómo me conociste?» y el consentimiento del
   checkout: ¿se dejan las billeteras o se pide el consentimiento antes, en el sitio?
+- **Mensajes de la página «Pedido»** de Webflow (`scripts/vw/comercio/puente.ts`): «Preparando tu
+  pedido…», «No encontramos productos en tu pedido.», «No pudimos preparar tu pedido.», «Intentar de
+  nuevo» y «Volver a Veronica Wellness» son provisionales, escritos al armar el puente; no son de
+  Mari ni de Verónica. Hacen falta los suyos, o su OK, antes del cobro real.
+- **Ofertas y cargo en la tienda nativa**: Webflow no valida el pedido en su servidor, así que una
+  oferta del 15 % se puede comprar sola por su URL y el cargo de laboratorio se puede quitar del
+  carrito. ¿La oferta pasa a código de descuento y el cargo se revisa antes de cumplir el pedido?

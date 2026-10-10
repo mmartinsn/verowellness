@@ -49,5 +49,7 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
 - [ ] **Checkout** (Mari): vestirlo con la marca (Cormorant + Nunito, ivory, charcoal, clay) y
       agregar los campos extra (teléfono, «¿cómo me conociste?», consentimiento). Apple Pay y Google
       Pay se saltan esos campos.
-- [ ] **Dominio** (`pago.veronicawellness.com`) y redirigir inicio, productos y categorías del
-      sitio de Webflow al sitio de Astro.
+- [ ] **Dominio** (`pago.veronicawellness.com`) y redirigir el inicio y las categorías del sitio
+      de Webflow al sitio de Astro. **Las páginas de producto no se redirigen**: el puente abre
+      `/product/<slug>` en un marco para usar su «Add to Cart», y con una redirección deja de
+      poder leerlo.
