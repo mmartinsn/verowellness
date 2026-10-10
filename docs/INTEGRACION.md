@@ -68,9 +68,12 @@ veronicawellness.com (Astro)                       pago.veronicawellness.com (We
 
 ## Recetas
 
-**Cambiar un precio, un texto de una ficha, un testimonio:** editarlo en Webflow, publicar, y
-`npm run vw -- bajar` (o esperar al workflow programado, cuando exista). Revisar el diff del
-snapshot, `npm run verify`, commit.
+**Cambiar un precio, un texto de una ficha, un testimonio:** editarlo en Webflow y publicar. El
+workflow `Datos desde Webflow` (`.github/workflows/datos.yml`) lo baja cada día a las 11:17 UTC, o
+al momento con «Run workflow» en GitHub: trae lo publicado, corre `npm run verify` y, si algo
+cambió, hace commit y dispara el deploy. Necesita el secret `WEBFLOW_SITE_TOKEN` (basta con un
+token de solo lectura). A mano es lo mismo: `npm run vw -- bajar`, revisar el diff, `npm run
+verify`, commit.
 
 **Agregar un campo:** declararlo en la entidad de `src/modelo/entidades/` → `npm run vw -- esquema`
 (en seco) y `--aplicar` → leerlo en la fachada de `src/data/` → `npm run vw -- exportar docs`.
