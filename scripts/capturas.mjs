@@ -75,7 +75,9 @@ async function revelarTodo(page) {
     }
     window.scrollTo(0, 0);
     document
-      .querySelectorAll('.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-stagger')
+      .querySelectorAll(
+        '.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-stagger, .is-split'
+      )
       .forEach((el) => el.classList.add('in'));
   });
   await sleep(1900);
