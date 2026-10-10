@@ -20,7 +20,7 @@
     "verificar:entrega": "node scripts/verificar-entrega.mjs",
     "entrega": "npm run build && npm run empaquetar && npm run verificar:entrega",
     "verify": "npm run lint && npm run format:check && npm run check && npm test && npm run build",
-    "vw": "node --env-file-if-exists=.env --import ./scripts/vw/cargador/registrar.ts scripts/vw/cli.ts",
+    "vw": "node --disable-warning=ExperimentalWarning --env-file-if-exists=.env --import ./scripts/vw/cargador/registrar.ts scripts/vw/cli.ts",
     "test": "node --test \"tests/**/*.test.ts\""
   },
   "dependencies": {

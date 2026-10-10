@@ -63,4 +63,10 @@ export const comandos: Entrada[] = [
       'Auditoría de mantenimiento: datos, comercio, límites, sitio, repo (0 sano, 1 hallazgos, 2 error)',
     cargar: () => import('./auditar.ts'),
   },
+  {
+    nombre: 'exportar',
+    descripcion:
+      'Genera docs/MODELO.md y docs/modelo.sql desde el modelo; csv y --con-datos para migrar',
+    cargar: () => import('./exportar.ts'),
+  },
 ];

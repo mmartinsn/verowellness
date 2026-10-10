@@ -1,3 +1,5 @@
+import { existsSync, readFileSync } from 'node:fs';
+import { ARCHIVO_MODELO, ARCHIVO_SQL, documentos } from '../comandos/exportar.ts';
 import { entidadesDeContenido } from '../../../src/modelo/esquema.ts';
 import { ordenar } from '../../../src/modelo/serializar.ts';
 import { comparar } from '../comun/comparar.ts';
@@ -30,6 +32,23 @@ export const auditarDatos: Auditoria = async ({ conWebflow }) => {
   });
   for (const e of entidadesDeContenido())
     resultados.push(ok(D, `conteo ${e.coleccion}`, (tabla[e.clave] ?? []).length));
+  resultados.push(
+    ...(await medir(D, 'documentación del modelo al día', async () => {
+      const { modelo, sql } = documentos(tabla);
+      const actual = (f: string) => (existsSync(f) ? readFileSync(f, 'utf8') : '');
+      const viejos = [
+        actual(ARCHIVO_MODELO) !== modelo && 'docs/MODELO.md',
+        actual(ARCHIVO_SQL) !== sql && 'docs/modelo.sql',
+      ].filter(Boolean);
+      return viejos.length === 0
+        ? ok(D, 'documentación del modelo al día', 2)
+        : hallazgo(
+            D,
+            'documentación del modelo al día',
+            `${viejos.join(' y ')}: correr vw exportar docs`
+          );
+    }))
+  );
   if (!conWebflow) return resultados;
 
   const sitio = await leerSitio();

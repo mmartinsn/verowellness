@@ -4,3 +4,4 @@ node_modules/
 package-lock.json
 fuentes/
 src/data/canonico/
+docs/MODELO.md
