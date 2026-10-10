@@ -9,7 +9,7 @@ import type { Sitio } from './conexion.ts';
 import { desdeWebflow, type Indices } from './convertir.ts';
 import { CATEGORIAS, coleccionesCms } from './esquema.ts';
 import { CARPETA_ASSETS, descargar, md5 } from './imagenes.ts';
-import { productoDesdeWebflow } from './productos.ts';
+import { productosPublicados } from './productos.ts';
 import type { ImagenWf, ItemWf } from './tipos.ts';
 
 const PRESENTACIONES = ['asesoria', 'guia', 'examen'];
@@ -67,11 +67,8 @@ export async function bajar(sitio: Sitio, anterior: Tabla): Promise<ResultadoBaj
       Object.entries(CATEGORIAS).find(([, v]) => v.slug === c.fieldData.slug)?.[0] ?? '?',
     ])
   );
-  const tabla: Tabla = {
-    producto: productos.map((p) =>
-      normalizar(entidadPorClave('producto'), productoDesdeWebflow(p, tipoPorCategoria))
-    ),
-  };
+  const publicados = productosPublicados(productos, anterior.producto ?? [], tipoPorCategoria);
+  const tabla: Tabla = { producto: publicados.registros };
   const nombrePorProducto = new Map(tabla.producto.map((p) => [p.id, p.nombre]));
   const imagenes = new Map<string, Buffer>();
 
@@ -100,7 +97,7 @@ export async function bajar(sitio: Sitio, anterior: Tabla): Promise<ResultadoBaj
     tabla[e.clave] = registros;
   }
 
-  const sinPublicar: string[] = [];
+  const sinPublicar = [...publicados.pendientes];
   for (const e of coleccionesCms()) {
     const vivosPorId = new Map((vivos.get(e.coleccion) ?? []).map((i) => [i.id, i]));
     for (const b of borradores.get(e.coleccion) ?? []) {

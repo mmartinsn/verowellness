@@ -1,4 +1,6 @@
 import type { RegistroLibre } from '../../../src/modelo/entidad.ts';
+import { entidadPorClave } from '../../../src/modelo/esquema.ts';
+import { normalizar } from '../../../src/modelo/serializar.ts';
 import { CATEGORIAS } from './esquema.ts';
 import type { ItemWf, PrecioWf, ProductoWf } from './tipos.ts';
 
@@ -49,6 +51,42 @@ export function productoDesdeWebflow(
     descripcion: (p.description as string | undefined) || undefined,
     descarga: descarga || undefined,
   };
+}
+
+export type EstadoProducto = 'vivo' | 'pendiente' | 'fuera';
+
+const sinPublicar = (i: ItemWf) =>
+  !i.lastPublished || (!!i.lastUpdated && Date.parse(i.lastUpdated) > Date.parse(i.lastPublished));
+
+export function estadoProducto(p: ProductoWf): EstadoProducto {
+  if (sinPublicar(p.product) || p.skus.some(sinPublicar)) return 'pendiente';
+  if (p.product.isDraft || p.product.isArchived) return 'fuera';
+  return 'vivo';
+}
+
+export function productosPublicados(
+  productos: ProductoWf[],
+  anteriores: readonly RegistroLibre[],
+  tipoPorCategoria: Map<string, string>
+): { registros: RegistroLibre[]; pendientes: string[] } {
+  const previos = new Map(anteriores.map((r) => [r.id, r]));
+  const registros: RegistroLibre[] = [];
+  const pendientes: string[] = [];
+  for (const p of productos) {
+    const slug = p.product.fieldData.slug;
+    const estado = estadoProducto(p);
+    if (estado === 'fuera') continue;
+    if (estado === 'pendiente') {
+      pendientes.push(`productos/${slug}`);
+      const previo = previos.get(slug);
+      if (previo) registros.push(previo);
+      continue;
+    }
+    registros.push(
+      normalizar(entidadPorClave('producto'), productoDesdeWebflow(p, tipoPorCategoria))
+    );
+  }
+  return { registros, pendientes };
 }
 
 const igual = (a: unknown, b: unknown) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
