@@ -1,11 +1,10 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { leerSnapshot } from '../comun/snapshot.ts';
-import { ARCHIVO_PUENTE, generarPuente } from '../comercio/puente.ts';
+import { ARCHIVO_PUENTE, generarPuente, VOLVER } from '../comercio/puente.ts';
 import { conectar } from '../webflow/conexion.ts';
 import { hallazgo, medir, ok, type Auditoria, type Verificacion } from './tipos.ts';
 
 const C = 'comercio';
-const VOLVER = 'https://mmartinsn.github.io/verowellness/';
 const DIAS_SIN_CUMPLIR = 3;
 
 interface PedidoWf {

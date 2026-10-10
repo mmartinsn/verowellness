@@ -6,6 +6,10 @@ import type { Tabla } from '../comun/snapshot.ts';
 
 export const ARCHIVO_PUENTE = path.resolve('webflow', 'pedido.html');
 
+export const VOLVER = 'https://mmartinsn.github.io/verowellness/';
+
+export const TIENDA = 'https://veronicas-radical-site-497b87.webflow.io';
+
 const TEXTOS = {
   preparando: 'Preparando tu pedido…',
   vacio: 'No encontramos productos en tu pedido.',

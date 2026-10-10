@@ -15,6 +15,8 @@ declare const TEXTOS: {
   volver: string;
 };
 
+const INTENTOS = 2;
+
 const espera = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 function estado(texto: string, acciones: { texto: string; href: string }[] = []) {
@@ -38,7 +40,7 @@ function estado(texto: string, acciones: { texto: string; href: string }[] = [])
   }
 }
 
-function escuchar(ventana: Window, operacion: string, ms = 15000): Promise<void> {
+function escuchar(ventana: Window, operacion: string, ms = 15000): Promise<unknown[]> {
   const original = ventana.fetch;
   return new Promise((resolver, rechazar) => {
     const plazo = setTimeout(() => {
@@ -55,10 +57,10 @@ function escuchar(ventana: Window, operacion: string, ms = 15000): Promise<void>
           .clone()
           .json()
           .catch(() => null);
-        const lista = Array.isArray(datos) ? datos : [datos];
-        if (!respuesta.ok || lista.some((d) => d?.errors?.length))
+        const lista: unknown[] = Array.isArray(datos) ? datos : [datos];
+        if (!respuesta.ok || lista.some((d) => (d as { errors?: unknown[] })?.errors?.length))
           rechazar(new Error(`${operacion} falló`));
-        else resolver();
+        else resolver(lista);
       }
       return respuesta;
     };
@@ -75,24 +77,56 @@ async function hasta<T>(leer: () => T | null | undefined, ms = 10000): Promise<T
   }
 }
 
-const enCarrito = () =>
+function consultaCarrito(): string {
+  const consulta = document
+    .querySelector('[data-wf-cart-query]')
+    ?.getAttribute('data-wf-cart-query');
+  const nombre = consulta?.match(/query\s+(\w+)/)?.[1];
+  if (!nombre) throw new Error('La página no tiene la consulta del carrito');
+  return nombre;
+}
+
+const lineasDelCarrito = (datos: unknown[]): number =>
+  (
+    datos[0] as {
+      data?: { database?: { commerceOrder?: { userItems?: unknown[] } | null } };
+    }
+  )?.data?.database?.commerceOrder?.userItems?.length ?? 0;
+
+const cantidadAgregada = (datos: unknown[]): number =>
   Number(
-    document.querySelector('.w-commerce-commercecartopenlinkcount')?.textContent?.trim() || '0'
+    (datos[0] as { data?: { ecommerceAddToCart?: { itemCount?: number } } })?.data
+      ?.ecommerceAddToCart?.itemCount ?? Number.NaN
   );
 
-async function vaciarCarrito() {
-  await hasta(() => document.querySelector('.w-commerce-commercecartopenlinkcount'));
-  await espera(800);
-  for (let vuelta = 0; enCarrito() > 0 && vuelta < 50; vuelta++) {
-    const quitar = await hasta(() =>
-      document.querySelector<HTMLElement>(
-        '.w-commerce-commercecartlist [data-wf-cart-action="remove-item"]'
-      )
+const skuDe = (item: Element) =>
+  item.getAttribute('data-commerce-sku-id') ||
+  item.querySelector('[data-commerce-sku-id]')?.getAttribute('data-commerce-sku-id') ||
+  '';
+
+const itemsDelCarrito = () =>
+  [
+    ...document.querySelectorAll('.w-commerce-commercecartlist .w-commerce-commercecartitem'),
+  ].filter((item) => skuDe(item) !== '');
+
+async function vaciarCarrito(lineas: number) {
+  await hasta(() => itemsDelCarrito().length === lineas, 15000);
+  for (let vuelta = 0; itemsDelCarrito().length > 0 && vuelta < 50; vuelta++) {
+    const antes = itemsDelCarrito().length;
+    const quitar = itemsDelCarrito()[0].querySelector<HTMLElement>(
+      '[data-wf-cart-action="remove-item"]'
     );
-    const antes = enCarrito();
+    if (!quitar) throw new Error('El carrito no tiene botón para quitar');
     quitar.click();
-    await hasta(() => enCarrito() < antes, 15000);
+    await hasta(() => itemsDelCarrito().length < antes, 15000);
   }
+  if (itemsDelCarrito().length > 0) throw new Error('No se pudo vaciar el carrito');
+}
+
+async function pulsar(ventana: Window, boton: HTMLElement): Promise<number> {
+  const listo = escuchar(ventana, 'AddToCart');
+  boton.click();
+  return cantidadAgregada(await listo);
 }
 
 async function agregar(linea: Linea) {
@@ -109,51 +143,50 @@ async function agregar(linea: Linea) {
     );
     await hasta(() => (ventana as unknown as { Webflow?: unknown }).Webflow);
     await espera(400);
-    const cantidad = doc.querySelector<HTMLInputElement>(
-      '.w-commerce-commerceaddtocartquantityinput'
-    );
-    if (cantidad) {
-      cantidad.value = String(linea.cantidad);
-      cantidad.dispatchEvent(new Event('input', { bubbles: true }));
-      cantidad.dispatchEvent(new Event('change', { bubbles: true }));
+    const campo = doc.querySelector<HTMLInputElement>('.w-commerce-commerceaddtocartquantityinput');
+    if (campo) {
+      campo.value = String(linea.cantidad);
+      campo.dispatchEvent(new Event('input', { bubbles: true }));
+      campo.dispatchEvent(new Event('change', { bubbles: true }));
     }
-    const listo = escuchar(ventana, 'AddToCart');
-    boton.click();
-    await listo;
+    let total = await pulsar(ventana, boton);
+    while (!campo && total < linea.cantidad) {
+      await espera(300);
+      total = await pulsar(ventana, boton);
+    }
+    if (total !== linea.cantidad)
+      throw new Error(`${linea.producto}: ${total} en el carrito, se pidieron ${linea.cantidad}`);
   } finally {
     marco.remove();
   }
 }
 
-async function conReintento(tarea: () => Promise<void>) {
-  try {
-    await tarea();
-  } catch {
-    await espera(1000);
-    await tarea();
-  }
-}
-
-async function principal() {
-  const lineas = normalizarPedido(
-    leerItems(new URLSearchParams(location.search).get('items') ?? ''),
-    CATALOGO
-  );
+function principal() {
+  const parametros = new URLSearchParams(location.search);
+  const intento = Number(parametros.get('intento') ?? '1');
+  const lineas = normalizarPedido(leerItems(parametros.get('items') ?? ''), CATALOGO);
   if (lineas.length === 0) {
     estado(TEXTOS.vacio, [{ texto: TEXTOS.volver, href: VOLVER }]);
     return;
   }
   estado(TEXTOS.preparando);
-  try {
-    await conReintento(vaciarCarrito);
-    for (const linea of lineas) await conReintento(() => agregar(linea));
+  (async () => {
+    const carrito = escuchar(window, consultaCarrito(), 20000);
+    await vaciarCarrito(lineasDelCarrito(await carrito));
+    for (const linea of lineas) await agregar(linea);
     location.replace('/checkout');
-  } catch {
+  })().catch(() => {
+    parametros.delete('intento');
+    if (intento < INTENTOS) {
+      parametros.set('intento', String(intento + 1));
+      location.replace(`${location.pathname}?${parametros}`);
+      return;
+    }
     estado(TEXTOS.error, [
-      { texto: TEXTOS.reintentar, href: location.href },
+      { texto: TEXTOS.reintentar, href: `${location.pathname}?${parametros}` },
       { texto: TEXTOS.volver, href: VOLVER },
     ]);
-  }
+  });
 }
 
 principal();
