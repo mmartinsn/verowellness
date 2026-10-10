@@ -1,5 +1,46 @@
 [
   {
+    "id": "asesorias-entregables-extra-1",
+    "nombre": "asesorias · entregables-extra · 1",
+    "pagina": "asesorias",
+    "seccion": "entregables-extra",
+    "orden": 1,
+    "items": [
+      "+1 guía adicional según el caso",
+      "Estrategias nuevas y vanguardistas para optimizar tu salud"
+    ],
+    "marcado": false
+  },
+  {
+    "id": "asesorias-entregables-niveles-1",
+    "nombre": "asesorias · entregables-niveles · 1",
+    "pagina": "asesorias",
+    "seccion": "entregables-niveles",
+    "orden": 1,
+    "items": [
+      "Alta prioridad",
+      "Prioridad secundaria",
+      "Mantenimiento"
+    ],
+    "marcado": false
+  },
+  {
+    "id": "asesorias-entregables-plan-1",
+    "nombre": "asesorias · entregables-plan · 1",
+    "pagina": "asesorias",
+    "seccion": "entregables-plan",
+    "orden": 1,
+    "items": [
+      "Nutrición",
+      "Hábitos",
+      "Estilo de vida",
+      "Suplementación",
+      "Educación",
+      "Laboratorios"
+    ],
+    "marcado": false
+  },
+  {
     "id": "asesorias-proceso-pasos-1",
     "nombre": "asesorias · proceso-pasos · 1",
     "pagina": "asesorias",
@@ -27,6 +68,20 @@
       "Suplementación actual",
       "Fotos iniciales",
       "Laboratorios relevantes"
+    ],
+    "marcado": false
+  },
+  {
+    "id": "asesorias-reconocimiento-1",
+    "nombre": "asesorias · reconocimiento · 1",
+    "pagina": "asesorias",
+    "seccion": "reconocimiento",
+    "orden": 1,
+    "items": [
+      "¿Tienes muchos datos pero poca claridad?",
+      "¿Has probado diferentes estrategias sin saber cuál debería ser la prioridad?",
+      "¿Tomas suplementos pero no sabes qué necesitas realmente?",
+      "¿Tus síntomas parecen desconectados, como si cada profesional viera solo una pieza?"
     ],
     "marcado": false
   },
@@ -79,6 +134,70 @@
       "Hemograma: células de la sangre",
       "Indicadores de función del hígado y los riñones",
       "Niveles hormonales, si se solicitan"
+    ],
+    "marcado": false
+  },
+  {
+    "id": "inicio-herramientas-1",
+    "nombre": "inicio · herramientas · 1",
+    "pagina": "inicio",
+    "seccion": "herramientas",
+    "orden": 1,
+    "items": [
+      "Ayuno intermitente",
+      "Péptidos",
+      "Análogos de GLP-1",
+      "Suplementos virales",
+      "Meditación",
+      "Sauna infrarrojo",
+      "Baños de hielo",
+      "Sueros de vitaminas",
+      "Pediluvio",
+      "Cámara hiperbárica",
+      "Terapias de ozono"
+    ],
+    "marcado": false
+  },
+  {
+    "id": "inicio-otra-mirada-1",
+    "nombre": "inicio · otra-mirada · 1",
+    "pagina": "inicio",
+    "seccion": "otra-mirada",
+    "orden": 1,
+    "items": [
+      "Entender qué sostiene tus síntomas.",
+      "Conectar las capas de tu salud.",
+      "Saber qué necesita atención primero."
+    ],
+    "marcado": false
+  },
+  {
+    "id": "inicio-problema-1",
+    "nombre": "inicio · problema · 1",
+    "pagina": "inicio",
+    "seccion": "problema",
+    "orden": 1,
+    "items": [
+      "\"Toma esto para el estrés/ansiedad.\"",
+      "\"Toma esto para reducir el apetito.\"",
+      "\"Toma esto para los dolores.\"",
+      "\"Toma esto para dormir.\"",
+      "\"Toma esto para tu digestión.\""
+    ],
+    "marcado": false
+  },
+  {
+    "id": "metodo-reframe-herramientas-1",
+    "nombre": "metodo · reframe-herramientas · 1",
+    "pagina": "metodo",
+    "seccion": "reframe-herramientas",
+    "orden": 1,
+    "items": [
+      "Suplementos",
+      "Técnicas vanguardistas",
+      "Sueros de vitaminas",
+      "Péptidos",
+      "Cualquier recurso del wellness"
     ],
     "marcado": false
   },

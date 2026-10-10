@@ -4,12 +4,9 @@
  * float on the page (Verónica, change 30: «está como en el aire»). Their landing line is the
  * Insight right after.
  */
-const preguntas = [
-  '¿Tienes muchos datos pero poca claridad?',
-  '¿Has probado diferentes estrategias sin saber cuál debería ser la prioridad?',
-  '¿Tomas suplementos pero no sabes qué necesitas realmente?',
-  '¿Tus síntomas parecen desconectados, como si cada profesional viera solo una pieza?',
-];
+import { items } from '../../lib/datos/bloques';
+
+const preguntas = items('asesorias', 'reconocimiento');
 ---
 
 <section>

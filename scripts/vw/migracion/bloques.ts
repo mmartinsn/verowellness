@@ -64,7 +64,46 @@ export function migrarBloques(raiz: string, datos: Record<string, Modulo>): Regi
     texto: string;
     canales: { nombre: string; url: string }[];
   };
+  const listas: [Base, string, string][] = [
+    [
+      { pagina: 'inicio', seccion: 'herramientas' },
+      'components/home/Herramientas.astro',
+      'herramientas',
+    ],
+    [
+      { pagina: 'inicio', seccion: 'otra-mirada' },
+      'components/home/OtraMirada.astro',
+      'principios',
+    ],
+    [{ pagina: 'inicio', seccion: 'problema' }, 'components/home/Problema.astro', 'fragmentos'],
+    [
+      { pagina: 'metodo', seccion: 'reframe-herramientas' },
+      'components/metodo/ReframeMetodo.astro',
+      'herramientas',
+    ],
+    [
+      { pagina: 'asesorias', seccion: 'entregables-niveles' },
+      'components/uno-a-uno/Entregables.astro',
+      'tiers',
+    ],
+    [
+      { pagina: 'asesorias', seccion: 'entregables-plan' },
+      'components/uno-a-uno/Entregables.astro',
+      'planTags',
+    ],
+    [
+      { pagina: 'asesorias', seccion: 'entregables-extra' },
+      'components/uno-a-uno/Entregables.astro',
+      'planExtra',
+    ],
+    [
+      { pagina: 'asesorias', seccion: 'reconocimiento' },
+      'components/uno-a-uno/Reconocimiento.astro',
+      'preguntas',
+    ],
+  ];
   return [
+    ...listas.flatMap(([base, ruta, nombre]) => lista(base, constante(componente(ruta), nombre))),
     ...lista({ pagina: 'asesorias', seccion: 'proceso-temas' }, constante(proceso, 'temas')),
     ...varios(
       { pagina: 'asesorias', seccion: 'proceso-pasos' },
