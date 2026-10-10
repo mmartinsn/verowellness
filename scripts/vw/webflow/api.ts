@@ -78,9 +78,7 @@ export class ApiWebflow {
 
   async actualizarItems(coleccion: string, items: (NuevoItem & { id: string })[]) {
     for (const lote of lotes(items))
-      await this.c.patch(`/collections/${coleccion}/items`, {
-        items: lote.map((i) => ({ isDraft: false, ...i })),
-      });
+      await this.c.patch(`/collections/${coleccion}/items`, { items: lote });
   }
 
   async borrarItems(coleccion: string, ids: string[]) {
@@ -153,8 +151,10 @@ export class ApiWebflow {
   }
 
   sitio() {
-    return this.c.get<{ lastPublished?: string | null; locales?: unknown }>(
-      `/sites/${this.c.sitio}`
-    );
+    return this.c.get<{
+      lastPublished?: string | null;
+      lastUpdated?: string | null;
+      locales?: unknown;
+    }>(`/sites/${this.c.sitio}`);
   }
 }

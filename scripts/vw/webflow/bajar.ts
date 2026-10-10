@@ -10,6 +10,7 @@ import { desdeWebflow, type Indices } from './convertir.ts';
 import { CATEGORIAS, coleccionesCms, faltantes, planEsquema } from './esquema.ts';
 import { CARPETA_ASSETS, descargar, md5 } from './imagenes.ts';
 import { productosPublicados } from './productos.ts';
+import { itemsSinPublicar } from './publicacion.ts';
 import type { ImagenWf, ItemWf } from './tipos.ts';
 
 const PRESENTACIONES = ['asesoria', 'guia', 'examen'];
@@ -107,15 +108,12 @@ export async function bajar(sitio: Sitio, anterior: Tabla): Promise<ResultadoBaj
     tabla[e.clave] = registros;
   }
 
-  const sinPublicar = [...publicados.pendientes];
-  for (const e of coleccionesCms()) {
-    const vivosPorId = new Map((vivos.get(e.coleccion) ?? []).map((i) => [i.id, i]));
-    for (const b of borradores.get(e.coleccion) ?? []) {
-      const v = vivosPorId.get(b.id);
-      if (!v || (b.lastUpdated && v.lastUpdated && b.lastUpdated > v.lastUpdated))
-        sinPublicar.push(`${e.coleccion}/${b.fieldData.slug}`);
-    }
-  }
+  const sinPublicar = [
+    ...publicados.pendientes,
+    ...coleccionesCms().flatMap((e) =>
+      itemsSinPublicar(e.coleccion, vivos.get(e.coleccion) ?? [], borradores.get(e.coleccion) ?? [])
+    ),
+  ];
   return { tabla, imagenes, sinPublicar };
 }
 

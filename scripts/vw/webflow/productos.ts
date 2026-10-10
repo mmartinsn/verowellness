@@ -59,9 +59,10 @@ const sinPublicar = (i: ItemWf) =>
   !i.lastPublished || (!!i.lastUpdated && Date.parse(i.lastUpdated) > Date.parse(i.lastPublished));
 
 export function estadoProducto(p: ProductoWf): EstadoProducto {
+  const fueraDeLinea = p.product.isDraft || p.product.isArchived;
+  if (!p.product.lastPublished && fueraDeLinea) return 'fuera';
   if (sinPublicar(p.product) || p.skus.some(sinPublicar)) return 'pendiente';
-  if (p.product.isDraft || p.product.isArchived) return 'fuera';
-  return 'vivo';
+  return fueraDeLinea ? 'fuera' : 'vivo';
 }
 
 export function productosPublicados(

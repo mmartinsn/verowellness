@@ -65,6 +65,10 @@ test('borrador o archivado ya publicado queda fuera; sin publicar sigue pendient
     estadoProducto(producto('a', 100, { producto: { isArchived: true, lastUpdated: DESPUES } })),
     'pendiente'
   );
+  assert.equal(
+    estadoProducto(producto('a', 100, { producto: { isDraft: true, lastPublished: null } })),
+    'fuera'
+  );
 });
 
 test('un precio sin publicar conserva el registro anterior y se reporta', () => {

@@ -2,7 +2,8 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { bandera, opcion } from '../comun/args.ts';
 import { leerSnapshot } from '../comun/snapshot.ts';
 import { ARCHIVO_PUENTE, generarPuente } from '../comercio/puente.ts';
-import { conectar } from '../webflow/conexion.ts';
+import { leerSitio } from '../webflow/conexion.ts';
+import { avisoPendientes, pendientesDePublicar } from '../webflow/publicacion.ts';
 
 const VOLVER = 'https://mmartinsn.github.io/verowellness/';
 const SLUG_PAGINA = 'pedido';
@@ -14,7 +15,8 @@ export async function ejecutar(args: string[]): Promise<number> {
   console.log(
     `webflow/pedido.html ${anterior === codigo ? 'al día' : 'regenerado'} (${codigo.length} caracteres).`
   );
-  const api = conectar();
+  const sitio = await leerSitio();
+  const { api } = sitio;
   const pagina = (await api.paginas()).find((p) => p.slug === SLUG_PAGINA);
   if (!pagina) throw new Error(`Webflow no tiene la página «${SLUG_PAGINA}»`);
   const publicado = await api.codigoLibre(pagina.id, 'footer');
@@ -22,10 +24,14 @@ export async function ejecutar(args: string[]): Promise<number> {
     console.log('La página «Pedido» de Webflow ya tiene esta versión.');
     return 0;
   }
-  if (!bandera(args, '--aplicar')) {
+  const aplicar = bandera(args, '--aplicar');
+  const sinPublicar = await pendientesDePublicar(sitio);
+  if (sinPublicar.length) console.log(avisoPendientes(sinPublicar, aplicar));
+  if (!aplicar) {
     console.log('La página «Pedido» tiene otra versión. Repite con --aplicar para publicarla.');
     return 1;
   }
+  if (sinPublicar.length) return 1;
   await api.escribirCodigoLibre(pagina.id, 'footer', codigo);
   await api.publicarSitio();
   console.log('Puente escrito en la página «Pedido» y sitio publicado en webflow.io.');

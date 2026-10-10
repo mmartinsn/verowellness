@@ -2,6 +2,7 @@ import { bandera } from '../comun/args.ts';
 import { informarProblemas, problemasDe } from '../comun/problemas.ts';
 import { leerSnapshot } from '../comun/snapshot.ts';
 import { leerSitio } from '../webflow/conexion.ts';
+import { avisoPendientes, pendientesDePublicar } from '../webflow/publicacion.ts';
 import { sembrar, type Resumen } from '../webflow/sembrar.ts';
 
 const pendiente = (r: Resumen) => r.crear + r.actualizar;
@@ -20,15 +21,18 @@ export async function ejecutar(args: string[]): Promise<number> {
   if (problemas.length) return informarProblemas(problemas);
   const sitio = await leerSitio();
   const aplicar = bandera(args, '--aplicar');
+  const sinPublicar = await pendientesDePublicar(sitio);
   const plan = await sembrar(sitio, tabla, false);
   imprimir(plan);
   const total = plan.reduce((n, r) => n + pendiente(r), 0);
   console.log(`${total} escritura(s) pendientes.`);
+  if (sinPublicar.length) console.log(avisoPendientes(sinPublicar, aplicar));
   if (!aplicar) {
     if (total) console.log('En seco: nada se escribió. Repite con --aplicar para ejecutarlo.');
     return 0;
   }
   if (total === 0) return 0;
+  if (sinPublicar.length) return 1;
   await sembrar(sitio, tabla, true);
   await sitio.api.publicarSitio();
   const segunda = await sembrar(await leerSitio(), tabla, false);
