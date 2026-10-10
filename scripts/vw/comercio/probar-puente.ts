@@ -8,6 +8,7 @@ export interface Caso {
   nombre: string;
   items: string;
   redLenta?: boolean;
+  carritoPrevio?: string;
   perderAddToCart?: boolean;
   sinCampoCantidad?: boolean;
 }
@@ -43,6 +44,7 @@ export const CASOS: Caso[] = [
     nombre: 'red lenta y carrito lleno',
     items: 'h-pylori,organic-acids,layer-session',
     redLenta: true,
+    carritoPrevio: 'cardiometabolic-profile,recetario-30-desayunos,initial-layer-cycle',
   },
   {
     nombre: 'respuesta de AddToCart perdida',
@@ -64,7 +66,7 @@ const CHROME = [
 ].find((p) => p && existsSync(p));
 
 const INICIO_PUENTE = '<style>body{margin:0';
-const FIN_PUENTE = '})();\n</script>';
+const FIN_PUENTE = /\}\)\(\);\r?\n<\/script>/g;
 
 const dinero = (centavos: number) => `$ ${(centavos / 100).toFixed(2)} USD`;
 
@@ -86,28 +88,41 @@ export function esperado(tabla: Tabla, items: string) {
 
 export function sustituirPuente(html: string, codigo: string): string {
   const inicio = html.indexOf(INICIO_PUENTE);
-  const fin = html.indexOf(FIN_PUENTE, inicio);
-  if (inicio < 0 || fin < 0) throw new Error('La página «Pedido» no trae el puente publicado');
-  return html.slice(0, inicio) + codigo.trimEnd() + html.slice(fin + FIN_PUENTE.length);
+  FIN_PUENTE.lastIndex = Math.max(inicio, 0);
+  const fin = inicio < 0 ? null : FIN_PUENTE.exec(html);
+  if (!fin) throw new Error('La página «Pedido» no trae el puente publicado');
+  return html.slice(0, inicio) + codigo.trimEnd() + html.slice(fin.index + fin[0].length);
+}
+
+interface Inyeccion {
+  veces: number;
+  fallas: string[];
 }
 
 async function interceptar(pagina: Page, caso: Caso, local: string | undefined) {
-  if (!local && !caso.perderAddToCart) return;
+  const inyeccion: Inyeccion = { veces: 0, fallas: [] };
+  if (!local && !caso.perderAddToCart) return inyeccion;
   const cdp = await pagina.createCDPSession();
   let retenida = false;
   cdp.on('Fetch.requestPaused', async (e) => {
     try {
       if (e.resourceType === 'Document' && local) {
-        const { body, base64Encoded } = await cdp.send('Fetch.getResponseBody', {
-          requestId: e.requestId,
-        });
-        const html = base64Encoded ? Buffer.from(body, 'base64').toString('utf8') : body;
-        await cdp.send('Fetch.fulfillRequest', {
-          requestId: e.requestId,
-          responseCode: e.responseStatusCode ?? 200,
-          responseHeaders: [{ name: 'Content-Type', value: 'text/html; charset=utf-8' }],
-          body: Buffer.from(sustituirPuente(html, local)).toString('base64'),
-        });
+        try {
+          const { body, base64Encoded } = await cdp.send('Fetch.getResponseBody', {
+            requestId: e.requestId,
+          });
+          const html = base64Encoded ? Buffer.from(body, 'base64').toString('utf8') : body;
+          await cdp.send('Fetch.fulfillRequest', {
+            requestId: e.requestId,
+            responseCode: e.responseStatusCode ?? 200,
+            responseHeaders: [{ name: 'Content-Type', value: 'text/html; charset=utf-8' }],
+            body: Buffer.from(sustituirPuente(html, local)).toString('base64'),
+          });
+          inyeccion.veces++;
+        } catch (error) {
+          inyeccion.fallas.push(String(error));
+          throw error;
+        }
         return;
       }
       if (
@@ -139,11 +154,10 @@ async function interceptar(pagina: Page, caso: Caso, local: string | undefined) 
         : []),
     ],
   });
+  return inyeccion;
 }
 
 async function preparar(pagina: Page, caso: Caso, local: string | undefined) {
-  if (caso.redLenta)
-    await pagina.emulateNetworkConditions({ download: 400_000, upload: 200_000, latency: 400 });
   if (caso.sinCampoCantidad)
     await pagina.evaluateOnNewDocument(() => {
       if (!location.pathname.startsWith('/product/')) return;
@@ -151,24 +165,35 @@ async function preparar(pagina: Page, caso: Caso, local: string | undefined) {
         document.querySelector('.w-commerce-commerceaddtocartquantityinput')?.remove()
       );
     });
-  await interceptar(pagina, caso, local);
+  return interceptar(pagina, caso, local);
+}
+
+async function pedir(pagina: Page, base: string, items: string) {
+  await pagina.goto(`${base}/pedido?items=${encodeURIComponent(items)}`, {
+    waitUntil: 'domcontentloaded',
+  });
+  await pagina.waitForFunction(
+    () =>
+      location.pathname === '/checkout' ||
+      /No encontramos|No pudimos/.test(
+        document.querySelector('[data-vw-estado]')?.textContent ?? ''
+      ),
+    { timeout: 150000 }
+  );
 }
 
 async function correr(navegador: Browser, base: string, caso: Caso, local: string | undefined) {
   const pagina = await navegador.newPage();
   try {
-    await preparar(pagina, caso, local);
-    await pagina.goto(`${base}/pedido?items=${encodeURIComponent(caso.items)}`, {
-      waitUntil: 'domcontentloaded',
-    });
-    await pagina.waitForFunction(
-      () =>
-        location.pathname === '/checkout' ||
-        /No encontramos|No pudimos/.test(
-          document.querySelector('[data-vw-estado]')?.textContent ?? ''
-        ),
-      { timeout: 150000 }
-    );
+    const inyeccion = await preparar(pagina, caso, local);
+    if (caso.carritoPrevio) await pedir(pagina, base, caso.carritoPrevio);
+    if (caso.redLenta)
+      await pagina.emulateNetworkConditions({ download: 400_000, upload: 200_000, latency: 400 });
+    await pedir(pagina, base, caso.items);
+    if (local && (inyeccion.veces === 0 || inyeccion.fallas.length))
+      throw new Error(
+        `el puente local no se inyectó: ${inyeccion.fallas[0] ?? 'ninguna carga de «Pedido» interceptada'}`
+      );
     if (new URL(pagina.url()).pathname !== '/checkout')
       return {
         lineas: [],

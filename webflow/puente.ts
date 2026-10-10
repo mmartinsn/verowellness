@@ -40,7 +40,18 @@ function estado(texto: string, acciones: { texto: string; href: string }[] = [])
   }
 }
 
-function escuchar(ventana: Window, operacion: string, ms = 15000): Promise<unknown[]> {
+function posicion(cuerpo: unknown, operacion: string): number {
+  if (typeof cuerpo !== 'string') return -1;
+  try {
+    const pedido = JSON.parse(cuerpo);
+    const lote: unknown[] = Array.isArray(pedido) ? pedido : [pedido];
+    return lote.findIndex((p) => (p as { operationName?: string })?.operationName === operacion);
+  } catch {
+    return -1;
+  }
+}
+
+function escuchar(ventana: Window, operacion: string, ms = 15000): Promise<unknown> {
   const original = ventana.fetch;
   return new Promise((resolver, rechazar) => {
     const plazo = setTimeout(() => {
@@ -49,18 +60,20 @@ function escuchar(ventana: Window, operacion: string, ms = 15000): Promise<unkno
     }, ms);
     ventana.fetch = async (...args: Parameters<typeof fetch>) => {
       const respuesta = await original.apply(ventana, args);
-      const cuerpo = typeof args[1]?.body === 'string' ? args[1].body : '';
-      if (cuerpo.includes(`"operationName":"${operacion}"`)) {
+      const indice = posicion(args[1]?.body, operacion);
+      if (indice >= 0) {
         clearTimeout(plazo);
         ventana.fetch = original;
         const datos = await respuesta
           .clone()
           .json()
           .catch(() => null);
-        const lista: unknown[] = Array.isArray(datos) ? datos : [datos];
-        if (!respuesta.ok || lista.some((d) => (d as { errors?: unknown[] })?.errors?.length))
+        const propia = (Array.isArray(datos) ? datos : [datos])[indice] as {
+          errors?: unknown[];
+        } | null;
+        if (!respuesta.ok || !propia || propia.errors?.length)
           rechazar(new Error(`${operacion} falló`));
-        else resolver(lista);
+        else resolver(propia);
       }
       return respuesta;
     };
@@ -86,16 +99,16 @@ function consultaCarrito(): string {
   return nombre;
 }
 
-const lineasDelCarrito = (datos: unknown[]): number =>
+const lineasDelCarrito = (respuesta: unknown): number =>
   (
-    datos[0] as {
+    respuesta as {
       data?: { database?: { commerceOrder?: { userItems?: unknown[] } | null } };
     }
   )?.data?.database?.commerceOrder?.userItems?.length ?? 0;
 
-const cantidadAgregada = (datos: unknown[]): number =>
+const cantidadAgregada = (respuesta: unknown): number =>
   Number(
-    (datos[0] as { data?: { ecommerceAddToCart?: { itemCount?: number } } })?.data
+    (respuesta as { data?: { ecommerceAddToCart?: { itemCount?: number } } })?.data
       ?.ecommerceAddToCart?.itemCount ?? Number.NaN
   );
 
@@ -150,7 +163,7 @@ async function agregar(linea: Linea) {
       campo.dispatchEvent(new Event('change', { bubbles: true }));
     }
     let total = await pulsar(ventana, boton);
-    while (!campo && total < linea.cantidad) {
+    for (let vez = 1; !campo && total < linea.cantidad && vez < linea.cantidad; vez++) {
       await espera(300);
       total = await pulsar(ventana, boton);
     }
@@ -163,7 +176,7 @@ async function agregar(linea: Linea) {
 
 function principal() {
   const parametros = new URLSearchParams(location.search);
-  const intento = Number(parametros.get('intento') ?? '1');
+  const intento = Math.max(1, Math.trunc(Number(parametros.get('intento'))) || 1);
   const lineas = normalizarPedido(leerItems(parametros.get('items') ?? ''), CATALOGO);
   if (lineas.length === 0) {
     estado(TEXTOS.vacio, [{ texto: TEXTOS.volver, href: VOLVER }]);

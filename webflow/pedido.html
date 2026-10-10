@@ -67,7 +67,18 @@ function estado(texto        , acciones                                    = [])
   }
 }
 
-function escuchar(ventana        , operacion        , ms = 15000)                     {
+function posicion(cuerpo         , operacion        )         {
+  if (typeof cuerpo !== 'string') return -1;
+  try {
+    const pedido = JSON.parse(cuerpo);
+    const lote            = Array.isArray(pedido) ? pedido : [pedido];
+    return lote.findIndex((p) => (p                              )?.operationName === operacion);
+  } catch {
+    return -1;
+  }
+}
+
+function escuchar(ventana        , operacion        , ms = 15000)                   {
   const original = ventana.fetch;
   return new Promise((resolver, rechazar) => {
     const plazo = setTimeout(() => {
@@ -76,18 +87,20 @@ function escuchar(ventana        , operacion        , ms = 15000)               
     }, ms);
     ventana.fetch = async (...args                          ) => {
       const respuesta = await original.apply(ventana, args);
-      const cuerpo = typeof args[1]?.body === 'string' ? args[1].body : '';
-      if (cuerpo.includes(`"operationName":"${operacion}"`)) {
+      const indice = posicion(args[1]?.body, operacion);
+      if (indice >= 0) {
         clearTimeout(plazo);
         ventana.fetch = original;
         const datos = await respuesta
           .clone()
           .json()
           .catch(() => null);
-        const lista            = Array.isArray(datos) ? datos : [datos];
-        if (!respuesta.ok || lista.some((d) => (d                          )?.errors?.length))
+        const propia = (Array.isArray(datos) ? datos : [datos])[indice]     
+                             
+                ;
+        if (!respuesta.ok || !propia || propia.errors?.length)
           rechazar(new Error(`${operacion} falló`));
-        else resolver(lista);
+        else resolver(propia);
       }
       return respuesta;
     };
@@ -113,16 +126,16 @@ function consultaCarrito()         {
   return nombre;
 }
 
-const lineasDelCarrito = (datos           )         =>
+const lineasDelCarrito = (respuesta         )         =>
   (
-    datos[0]     
+    respuesta     
                                                                                  
      
   )?.data?.database?.commerceOrder?.userItems?.length ?? 0;
 
-const cantidadAgregada = (datos           )         =>
+const cantidadAgregada = (respuesta         )         =>
   Number(
-    (datos[0]                                                              )?.data
+    (respuesta                                                              )?.data
       ?.ecommerceAddToCart?.itemCount ?? Number.NaN
   );
 
@@ -177,7 +190,7 @@ async function agregar(linea       ) {
       campo.dispatchEvent(new Event('change', { bubbles: true }));
     }
     let total = await pulsar(ventana, boton);
-    while (!campo && total < linea.cantidad) {
+    for (let vez = 1; !campo && total < linea.cantidad && vez < linea.cantidad; vez++) {
       await espera(300);
       total = await pulsar(ventana, boton);
     }
@@ -190,7 +203,7 @@ async function agregar(linea       ) {
 
 function principal() {
   const parametros = new URLSearchParams(location.search);
-  const intento = Number(parametros.get('intento') ?? '1');
+  const intento = Math.max(1, Math.trunc(Number(parametros.get('intento'))) || 1);
   const lineas = normalizarPedido(leerItems(parametros.get('items') ?? ''), CATALOGO);
   if (lineas.length === 0) {
     estado(TEXTOS.vacio, [{ texto: TEXTOS.volver, href: VOLVER }]);
