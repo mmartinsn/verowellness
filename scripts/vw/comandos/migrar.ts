@@ -1,7 +1,7 @@
 import { rmSync } from 'node:fs';
 import { extraerArbol } from '../comun/arbol.ts';
 import { opcion } from '../comun/args.ts';
-import { escribirSnapshot } from '../comun/snapshot.ts';
+import { escribirSnapshot, normalizarTabla } from '../comun/snapshot.ts';
 import { informarProblemas, problemasDe } from '../comun/problemas.ts';
 import { migrar } from '../migracion/desde-ts.ts';
 
@@ -10,7 +10,7 @@ export async function ejecutar(args: string[]): Promise<number> {
   const raiz = extraerArbol(ref);
   try {
     process.env.VW_RAIZ = raiz;
-    const tabla = await migrar(raiz);
+    const tabla = normalizarTabla(await migrar(raiz));
     const problemas = problemasDe(tabla);
     if (problemas.length) return informarProblemas(problemas);
     const cambiados = escribirSnapshot(tabla);

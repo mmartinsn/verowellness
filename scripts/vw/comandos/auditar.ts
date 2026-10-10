@@ -1,4 +1,5 @@
 import { auditarComercio } from '../auditar/comercio.ts';
+import { auditarContenido } from '../auditar/contenido.ts';
 import { auditarDatos } from '../auditar/datos.ts';
 import { auditarLimites } from '../auditar/limites.ts';
 import { auditarRepo } from '../auditar/repo.ts';
@@ -13,6 +14,7 @@ const DIMENSIONES: Record<string, Auditoria> = {
   limites: auditarLimites,
   sitio: auditarSitio,
   repo: auditarRepo,
+  contenido: auditarContenido,
 };
 
 export async function ejecutar(args: string[]): Promise<number> {

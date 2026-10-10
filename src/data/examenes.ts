@@ -2,6 +2,7 @@ import { desdeCentavos } from '../lib/precio';
 import { todos, unico, uno, type Fila } from '../lib/datos/canonico';
 import { completar } from '../lib/datos/plantillas';
 import { si } from '../lib/datos/forma';
+import { bloques } from '../lib/datos/bloques';
 
 export type Muestra = 'heces' | 'orina' | 'sangre' | 'saliva' | 'aliento' | 'hisopo' | 'ambiente';
 
@@ -58,26 +59,10 @@ export function productoDe(e: Examen): string {
   return e.producto ?? e.id;
 }
 
-export const pasosPedido = [
-  {
-    titulo: 'Elige y paga',
-    texto: 'Arma tu selección, completa tus datos y la dirección de envío, y paga de forma segura.',
-  },
-  {
-    titulo: 'Recibe tu kit',
-    texto: 'Te llega a la dirección que indicaste, con las instrucciones de tu examen.',
-  },
-  {
-    titulo: 'Toma y envía tu muestra',
-    texto:
-      'Cada examen tiene su propia forma de tomar la muestra: sigue su instructivo y envíala al laboratorio.',
-  },
-  {
-    titulo: 'Recibe tus resultados',
-    texto:
-      'Entre 15 y 25 días hábiles desde que tu muestra llega al laboratorio, por email; los revisamos juntas en tu asesoría.',
-  },
-];
+export const pasosPedido = bloques('examenes', 'pasos-pedido').map((b) => ({
+  titulo: b.titulo as string,
+  texto: b.texto as string,
+}));
 
 export function examenesDeArea(areaId: string): Examen[] {
   return examenes.filter((e) => e.area === areaId);

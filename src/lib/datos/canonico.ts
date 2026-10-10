@@ -12,6 +12,7 @@ import testimonios from '../../data/canonico/testimonios.json' with { type: 'jso
 import preguntas from '../../data/canonico/preguntas-frecuentes.json' with { type: 'json' };
 import layers from '../../data/canonico/layers.json' with { type: 'json' };
 import suplementos from '../../data/canonico/suplementos.json' with { type: 'json' };
+import bloques from '../../data/canonico/bloques.json' with { type: 'json' };
 import type { RegistroLibre } from '../../modelo/entidad.ts';
 import type { ClaveContenido, Conjunto } from '../../modelo/esquema.ts';
 import { validarConjunto } from '../../modelo/validar.ts';
@@ -32,6 +33,7 @@ const crudo = {
   pregunta: preguntas,
   layer: layers,
   suplemento: suplementos,
+  bloque: bloques,
 } as unknown as Conjunto;
 
 const leer = (clave: string) => (crudo as unknown as Record<string, RegistroLibre[]>)[clave] ?? [];

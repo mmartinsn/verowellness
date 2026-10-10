@@ -3,6 +3,7 @@ import { desdeCentavos } from '../lib/precio';
 import { todos, unico, uno, type Fila } from '../lib/datos/canonico';
 import { imagen } from '../lib/datos/imagenes';
 import { si, siHay, siVerdadero } from '../lib/datos/forma';
+import { texto } from '../lib/datos/bloques';
 
 export interface Producto {
   id: string;
@@ -70,5 +71,4 @@ export const DESCUENTO_POPUP = ajustes.descuentoOferta / 100;
 
 export const CLAVE_TIENDA = 'vw-tienda-seleccion';
 
-export const avisoLegal =
-  'Contenido educativo. No reemplaza una consulta médica o nutricional ni una valoración individual. Las decisiones sobre medicación corresponden a tu médico.';
+export const avisoLegal = texto('tienda', 'aviso-legal');

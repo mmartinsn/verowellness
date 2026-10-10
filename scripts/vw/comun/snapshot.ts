@@ -1,8 +1,8 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import type { RegistroLibre } from '../../../src/modelo/entidad.ts';
-import { entidadesDeContenido } from '../../../src/modelo/esquema.ts';
-import { serializar } from '../../../src/modelo/serializar.ts';
+import { entidadPorClave, entidadesDeContenido } from '../../../src/modelo/esquema.ts';
+import { normalizar, serializar } from '../../../src/modelo/serializar.ts';
 
 export type Tabla = Record<string, RegistroLibre[]>;
 
@@ -35,3 +35,11 @@ export function escribirSnapshot(tabla: Tabla, carpeta = CARPETA_SNAPSHOT): stri
 }
 
 export const lector = (tabla: Tabla) => (clave: string) => tabla[clave] ?? [];
+
+export const normalizarTabla = (tabla: Tabla): Tabla =>
+  Object.fromEntries(
+    Object.entries(tabla).map(([clave, registros]) => [
+      clave,
+      registros.map((r) => normalizar(entidadPorClave(clave), r)),
+    ])
+  );

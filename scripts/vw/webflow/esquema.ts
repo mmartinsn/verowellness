@@ -157,6 +157,7 @@ function cuerpoCampo(d: CampoDeseado, destinos: Map<string, string>): NuevoCampo
 export async function aplicarEsquema(api: ApiWebflow, acciones: Accion[], categorias: string) {
   const existentes = await api.colecciones();
   const destinos = new Map(existentes.map((c) => [c.slug, c.id]));
+  const nuevas = new Set<string>();
   for (const a of acciones)
     if (a.tipo === 'crear-coleccion') {
       const nueva = await api.crearColeccion(
@@ -169,7 +170,11 @@ export async function aplicarEsquema(api: ApiWebflow, acciones: Accion[], catego
           `Webflow creó la colección con slug ${nueva.slug}, no ${a.entidad.coleccion}`
         );
       destinos.set(nueva.slug, nueva.id);
+      nuevas.add(nueva.id);
     }
+  if (nuevas.size)
+    for (const p of await api.paginas())
+      if (p.collectionId && nuevas.has(p.collectionId) && !p.draft) await api.borradorPagina(p.id);
   const campos = acciones.filter((a) => a.tipo === 'crear-campo');
   const esReferencia = (a: Accion) =>
     a.tipo === 'crear-campo' &&

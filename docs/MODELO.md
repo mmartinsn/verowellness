@@ -1,6 +1,6 @@
 # Modelo de datos de Veronica Wellness
 
-Generado por `npm run vw -- exportar docs` desde `src/modelo/` (versión 1). No se edita a mano: se cambia el modelo y se vuelve a generar.
+Generado por `npm run vw -- exportar docs` desde `src/modelo/` (versión 2). No se edita a mano: se cambia el modelo y se vuelve a generar.
 
 El modelo es canónico y no depende de ninguna plataforma. Hoy Webflow es su primer adaptador
 (CMS y Ecommerce); `docs/modelo.sql` es el mismo modelo en Postgres para un stack propio. Cómo se
@@ -46,6 +46,7 @@ erDiagram
 | Preguntas frecuentes | 20 | Webflow CMS | Preguntas del inicio y de exámenes. Los nombres y precios se escriben como {nombre:id} y {precio:id} y se completan solos. |
 | Layers | 5 | Webflow CMS | Las cinco capas de The Layer Method™. |
 | Suplementos | 17 | Webflow CMS | Los suplementos recomendados en el estante de cada capa. |
+| Textos de sección | 32 | Webflow CMS | Los textos de cada sección del sitio: pasos, pilares, listas y avisos. Se filtran por página y sección; el orden decide la posición. |
 | Clientes | — | Pedidos de Webflow (solo modelada; datos personales fuera del repo) | Quien compra. Datos personales: nunca en el repositorio ni en reportes. |
 | Pedidos | — | Pedidos de Webflow (solo modelada; datos personales fuera del repo) | Cada compra, con sus montos en centavos. |
 | Líneas de pedido | — | Pedidos de Webflow (solo modelada; datos personales fuera del repo) | Cada producto dentro de un pedido. |
@@ -134,6 +135,8 @@ Valores de funcionamiento del sitio. Hay un solo registro. Colección `ajustes`;
 | Wholescripts codigo | `wholescripts-codigo` | texto | no | Código de la cuenta en Wholescripts. |
 | Wholescripts apellido | `wholescripts-apellido` | texto | no | Apellido para buscar la cuenta. |
 | Wholescripts pendiente | `wholescripts-pendiente` | booleano | no | Si la cuenta de Wholescripts está por confirmar. |
+| Zelle titular | `zelle-titular` | texto | sí | Titular de la cuenta de Zelle. |
+| Zelle correo | `zelle-correo` | texto | sí | Correo de la cuenta de Zelle. |
 
 ### Áreas de exámenes
 
@@ -280,6 +283,29 @@ Los suplementos recomendados en el estante de cada capa. Colección `suplementos
 | Marca | `marca` | texto | sí | Marca del suplemento. |
 | Layer | `layer` | → Layer | sí | Capa en cuyo estante aparece. |
 | Orden | `orden` | entero | sí | Posición dentro de su capa, de menor a mayor. |
+
+### Textos de sección
+
+Los textos de cada sección del sitio: pasos, pilares, listas y avisos. Se filtran por página y sección; el orden decide la posición. Colección `bloques`, ordenada por `orden`.
+
+| Campo | Slug en Webflow | Tipo | Obligatorio | Ayuda |
+|---|---|---|---|---|
+| Id | `slug` | texto (slug) | sí | Identificador estable; no cambia nunca. |
+| Nombre | `name` | texto | sí | Nombre visible. |
+| Página | `pagina` | opción: `sitio`, `inicio`, `sobre-mi`, `metodo`, `asesorias`, `examenes`, `tienda`, `suplementos`, `checkout` | sí | Página donde aparece. |
+| Seccion | `seccion` | texto | sí | Sección de la página (por ejemplo «proceso-pasos»). |
+| Orden | `orden` | entero | sí | Posición dentro de su sección, de menor a mayor. |
+| Etiqueta | `etiqueta` | texto | no | Rótulo pequeño sobre el título. |
+| Título | `titulo` | texto | no | Título del bloque. |
+| Texto | `texto` | texto | no | Texto principal; admite negritas en HTML. |
+| Items | `items` | lista (una línea por elemento) | no | Puntos o etiquetas, una línea por elemento. |
+| Nota | `nota` | texto | no | Nota al pie del bloque. |
+| Cita | `cita` | texto | no | Frase destacada. |
+| Tono | `tono` | opción: `clay`, `clay-deep`, `clay-rich`, `rose`, `rose-deep`, `sage`, `sage-deep`, `olive`, `sand`, `charcoal` | no | Color del bloque. |
+| Ícono | `icono` | texto | no | Trazo SVG del ícono. |
+| Marcado | `marcado` | booleano | no | Variante marcada del bloque (etiquetas visibles o tachado). |
+| Enlace | `enlace` | enlace | no | Enlace del bloque. |
+| Enlace texto | `enlace-texto` | texto | no | Texto del enlace. |
 
 ### Clientes
 

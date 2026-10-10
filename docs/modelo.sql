@@ -1,4 +1,4 @@
--- Generado por `npm run vw -- exportar sql` desde src/modelo (versión 1). No se edita a mano.
+-- Generado por `npm run vw -- exportar sql` desde src/modelo (versión 2). No se edita a mano.
 -- Dinero en centavos enteros (USD). Los ids son los slugs del modelo canónico.
 
 CREATE TABLE productos (
@@ -66,7 +66,9 @@ CREATE TABLE ajustes (
   wholescripts_registro text NOT NULL,
   wholescripts_codigo text,
   wholescripts_apellido text,
-  wholescripts_pendiente boolean NOT NULL DEFAULT false
+  wholescripts_pendiente boolean NOT NULL DEFAULT false,
+  zelle_titular text NOT NULL,
+  zelle_correo text NOT NULL
 );
 
 CREATE TABLE areas (
@@ -169,6 +171,25 @@ CREATE TABLE suplementos (
   marca text NOT NULL,
   layer text NOT NULL REFERENCES layers (id),
   orden integer NOT NULL
+);
+
+CREATE TABLE bloques (
+  id text PRIMARY KEY CHECK (id ~ '^[a-z0-9]+(-[a-z0-9]+)*$'),
+  nombre text NOT NULL,
+  pagina text NOT NULL CHECK (pagina IN ('sitio', 'inicio', 'sobre-mi', 'metodo', 'asesorias', 'examenes', 'tienda', 'suplementos', 'checkout')),
+  seccion text NOT NULL,
+  orden integer NOT NULL,
+  etiqueta text,
+  titulo text,
+  texto text,
+  items text[] NOT NULL DEFAULT '{}',
+  nota text,
+  cita text,
+  tono text CHECK (tono IN ('clay', 'clay-deep', 'clay-rich', 'rose', 'rose-deep', 'sage', 'sage-deep', 'olive', 'sand', 'charcoal')),
+  icono text,
+  marcado boolean NOT NULL DEFAULT false,
+  enlace text,
+  enlace_texto text
 );
 
 CREATE TABLE clientes (

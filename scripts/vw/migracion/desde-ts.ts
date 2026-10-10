@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { aCentavos } from '../../../src/lib/precio.ts';
+import { migrarBloques } from './bloques.ts';
 import { precioOferta } from '../../../src/modelo/reglas.ts';
 import type { RegistroLibre } from '../../../src/modelo/entidad.ts';
 
@@ -70,6 +71,7 @@ export async function migrar(raiz: string): Promise<Tabla> {
     pregunta: [],
     layer: [],
     suplemento: [],
+    bloque: [],
   };
   const descuento = Math.round(Number(tienda.DESCUENTO_POPUP) * 100);
 
@@ -178,6 +180,8 @@ export async function migrar(raiz: string): Promise<Tabla> {
     wholescriptsCodigo: ws.codigo ?? undefined,
     wholescriptsApellido: ws.apellido ?? undefined,
     wholescriptsPendiente: ws.pendiente,
+    zelleTitular: (oferta.zelle as Record<string, string>).titular,
+    zelleCorreo: (oferta.zelle as Record<string, string>).correo,
   });
 
   const presentacion = grupos.presentacionGrupo as Record<
@@ -349,6 +353,8 @@ export async function migrar(raiz: string): Promise<Tabla> {
         orden: i + 1,
       })
     );
+
+  t.bloque = migrarBloques(raiz, { examenes: ex, suplementos: sup, tienda, oferta });
 
   return t;
 }

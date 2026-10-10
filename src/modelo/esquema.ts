@@ -8,10 +8,10 @@ import {
   sintoma,
   tipoMuestra,
 } from './entidades/catalogo.ts';
-import { layer, pregunta, suplemento, testimonio } from './entidades/contenido.ts';
+import { bloque, layer, pregunta, suplemento, testimonio } from './entidades/contenido.ts';
 import { cliente, lineaPedido, pedido } from './entidades/operacion.ts';
 
-export const VERSION_ESQUEMA = 1;
+export const VERSION_ESQUEMA = 2;
 
 export const entidades = {
   producto,
@@ -28,6 +28,7 @@ export const entidades = {
   pregunta,
   layer,
   suplemento,
+  bloque,
   cliente,
   pedido,
   lineaPedido,

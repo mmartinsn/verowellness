@@ -19,52 +19,22 @@ import { checkoutPrincipal } from '../data/oferta';
 import { cta, marca } from '../data/site';
 import { href } from '../lib/url';
 import { grafoSitio } from '../lib/schema';
+import { bloques, items } from '../lib/datos/bloques';
 
-const espejo = [
-  'Tienes síntomas que nadie te explica.',
-  'Sales de cada consulta con más preguntas que respuestas.',
-  'Sientes que tu cuerpo no te escucha.',
-  'Tapas el cansancio con café, suplementos y más exigencia.',
-];
+const espejo = items('sobre-mi', 'espejo');
 
-const capas = [
-  { pre: 'Crecí con', chips: ['problemas digestivos', 'alergias respiratorias'] },
-  { pre: 'En la adolescencia llegaron', chips: ['la anemia', 'los ovarios poliquísticos'] },
-  {
-    pre: 'Al emigrar a Estados Unidos, el estrés hizo aparecer',
-    chips: ['fatiga', 'caída del cabello', 'ansiedad', 'desbalances hormonales'],
-  },
-  {
-    pre: 'Y yo lo tapaba con',
-    chips: ['cafeína', 'suplementos', 'productos', 'más autoexigencia'],
-    tachado: true,
-  },
-];
+const capas = bloques('sobre-mi', 'capas').map((b) => ({
+  pre: b.etiqueta as string,
+  chips: b.items,
+  tachado: b.marcado,
+}));
 
-const acompano = [
-  'Problemas digestivos',
-  'Alergias',
-  'Fatiga',
-  'Ansiedad',
-  'Desbalances hormonales',
-  'Condiciones autoinmunes',
-  'Y mucho más',
-];
+const acompano = items('sobre-mi', 'acompano');
 
-const pilares = [
-  {
-    t: 'Te escucho con detalle',
-    p: 'Tu historia es el punto de partida. Escucho cada detalle y personalizo tu plan según tu estilo de vida.',
-  },
-  {
-    t: 'Vamos a la raíz',
-    p: 'Trabajamos tu salud por capas: infecciones, toxinas, deficiencias de nutrientes, digestión y absorción, alimentación, balance hormonal y más.',
-  },
-  {
-    t: 'Hábitos que se quedan',
-    p: 'Para que construyas hábitos que se sostengan en el tiempo, no una dieta más.',
-  },
-];
+const pilares = bloques('sobre-mi', 'pilares').map((b) => ({
+  t: b.titulo as string,
+  p: b.texto as string,
+}));
 ---
 
 <SiteLayout

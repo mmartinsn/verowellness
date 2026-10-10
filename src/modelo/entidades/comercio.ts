@@ -118,5 +118,7 @@ export const ajustes = entidad({
     wholescriptsCodigo: texto({ requerido: false, ayuda: 'Código de la cuenta en Wholescripts.' }),
     wholescriptsApellido: texto({ requerido: false, ayuda: 'Apellido para buscar la cuenta.' }),
     wholescriptsPendiente: booleano({ ayuda: 'Si la cuenta de Wholescripts está por confirmar.' }),
+    zelleTitular: texto({ ayuda: 'Titular de la cuenta de Zelle.' }),
+    zelleCorreo: texto({ ayuda: 'Correo de la cuenta de Zelle.' }),
   },
 });

@@ -1,5 +1,6 @@
 import { desdeCentavos, desglose, type Desglose } from '../lib/precio';
-import { todos, uno, type Fila } from '../lib/datos/canonico';
+import { todos, unico, uno, type Fila } from '../lib/datos/canonico';
+import { bloque } from '../lib/datos/bloques';
 import { si } from '../lib/datos/forma';
 
 export type CicloId = 'LAYER_SESSION' | 'INITIAL_LAYER_CYCLE' | 'NEXT_LAYER_CYCLE';
@@ -57,12 +58,15 @@ export const listaCiclos: Ciclo[] = asesorias
   .filter((a) => a.publica)
   .map((a) => ciclos[a.clave as CicloId]);
 
+const bloqueContinuidad = bloque('sitio', 'continuidad');
+
 export const continuidad = {
-  etiqueta: 'Acceso privado',
-  titulo: '¿Ya eres mi paciente?',
-  texto:
-    'Next Layer Cycle está reservado para quienes ya completaron su primer ciclo conmigo. Escríbeme y te enviaré tus opciones por correo.',
-  canales: [{ nombre: 'Instagram', url: 'https://ig.me/m/verodudamell' }],
+  etiqueta: bloqueContinuidad.etiqueta as string,
+  titulo: bloqueContinuidad.titulo as string,
+  texto: bloqueContinuidad.texto as string,
+  canales: [
+    { nombre: bloqueContinuidad.enlaceTexto as string, url: bloqueContinuidad.enlace as string },
+  ],
 };
 
 export function checkoutPath(ciclo: Ciclo): string {
@@ -79,7 +83,9 @@ export function precios(ciclo: Ciclo): Desglose {
   return desglose(ciclo.subtotal);
 }
 
+const ajustes = unico('ajustes');
+
 export const zelle = {
-  titular: 'VERODUD CORP',
-  correo: 'veronicadudamell@gmail.com',
+  titular: ajustes.zelleTitular,
+  correo: ajustes.zelleCorreo,
 };

@@ -124,10 +124,17 @@ export class ApiWebflow {
   }
 
   paginas() {
-    return this.c.todas<{ id: string; slug: string | null; title: string; draft: boolean }>(
-      `/sites/${this.c.sitio}/pages`,
-      'pages'
-    );
+    return this.c.todas<{
+      id: string;
+      slug: string | null;
+      title: string;
+      draft: boolean;
+      collectionId?: string | null;
+    }>(`/sites/${this.c.sitio}/pages`, 'pages');
+  }
+
+  borradorPagina(id: string) {
+    return this.c.pedir('PUT', `/pages/${id}`, { draft: true });
   }
 
   async codigoLibre(pagina: string, lugar: 'head' | 'footer'): Promise<string> {

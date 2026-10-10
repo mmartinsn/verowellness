@@ -1,5 +1,6 @@
 import { todos, unico, uno } from '../lib/datos/canonico';
 import { completar } from '../lib/datos/plantillas';
+import { bloques, items, texto } from '../lib/datos/bloques';
 
 const ajustes = unico('ajustes');
 
@@ -11,35 +12,16 @@ export const wholescripts = {
 };
 
 export const etiqueta = {
-  si: [
-    'Tu contexto (The Layer Assessment)',
-    'Una prioridad que lo justifique',
-    'Calidad de grado profesional',
-    'Revisión en tu siguiente sesión',
-  ],
-  no: ['Modas', '"Por si acaso"', 'Listas genéricas'],
+  si: items('suplementos', 'etiqueta-si'),
+  no: items('suplementos', 'etiqueta-no'),
 };
 
-export const principios = [
-  {
-    titulo: 'Primero el mapa',
-    texto:
-      'Un suplemento entra cuando responde a una de tus prioridades, no antes. Por eso se define dentro de tu Layer Plan, junto con la alimentación y los hábitos.',
-  },
-  {
-    titulo: 'Calidad que se puede rastrear',
-    texto:
-      'Recomiendo marcas de grado profesional a través de Wholescripts, una plataforma para profesionales de la salud. Tú compras directamente ahí.',
-  },
-  {
-    titulo: 'Se revisa, no se acumula',
-    texto:
-      'Lo que tomas se revisa en cada ciclo: qué está ayudando, qué ya no hace falta y qué conviene ajustar.',
-  },
-];
+export const principios = bloques('suplementos', 'principios').map((b) => ({
+  titulo: b.titulo as string,
+  texto: b.texto as string,
+}));
 
-export const avisoSuplementos =
-  'Los suplementos no sustituyen un diagnóstico ni un tratamiento médico. Consulta con tu médico antes de empezar cualquiera, sobre todo si estás embarazada, en lactancia o tomas medicación. Veronica Wellness no procesa pagos ni almacena datos de tarjetas: el registro, la compra y el envío se hacen en Wholescripts.';
+export const avisoSuplementos = texto('suplementos', 'aviso');
 
 export interface Suplemento {
   nombre: string;

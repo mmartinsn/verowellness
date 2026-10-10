@@ -69,4 +69,10 @@ export const comandos: Entrada[] = [
       'Genera docs/MODELO.md y docs/modelo.sql desde el modelo; csv y --con-datos para migrar',
     cargar: () => import('./exportar.ts'),
   },
+  {
+    nombre: 'censo',
+    descripcion:
+      'Cuenta los textos que siguen escritos en el código (lo que falta llevar a la base)',
+    cargar: () => import('./censo.ts'),
+  },
 ];

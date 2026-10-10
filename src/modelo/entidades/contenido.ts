@@ -1,5 +1,6 @@
 import {
   booleano,
+  enlace,
   entero,
   imagen,
   lista,
@@ -10,7 +11,7 @@ import {
   texto,
 } from '../campos.ts';
 import { entidad } from '../entidad.ts';
-import { COLORES, PAGINAS_FAQ } from '../vocabulario.ts';
+import { COLORES, PAGINAS_FAQ, PAGINAS_SITIO } from '../vocabulario.ts';
 
 export const testimonio = entidad({
   clave: 'testimonio',
@@ -66,6 +67,37 @@ export const layer = entidad({
     color: opcion(COLORES, { ayuda: 'Color de la capa.' }),
     oscuro: booleano({ ayuda: 'Si la capa va sobre fondo oscuro.' }),
     orden: entero({ ayuda: 'Posición, de menor a mayor.' }),
+  },
+});
+
+export const bloque = entidad({
+  clave: 'bloque',
+  coleccion: 'bloques',
+  titulo: 'Textos de sección',
+  singular: 'Texto de sección',
+  descripcion:
+    'Los textos de cada sección del sitio: pasos, pilares, listas y avisos. Se filtran por página y sección; el orden decide la posición.',
+  almacen: 'cms',
+  orden: 'orden',
+  campos: {
+    pagina: opcion(PAGINAS_SITIO, { ayuda: 'Página donde aparece.' }),
+    seccion: texto({ ayuda: 'Sección de la página (por ejemplo «proceso-pasos»).' }),
+    orden: entero({ ayuda: 'Posición dentro de su sección, de menor a mayor.' }),
+    etiqueta: texto({ requerido: false, ayuda: 'Rótulo pequeño sobre el título.' }),
+    titulo: texto({ requerido: false, ayuda: 'Título del bloque.' }),
+    texto: texto({
+      requerido: false,
+      multilinea: true,
+      ayuda: 'Texto principal; admite negritas en HTML.',
+    }),
+    items: lista({ requerido: false, ayuda: 'Puntos o etiquetas, una línea por elemento.' }),
+    nota: texto({ requerido: false, multilinea: true, ayuda: 'Nota al pie del bloque.' }),
+    cita: texto({ requerido: false, multilinea: true, ayuda: 'Frase destacada.' }),
+    tono: opcion(COLORES, { requerido: false, ayuda: 'Color del bloque.' }),
+    icono: texto({ requerido: false, ayuda: 'Trazo SVG del ícono.' }),
+    marcado: booleano({ ayuda: 'Variante marcada del bloque (etiquetas visibles o tachado).' }),
+    enlace: enlace({ requerido: false, ayuda: 'Enlace del bloque.' }),
+    enlaceTexto: texto({ requerido: false, ayuda: 'Texto del enlace.' }),
   },
 });
 

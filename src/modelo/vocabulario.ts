@@ -37,3 +37,15 @@ export const ESTADOS_PEDIDO = [
 export const METODOS_PAGO = ['tarjeta', 'apple-pay', 'google-pay', 'paypal', 'zelle'] as const;
 
 export const MONEDAS = ['USD'] as const;
+
+export const PAGINAS_SITIO = [
+  'sitio',
+  'inicio',
+  'sobre-mi',
+  'metodo',
+  'asesorias',
+  'examenes',
+  'tienda',
+  'suplementos',
+  'checkout',
+] as const;

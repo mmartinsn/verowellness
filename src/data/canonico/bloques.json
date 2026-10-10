@@ -1,0 +1,411 @@
+[
+  {
+    "id": "asesorias-proceso-pasos-1",
+    "nombre": "asesorias · proceso-pasos · 1",
+    "pagina": "asesorias",
+    "seccion": "proceso-pasos",
+    "orden": 1,
+    "etiqueta": "Antes de la sesión 01",
+    "titulo": "The Layer Assessment",
+    "texto": "Completas una evaluación estructurada para no pasar la sesión recopilando información básica. Puede incluir:",
+    "items": [],
+    "tono": "clay-deep",
+    "marcado": true
+  },
+  {
+    "id": "asesorias-proceso-temas-1",
+    "nombre": "asesorias · proceso-temas · 1",
+    "pagina": "asesorias",
+    "seccion": "proceso-temas",
+    "orden": 1,
+    "items": [
+      "Objetivos",
+      "Historia de salud y bienestar",
+      "Alimentación",
+      "Lifestyle",
+      "Síntomas y preocupaciones",
+      "Suplementación actual",
+      "Fotos iniciales",
+      "Laboratorios relevantes"
+    ],
+    "marcado": false
+  },
+  {
+    "id": "examenes-pasos-pedido-1",
+    "nombre": "examenes · pasos-pedido · 1",
+    "pagina": "examenes",
+    "seccion": "pasos-pedido",
+    "orden": 1,
+    "titulo": "Elige y paga",
+    "texto": "Arma tu selección, completa tus datos y la dirección de envío, y paga de forma segura.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "examenes-porque-funcional-1",
+    "nombre": "examenes · porque-funcional · 1",
+    "pagina": "examenes",
+    "seccion": "porque-funcional",
+    "orden": 1,
+    "items": [
+      "Microbiota y otros indicadores intestinales",
+      "Patrones hormonales y cómo procesas ciertas hormonas",
+      "Marcadores de respuesta inmunitaria a alimentos",
+      "Marcadores relacionados con moho, metales y otras sustancias",
+      "Marcadores del metabolismo y de nutrientes"
+    ],
+    "marcado": false
+  },
+  {
+    "id": "examenes-porque-pilares-1",
+    "nombre": "examenes · porque-pilares · 1",
+    "pagina": "examenes",
+    "seccion": "porque-pilares",
+    "orden": 1,
+    "titulo": "Fácil",
+    "texto": "Empieza por lo que sientes. Cada examen explica qué evalúa y cómo se toma la muestra.",
+    "items": [],
+    "icono": "M9 11l3 3 8-8M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9",
+    "marcado": false
+  },
+  {
+    "id": "examenes-porque-rutina-1",
+    "nombre": "examenes · porque-rutina · 1",
+    "pagina": "examenes",
+    "seccion": "porque-rutina",
+    "orden": 1,
+    "items": [
+      "Niveles de glucosa y colesterol",
+      "Hemograma: células de la sangre",
+      "Indicadores de función del hígado y los riñones",
+      "Niveles hormonales, si se solicitan"
+    ],
+    "marcado": false
+  },
+  {
+    "id": "sitio-continuidad-1",
+    "nombre": "sitio · continuidad · 1",
+    "pagina": "sitio",
+    "seccion": "continuidad",
+    "orden": 1,
+    "etiqueta": "Acceso privado",
+    "titulo": "¿Ya eres mi paciente?",
+    "texto": "Next Layer Cycle está reservado para quienes ya completaron su primer ciclo conmigo. Escríbeme y te enviaré tus opciones por correo.",
+    "items": [],
+    "marcado": false,
+    "enlace": "https://ig.me/m/verodudamell",
+    "enlaceTexto": "Instagram"
+  },
+  {
+    "id": "sobre-mi-acompano-1",
+    "nombre": "sobre-mi · acompano · 1",
+    "pagina": "sobre-mi",
+    "seccion": "acompano",
+    "orden": 1,
+    "items": [
+      "Problemas digestivos",
+      "Alergias",
+      "Fatiga",
+      "Ansiedad",
+      "Desbalances hormonales",
+      "Condiciones autoinmunes",
+      "Y mucho más"
+    ],
+    "marcado": false
+  },
+  {
+    "id": "sobre-mi-capas-1",
+    "nombre": "sobre-mi · capas · 1",
+    "pagina": "sobre-mi",
+    "seccion": "capas",
+    "orden": 1,
+    "etiqueta": "Crecí con",
+    "items": [
+      "problemas digestivos",
+      "alergias respiratorias"
+    ],
+    "marcado": false
+  },
+  {
+    "id": "sobre-mi-espejo-1",
+    "nombre": "sobre-mi · espejo · 1",
+    "pagina": "sobre-mi",
+    "seccion": "espejo",
+    "orden": 1,
+    "items": [
+      "Tienes síntomas que nadie te explica.",
+      "Sales de cada consulta con más preguntas que respuestas.",
+      "Sientes que tu cuerpo no te escucha.",
+      "Tapas el cansancio con café, suplementos y más exigencia."
+    ],
+    "marcado": false
+  },
+  {
+    "id": "sobre-mi-pilares-1",
+    "nombre": "sobre-mi · pilares · 1",
+    "pagina": "sobre-mi",
+    "seccion": "pilares",
+    "orden": 1,
+    "titulo": "Te escucho con detalle",
+    "texto": "Tu historia es el punto de partida. Escucho cada detalle y personalizo tu plan según tu estilo de vida.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "suplementos-aviso-1",
+    "nombre": "suplementos · aviso · 1",
+    "pagina": "suplementos",
+    "seccion": "aviso",
+    "orden": 1,
+    "texto": "Los suplementos no sustituyen un diagnóstico ni un tratamiento médico. Consulta con tu médico antes de empezar cualquiera, sobre todo si estás embarazada, en lactancia o tomas medicación. Veronica Wellness no procesa pagos ni almacena datos de tarjetas: el registro, la compra y el envío se hacen en Wholescripts.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "suplementos-etiqueta-no-1",
+    "nombre": "suplementos · etiqueta-no · 1",
+    "pagina": "suplementos",
+    "seccion": "etiqueta-no",
+    "orden": 1,
+    "items": [
+      "Modas",
+      "\"Por si acaso\"",
+      "Listas genéricas"
+    ],
+    "marcado": false
+  },
+  {
+    "id": "suplementos-etiqueta-si-1",
+    "nombre": "suplementos · etiqueta-si · 1",
+    "pagina": "suplementos",
+    "seccion": "etiqueta-si",
+    "orden": 1,
+    "items": [
+      "Tu contexto (The Layer Assessment)",
+      "Una prioridad que lo justifique",
+      "Calidad de grado profesional",
+      "Revisión en tu siguiente sesión"
+    ],
+    "marcado": false
+  },
+  {
+    "id": "suplementos-principios-1",
+    "nombre": "suplementos · principios · 1",
+    "pagina": "suplementos",
+    "seccion": "principios",
+    "orden": 1,
+    "titulo": "Primero el mapa",
+    "texto": "Un suplemento entra cuando responde a una de tus prioridades, no antes. Por eso se define dentro de tu Layer Plan, junto con la alimentación y los hábitos.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "tienda-aviso-legal-1",
+    "nombre": "tienda · aviso-legal · 1",
+    "pagina": "tienda",
+    "seccion": "aviso-legal",
+    "orden": 1,
+    "texto": "Contenido educativo. No reemplaza una consulta médica o nutricional ni una valoración individual. Las decisiones sobre medicación corresponden a tu médico.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "asesorias-proceso-pasos-2",
+    "nombre": "asesorias · proceso-pasos · 2",
+    "pagina": "asesorias",
+    "seccion": "proceso-pasos",
+    "orden": 2,
+    "etiqueta": "Sesión 01 · 90 min",
+    "titulo": "Mapear + Priorizar",
+    "texto": "Revisamos tu contexto a través de las cinco capas y creamos un plan de acción por fases para trabajarlas según su prioridad: ese será tu Layer Map. El objetivo no es abordar todo a la vez.<br /><br />Es determinar qué merece atención ahora y qué puede estar conectado.",
+    "items": [],
+    "nota": "Sales con tu Layer Map, tus Top 3 Priorities y tu Layer Plan.",
+    "tono": "sage-deep",
+    "marcado": false
+  },
+  {
+    "id": "examenes-pasos-pedido-2",
+    "nombre": "examenes · pasos-pedido · 2",
+    "pagina": "examenes",
+    "seccion": "pasos-pedido",
+    "orden": 2,
+    "titulo": "Recibe tu kit",
+    "texto": "Te llega a la dirección que indicaste, con las instrucciones de tu examen.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "examenes-porque-pilares-2",
+    "nombre": "examenes · porque-pilares · 2",
+    "pagina": "examenes",
+    "seccion": "porque-pilares",
+    "orden": 2,
+    "titulo": "Práctico",
+    "texto": "Recibe el kit en casa, con sus instrucciones. La mayoría de las muestras puedes tomarlas tú misma.",
+    "items": [],
+    "icono": "M3 9l9-6 9 6v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9zM9 21v-7h6v7",
+    "marcado": false
+  },
+  {
+    "id": "sobre-mi-capas-2",
+    "nombre": "sobre-mi · capas · 2",
+    "pagina": "sobre-mi",
+    "seccion": "capas",
+    "orden": 2,
+    "etiqueta": "En la adolescencia llegaron",
+    "items": [
+      "la anemia",
+      "los ovarios poliquísticos"
+    ],
+    "marcado": false
+  },
+  {
+    "id": "sobre-mi-pilares-2",
+    "nombre": "sobre-mi · pilares · 2",
+    "pagina": "sobre-mi",
+    "seccion": "pilares",
+    "orden": 2,
+    "titulo": "Vamos a la raíz",
+    "texto": "Trabajamos tu salud por capas: infecciones, toxinas, deficiencias de nutrientes, digestión y absorción, alimentación, balance hormonal y más.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "suplementos-principios-2",
+    "nombre": "suplementos · principios · 2",
+    "pagina": "suplementos",
+    "seccion": "principios",
+    "orden": 2,
+    "titulo": "Calidad que se puede rastrear",
+    "texto": "Recomiendo marcas de grado profesional a través de Wholescripts, una plataforma para profesionales de la salud. Tú compras directamente ahí.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "asesorias-proceso-pasos-3",
+    "nombre": "asesorias · proceso-pasos · 3",
+    "pagina": "asesorias",
+    "seccion": "proceso-pasos",
+    "orden": 3,
+    "etiqueta": "Entre sesiones · 30–60 días",
+    "titulo": "Implementar + Observar",
+    "texto": "Pones en marcha tu Layer Plan y observas respuesta, tolerancia, cambios y obstáculos. Este período es parte del método: no es simplemente \"esperar la próxima cita\".",
+    "items": [],
+    "nota": "Acompañamiento por correo una vez a la semana para resolver tus dudas.",
+    "tono": "rose-deep",
+    "marcado": false
+  },
+  {
+    "id": "examenes-pasos-pedido-3",
+    "nombre": "examenes · pasos-pedido · 3",
+    "pagina": "examenes",
+    "seccion": "pasos-pedido",
+    "orden": 3,
+    "titulo": "Toma y envía tu muestra",
+    "texto": "Cada examen tiene su propia forma de tomar la muestra: sigue su instructivo y envíala al laboratorio.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "examenes-porque-pilares-3",
+    "nombre": "examenes · porque-pilares · 3",
+    "pagina": "examenes",
+    "seccion": "porque-pilares",
+    "orden": 3,
+    "titulo": "Rápido",
+    "texto": "El envío del kit se inicia cuando se verifica tu pago. Los resultados tardan entre 15 y 25 días hábiles desde que tu muestra llega al laboratorio.",
+    "items": [],
+    "icono": "M13 2L4 14h7l-1 8 9-12h-7l1-8z",
+    "marcado": false
+  },
+  {
+    "id": "sobre-mi-capas-3",
+    "nombre": "sobre-mi · capas · 3",
+    "pagina": "sobre-mi",
+    "seccion": "capas",
+    "orden": 3,
+    "etiqueta": "Al emigrar a Estados Unidos, el estrés hizo aparecer",
+    "items": [
+      "fatiga",
+      "caída del cabello",
+      "ansiedad",
+      "desbalances hormonales"
+    ],
+    "marcado": false
+  },
+  {
+    "id": "sobre-mi-pilares-3",
+    "nombre": "sobre-mi · pilares · 3",
+    "pagina": "sobre-mi",
+    "seccion": "pilares",
+    "orden": 3,
+    "titulo": "Hábitos que se quedan",
+    "texto": "Para que construyas hábitos que se sostengan en el tiempo, no una dieta más.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "suplementos-principios-3",
+    "nombre": "suplementos · principios · 3",
+    "pagina": "suplementos",
+    "seccion": "principios",
+    "orden": 3,
+    "titulo": "Se revisa, no se acumula",
+    "texto": "Lo que tomas se revisa en cada ciclo: qué está ayudando, qué ya no hace falta y qué conviene ajustar.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "asesorias-proceso-pasos-4",
+    "nombre": "asesorias · proceso-pasos · 4",
+    "pagina": "asesorias",
+    "seccion": "proceso-pasos",
+    "orden": 4,
+    "etiqueta": "Sesión 02 · 90 min",
+    "titulo": "Revisar + Ajustar",
+    "texto": "Revisamos qué cambió, qué fue difícil y si las prioridades se movieron. Sales con <strong>The Layer Review</strong> — tu Layer Plan ajustado con base en tu respuesta real.",
+    "items": [],
+    "cita": "Ahora tenemos algo que la primera sesión no tenía: respuesta.",
+    "tono": "olive",
+    "marcado": false
+  },
+  {
+    "id": "examenes-pasos-pedido-4",
+    "nombre": "examenes · pasos-pedido · 4",
+    "pagina": "examenes",
+    "seccion": "pasos-pedido",
+    "orden": 4,
+    "titulo": "Recibe tus resultados",
+    "texto": "Entre 15 y 25 días hábiles desde que tu muestra llega al laboratorio, por email; los revisamos juntas en tu asesoría.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "sobre-mi-capas-4",
+    "nombre": "sobre-mi · capas · 4",
+    "pagina": "sobre-mi",
+    "seccion": "capas",
+    "orden": 4,
+    "etiqueta": "Y yo lo tapaba con",
+    "items": [
+      "cafeína",
+      "suplementos",
+      "productos",
+      "más autoexigencia"
+    ],
+    "marcado": true
+  },
+  {
+    "id": "asesorias-proceso-pasos-5",
+    "nombre": "asesorias · proceso-pasos · 5",
+    "pagina": "asesorias",
+    "seccion": "proceso-pasos",
+    "orden": 5,
+    "etiqueta": "Tu siguiente ciclo",
+    "titulo": "Next Layer Cycle",
+    "texto": "Agenda tu próximo paquete de asesorías para continuar trabajando las capas del plan establecido en tu Layer Map.",
+    "items": [],
+    "tono": "clay",
+    "marcado": false
+  }
+]

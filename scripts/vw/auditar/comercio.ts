@@ -66,6 +66,25 @@ export const auditarComercio: Auditoria = async ({ conWebflow }) => {
             'la página «pedido» tiene otra versión; correr vw puente --aplicar'
           );
     })),
+    ...(await medir(C, 'plantillas de colección en borrador', async () => {
+      const productos = (await api.colecciones()).find((c) => c.slug === 'product')?.id;
+      const publicas = (await api.paginas())
+        .filter((p) => p.collectionId && p.collectionId !== productos && !p.draft)
+        .map((p) => p.title);
+      return publicas.length === 0
+        ? ok(
+            C,
+            'plantillas de colección en borrador',
+            0,
+            'solo la plantilla de producto está publicada'
+          )
+        : hallazgo(
+            C,
+            'plantillas de colección en borrador',
+            `públicas: ${publicas.join(', ')}`,
+            publicas.length
+          );
+    })),
     ...(await medir(C, 'descargas responden', async () => {
       const urls = tabla.producto
         .map((p) => p.descarga as string | undefined)
