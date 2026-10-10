@@ -7,7 +7,7 @@ import { normalizar } from '../../../src/modelo/serializar.ts';
 import type { Tabla } from '../comun/snapshot.ts';
 import type { Sitio } from './conexion.ts';
 import { desdeWebflow, type Indices } from './convertir.ts';
-import { CATEGORIAS, coleccionesCms } from './esquema.ts';
+import { CATEGORIAS, coleccionesCms, faltantes, planEsquema } from './esquema.ts';
 import { CARPETA_ASSETS, descargar, md5 } from './imagenes.ts';
 import { productosPublicados } from './productos.ts';
 import type { ImagenWf, ItemWf } from './tipos.ts';
@@ -44,8 +44,18 @@ async function resolverImagen(
 
 export async function bajar(sitio: Sitio, anterior: Tabla): Promise<ResultadoBajada> {
   const { api } = sitio;
-  const productos = await api.productos();
   const categorias = await api.items(sitio.categorias.id);
+  const faltan = faltantes(
+    planEsquema(
+      [...sitio.colecciones.values()],
+      categorias.map((c) => c.fieldData)
+    )
+  );
+  if (faltan.length)
+    throw new Error(
+      `A Webflow le falta lo que el modelo declara (${faltan.join(', ')}); corre vw esquema`
+    );
+  const productos = await api.productos();
   const vivos = new Map<string, ItemWf[]>();
   for (const e of coleccionesCms()) {
     const c = sitio.colecciones.get(e.coleccion);

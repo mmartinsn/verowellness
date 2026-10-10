@@ -137,6 +137,21 @@ export function planEsquema(existentes: ColeccionWf[], categorias: { slug: strin
   return acciones;
 }
 
+export function faltantes(acciones: Accion[]): string[] {
+  return acciones.flatMap((a) => {
+    switch (a.tipo) {
+      case 'crear-coleccion':
+        return [`colección ${a.entidad.coleccion}`];
+      case 'crear-campo':
+        return [`campo ${a.entidad.coleccion}.${a.campo.slug}`];
+      case 'crear-categoria':
+        return [`categoría ${a.slug}`];
+      default:
+        return [];
+    }
+  });
+}
+
 function cuerpoCampo(d: CampoDeseado, destinos: Map<string, string>): NuevoCampo {
   const cuerpo: NuevoCampo = {
     type: d.tipo,
