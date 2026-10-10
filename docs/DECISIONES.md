@@ -411,7 +411,8 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
 - **Página de producto y correos de la tienda en Webflow**: la plantilla de producto se ve en
   blanco y cualquiera llega a ella por URL; los correos de confirmación de pedido salen en inglés
   y con el diseño de Webflow. Diseño de Mari y texto de Verónica. Si se rediseña la plantilla, tiene
-  que conservar el botón «Add to Cart» y el campo de cantidad (los usa el puente).
+  que conservar el botón «Add to Cart» (lo usa el puente) y conviene que conserve el campo de
+  cantidad (sin él, el puente agrega de a uno).
 - **Dos desbordes del front que ya estaban en `cfdc54d`**: en el teléfono el inicio se corre 2–4
   px de lado (los adornos del hero y la cinta de logos) y `/inicio-stitch/` en escritorio tiene el
   botón del encabezado 93 px fuera. Además, las páginas de checkout tienen seis `h1` cada una.

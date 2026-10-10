@@ -5,8 +5,8 @@ El frontend de `veronicawellness.com`, ensamblado a partir de las páginas que d
 todas las páginas, navegables y desplegadas, con el checkout funcionando en modo simulado. Tras la
 aprobación se le conecta la infraestructura real (pagos, CRM, agenda, legal, dominio).
 
-**Vista previa:** <https://mmartinsn.github.io/verowellness/> · índice interno de páginas en
-`/variantes/`.
+**Vista previa:** <https://mmartinsn.github.io/verowellness/> (la dirección sale de
+`src/lib/despliegue.ts`) · índice interno de páginas en `/variantes/`.
 
 ## Rutas
 
@@ -31,11 +31,11 @@ Las variantes A y B se conservan para comparar; el inicio es el que Mari eligió
 
 ```bash
 npm install
-npm run dev        # http://localhost:4321/verowellness/   (ojo al base path)
+npm run dev        # http://localhost:4321 + la base de src/lib/despliegue.ts (hoy /verowellness/)
 npm run build      # dist/
-npm run preview    # sirve dist/ en http://127.0.0.1:4321/verowellness/
+npm run preview    # sirve dist/ en http://127.0.0.1:4321 + la base
 npm run verify     # lint + prettier --check + astro check + pruebas + build  (lo mismo que corre CI)
-npm test           # pruebas de las reglas del pedido (node:test)
+npm test           # pruebas del modelo, el pedido, el puente y el adaptador de Webflow (node:test)
 npm run vw         # el ejecutable de datos y Webflow: lista sus comandos (docs/INTEGRACION.md)
 npm run capturas   # screenshots de cada ruta (escritorio y teléfono) + recorrido del checkout → capturas/
 npm run capturas -- --base https://mmartinsn.github.io/verowellness   # contra el sitio publicado
@@ -95,12 +95,15 @@ Arquitectura, comandos y recetas en `docs/INTEGRACION.md`; lo que se hace a mano
 
 ## Despliegue
 
-`push` a `main` → `.github/workflows/deploy.yml`: `npm ci` → lint → prettier → `astro check` →
-`build` → GitHub Pages (fuente «GitHub Actions»). Cualquier compuerta que falle bloquea el deploy.
+`push` a `main` → `.github/workflows/deploy.yml`: `npm ci` → `npm run verify` (lint, prettier,
+`astro check`, pruebas y build) → GitHub Pages (fuente «GitHub Actions»). Cualquier compuerta que
+falle bloquea el deploy.
 
-El sitio vive bajo `/verowellness/` (project site). Para pasar a dominio propio: poner `site` y
-**quitar `base`** en `astro.config.mjs`, y dejar de bloquear robots en `public/robots.txt`. Ningún
-enlace hay que tocar porque todos pasan por `href()`.
+Dónde vive el sitio lo dice un solo archivo, `src/lib/despliegue.ts` (sitio, base, URL pública y
+dominio de la caja); lo leen `astro.config.mjs`, el puente, la auditoría, las capturas y la entrega.
+Hoy es `/verowellness/` (project site). El paso a `veronicawellness.com` está preparado en la rama
+local `dominio` y se hace con `docs/DOMINIO.md`. Ningún enlace hay que tocar porque todos pasan por
+`href()`. Al lanzar de verdad (`prototipo = false`), además, `public/robots.txt` deja de bloquear.
 
 ## Qué falta para producción
 

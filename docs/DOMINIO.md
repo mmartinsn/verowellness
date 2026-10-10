@@ -64,7 +64,9 @@ sesión: qué hay hoy, qué se cambia, quién lo hace y cómo se comprueba.
 8. **Comprobar:** `nslookup` de `@`, `www` y `pago` (y que los MX sigan iguales);
    `https://veronicawellness.com/` da 200 con `noindex`; el pedido de prueba llega al checkout
    en `pago.`; `npm run vw -- auditar` sin hallazgos nuevos; capturas contra el dominio
-   (`npm run capturas -- --base https://veronicawellness.com`).
+   (`npm run capturas -- --base https://veronicawellness.com`). Y que `/1-1/` lleve a
+   `/asesorias/`: hoy, bajo `/verowellness/`, esa redirección da 404 porque Astro no le antepone la
+   base al destino (medido el 10-oct); con la base vacía queda bien sola.
 
 ## Si algo sale mal
 

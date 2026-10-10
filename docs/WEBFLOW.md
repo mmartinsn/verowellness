@@ -58,7 +58,7 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
 - [ ] **Moneda**: ya es USD (10-oct). En la guía de Webflow solo falta abrir «Review currency
       settings» y confirmar el formato.
 - [ ] **Página de producto** (Mari): la plantilla se ve en blanco y se llega a ella por URL. Si se
-      diseña, tiene que conservar el botón «Add to Cart» y el campo de cantidad, que usa el puente;
+      diseña, tiene que conservar el botón «Add to Cart», que usa el puente, y conviene conservar el campo de cantidad (sin él, el puente agrega de a uno, más lento);
       `npm run vw -- probar-puente` avisa si se rompen.
 - [ ] **Correos de la tienda** (Mari y Verónica): la confirmación de pedido y los demás salen en
       inglés y con el diseño de Webflow. El texto es de Verónica.
