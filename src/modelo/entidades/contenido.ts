@@ -26,7 +26,10 @@ export const testimonio = entidad({
     foto: imagen('testimonios', { requerido: false, ayuda: 'Foto pequeña y nítida.' }),
     motivos: lista({ requerido: false, ayuda: 'Motivos de consulta, una línea por motivo.' }),
     destacado: texto({ multilinea: true, ayuda: 'La frase que se destaca.' }),
-    texto: parrafos({ ayuda: 'El testimonio completo; una línea vacía separa los párrafos.' }),
+    texto: parrafos({
+      requerido: false,
+      ayuda: 'El testimonio completo; una línea vacía separa los párrafos.',
+    }),
     prioridad: entero({ ayuda: 'Orden en el muro, de menor a mayor.' }),
     enAsesorias: booleano({ ayuda: 'Si aparece también en la página de Asesorías.' }),
   },

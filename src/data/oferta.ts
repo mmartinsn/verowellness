@@ -2,12 +2,13 @@ import { desdeCentavos, desglose, type Desglose } from '../lib/precio';
 import { todos, unico, uno, type Fila } from '../lib/datos/canonico';
 import { bloque } from '../lib/datos/bloques';
 import { si } from '../lib/datos/forma';
+import type { ASESORIAS } from '../modelo/secciones';
 
-export type CicloId = 'LAYER_SESSION' | 'INITIAL_LAYER_CYCLE' | 'NEXT_LAYER_CYCLE';
+export type CicloId = keyof typeof ASESORIAS;
 
 export interface Ciclo {
   id: CicloId;
-  slug: 'layer-session' | 'initial-layer-cycle' | 'next-layer-cycle';
+  slug: (typeof ASESORIAS)[CicloId];
   nombre: string;
   consultas: string;
   etiqueta: string;

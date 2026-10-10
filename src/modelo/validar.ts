@@ -15,7 +15,7 @@ type Lector = (clave: string) => readonly RegistroLibre[];
 
 const esTextoSinSalto = (v: unknown) => typeof v === 'string' && !v.includes('\n');
 
-function revisarValor(c: Campo, v: unknown): string | null {
+export function revisarValor(c: Campo, v: unknown): string | null {
   switch (c.tipo) {
     case 'texto':
       if (typeof v !== 'string') return 'debe ser texto';
@@ -24,11 +24,16 @@ function revisarValor(c: Campo, v: unknown): string | null {
       return null;
     case 'lista':
       if (!Array.isArray(v) || !v.every(esTextoSinSalto)) return 'debe ser una lista de líneas';
+      if (v.some((l) => l.trim() === '')) return 'tiene una línea vacía';
       if (c.requerido && v.length === 0) return 'necesita al menos una línea';
       return null;
     case 'parrafos':
       if (!Array.isArray(v) || !v.every((p) => typeof p === 'string' && !p.includes('\n\n')))
         return 'debe ser una lista de párrafos';
+      if (v.some((p) => p.trim() === '')) return 'tiene un párrafo vacío';
+      if (v.some((p) => p.startsWith('\n') || p.endsWith('\n')))
+        return 'un párrafo empieza o termina con un salto de línea';
+      if (c.requerido && v.length === 0) return 'necesita al menos un párrafo';
       return null;
     case 'entero':
       return Number.isInteger(v) ? null : 'debe ser un entero';

@@ -1,4 +1,5 @@
 import type { RegistroLibre } from './entidad.ts';
+import { validarSitio } from './reglas-sitio.ts';
 import type { Problema } from './validar.ts';
 
 type Lector = (clave: string) => readonly RegistroLibre[];
@@ -80,5 +81,5 @@ export function validarReglas(leer: Lector): Problema[] {
         if (!productos.has(id))
           anota('pregunta', q.id, campo, `token hacia «${id}», que no existe`);
 
-  return problemas;
+  return [...problemas, ...validarSitio(leer)];
 }
