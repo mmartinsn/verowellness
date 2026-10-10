@@ -6,6 +6,7 @@ import { leerSnapshot } from '../comun/snapshot.ts';
 import { hallazgo, medir, npm, ok, type Auditoria, type Verificacion } from './tipos.ts';
 
 const S = 'sitio';
+const RECURSO = new RegExp(`(?:src|href)="(${BASE}/_astro/[^"]+)"`, 'g');
 const DIST = path.resolve('dist');
 const PESO_MAXIMO = 2_500_000;
 const EXTERNOS_VIGILADOS =
@@ -141,7 +142,7 @@ function peso(): Verificacion {
   for (const f of paginas()) {
     const html = readFileSync(f, 'utf8');
     let total = statSync(f).size;
-    for (const [, src] of html.matchAll(/(?:src|href)="(\/verowellness\/_astro\/[^"]+)"/g)) {
+    for (const [, src] of html.matchAll(RECURSO)) {
       const d = destino(src);
       if (d && existsSync(d)) total += statSync(d).size;
     }
