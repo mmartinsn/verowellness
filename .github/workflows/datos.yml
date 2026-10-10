@@ -1,0 +1,64 @@
+name: Datos desde Webflow
+on:
+  schedule:
+    - cron: '17 11 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: datos
+  cancel-in-progress: false
+jobs:
+  bajar:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      WEBFLOW_SITE_TOKEN: ${{ secrets.WEBFLOW_SITE_TOKEN }}
+      WEBFLOW_SITE_ID: 6ac29c3b8c31cd570fd18ee3
+      RAMA: datos/webflow
+    steps:
+      - id: token
+        run: echo "hay=${{ secrets.WEBFLOW_SITE_TOKEN != '' }}" >> "$GITHUB_OUTPUT"
+      - if: steps.token.outputs.hay != 'true'
+        run: echo "::notice::Falta el secret WEBFLOW_SITE_TOKEN; no se baja nada."
+      - if: steps.token.outputs.hay == 'true'
+        uses: actions/checkout@v4
+      - if: steps.token.outputs.hay == 'true'
+        uses: actions/setup-node@v4
+        with: { node-version-file: '.nvmrc', cache: 'npm' }
+      - if: steps.token.outputs.hay == 'true'
+        run: npm ci
+      - if: steps.token.outputs.hay == 'true'
+        run: npm run vw -- bajar
+      - if: steps.token.outputs.hay == 'true'
+        run: npm run verify
+      - if: steps.token.outputs.hay == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          abierto="$(gh pr list --head "$RAMA" --state open --json number --jq length)"
+          if git diff --quiet -- src/data/canonico src/assets && [ -z "$(git ls-files --others --exclude-standard src/assets)" ]; then
+            echo "Webflow publicado = main."
+            if [ "$abierto" != "0" ]; then
+              gh pr close "$RAMA" --delete-branch --comment "Webflow volvió a coincidir con main; este PR ya no hace falta."
+            fi
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$RAMA"
+          git add src/data/canonico src/assets
+          git commit -m "Datos: lo publicado en Webflow"
+          if [ "$abierto" != "0" ] && git fetch -q origin "$RAMA" 2>/dev/null && git diff --quiet FETCH_HEAD HEAD -- src/data/canonico src/assets; then
+            echo "El PR abierto ya tiene estos datos."
+            exit 0
+          fi
+          git push --force origin "$RAMA"
+          if [ "$abierto" != "0" ]; then
+            echo "El PR abierto quedó al día."
+            exit 0
+          fi
+          gh pr create --base main --head "$RAMA" --title "Datos desde Webflow" \
+            --body "Lo publicado en Webflow que difiere de main, bajado con vw bajar y verificado con npm run verify. Al mergearlo se despliega." \
+            || { echo "::error::No se pudo abrir el PR: activa Settings → Actions → General → Allow GitHub Actions to create and approve pull requests."; exit 1; }

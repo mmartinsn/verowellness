@@ -5,19 +5,9 @@
  * truth" panel. Each ribbon's list is rendered twice (the copy `aria-hidden`) so it loops
  * seamlessly; under reduced motion only the first copy shows, wrapped.
  */
-const herramientas = [
-  'Ayuno intermitente',
-  'Péptidos',
-  'Análogos de GLP-1',
-  'Suplementos virales',
-  'Meditación',
-  'Sauna infrarrojo',
-  'Baños de hielo',
-  'Sueros de vitaminas',
-  'Pediluvio',
-  'Cámara hiperbárica',
-  'Terapias de ozono',
-];
+import { items } from '../../lib/datos/bloques';
+
+const herramientas = items('inicio', 'herramientas');
 const filas = [herramientas.slice(0, 6), herramientas.slice(6)];
 ---
 

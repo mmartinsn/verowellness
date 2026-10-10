@@ -1,0 +1,37 @@
+[
+  {
+    "id": "heces",
+    "nombre": "Heces",
+    "orden": 1
+  },
+  {
+    "id": "orina",
+    "nombre": "Orina",
+    "orden": 2
+  },
+  {
+    "id": "sangre",
+    "nombre": "Sangre",
+    "orden": 3
+  },
+  {
+    "id": "saliva",
+    "nombre": "Saliva",
+    "orden": 4
+  },
+  {
+    "id": "aliento",
+    "nombre": "Aliento",
+    "orden": 5
+  },
+  {
+    "id": "hisopo",
+    "nombre": "Hisopo",
+    "orden": 6
+  },
+  {
+    "id": "ambiente",
+    "nombre": "Ambiente",
+    "orden": 7
+  }
+]

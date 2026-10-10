@@ -7,59 +7,19 @@
  * same day): a centre line that draws itself on scroll, steps alternating left and right; on
  * phones the line runs down the left.
  */
-const temas = [
-  'Objetivos',
-  'Historia de salud y bienestar',
-  'Alimentación',
-  'Lifestyle',
-  'Síntomas y preocupaciones',
-  'Suplementación actual',
-  'Fotos iniciales',
-  'Laboratorios relevantes',
-];
+import { bloques, items } from '../../lib/datos/bloques';
 
-// The four stops of the cycle, in order.
-const pasos = [
-  {
-    snum: 'Antes de la sesión 01',
-    titulo: 'The Layer Assessment',
-    texto:
-      'Completas una evaluación estructurada para no pasar la sesión recopilando información básica. Puede incluir:',
-    chips: true,
-    tono: 'clay-deep',
-  },
-  {
-    snum: 'Sesión 01 · 90 min',
-    titulo: 'Mapear + Priorizar',
-    texto:
-      'Revisamos tu contexto a través de las cinco capas y creamos un plan de acción por fases para trabajarlas según su prioridad: ese será tu Layer Map. El objetivo no es abordar todo a la vez.<br /><br />Es determinar qué merece atención ahora y qué puede estar conectado.',
-    nota: 'Sales con tu Layer Map, tus Top 3 Priorities y tu Layer Plan.',
-    tono: 'sage-deep',
-  },
-  {
-    snum: 'Entre sesiones · 30–60 días',
-    titulo: 'Implementar + Observar',
-    texto:
-      'Pones en marcha tu Layer Plan y observas respuesta, tolerancia, cambios y obstáculos. Este período es parte del método: no es simplemente "esperar la próxima cita".',
-    nota: 'Acompañamiento por correo una vez a la semana para resolver tus dudas.',
-    tono: 'rose-deep',
-  },
-  {
-    snum: 'Sesión 02 · 90 min',
-    titulo: 'Revisar + Ajustar',
-    cita: 'Ahora tenemos algo que la primera sesión no tenía: respuesta.',
-    texto:
-      'Revisamos qué cambió, qué fue difícil y si las prioridades se movieron. Sales con <strong>The Layer Review</strong> — tu Layer Plan ajustado con base en tu respuesta real.',
-    tono: 'olive',
-  },
-  {
-    snum: 'Tu siguiente ciclo',
-    titulo: 'Next Layer Cycle',
-    texto:
-      'Agenda tu próximo paquete de asesorías para continuar trabajando las capas del plan establecido en tu Layer Map.',
-    tono: 'clay',
-  },
-];
+const temas = items('asesorias', 'proceso-temas');
+
+const pasos = bloques('asesorias', 'proceso-pasos').map((b) => ({
+  snum: b.etiqueta as string,
+  titulo: b.titulo as string,
+  texto: b.texto as string,
+  chips: b.marcado,
+  nota: b.nota,
+  cita: b.cita,
+  tono: b.tono as string,
+}));
 ---
 
 <section id="proceso">

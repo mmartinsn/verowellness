@@ -1,0 +1,121 @@
+[
+  {
+    "id": "megamucosa",
+    "nombre": "MegaMucosa",
+    "marca": "Microbiome Labs",
+    "layer": "03",
+    "orden": 1
+  },
+  {
+    "id": "nad-activate",
+    "nombre": "NAD+ Activate",
+    "marca": "DaVinci Labs",
+    "layer": "04",
+    "orden": 1
+  },
+  {
+    "id": "vitamin-c-with-flavonoids",
+    "nombre": "Vitamin C with Flavonoids",
+    "marca": "Thorne",
+    "layer": "01",
+    "orden": 1
+  },
+  {
+    "id": "xymozyme",
+    "nombre": "XymoZyme",
+    "marca": "XYMOGEN",
+    "layer": "02",
+    "orden": 1
+  },
+  {
+    "id": "berbemycin",
+    "nombre": "Berbemycin",
+    "marca": "XYMOGEN",
+    "layer": "03",
+    "orden": 2
+  },
+  {
+    "id": "gastracid",
+    "nombre": "GastrAcid",
+    "marca": "XYMOGEN",
+    "layer": "02",
+    "orden": 2
+  },
+  {
+    "id": "k2-d3-5000",
+    "nombre": "K2-D3 5000",
+    "marca": "XYMOGEN",
+    "layer": "01",
+    "orden": 2
+  },
+  {
+    "id": "phyto-benefits",
+    "nombre": "Phyto Benefits",
+    "marca": "DaVinci Labs",
+    "layer": "04",
+    "orden": 2
+  },
+  {
+    "id": "berberine-with-micropqq",
+    "nombre": "Berberine with MicroPQQ",
+    "marca": "Dr. Mercola",
+    "layer": "04",
+    "orden": 3
+  },
+  {
+    "id": "g-i-detox",
+    "nombre": "G.I. Detox +",
+    "marca": "Biocidin Botanicals",
+    "layer": "03",
+    "orden": 3
+  },
+  {
+    "id": "motilpro",
+    "nombre": "MotilPro",
+    "marca": "Pure Encapsulations",
+    "layer": "02",
+    "orden": 3
+  },
+  {
+    "id": "candidastat",
+    "nombre": "Candidastat",
+    "marca": "Vitanica",
+    "layer": "03",
+    "orden": 4
+  },
+  {
+    "id": "l-carnitine",
+    "nombre": "L-Carnitine",
+    "marca": "Pure Encapsulations",
+    "layer": "04",
+    "orden": 4
+  },
+  {
+    "id": "liver-protect",
+    "nombre": "Liver Protect",
+    "marca": "XYMOGEN",
+    "layer": "02",
+    "orden": 4
+  },
+  {
+    "id": "serrapeptase",
+    "nombre": "Serrapeptase",
+    "marca": "Protocol for Life Balance",
+    "layer": "03",
+    "orden": 5
+  },
+  {
+    "id": "medcaps-is",
+    "nombre": "MedCaps IS",
+    "marca": "XYMOGEN",
+    "layer": "03",
+    "orden": 6
+  },
+  {
+    "id": "berberine-es-5",
+    "nombre": "Berberine ES-5",
+    "marca": "XYMOGEN",
+    "layer": "03",
+    "orden": 7
+  }
+]

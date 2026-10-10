@@ -12,6 +12,7 @@
  *         npm run empaquetar -- --salida ruta.html
  */
 import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
+import { BASE as BASE_SITIO } from '../src/lib/despliegue.ts';
 import path from 'node:path';
 
 const DIST = path.resolve('dist');
@@ -22,16 +23,15 @@ const SALIDA = path.resolve(
   salidaArg >= 0 ? args[salidaArg + 1] : `entregas/${hoy}_Veronica_Wellness_prototipo.html`
 );
 
-// The base path comes from astro.config.mjs so the two never drift.
-const config = await readFile('astro.config.mjs', 'utf8');
-const BASE = (config.match(/base:\s*'([^']*)'/)?.[1] ?? '').replace(/\/$/, '');
+const BASE = BASE_SITIO.replace(/\/$/, '');
+const SOBRANTE = new RegExp(`(?:href|src)="(${BASE}/(?!/)[^"]*)"`, 'g');
 
 // Google Fonts replaces the self-hosted @fontsource faces inside the bundle.
 const FUENTES = {
   editorial:
-    'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400..800&display=swap',
+    'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400..800&display=swap',
   stitch:
-    'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400..800&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Plus+Jakarta+Sans:wght@300..800&display=swap',
+    'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400..800&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Plus+Jakarta+Sans:wght@300..800&display=swap',
 };
 const FAMILIAS = [
   ['Nunito Variable', 'Nunito'],
@@ -90,10 +90,19 @@ async function empaquetarPagina(html) {
     let css = await readFile(path.join(DIST, m[1].replace(BASE, '')), 'utf8');
     css = css.replace(/@font-face\s*{[^}]*}/g, '');
     for (const [de, a] of FAMILIAS) css = css.replaceAll(de, a);
-    const restos = css.match(/url\((?!["']?data:)[^)]*\)/g);
+    const restos = css.match(/url\((?!["']?(?:data:|#|%23))[^)]*\)/g);
     if (restos) throw new Error(`CSS still references files: ${restos.slice(0, 3).join(', ')}`);
-    html = html.replace(m[0], `<style>${css}</style>`);
+    html = html.replace(m[0], () => `<style>${css}</style>`);
   }
+  html = html.replace(/<style>([\s\S]*?)<\/style>/g, (_todo, css) => {
+    let limpio = css.replace(/@font-face\s*{[^}]*}/g, '');
+    for (const [de, a] of FAMILIAS) limpio = limpio.replaceAll(de, a);
+    return `<style>${limpio}</style>`;
+  });
+  html = html.replace(/<meta http-equiv="refresh" content="0;url=([^"]+)">/g, (_todo, destino) => {
+    const { ruta, ancla } = rutaDesdeHref(destino);
+    return `<script>parent.postMessage({tipo:'ir',ruta:${JSON.stringify(ruta)},ancla:${JSON.stringify(ancla)}},'*');</script>`;
+  });
   html = html.replace(
     '<meta charset="utf-8">',
     `<meta charset="utf-8"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="${FUENTES[tema]}">`
@@ -102,7 +111,7 @@ async function empaquetarPagina(html) {
   // 3. External module scripts → inline. Inline modules must not import anything.
   for (const m of [...html.matchAll(/<script type="module" src="([^"]+)"><\/script>/g)]) {
     const js = await readFile(path.join(DIST, m[1].replace(BASE, '')), 'utf8');
-    html = html.replace(m[0], `<script type="module">${js}</script>`);
+    html = html.replace(m[0], () => `<script type="module">${js}</script>`);
   }
   for (const m of html.matchAll(/<script type="module">([\s\S]*?)<\/script>/g)) {
     if (/\bimport\s*[({"']|\bfrom\s*["']/.test(m[1]))
@@ -125,7 +134,7 @@ async function empaquetarPagina(html) {
     if (src && src.startsWith(BASE + '/')) {
       tag = tag.replace(/\ssrc="[^"]+"/, ` src="${await dataUri(src)}"`);
     }
-    html = html.replace(m[0], tag);
+    html = html.replace(m[0], () => tag);
   }
   for (const m of [...html.matchAll(/<link rel="icon" href="([^"]+)"[^>]*>/g)]) {
     const limpio = m[1].replace(/\/$/, '');
@@ -151,7 +160,7 @@ async function empaquetarPagina(html) {
     `<script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[data-ir]');if(!a)return;e.preventDefault();parent.postMessage({tipo:'ir',ruta:a.getAttribute('data-ir'),ancla:a.getAttribute('data-ancla')||''},'*');},true);</script></body>`
   );
 
-  const sobrante = html.match(/(?:href|src)="(\/verowellness[^"]*)"/g);
+  const sobrante = html.match(SOBRANTE);
   if (sobrante)
     throw new Error(`Paths left unpacked: ${[...new Set(sobrante)].slice(0, 5).join(', ')}`);
   return { html, titulo };

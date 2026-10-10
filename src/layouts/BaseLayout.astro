@@ -15,6 +15,7 @@ import '@fontsource/cormorant-garamond/500-italic.css';
 import '@fontsource-variable/nunito';
 import '../styles/global.css';
 import { asset } from '../lib/url';
+import { scriptJsonLd } from '../lib/json-ld';
 import { prototipo, imagenSocial, marca } from '../data/site';
 
 interface Props {
@@ -65,14 +66,7 @@ const robots = noindex || prototipo;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content={imagenSocial.alt} />
-    {
-      jsonLd && (
-        <script
-          type="application/ld+json"
-          set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': jsonLd })}
-        />
-      )
-    }
+    {jsonLd && <script type="application/ld+json" set:html={scriptJsonLd(jsonLd)} />}
     <script is:inline>
       // `.no-js` keeps reveal animations disabled when scripts do not run; drop it as early as
       // possible so the first paint already knows JS is available.

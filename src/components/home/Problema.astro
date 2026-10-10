@@ -3,13 +3,9 @@
  * 02 · El problema — the heading on the left; on the right the five "fragment" claims the
  * reader keeps hearing, and the payoff card: many tools, little strategy.
  */
-const fragmentos = [
-  '"Toma esto para el estrés/ansiedad."',
-  '"Toma esto para reducir el apetito."',
-  '"Toma esto para los dolores."',
-  '"Toma esto para dormir."',
-  '"Toma esto para tu digestión."',
-];
+import { items } from '../../lib/datos/bloques';
+
+const fragmentos = items('inicio', 'problema');
 ---
 
 <section class="problema" id="problema">
