@@ -30,4 +30,20 @@ export const comandos: Entrada[] = [
     descripcion: 'Compara dist/ con la línea base del front (--base <dir>, --dist <dir>)',
     cargar: () => import('./paridad.ts'),
   },
+  {
+    nombre: 'esquema',
+    descripcion: 'Compara el modelo con las colecciones de Webflow; --aplicar crea lo que falta',
+    cargar: () => import('./esquema.ts'),
+  },
+  {
+    nombre: 'sembrar',
+    descripcion:
+      'Lleva el snapshot canónico a Webflow (productos y CMS); --aplicar escribe y publica',
+    cargar: () => import('./sembrar.ts'),
+  },
+  {
+    nombre: 'bajar',
+    descripcion: 'Trae lo publicado en Webflow al snapshot canónico; --comprobar solo compara',
+    cargar: () => import('./bajar.ts'),
+  },
 ];
