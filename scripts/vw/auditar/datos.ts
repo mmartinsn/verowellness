@@ -6,10 +6,10 @@ import { comparar } from '../comun/comparar.ts';
 import { problemasDe } from '../comun/problemas.ts';
 import { leerSnapshot } from '../comun/snapshot.ts';
 import { bajar } from '../webflow/bajar.ts';
-import { leerSitio } from '../webflow/conexion.ts';
+import { leerSitio, type Sitio } from '../webflow/conexion.ts';
 import { planEsquema } from '../webflow/esquema.ts';
 import { sembrar } from '../webflow/sembrar.ts';
-import { hallazgo, medir, ok, type Auditoria } from './tipos.ts';
+import { error, hallazgo, medir, ok, type Auditoria } from './tipos.ts';
 
 const D = 'datos';
 
@@ -51,7 +51,12 @@ export const auditarDatos: Auditoria = async ({ conWebflow }) => {
   );
   if (!conWebflow) return resultados;
 
-  const sitio = await leerSitio();
+  let sitio: Sitio;
+  try {
+    sitio = await leerSitio();
+  } catch (causa) {
+    return [...resultados, error(D, 'conexión con Webflow', causa)];
+  }
   resultados.push(
     ...(await medir(D, 'esquema Webflow = modelo', async () => {
       const categorias = await sitio.api.items(sitio.categorias.id);

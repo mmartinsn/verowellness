@@ -32,6 +32,10 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
   - Testimonios: motivos, destacado, texto. Preguntas frecuentes: pregunta, respuesta.
   - Layers: pregunta, observa texto, observa, cita.
   - Textos de sección: texto, ítems, nota, cita.
+- [ ] **Token de solo lectura para el workflow `Datos desde Webflow`**: Site settings → Apps &
+      Integrations → API access → Generate API token, con CMS, Ecommerce y Sites en «Read-only».
+      Va como secret `WEBFLOW_SITE_TOKEN` del repo (lo pone Mari). El token de escritura no sale
+      de la máquina de quien siembra.
 - [ ] **Pasarela** (Verónica): Settings → Ecommerce → Payments → conectar Stripe (empresa de
       EE. UU.) y PayPal. Sin esto el checkout no cobra.
 - [ ] **Impuesto** (Verónica): Settings → Ecommerce → Taxes → cálculo automático en EE. UU. Las

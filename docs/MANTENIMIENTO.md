@@ -11,7 +11,10 @@ para que una persona (o un agente) investigue lo que encuentre.
 - Escribe `cerebro/MANTENIMIENTO.md` (tabla por dimensión) y `cerebro/mantenimiento.json`, fuera
   del repo.
 - `--solo datos,comercio` limita las dimensiones; `--sin-webflow` no llama a Webflow;
-  `--sin-build` usa el `dist/` que haya.
+  `--sin-build` usa el `dist/` que haya. Las tres son corridas parciales: imprimen lo que miden
+  pero no reescriben el reporte, porque las sondas del cerebro leen el reporte completo.
+- Sin `WEBFLOW_SITE_TOKEN` (y sin `--sin-webflow`) la conexión con Webflow cuenta como error de
+  medición: salida 2, nunca un «en orden» que no miró Webflow.
 
 ## Qué mide
 

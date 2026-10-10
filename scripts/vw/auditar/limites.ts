@@ -37,9 +37,9 @@ function contra(nombre: string, usado: number, tope: number, unidad: string): Ve
 
 export const auditarLimites: Auditoria = async ({ conWebflow }) => {
   if (!conWebflow) return [];
-  const sitio = await leerSitio();
-  const { api } = sitio;
   return medir(L, 'uso del plan', async () => {
+    const sitio = await leerSitio();
+    const { api } = sitio;
     const productos = await api.productos();
     const categorias = await api.items(sitio.categorias.id);
     const itemsComercio = productos.reduce((n, p) => n + 1 + p.skus.length, 0) + categorias.length;
