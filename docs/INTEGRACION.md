@@ -88,19 +88,18 @@ mismas dos direcciones que `scripts/vw/webflow/` (sembrar y bajar) y el puerto d
 
 ## El ejecutable: `npm run vw -- <comando>`
 
-| Comando                                            | Qué hace                                                                       | Escribe                  |
-| -------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------ |
-| `validar`                                          | Valida el snapshot contra el esquema y las reglas                              | nada                     |
-| `migrar --desde <ref>`                             | Arma el snapshot desde los `src/data/*.ts` de un commit (la migración inicial) | el snapshot              |
-| `ida-vuelta --base <ref>`                          | Compara cada export de `src/data` con el de un commit base                     | nada                     |
-| `paridad`                                          | Compara `dist/` con la línea base del front                                    | nada                     |
-| `esquema [--aplicar]`                              | Compara el modelo con las colecciones de Webflow; crea lo que falta            | Webflow, con `--aplicar` |
-| `sembrar [--aplicar]`                              | Lleva el snapshot a Webflow y publica                                          | Webflow, con `--aplicar` |
-| `bajar [--comprobar]`                              | Trae lo publicado al snapshot; `--comprobar` solo compara                      | el snapshot              |
-| `puente [--aplicar]`                               | Genera `webflow/pedido.html` y lo publica en la página «Pedido»                | Webflow, con `--aplicar` |
-| `probar-puente [--rondas N]`                       | Pedidos de prueba contra el checkout real (nunca compra)                       | un carrito de prueba     |
-| `exportar docs\|csv [--con-datos]`                 | `docs/MODELO.md`, `docs/modelo.sql`, datos en SQL o CSV                        | docs/ y exportacion/     |
-| `auditar [--solo …] [--sin-webflow] [--sin-build]` | La auditoría de mantenimiento (ver `MANTENIMIENTO.md`)                         | el reporte               |
+| Comando                                            | Qué hace                                                            | Escribe                  |
+| -------------------------------------------------- | ------------------------------------------------------------------- | ------------------------ |
+| `validar`                                          | Valida el snapshot contra el esquema y las reglas                   | nada                     |
+| `ida-vuelta --base <ref>`                          | Compara cada export de `src/data` con el de un commit base          | nada                     |
+| `paridad`                                          | Compara `dist/` con la línea base del front                         | nada                     |
+| `esquema [--aplicar]`                              | Compara el modelo con las colecciones de Webflow; crea lo que falta | Webflow, con `--aplicar` |
+| `sembrar [--aplicar]`                              | Lleva el snapshot a Webflow y publica                               | Webflow, con `--aplicar` |
+| `bajar [--comprobar]`                              | Trae lo publicado al snapshot; `--comprobar` solo compara           | el snapshot              |
+| `puente [--aplicar]`                               | Genera `webflow/pedido.html` y lo publica en la página «Pedido»     | Webflow, con `--aplicar` |
+| `probar-puente [--rondas N]`                       | Pedidos de prueba contra el checkout real (nunca compra)            | un carrito de prueba     |
+| `exportar docs\|csv [--con-datos]`                 | `docs/MODELO.md`, `docs/modelo.sql`, datos en SQL o CSV             | docs/ y exportacion/     |
+| `auditar [--solo …] [--sin-webflow] [--sin-build]` | La auditoría de mantenimiento (ver `MANTENIMIENTO.md`)              | el reporte               |
 
 Todo lo que escribe en Webflow funciona en seco por defecto, imprime su plan y necesita
 `--aplicar`; una segunda corrida tiene que dar cero cambios.

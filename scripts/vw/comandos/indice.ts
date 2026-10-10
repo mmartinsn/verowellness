@@ -10,11 +10,6 @@ interface Entrada {
 
 export const comandos: Entrada[] = [
   {
-    nombre: 'migrar',
-    descripcion: 'Arma el snapshot canónico desde los src/data/*.ts de un commit (--desde <ref>)',
-    cargar: () => import('./migrar.ts'),
-  },
-  {
     nombre: 'validar',
     descripcion: 'Valida el snapshot canónico contra el esquema y las reglas de negocio',
     cargar: () => import('./validar.ts'),
