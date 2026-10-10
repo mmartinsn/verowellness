@@ -14,8 +14,10 @@ export interface Fechas {
 
 export type Paso = 'seco' | 'nada' | 'negar' | 'aplicar';
 
-const despues = (a: string | null | undefined, b: string | null | undefined) =>
-  !!a && (!b || Date.parse(a) > Date.parse(b));
+const MARGEN_PUBLICACION_MS = 60_000;
+
+const despues = (a: string | null | undefined, b: string | null | undefined, margen = 0) =>
+  !!a && (!b || Date.parse(a) > Date.parse(b) + margen);
 
 const fueraDeLinea = (i: ItemWf) => i.isDraft || i.isArchived;
 
@@ -35,7 +37,7 @@ export function itemsSinPublicar(coleccion: string, vivos: ItemWf[], borradores:
 }
 
 export function sitioSinPublicar(sitio: Fechas): string[] {
-  return despues(sitio.lastUpdated, sitio.lastPublished)
+  return despues(sitio.lastUpdated, sitio.lastPublished, MARGEN_PUBLICACION_MS)
     ? [`sitio: cambios del ${sitio.lastUpdated} sin publicar (Designer, páginas o ajustes)`]
     : [];
 }

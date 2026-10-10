@@ -62,3 +62,20 @@ test('pendientesDePublicar junta el sitio, los productos, los SKU y el CMS', asy
   assert.match(pendientes[0], /^sitio: /);
   assert.deepEqual(pendientes.slice(1), ['layers/a', 'sku/sku-x']);
 });
+
+test('publicar mueve la fecha del sitio unos segundos después: no cuenta como cambio', () => {
+  assert.deepEqual(
+    sitioSinPublicar({
+      lastPublished: '2026-10-10T18:22:34.440Z',
+      lastUpdated: '2026-10-10T18:22:41.545Z',
+    }),
+    []
+  );
+  assert.equal(
+    sitioSinPublicar({
+      lastPublished: '2026-10-10T18:22:34.440Z',
+      lastUpdated: '2026-10-10T18:25:00.000Z',
+    }).length,
+    1
+  );
+});
