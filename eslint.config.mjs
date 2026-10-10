@@ -17,7 +17,7 @@ export default [
     rules: { 'no-undef': 'off' },
   },
   {
-    files: ['scripts/**/*.mjs'],
+    files: ['scripts/**/*.mjs', 'scripts/**/*.ts'],
     languageOptions: {
       // Node globals, plus the browser ones used inside puppeteer's page.evaluate callbacks.
       globals: {

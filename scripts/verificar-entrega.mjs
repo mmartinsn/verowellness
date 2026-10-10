@@ -6,7 +6,7 @@
  *
  * Usage: npm run verificar:entrega        (or the whole chain: npm run entrega)
  */
-import { readdirSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { existsSync } from 'node:fs';
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
@@ -41,6 +41,7 @@ const page = await browser.newPage();
 const logs = [];
 page.on('console', (m) => logs.push(`[${m.type()}] ${m.text()}`));
 page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message}`));
+page.on('requestfailed', (r) => logs.push(`[error] no cargó ${r.url().slice(0, 160)}`));
 await page.setViewport({ width: 1440, height: 900 });
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -63,10 +64,10 @@ const esperar = (ok, msg) => {
 console.log(`archivo: ${archivo}`);
 await page.goto(url, { waitUntil: 'load' });
 await marcoListo();
-esperar(
-  /LAYER METHOD/.test(await page.title()),
-  `abre en el inicio (título: ${await page.title()})`
-);
+const tituloInicio = readFileSync(path.join('dist', 'index.html'), 'utf8')
+  .match(/<title>([^<]*)<\/title>/)?.[1]
+  .replaceAll('&amp;', '&');
+esperar((await page.title()) === tituloInicio, `abre en el inicio (título: ${await page.title()})`);
 await foto('01-inicio');
 
 // A header link inside the frame must route the shell to #el-metodo.
@@ -77,12 +78,21 @@ esperar(true, 'clic en «The Method» dentro del marco → #el-metodo');
 await foto('02-el-metodo');
 
 // Nested route + anchor.
-await page.goto(url + '#1-1~cta', { waitUntil: 'load' });
+await page.goto(url + '#asesorias~cta', { waitUntil: 'load' });
 await marcoListo();
 await sleep(900);
-const scrollY = await page.evaluate(() => document.getElementById('marco').contentWindow.scrollY);
-esperar(scrollY > 1000, `#1-1~cta desplaza al ancla (scrollY ${Math.round(scrollY)})`);
-await foto('03-1-1-cta');
+const scrollY = await marco().evaluate(() => window.scrollY);
+esperar(scrollY > 1000, `#asesorias~cta desplaza al ancla (scrollY ${Math.round(scrollY)})`);
+await foto('03-asesorias-cta');
+
+await page.goto(url + '#1-1', { waitUntil: 'load' });
+await page
+  .waitForFunction(() => location.hash === '#asesorias', { timeout: 10000 })
+  .catch(() => {});
+esperar(
+  await page.evaluate(() => location.hash === '#asesorias'),
+  '#1-1 redirige a #asesorias dentro del archivo'
+);
 
 // The checkout keeps its behaviour inside the bundle.
 await page.goto(url + '#checkout/initial-layer-cycle', { waitUntil: 'load' });

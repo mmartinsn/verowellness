@@ -1,0 +1,99 @@
+[
+  {
+    "id": "hackear-tu-cerebro",
+    "nombre": "Cómo hackear tu cerebro para dejar el azúcar y las harinas en 14 días",
+    "producto": "hackear-tu-cerebro",
+    "num": "01",
+    "paginas": 34,
+    "tituloPortada": "Cómo hackear tu cerebro para dejar el azúcar y las harinas en 14 días",
+    "portada": "tienda/portada-hackear.jpg",
+    "masVendido": false,
+    "subtitulo": "Una ruta de 14 días para observar qué dispara tus antojos, organizar tus comidas y responder de otra manera.",
+    "gancho": "¿Empiezas el día decidida a comer mejor y terminas la tarde buscando algo dulce que te calme?",
+    "paraTi": [],
+    "incluye": [
+      "Dos fases: cambios alimentarios y reintroducción de frutas y tubérculos.",
+      "La fórmula del plato S.O.S. y un ejemplo de menú.",
+      "La regla de los 15 minutos y el escáner H.A.L.T."
+    ],
+    "cita": "No hace falta esperar a otro lunes.",
+    "formato": "PDF · 34 páginas",
+    "nota": "Los 14 días describen la estructura de la propuesta, no un plazo garantizado de resultados. Los cambios de alimentación requieren valorar tu caso.",
+    "boton": "Comprar ebook",
+    "tono": "clay",
+    "orden": 1
+  },
+  {
+    "id": "recetario-30-desayunos",
+    "nombre": "30 desayunos antiinflamatorios express",
+    "producto": "recetario-30-desayunos",
+    "oferta": "recetario-30-desayunos-oferta",
+    "num": "02",
+    "paginas": 47,
+    "tituloPortada": "30 Desayunos Antiinflamatorios Express",
+    "portada": "tienda/portada-recetario.jpg",
+    "masVendido": true,
+    "subtitulo": "30 recetas dulces y saladas, con entre 26 y 35 g de proteína por porción.",
+    "gancho": "Quieres empezar tu día con un mejor desayuno, pero ya te aburriste de los huevos de siempre.",
+    "paraTi": [],
+    "incluye": [
+      "Sin trigo, maíz, arroz, soya, lácteos de vaca ni azúcar refinada.",
+      "16 recetas listas en 15 minutos o menos.",
+      "Macronutrientes por porción y tips de meal prep."
+    ],
+    "cita": "Mañana vas a desayunar otra vez. Ten lista una opción que te provoque y encaje con tu forma de comer.",
+    "formato": "PDF · 47 páginas · Edición 2026",
+    "boton": "Comprar recetario",
+    "tono": "sage",
+    "orden": 2
+  },
+  {
+    "id": "guia-glp1-retatrutida",
+    "nombre": "Todas se están inyectando: guía de GLP-1 y RETA",
+    "producto": "guia-glp1-retatrutida",
+    "num": "03",
+    "paginas": 21,
+    "tituloPortada": "Todas a tu alrededor ya se están inyectando. Tú decide hacerlo bien.",
+    "portada": "tienda/portada-glp1.jpg",
+    "masVendido": false,
+    "subtitulo": "Las preguntas que conviene hacer y las bases de alimentación y hábitos que acompañan el proceso.",
+    "gancho": "Antes de tu próxima decisión sobre las inyecciones, entiende qué necesitas cuidar además del peso.",
+    "paraTi": [],
+    "incluye": [
+      "Diferencias entre semaglutida, tirzepatida y retatrutida.",
+      "Cálculos orientativos de proteína, fibra y calorías.",
+      "Efectos adversos, con señales para consultar."
+    ],
+    "cita": "Si ya estás en este camino, cada día es una oportunidad para construir hábitos que te acompañen a largo plazo. Una guía educativa para llegar mejor informada a tus decisiones y consultas.",
+    "formato": "PDF · 21 páginas",
+    "nota": "Contenido educativo para conversar con tu médico. No recomienda iniciar fármacos ni sustituye la valoración médica para decidir sobre un tratamiento.",
+    "boton": "Comprar guía educativa",
+    "tono": "rose",
+    "orden": 3
+  },
+  {
+    "id": "guia-hormonas-30",
+    "nombre": "Vuelve a sentirte tú",
+    "producto": "guia-hormonas-30",
+    "oferta": "guia-hormonas-30-oferta",
+    "num": "04",
+    "paginas": 20,
+    "tituloPortada": "Vuelve a sentirte tú",
+    "portada": "tienda/portada-hormonas.jpg",
+    "masVendido": true,
+    "subtitulo": "Entre los 30 y los 40 muchas mujeres notan cambios: menos energía, un ciclo distinto, peor descanso o más antojos.",
+    "gancho": "Entiende tus hormonas a partir de los 30 y empieza por lo que sí puedes cambiar.",
+    "paraTi": [],
+    "incluye": [
+      "Tu ciclo, tus hormonas sexuales, tiroides, cortisol e insulina.",
+      "Tu plato hormonal y cómo ajustar hábitos a cada fase.",
+      "Un plan de 30 días y workbooks para registrar tu ciclo."
+    ],
+    "cita": "Tus hormonas son una capa, no toda la historia.",
+    "formato": "PDF · 20 páginas · Libro y workbook",
+    "nota": "Contenido educativo. No sustituye una evaluación médica ni sirve para diagnosticar o tratar enfermedades. Esta guía incluye enlaces comerciales a productos que uso y recomiendo; cualquier compra es opcional y separada del precio de la guía.",
+    "boton": "Comprar guía",
+    "tono": "clay",
+    "orden": 4
+  }
+]

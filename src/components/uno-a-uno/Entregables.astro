@@ -7,19 +7,10 @@
  */
 import { Image } from 'astro:assets';
 import retrato from '../../assets/fotos/veronica-bata-laptop.jpg';
-const tiers = ['Alta prioridad', 'Prioridad secundaria', 'Mantenimiento'];
-const planTags = [
-  'Nutrición',
-  'Hábitos',
-  'Estilo de vida',
-  'Suplementación',
-  'Educación',
-  'Laboratorios',
-];
-const planExtra = [
-  '+1 guía adicional según el caso',
-  'Estrategias nuevas y vanguardistas para optimizar tu salud',
-];
+import { items } from '../../lib/datos/bloques';
+const tiers = items('asesorias', 'entregables-niveles');
+const planTags = items('asesorias', 'entregables-plan');
+const planExtra = items('asesorias', 'entregables-extra');
 ---
 
 <section>

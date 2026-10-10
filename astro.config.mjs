@@ -1,12 +1,13 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
+import { BASE, SITIO } from './src/lib/despliegue.ts';
 
 // Preview host: GitHub Pages as a *project site* → the site lives under `/verowellness/`.
 // Every internal link goes through `href()` in `src/lib/url.ts`, which reads `BASE_URL`, so
 // moving to a custom domain later is: set `site`, delete `base`, done.
 export default defineConfig({
-  site: 'https://mmartinsn.github.io',
-  base: '/verowellness',
+  site: SITIO,
+  base: BASE,
   trailingSlash: 'always',
   output: 'static',
   // Astro 7 defaults compressHTML to 'jsx', which glues adjacent inline elements together.

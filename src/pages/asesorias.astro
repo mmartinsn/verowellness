@@ -14,6 +14,7 @@ import Precios from '../components/uno-a-uno/Precios.astro';
 import Testimonios from '../components/Testimonios.astro';
 import CtaFinal from '../components/uno-a-uno/CtaFinal.astro';
 import { marca } from '../data/site';
+import { testimoniosAsesorias } from '../data/testimonios';
 import { grafoSitio, grafoServicio } from '../lib/schema';
 ---
 
@@ -31,7 +32,7 @@ import { grafoSitio, grafoServicio } from '../lib/schema';
   <Testimonios
     eyebrow="Testimonios"
     titulo="Quienes ya empezaron, en sus palabras."
-    ids={['lorena-gonzalez', 'liza-koutcharyan', 'fabiana-de-luca']}
+    ids={testimoniosAsesorias}
   />
   <Precios />
   <CtaFinal />

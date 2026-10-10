@@ -1,153 +1,32 @@
-/**
- * Patients' testimonials, in their own words (sent by Mari, 2026-10-03, with each patient's
- * permission as she confirms). Text verbatim; only the `destacado` line is chosen by Claude from
- * the text itself, and the `motivo` tags summarise what the patient says she came for.
- */
 import type { ImageMetadata } from 'astro';
-import fotoMargarita from '../assets/testimonios/margarita-medel.jpg';
-import fotoLiza from '../assets/testimonios/liza-koutcharyan.jpg';
-import fotoYisandra from '../assets/testimonios/yisandra-sori.jpg';
-import fotoFabiana from '../assets/testimonios/fabiana-de-luca.jpg';
-import fotoPatricia from '../assets/testimonios/patricia-medel.jpg';
-import fotoMariexis from '../assets/testimonios/mariexis-palacios.jpg';
+import { todos } from '../lib/datos/canonico';
+import { imagen } from '../lib/datos/imagenes';
+import { si } from '../lib/datos/forma';
 
 export interface Testimonio {
   id: string;
   nombre: string;
-  /** Country, when the patient gave it. */
   lugar?: string;
   foto?: ImageMetadata;
   motivo: string[];
-  /** A sentence from the testimonial, set large. */
   destacado: string;
-  /** The full testimonial, one string per paragraph. */
   texto: string[];
-  /** Order on the page: most powerful first (Mari: «prioriza los más potentes»). Lower = first. */
   prioridad: number;
 }
 
-export const testimonios: Testimonio[] = [
-  {
-    id: 'mouna-harbie',
-    nombre: 'Mouna Harbie',
-    lugar: 'Venezuela',
-    motivo: ['Digestión', 'Infecciones', 'Piel'],
-    destacado:
-      'Se eliminó por completo la dermatitis/eczema que tenía constantemente en las manos.',
-    texto: [
-      'Hace unos meses decidí iniciar este camino con Vero, y sin duda alguna ha sido una excelente decisión. A pesar de no ser un camino fácil, ella te hace sentir que lo puedes lograr, te habla con claridad, pero siempre con cariño, me encanta su manera de abordar las cosas, sientes que estás trabajando tu salud con una amiga que te entiende completamente y te ayuda a sanar con sus métodos totalmente personalizados.',
-      'Mi historia es larga, pero básicamente por un exceso de antibióticos, estrés y muchas otras cosas, estaba pasándola mal en líneas generales (digestión, infecciones, alergias en la piel, etc). Uno de los cambios que más me ha impactado es el de mis manos. Después de desparasitarme correctamente y sanar el intestino, se eliminó por completo la dermatitis/eczema que tenía constantemente en las manos, y puede sonar algo sencillo, pero era doloroso, no podía hacer cosas básicas del hogar sin tener dolor y sangrado por la irritación de mis manos. Hoy en día las veo y no me lo creo.',
-      'Agradezco tener a Vero como guía, ha sido clave en este camino. La recomiendo totalmente para quien realmente quiere sanar de raíz.',
-      'Gracias Vero, eres lo máximo 🫶🏼',
-    ],
-    prioridad: 4,
-  },
-  {
-    id: 'margarita-medel',
-    nombre: 'Margarita Medel',
-    lugar: 'USA',
-    foto: fotoMargarita,
-    motivo: ['Peso', 'Hábitos'],
-    destacado:
-      'Alimentarse bien no se trata de seguir una dieta temporal, sino de crear hábitos que realmente pueda mantener.',
-    texto: [
-      'Hace tres años comencé a trabajar con Veronica en mejorar mi alimentación y salud, y desde entonces he experimentado cambios que van más allá de la pérdida de peso. Este plan de alimentación diseñado específicamente para mis necesidades, me ha ayudado a perder y mantener mi peso de una manera sostenible, pero sobre todo, a sentirme mejor y prestar mucha más atención a lo que mi cuerpo necesita.',
-      'Estoy muy agradecida con Vero por su acompañamiento profesional, conocimiento y por la manera cálida y personalizada en la que ha guiado mi proceso. Estos tres años me han enseñado que alimentarse bien no se trata de seguir una dieta temporal, sino de crear hábitos que realmente pueda mantener y que contribuyan a sentirme bien a largo plazo. Sin duda, ha sido una parte muy importante de mi camino hacia una vida más saludable y espero continuar aprendiendo de su experiencia!! 🩷🙏',
-    ],
-    prioridad: 8,
-  },
-  {
-    id: 'lorena-gonzalez',
-    nombre: 'Lorena González',
-    lugar: 'USA',
-    motivo: ['Embarazo', 'Eczema en su bebé'],
-    destacado: 'Hoy mi niña tiene meses sin tener brotes.',
-    texto: [
-      'Soy paciente de Verónica desde el 2022. Quedé embarazada y ella me ayudó a llevar un embarazo sano para que tanto mi bebé como yo estuviéramos bien. Luego del embarazo hemos seguido trabajando juntas, siempre me he sentido apoyada y escuchada. En ella siempre he visto una persona real: más allá de enseñarme a mejorar cada etapa en la que he estado, he visto una persona que ha pasado por lo mismo y perfectamente se pone en mi puesto.',
-      'He confiado tanto en ella y en sus conocimientos que cuando me dijeron que mi niña tenía eczema no dudé en tener una cita con ella y no me equivoqué: siguiendo todas sus recomendaciones, tanto en alimentación como en tratamientos, hoy mi niña tiene meses sin tener brotes.',
-    ],
-    prioridad: 1,
-  },
-  {
-    id: 'sofia-molina',
-    nombre: 'Sofía Molina',
-    lugar: 'USA',
-    motivo: ['Cándida'],
-    destacado: 'Fuiste mi oración contestada.',
-    texto: [
-      'Hola Vero, quisiera dejar mi testimonio sin duda. Fuiste mi oración contestada. Mi intención inicial fue tratar el cándida albicans que estuve tratándolo por casi 3 años con medicina alternativa, tratamientos y muchas consultas que no tenían ningún resultado.',
-      'Iniciamos el tratamiento y empezaron a verse los resultados de inmediato con mi cándida, gracias a la ayuda y a los tratamientos con intención y ajustándolo a mi estilo de vida. Yo estoy muy agradecida contigo porque me hicieron el examen de la cándida y me salió negativo. Y de verdad me siento muy feliz por eso. Batallé mucho para poder mejorar mi cándida. Y fuiste tú la que me pudo ayudar a que esté mejor.',
-      'Gracias Vero. Creo en tu trabajo. Y de paso eres un ser increíble. Gracias Verito por tu magia 🙏',
-    ],
-    prioridad: 5,
-  },
-  {
-    id: 'liza-koutcharyan',
-    nombre: 'Liza Koutcharyan',
-    foto: fotoLiza,
-    motivo: ['Peso', 'Energía', 'Autocuidado'],
-    destacado: 'Con Verónica aprendí que yo también tengo que ser una prioridad.',
-    texto: [
-      'Quiero decir que estoy súper agradecida de haber encontrado a Verónica hace casi dos años. Llegué a ella en una etapa bastante complicada de mi vida, tanto emocionalmente como a nivel físico. Tenía sobrepeso, muchas cosas en mi vida no estaban funcionando como yo quería y, sinceramente, no estaba pasando por mi mejor momento.',
-      'Desde el principio, una de las cosas que más me gustó de Verónica fue que, aunque es muy disciplinada y sabe muy bien lo que hace, nunca sentí que me estuviera poniendo un programa que yo no pudiera seguir. Al contrario. Ella habló mucho conmigo, entendió el momento en el que estaba y la fuerza que tenía en ese momento, y creó un programa que yo realmente podía hacer.',
-      'Para mí eso fue fundamental, porque me dio la posibilidad de tener éxito en lugar de sentir que estaba fallando. Creo que fue muy inteligente por su parte entender qué podía hacer yo en ese momento y empezar desde ahí.',
-      'Mi proceso no fue rápido. Fue un recorrido largo, pero también creo que tenía que ser así. Cuando se trabaja de una manera más holística, no se trata solamente de bajar de peso; hay muchas cosas que mirar y muchas cosas que cambiar poco a poco.',
-      'Hoy estoy en 61 kilos, después de haber empezado en 73, y estoy realmente feliz. Pero más allá del peso, lo que más agradezco es todo lo que aprendí. Verónica me enseñó una manera de comer mucho más saludable y limpia que todavía hoy forma parte de mi vida. Ya no lo veo como una dieta que tengo que hacer, sino como mi manera de alimentarme.',
-      'Y creo que una de las cosas más importantes que aprendí en este proceso fue a quererme y a cuidarme a mí misma. Antes, muchas veces, yo siempre venía última. Primero estaban las necesidades de los demás, el trabajo, la familia, las responsabilidades… y yo quedaba para después. Con Verónica aprendí que yo también tengo que ser una prioridad.',
-      'Entendí que cuidarme no es ser egoísta. Al contrario: si yo estoy bien, las personas que están alrededor mío también están mejor. Para poder cuidar y estar para los demás, primero tenemos que cuidarnos nosotros mismos. Y ese cambio de mentalidad, para mí, ha sido incluso más importante que el cambio físico.',
-      'Me siento con muchísima energía, me siento bien y me veo bien. Y algo que me hace mucha gracia es que mis amigos y mi familia me dicen que ahora, con 53 años, me ven incluso mejor que cuando tenía 30.',
-      'Así que estoy muy agradecida de haber encontrado a Verónica y de haber hecho todo este camino con ella. Para mí no fue simplemente un programa para perder peso; fue aprender a cuidarme, a quererme y a encontrar una forma de sentirme bien que puedo mantener.',
-      'Gracias, Verónica, por haberme acompañado durante todo este proceso y por haber sabido adaptarte a mí y al momento de mi vida en el que te encontré.',
-      'Te mando un beso enorme. ❤️',
-    ],
-    prioridad: 2,
-  },
-  {
-    id: 'yisandra-sori',
-    nombre: 'Yisandra Sori',
-    foto: fotoYisandra,
-    motivo: [],
-    destacado: 'Dios puso a Vero en mi camino para ayudar en mi sanación, ella sabe lo que hace.',
-    texto: [],
-    prioridad: 9,
-  },
-  {
-    id: 'fabiana-de-luca',
-    nombre: 'Fabiana de Luca',
-    lugar: 'USA',
-    foto: fotoFabiana,
-    motivo: ['Hinchazón', 'Acné'],
-    destacado:
-      'Más que una nutricionista, siento que encontré a alguien que realmente se preocupa por entenderme y acompañarme en todo el proceso.',
-    texto: [
-      'Desde mi primera consulta con Vero supe que había llegado al lugar correcto. Llegué buscando ayuda con la hinchazón y acné y terminé aprendiendo muchísimo más de lo que imaginaba. Desde el día 1 supo explicarme cosas que nunca había entendido sobre mi cuerpo y, poco a poco, me ha enseñado a conocerlo, escucharlo y también a entender mejor mi relación con la comida.',
-      'Seguimos descubriendo mi cuerpo poquito a poquito, pero estoy demasiado feliz y agradecida con mis resultados desde el primer mes. Más que una nutricionista, siento que encontré a alguien que realmente se preocupa por entenderme y acompañarme en todo el proceso.',
-    ],
-    prioridad: 3,
-  },
-  {
-    id: 'patricia-medel',
-    nombre: 'Patricia Medel',
-    lugar: 'USA',
-    foto: fotoPatricia,
-    motivo: ['Peso', 'Estilo de vida'],
-    destacado: 'Me di cuenta que esto era para siempre.',
-    texto: [
-      'A mis 65 años, he probado de todo. Cuando empecé mi tratamiento con Vero, me di cuenta que esto era para siempre: para siempre recuperar mi salud y mi peso. Y me apoyó para que este proceso sea un estilo de vida. Muchas gracias.',
-    ],
-    prioridad: 6,
-  },
-  {
-    id: 'mariexis-palacios',
-    nombre: 'Mariexis Palacios',
-    lugar: 'Caracas, Venezuela',
-    foto: fotoMariexis,
-    motivo: ['Estilo de vida', 'Familia'],
-    destacado: 'Sus asesorías abarcan más allá de la alimentación.',
-    texto: [
-      'Mi experiencia con Vero ha sido genial, hemos ido trabajando en mi salud desde cada pilar fundamental para que los cambios sean a largo plazo, entendiendo cada uno y poder hacerlo como un estilo de vida y no solo una dieta más, ya que sus asesorías abarcan más allá de la alimentación. Sus conocimientos, compromiso, la paciencia y amabilidad con que lleva mi caso de verdad que me hace sentir acompañada en todo el proceso.',
-      'Vero, estoy muy agradecida por todo lo que a mí y mi familia nos has ayudado. Seguimos adelante 🫶🏻.',
-    ],
-    prioridad: 7,
-  },
-];
+const registros = todos('testimonio');
+
+export const testimonios: Testimonio[] = registros.map((t) => ({
+  id: t.id,
+  nombre: t.nombre,
+  ...si('lugar', t.lugar),
+  ...si('foto', t.foto === undefined ? undefined : imagen(t.foto)),
+  motivo: t.motivos,
+  destacado: t.destacado,
+  texto: t.texto,
+  prioridad: t.prioridad,
+}));
+
+export const testimoniosAsesorias: string[] = registros
+  .filter((t) => t.enAsesorias)
+  .map((t) => t.id);

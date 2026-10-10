@@ -1,0 +1,50 @@
+[
+  {
+    "id": "gluten",
+    "nombre": "¿El gluten me afecta?",
+    "pregunta": "¿El gluten me afecta?",
+    "ayuda": "Para saber si es celiaquía, alergia al trigo o sensibilidad al gluten.",
+    "examenes": [
+      "celiac-and-gluten-sensitivity-blood-spot",
+      "96-igg-food-gluten-related-disorders-panel",
+      "184-igg-food-gluten-related-disorders-panel"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "inflaman",
+    "nombre": "¿Qué alimentos me inflaman o me hinchan?",
+    "pregunta": "¿Qué alimentos me inflaman o me hinchan?",
+    "ayuda": "Sensibilidades con reacciones retardadas, que aparecen horas o días después de comer.",
+    "examenes": [
+      "96-igg-food-sensitivity-panel",
+      "184-igg-food-sensitivity-panel",
+      "240-food-panel-iga-igg-igg4"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "plantas",
+    "nombre": "Como mayormente plantas",
+    "pregunta": "Como mayormente plantas",
+    "ayuda": "Paneles de alimentos vegetales, lácteos y huevo, sin carnes ni pescados.",
+    "examenes": [
+      "96-vegetarian-food-panel-iga-igg-igg4",
+      "198-vegetarian-food-panel-iga-igg-igg4"
+    ],
+    "orden": 3
+  },
+  {
+    "id": "inmediatas",
+    "nombre": "Además tengo reacciones inmediatas",
+    "pregunta": "Además tengo reacciones inmediatas",
+    "ayuda": "Urticaria, picazón, congestión o hinchazón de labios después de comer.",
+    "examenes": [
+      "184-igg-food-sensitivity-25-comprehensive-ige-combo-panel",
+      "184-igg-food-sensitivity-50-expanded-ige-combo-panel",
+      "205-igg-food-sensitivity-25-comprehensive-ige-combo-panel",
+      "205-igg-food-sensitivity-50-expanded-ige-combo-panel"
+    ],
+    "orden": 4
+  }
+]

@@ -1,0 +1,162 @@
+[
+  {
+    "id": "examenes-01",
+    "nombre": "¿Cuándo recibiré mis resultados?",
+    "pagina": "examenes",
+    "pregunta": "¿Cuándo recibiré mis resultados?",
+    "respuesta": "Los resultados tardan entre 15 y 25 días hábiles desde que tu muestra llega al laboratorio. Si contamos también el envío del kit y el de tu muestra, el proceso completo suele tomar de 4 a 6 semanas.",
+    "orden": 1
+  },
+  {
+    "id": "inicio-01",
+    "nombre": "¿En qué se diferencia de tomar suplementos por mi cuenta?",
+    "pagina": "inicio",
+    "pregunta": "¿En qué se diferencia de tomar suplementos por mi cuenta?",
+    "respuesta": "Tomar suplementos sin abrir primero las vías de drenaje (L2) o sin reparar el terreno inflamatorio (L3) suele sobrecargar al hígado, y la célula no llega a aprovecharlos. The Layer Method busca que cada nutriente ingrese en el momento biológico óptimo.",
+    "orden": 1
+  },
+  {
+    "id": "examenes-02",
+    "nombre": "¿Qué plazo tengo para enviar mi muestra?",
+    "pagina": "examenes",
+    "pregunta": "¿Qué plazo tengo para enviar mi muestra?",
+    "respuesta": "Tienes hasta 30 días continuos desde la compra. Después de ese plazo, el examen se considera consumido y no tiene devolución. Si el examen depende de tu ciclo menstrual, tienes hasta dos ciclos: el que está en curso cuando compras y el siguiente.",
+    "orden": 2
+  },
+  {
+    "id": "inicio-02",
+    "nombre": "¿Necesito analíticas previas para comenzar?",
+    "pagina": "inicio",
+    "pregunta": "¿Necesito analíticas previas para comenzar?",
+    "respuesta": "Si cuentas con analíticas de los últimos 6 meses, las integraremos en tu Layer Map. Si no las tienes, realizaremos primero el diagnóstico clínico sintomático para recomendarte únicamente las pruebas pertinentes.",
+    "orden": 2
+  },
+  {
+    "id": "examenes-03",
+    "nombre": "¿Cuándo se envía mi kit?",
+    "pagina": "examenes",
+    "pregunta": "¿Cuándo se envía mi kit?",
+    "respuesta": "Enviamos tu kit en cuanto se verifica tu pago. Lo recibirás en la dirección que indicaste, con las instrucciones para tomar tu muestra y enviarla al laboratorio.",
+    "orden": 3
+  },
+  {
+    "id": "inicio-03",
+    "nombre": "¿Cuánto dura el proceso y cuándo se ven cambios?",
+    "pagina": "inicio",
+    "pregunta": "¿Cuánto dura el proceso y cuándo se ven cambios?",
+    "respuesta": "El ciclo inicial se completa en un máximo de 60 días. El alivio digestivo y el incremento de energía matutina suelen apreciarse en las primeras dos a tres semanas al descongestionar las primeras compuertas emuntoriales.",
+    "orden": 3
+  },
+  {
+    "id": "examenes-04",
+    "nombre": "¿El precio incluye la interpretación de mis resultados?",
+    "pagina": "examenes",
+    "pregunta": "¿El precio incluye la interpretación de mis resultados?",
+    "respuesta": "No. El precio del examen no incluye la interpretación de los resultados. Los revisamos y te los explicamos en consulta, dentro de un plan de asesoría. Si tu plan tiene más de una sesión, la interpretación se incluye durante el plan. Es el caso de {nombre:initial-layer-cycle} y {nombre:next-layer-cycle}, de dos sesiones cada uno.",
+    "orden": 4
+  },
+  {
+    "id": "inicio-04",
+    "nombre": "¿Las asesorías son online o presenciales?",
+    "pagina": "inicio",
+    "pregunta": "¿Las asesorías son online o presenciales?",
+    "respuesta": "Las asesorías son 100% online. Adaptamos el horario al país donde estés.",
+    "orden": 4
+  },
+  {
+    "id": "examenes-05",
+    "nombre": "¿Puedo pedir exámenes desde fuera de Estados Unidos?",
+    "pagina": "examenes",
+    "pregunta": "¿Puedo pedir exámenes desde fuera de Estados Unidos?",
+    "respuesta": "Sí. Dentro de Estados Unidos, la logística está incluida en tu pago. Si vives fuera, puedes acceder a la red de logística internacional pagando previamente la tarifa de envío correspondiente. Si vives en el estado de Nueva York, avísanos al comprar para verificar qué laboratorios pueden atenderte.",
+    "orden": 5
+  },
+  {
+    "id": "inicio-05",
+    "nombre": "¿Qué diferencia hay entre {nombre:layer-session} e {nombre:initial-layer-cycle}?",
+    "pagina": "inicio",
+    "pregunta": "¿Qué diferencia hay entre {nombre:layer-session} e {nombre:initial-layer-cycle}?",
+    "respuesta": "En {nombre:layer-session} trabajamos en una consulta de 90 minutos. {nombre:initial-layer-cycle} está dirigido a pacientes nuevas e incluye dos consultas de 90 minutos, separadas aproximadamente 30 días. Las completamos en un máximo de 60 días.",
+    "orden": 5
+  },
+  {
+    "id": "examenes-06",
+    "nombre": "¿Qué debo hacer si tomo antibióticos o probióticos?",
+    "pagina": "examenes",
+    "pregunta": "¿Qué debo hacer si tomo antibióticos o probióticos?",
+    "respuesta": "Avísanos antes de tomar la muestra para que te indiquemos el día adecuado. Los antibióticos, los probióticos y otros medicamentos que alteran la microbiota pueden modificar los resultados.",
+    "orden": 6
+  },
+  {
+    "id": "inicio-06",
+    "nombre": "¿Tengo que hacerme exámenes antes de la asesoría?",
+    "pagina": "inicio",
+    "pregunta": "¿Tengo que hacerme exámenes antes de la asesoría?",
+    "respuesta": "Los exámenes funcionales no son obligatorios. Como parte de la asesoría, identificamos si hacen falta y qué prioridad tienen.",
+    "orden": 6
+  },
+  {
+    "id": "examenes-07",
+    "nombre": "¿Necesito una orden médica para tomar la muestra?",
+    "pagina": "examenes",
+    "pregunta": "¿Necesito una orden médica para tomar la muestra?",
+    "respuesta": "Solo las muestras de sangre venosa requieren una orden de tu médico. El costo de la extracción no está incluido en el precio del examen. Las demás muestras —heces, orina, saliva, aliento y sangre capilar por pinchazo— las tomas tú en casa.",
+    "orden": 7
+  },
+  {
+    "id": "inicio-07",
+    "nombre": "Ya soy paciente, ¿cómo sigo?",
+    "pagina": "inicio",
+    "pregunta": "Ya soy paciente, ¿cómo sigo?",
+    "respuesta": "Si ya trabajaste conmigo, puedes continuar con dos consultas de control. El precio no está publicado. Escríbeme por Instagram y recibirás tus planes por correo. Si han pasado seis meses o más sin asesoría, empezamos de nuevo con {nombre:initial-layer-cycle}.",
+    "orden": 7
+  },
+  {
+    "id": "examenes-08",
+    "nombre": "¿Cómo debo llenar el formulario del kit?",
+    "pagina": "examenes",
+    "pregunta": "¿Cómo debo llenar el formulario del kit?",
+    "respuesta": "Escribe tu nombre y apellido exactamente como nos los diste. Si usas apodos o iniciales, la muestra se cancela. Marca solo los exámenes que compraste: el laboratorio cobra cualquier prueba adicional que marques por error.",
+    "orden": 8
+  },
+  {
+    "id": "inicio-08",
+    "nombre": "¿Qué incluye el bonus de {nombre:initial-layer-cycle}?",
+    "pagina": "inicio",
+    "pregunta": "¿Qué incluye el bonus de {nombre:initial-layer-cycle}?",
+    "respuesta": "Incluimos gratis la «Guía de alimentación anti-inflamatoria como estilo de vida». Siempre forma parte de {nombre:initial-layer-cycle}.",
+    "orden": 8
+  },
+  {
+    "id": "examenes-09",
+    "nombre": "¿Qué pasa si mi kit se daña o se pierde?",
+    "pagina": "examenes",
+    "pregunta": "¿Qué pasa si mi kit se daña o se pierde?",
+    "respuesta": "Podemos enviarte un kit nuevo con un recargo administrativo de $30 USD.",
+    "orden": 9
+  },
+  {
+    "id": "inicio-09",
+    "nombre": "¿Cómo funcionan los precios y los impuestos?",
+    "pagina": "inicio",
+    "pregunta": "¿Cómo funcionan los precios y los impuestos?",
+    "respuesta": "Publicamos los precios sin impuestos: {nombre:layer-session} cuesta USD {precio:layer-session} e {nombre:initial-layer-cycle}, USD {precio:initial-layer-cycle}. Sumamos el 7% al pagar, donde puedes ver el total antes de confirmar. En los exámenes se suma además un cargo del laboratorio.",
+    "orden": 9
+  },
+  {
+    "id": "examenes-10",
+    "nombre": "¿En qué casos puedo pedir un reembolso?",
+    "pagina": "examenes",
+    "pregunta": "¿En qué casos puedo pedir un reembolso?",
+    "respuesta": "Puedes solicitarlo solo por motivos de fuerza mayor justificados y siempre que tu muestra no se haya enviado al laboratorio. Del reembolso se descuenta un 20% por gastos administrativos. Si la muestra ya llegó al laboratorio y no pudo analizarse por causas ajenas a nosotros, se devuelve el importe descontando ese 20%, el envío y los gastos operativos que correspondan.",
+    "orden": 10
+  },
+  {
+    "id": "examenes-11",
+    "nombre": "¿Gestionan trámites con mi seguro médico?",
+    "pagina": "examenes",
+    "pregunta": "¿Gestionan trámites con mi seguro médico?",
+    "respuesta": "No gestionamos trámites con seguros médicos. Solo te entregamos los resultados a ti, a menos que autorices por correo electrónico su entrega a otra persona.",
+    "orden": 11
+  }
+]

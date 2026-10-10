@@ -1,0 +1,234 @@
+<style>body{margin:0;background:#f8f6f1;color:#302f2a;font-family:'Nunito Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif}[data-vw-estado]{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center}[data-vw-estado] p{font-family:'Cormorant Garamond', 'Times New Roman', serif;font-size:28px;margin:0}[data-vw-estado] a{color:#c28263}.w-commerce-commercecartwrapper{position:absolute;left:-9999px}</style>
+<script>
+(() => {
+const CATALOGO = {"vendibles":["initial-layer-cycle","layer-session","next-layer-cycle","guia-glp1-retatrutida","guia-hormonas-30","hackear-tu-cerebro","recetario-30-desayunos","184-igg-food-gluten-related-disorders-panel","184-igg-food-sensitivity-25-comprehensive-ige-combo-panel","184-igg-food-sensitivity-50-expanded-ige-combo-panel","184-igg-food-sensitivity-panel","198-vegetarian-food-panel-iga-igg-igg4","205-igg-food-sensitivity-25-comprehensive-ige-combo-panel","205-igg-food-sensitivity-50-expanded-ige-combo-panel","240-food-panel-iga-igg-igg4","96-igg-food-gluten-related-disorders-panel","96-igg-food-sensitivity-panel","96-vegetarian-food-panel-iga-igg-igg4","all-tox","candida-albicans-en-sangre","cardiometabolic-profile","celiac-and-gluten-sensitivity-blood-spot","comprehensive-hormone-plus-profile","comprehensive-neurotransmitter-profile","comprehensive-stool-analysis-parasitology","culture-pcr-parasitology-cpp","dna-oxidative-damage","dutch-adrenal-only","dutch-plus-hormonas-sexuales-adrenal","dutch-solo-hormonas","expanded-mold-immunoreactivity-panel","findwhy-weight-control-profile","gi-advanced-profile-includes-zonulin-and-h-pylori","gi-effects-3-days","h-pylori","hepatic-detox-profile","metales-pesados-minerales","microbiology-profile","mold-mycotoxin-building","mycotoxins-panel","organic-acids","sibo-en-aliento-3h","vaginosis-profile","yeast-culture-sensitivities"],"examenes":["184-igg-food-gluten-related-disorders-panel","184-igg-food-sensitivity-25-comprehensive-ige-combo-panel","184-igg-food-sensitivity-50-expanded-ige-combo-panel","184-igg-food-sensitivity-panel","198-vegetarian-food-panel-iga-igg-igg4","205-igg-food-sensitivity-25-comprehensive-ige-combo-panel","205-igg-food-sensitivity-50-expanded-ige-combo-panel","240-food-panel-iga-igg-igg4","96-igg-food-gluten-related-disorders-panel","96-igg-food-sensitivity-panel","96-vegetarian-food-panel-iga-igg-igg4","all-tox","candida-albicans-en-sangre","cardiometabolic-profile","celiac-and-gluten-sensitivity-blood-spot","comprehensive-hormone-plus-profile","comprehensive-neurotransmitter-profile","comprehensive-stool-analysis-parasitology","culture-pcr-parasitology-cpp","dna-oxidative-damage","dutch-adrenal-only","dutch-plus-hormonas-sexuales-adrenal","dutch-solo-hormonas","expanded-mold-immunoreactivity-panel","findwhy-weight-control-profile","gi-advanced-profile-includes-zonulin-and-h-pylori","gi-effects-3-days","h-pylori","hepatic-detox-profile","metales-pesados-minerales","microbiology-profile","mold-mycotoxin-building","mycotoxins-panel","organic-acids","sibo-en-aliento-3h","vaginosis-profile","yeast-culture-sensitivities"],"guias":["guia-glp1-retatrutida","guia-hormonas-30","hackear-tu-cerebro","recetario-30-desayunos"],"cargo":"cargo-laboratorio","ofertas":[{"guia":"recetario-30-desayunos","oferta":"recetario-30-desayunos-oferta"},{"guia":"guia-hormonas-30","oferta":"guia-hormonas-30-oferta"}]};
+const VOLVER = "https://mmartinsn.github.io/verowellness/";
+const TEXTOS = {"preparando":"Preparando tu pedido…","vacio":"No encontramos productos en tu pedido.","error":"No pudimos preparar tu pedido.","reintentar":"Intentar de nuevo","volver":"Volver a Veronica Wellness"};
+const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+function leerItems(texto        )          {
+  return texto
+    .split(',')
+    .map((parte) => parte.trim().split(':')[0])
+    .filter((producto) => SLUG.test(producto))
+    .map((producto) => ({ producto, cantidad: 1 }));
+}
+
+function escribirItems(lineas         )         {
+  return lineas
+    .map((l) => (l.cantidad === 1 ? l.producto : `${l.producto}:${l.cantidad}`))
+    .join(',');
+}
+
+function ofertaDisponible(productos          , catalogo          )                    {
+  const hayGuia = productos.some((p) => catalogo.guias.includes(p));
+  if (!hayGuia) return null;
+  return catalogo.ofertas.find((o) => !productos.includes(o.guia)) ?? null;
+}
+
+function normalizarPedido(lineas         , catalogo          )          {
+  const vistos = new Set        ();
+  const base = lineas.filter((l) => {
+    const valido = catalogo.vendibles.includes(l.producto) && !vistos.has(l.producto);
+    vistos.add(l.producto);
+    return valido;
+  });
+  const productos = base.map((l) => l.producto);
+  const oferta = ofertaDisponible(productos, catalogo);
+  const pedidas = new Set(lineas.map((l) => l.producto));
+  const salida = base.map((l) => ({ producto: l.producto, cantidad: 1 }));
+  if (oferta && pedidas.has(oferta.oferta)) salida.push({ producto: oferta.oferta, cantidad: 1 });
+  const examenes = productos.filter((p) => catalogo.examenes.includes(p)).length;
+  if (examenes > 0) salida.push({ producto: catalogo.cargo, cantidad: examenes });
+  return salida;
+}
+const INTENTOS = 2;
+
+const espera = (ms        ) => new Promise((r) => setTimeout(r, ms));
+
+function estado(texto        , acciones                                    = []) {
+  let caja = document.querySelector             ('[data-vw-estado]');
+  if (!caja) {
+    caja = document.createElement('main');
+    caja.setAttribute('data-vw-estado', '');
+    caja.setAttribute('role', 'status');
+    caja.setAttribute('aria-live', 'polite');
+    document.body.prepend(caja);
+  }
+  caja.replaceChildren();
+  const p = document.createElement('p');
+  p.textContent = texto;
+  caja.append(p);
+  for (const a of acciones) {
+    const enlace = document.createElement('a');
+    enlace.textContent = a.texto;
+    enlace.href = a.href;
+    caja.append(enlace);
+  }
+}
+
+function posicion(cuerpo         , operacion        )         {
+  if (typeof cuerpo !== 'string') return -1;
+  try {
+    const pedido = JSON.parse(cuerpo);
+    const lote            = Array.isArray(pedido) ? pedido : [pedido];
+    return lote.findIndex((p) => (p                              )?.operationName === operacion);
+  } catch {
+    return -1;
+  }
+}
+
+function escuchar(ventana        , operacion        , ms = 15000)                   {
+  const original = ventana.fetch;
+  return new Promise((resolver, rechazar) => {
+    const plazo = setTimeout(() => {
+      ventana.fetch = original;
+      rechazar(new Error(`Sin respuesta de ${operacion}`));
+    }, ms);
+    ventana.fetch = async (...args                          ) => {
+      const respuesta = await original.apply(ventana, args);
+      const indice = posicion(args[1]?.body, operacion);
+      if (indice >= 0) {
+        clearTimeout(plazo);
+        ventana.fetch = original;
+        const datos = await respuesta
+          .clone()
+          .json()
+          .catch(() => null);
+        const propia = (Array.isArray(datos) ? datos : [datos])[indice]     
+                             
+                ;
+        if (!respuesta.ok || !propia || propia.errors?.length)
+          rechazar(new Error(`${operacion} falló`));
+        else resolver(propia);
+      }
+      return respuesta;
+    };
+  });
+}
+
+async function hasta   (leer                            , ms = 10000)             {
+  const fin = Date.now() + ms;
+  for (;;) {
+    const valor = leer();
+    if (valor) return valor;
+    if (Date.now() > fin) throw new Error('Tiempo de espera agotado');
+    await espera(150);
+  }
+}
+
+function consultaCarrito()         {
+  const consulta = document
+    .querySelector('[data-wf-cart-query]')
+    ?.getAttribute('data-wf-cart-query');
+  const nombre = consulta?.match(/query\s+(\w+)/)?.[1];
+  if (!nombre) throw new Error('La página no tiene la consulta del carrito');
+  return nombre;
+}
+
+const lineasDelCarrito = (respuesta         )         =>
+  (
+    respuesta     
+                                                                                 
+     
+  )?.data?.database?.commerceOrder?.userItems?.length ?? 0;
+
+const cantidadAgregada = (respuesta         )         =>
+  Number(
+    (respuesta                                                              )?.data
+      ?.ecommerceAddToCart?.itemCount ?? Number.NaN
+  );
+
+const skuDe = (item         ) =>
+  item.getAttribute('data-commerce-sku-id') ||
+  item.querySelector('[data-commerce-sku-id]')?.getAttribute('data-commerce-sku-id') ||
+  '';
+
+const itemsDelCarrito = () =>
+  [
+    ...document.querySelectorAll('.w-commerce-commercecartlist .w-commerce-commercecartitem'),
+  ].filter((item) => skuDe(item) !== '');
+
+async function vaciarCarrito(lineas        ) {
+  await hasta(() => itemsDelCarrito().length === lineas, 15000);
+  for (let vuelta = 0; itemsDelCarrito().length > 0 && vuelta < 50; vuelta++) {
+    const antes = itemsDelCarrito().length;
+    const quitar = itemsDelCarrito()[0].querySelector             (
+      '[data-wf-cart-action="remove-item"]'
+    );
+    if (!quitar) throw new Error('El carrito no tiene botón para quitar');
+    quitar.click();
+    await hasta(() => itemsDelCarrito().length < antes, 15000);
+  }
+  if (itemsDelCarrito().length > 0) throw new Error('No se pudo vaciar el carrito');
+}
+
+async function pulsar(ventana        , boton             )                  {
+  const listo = escuchar(ventana, 'AddToCart');
+  boton.click();
+  return cantidadAgregada(await listo);
+}
+
+async function agregar(linea       ) {
+  const marco = document.createElement('iframe');
+  marco.hidden = true;
+  marco.src = `/product/${linea.producto}`;
+  document.body.append(marco);
+  try {
+    await new Promise((r) => marco.addEventListener('load', r, { once: true }));
+    const doc = marco.contentDocument ;
+    const ventana = marco.contentWindow ;
+    const boton = await hasta(() =>
+      doc.querySelector                  ('.w-commerce-commerceaddtocartbutton')
+    );
+    await hasta(() => (ventana                                    ).Webflow);
+    await espera(400);
+    const campo = doc.querySelector                  ('.w-commerce-commerceaddtocartquantityinput');
+    if (campo) {
+      campo.value = String(linea.cantidad);
+      campo.dispatchEvent(new Event('input', { bubbles: true }));
+      campo.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    let total = await pulsar(ventana, boton);
+    for (let vez = 1; !campo && total < linea.cantidad && vez < linea.cantidad; vez++) {
+      await espera(300);
+      total = await pulsar(ventana, boton);
+    }
+    if (total !== linea.cantidad)
+      throw new Error(`${linea.producto}: ${total} en el carrito, se pidieron ${linea.cantidad}`);
+  } finally {
+    marco.remove();
+  }
+}
+
+function principal() {
+  const parametros = new URLSearchParams(location.search);
+  const intento = Math.max(1, Math.trunc(Number(parametros.get('intento'))) || 1);
+  const lineas = normalizarPedido(leerItems(parametros.get('items') ?? ''), CATALOGO);
+  if (lineas.length === 0) {
+    estado(TEXTOS.vacio, [{ texto: TEXTOS.volver, href: VOLVER }]);
+    return;
+  }
+  estado(TEXTOS.preparando);
+  (async () => {
+    const carrito = escuchar(window, consultaCarrito(), 20000);
+    await vaciarCarrito(lineasDelCarrito(await carrito));
+    for (const linea of lineas) await agregar(linea);
+    location.replace('/checkout');
+  })().catch(() => {
+    parametros.delete('intento');
+    if (intento < INTENTOS) {
+      parametros.set('intento', String(intento + 1));
+      location.replace(`${location.pathname}?${parametros}`);
+      return;
+    }
+    estado(TEXTOS.error, [
+      { texto: TEXTOS.reintentar, href: `${location.pathname}?${parametros}` },
+      { texto: TEXTOS.volver, href: VOLVER },
+    ]);
+  });
+}
+
+principal();
+})();
+</script>

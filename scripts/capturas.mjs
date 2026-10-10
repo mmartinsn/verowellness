@@ -14,10 +14,11 @@ import { mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import puppeteer from 'puppeteer-core';
+import { BASE as BASE_SITIO } from '../src/lib/despliegue.ts';
 
 const args = process.argv.slice(2);
 const baseArg = args.indexOf('--base');
-const BASE = (baseArg >= 0 ? args[baseArg + 1] : 'http://127.0.0.1:4321/verowellness').replace(
+const BASE = (baseArg >= 0 ? args[baseArg + 1] : `http://127.0.0.1:4321${BASE_SITIO}`).replace(
   /\/$/,
   ''
 );
@@ -75,7 +76,9 @@ async function revelarTodo(page) {
     }
     window.scrollTo(0, 0);
     document
-      .querySelectorAll('.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-stagger')
+      .querySelectorAll(
+        '.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-stagger, .is-split'
+      )
       .forEach((el) => el.classList.add('in'));
   });
   await sleep(1900);

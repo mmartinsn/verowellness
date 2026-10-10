@@ -1,0 +1,100 @@
+import type { RegistroLibre } from '../../../src/modelo/entidad.ts';
+import { entidadPorClave } from '../../../src/modelo/esquema.ts';
+import { normalizar } from '../../../src/modelo/serializar.ts';
+import { CATEGORIAS } from './esquema.ts';
+import type { ItemWf, PrecioWf, ProductoWf } from './tipos.ts';
+import { mismoValor } from './valores.ts';
+
+export interface Deseado {
+  producto: Record<string, unknown>;
+  sku: Record<string, unknown>;
+}
+
+export function productoAWebflow(p: RegistroLibre, categoria: Map<string, string>): Deseado {
+  const cat = categoria.get(CATEGORIAS[p.tipo as string].slug);
+  if (!cat) throw new Error(`Falta la categoría de ${p.tipo}`);
+  return {
+    producto: {
+      name: p.nombre,
+      slug: p.id,
+      description: (p.descripcion as string | undefined) ?? '',
+      shippable: Boolean(p.enviable),
+      'tax-category': p.impuesto,
+      category: [cat],
+    },
+    sku: {
+      name: p.nombre,
+      slug: p.id,
+      price: { value: p.precio, unit: 'USD', currency: 'USD' },
+      sku: p.sku,
+      'download-files': p.descarga ? [{ name: 'Descarga', url: p.descarga }] : [],
+    },
+  };
+}
+
+export function productoDesdeWebflow(
+  item: ProductoWf,
+  tipoPorCategoria: Map<string, string>
+): RegistroLibre {
+  const p = item.product.fieldData;
+  const s = (item.skus[0]?.fieldData ?? {}) as ItemWf['fieldData'];
+  const categorias = (p.category as string[] | undefined) ?? [];
+  const tipo = categorias.map((id) => tipoPorCategoria.get(id)).find(Boolean) ?? '?sin-categoria';
+  const descarga = (s['download-files'] as { url: string }[] | undefined)?.[0]?.url;
+  return {
+    id: p.slug,
+    nombre: p.name,
+    tipo,
+    precio: (s.price as PrecioWf | undefined)?.value,
+    impuesto: p['tax-category'],
+    enviable: Boolean(p.shippable),
+    sku: s.sku,
+    descripcion: (p.description as string | undefined) || undefined,
+    descarga: descarga || undefined,
+  };
+}
+
+export function productosVivos(productos: ItemWf[], skus: ItemWf[]): ProductoWf[] {
+  const porProducto = new Map<string, ItemWf[]>();
+  for (const s of skus) {
+    const id = s.fieldData.product as string;
+    porProducto.set(id, [...(porProducto.get(id) ?? []), s]);
+  }
+  return productos
+    .filter((p) => !p.isDraft && !p.isArchived)
+    .map((p) => {
+      const principal = p.fieldData['default-sku'];
+      const propios = porProducto.get(p.id) ?? [];
+      return {
+        product: p,
+        skus: [
+          ...propios.filter((s) => s.id === principal),
+          ...propios.filter((s) => s.id !== principal),
+        ],
+      };
+    });
+}
+
+export const registrosDeProductos = (
+  productos: ProductoWf[],
+  tipoPorCategoria: Map<string, string>
+): RegistroLibre[] =>
+  productos.map((p) =>
+    normalizar(entidadPorClave('producto'), productoDesdeWebflow(p, tipoPorCategoria))
+  );
+
+export function diferencias(actual: Record<string, unknown>, deseado: Record<string, unknown>) {
+  return Object.keys(deseado).filter((k) => {
+    if (k === 'price')
+      return (actual.price as PrecioWf | undefined)?.value !== (deseado.price as PrecioWf).value;
+    if (k === 'download-files')
+      return !mismoValor(
+        ((actual[k] as { url: string; name: string }[]) ?? []).map(({ name, url }) => ({
+          name,
+          url,
+        })),
+        deseado[k]
+      );
+    return !mismoValor(actual[k], deseado[k]);
+  });
+}
