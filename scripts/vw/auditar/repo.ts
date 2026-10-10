@@ -62,14 +62,16 @@ function despliegue(): Verificacion {
     : hallazgo(R, 'último deploy de main', `${conclusion} en ${sha} (${fecha})`, sha);
 }
 
-function dependencias(): Verificacion {
-  let salida = '';
+function auditoriaNpm(): string {
   try {
-    salida = execFileSync(process.execPath, [npm(), 'audit', '--json'], { encoding: 'utf8' });
+    return execFileSync(process.execPath, [npm(), 'audit', '--json'], { encoding: 'utf8' });
   } catch (e) {
-    salida = (e as { stdout?: string }).stdout ?? '';
+    return (e as { stdout?: string }).stdout ?? '{}';
   }
-  const v = JSON.parse(salida).metadata?.vulnerabilities ?? {};
+}
+
+function dependencias(): Verificacion {
+  const v = JSON.parse(auditoriaNpm()).metadata?.vulnerabilities ?? {};
   const graves = (v.high ?? 0) + (v.critical ?? 0);
   return graves === 0
     ? ok(

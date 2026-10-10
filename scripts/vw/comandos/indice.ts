@@ -59,7 +59,8 @@ export const comandos: Entrada[] = [
   },
   {
     nombre: 'auditar',
-    descripcion: 'Auditoría de mantenimiento: datos, comercio, límites, sitio, repo (0 sano, 1 hallazgos, 2 error)',
+    descripcion:
+      'Auditoría de mantenimiento: datos, comercio, límites, sitio, repo (0 sano, 1 hallazgos, 2 error)',
     cargar: () => import('./auditar.ts'),
   },
 ];
