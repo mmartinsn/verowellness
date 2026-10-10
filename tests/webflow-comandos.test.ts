@@ -1,12 +1,22 @@
-import { test } from 'node:test';
+import { after, before, test } from 'node:test';
+import { readFileSync, writeFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import { ejecutar as puente } from '../scripts/vw/comandos/puente.ts';
 import { ejecutar as sembrar } from '../scripts/vw/comandos/sembrar.ts';
 import { leerSnapshot } from '../scripts/vw/comun/snapshot.ts';
 import { bajar } from '../scripts/vw/webflow/bajar.ts';
+import { ARCHIVO_PUENTE } from '../scripts/vw/comercio/puente.ts';
 import { T1, T2, colecciones, item, webflowFalso } from './apoyo/webflow-falso.ts';
 
 const conCambioSinPublicar = { lastUpdated: T2, lastPublished: T1 };
+
+let puenteGuardado = '';
+before(() => {
+  puenteGuardado = readFileSync(ARCHIVO_PUENTE, 'utf8');
+});
+after(() => {
+  writeFileSync(ARCHIVO_PUENTE, puenteGuardado);
+});
 
 test('sembrar --aplicar no escribe nada si Webflow tiene cambios sin publicar', async () => {
   const { sitio, escrituras } = webflowFalso({ fechas: conCambioSinPublicar });

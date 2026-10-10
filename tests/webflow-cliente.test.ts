@@ -91,3 +91,9 @@ test('con pagination se detiene en el total', async () => {
   assert.equal((await c.todas('/collections/a/items', 'items')).length, 100);
   assert.equal(pedidos.length, 1);
 });
+
+test('un endpoint que ignora el offset no deja la paginación en un bucle', async () => {
+  const lleno = Array.from({ length: 100 }, (_, i) => ({ id: i }));
+  const { c } = cliente([json({ items: lleno }), json({ items: lleno })]);
+  await assert.rejects(c.todas('/collections/a/items', 'items'), /la paginación no avanza/);
+});

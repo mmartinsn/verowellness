@@ -131,6 +131,8 @@ export class ClienteWebflow {
         `${ruta}${separador}limit=${LOTE}&offset=${offset}`
       );
       const lote = (pagina[clave] as T[]) ?? [];
+      if (offset > 0 && lote.length && JSON.stringify(lote[0]) === JSON.stringify(salida[0]))
+        throw new Error(`${ruta}: la paginación no avanza (el offset se ignora)`);
       salida.push(...lote);
       const total = (pagina.pagination as { total?: number } | undefined)?.total;
       if (lote.length < LOTE || (total !== undefined && salida.length >= total)) return salida;

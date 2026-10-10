@@ -72,8 +72,9 @@ export const pendientesDePublicar = async (sitio: Sitio): Promise<string[]> =>
 export const decidir = (aplicar: boolean, escrituras: number, pendientes: number): Paso =>
   !aplicar ? 'seco' : escrituras === 0 ? 'nada' : pendientes > 0 ? 'negar' : 'aplicar';
 
-export function avisoPendientes(pendientes: string[], aplicar: boolean): string {
+export function avisoPendientes(pendientes: string[], aplicar: boolean, bloquea: boolean): string {
   const lista = `${pendientes.length} cambio(s) en Webflow sin publicar: ${pendientes.slice(0, 10).join(', ')}`;
+  if (!bloquea) return `Aviso: ${lista}.`;
   return aplicar
     ? `No se aplica nada. ${lista}. --aplicar publica el sitio entero y los publicaría también: publícalos o descártalos en Webflow y repite.`
     : `Aviso: ${lista}. --aplicar se negaría hasta que se publiquen o se descarten.`;

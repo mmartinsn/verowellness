@@ -32,9 +32,13 @@ test('el sitio con cambios después de su última publicación está pendiente',
   assert.deepEqual(sitioSinPublicar({ lastUpdated: T1, lastPublished: T2 }), []);
 });
 
-test('el aviso dice si se negó o solo advierte', () => {
-  assert.match(avisoPendientes(['layers/b'], true), /^No se aplica nada\. 1 cambio/);
-  assert.match(avisoPendientes(['layers/b'], false), /--aplicar se negaría/);
+test('el aviso dice si se negó, si se negaría o solo informa', () => {
+  assert.match(avisoPendientes(['layers/b'], true, true), /^No se aplica nada\. 1 cambio/);
+  assert.match(avisoPendientes(['layers/b'], false, true), /--aplicar se negaría/);
+  assert.equal(
+    avisoPendientes(['layers/b'], false, false),
+    'Aviso: 1 cambio(s) en Webflow sin publicar: layers/b.'
+  );
 });
 
 test('decidir: en seco nunca escribe; con pendientes se niega; sin escrituras no hace nada', () => {

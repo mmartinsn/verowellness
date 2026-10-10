@@ -25,7 +25,7 @@ export async function ejecutar(args: string[], abrir = leerSitio): Promise<numbe
   }
   const aplicar = bandera(args, '--aplicar');
   const sinPublicar = await pendientesDePublicar(sitio);
-  if (sinPublicar.length) console.log(avisoPendientes(sinPublicar, aplicar));
+  if (sinPublicar.length) console.log(avisoPendientes(sinPublicar, aplicar, true));
   const paso = decidir(aplicar, 1, sinPublicar.length);
   if (paso === 'seco')
     console.log('La página «Pedido» tiene otra versión. Repite con --aplicar para publicarla.');

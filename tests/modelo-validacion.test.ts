@@ -172,3 +172,20 @@ test('una flecha o un signo menor que en el texto no se toman por marcas', () =>
     []
   );
 });
+
+test('a<b sin espacios: inocente donde se escapa, marca donde se pinta como HTML', () => {
+  const [pedido] = enSeccion(real, 'pasos-pedido');
+  const [paso] = enSeccion(real, 'proceso-pasos');
+  assert.deepEqual(
+    problemas((t) => {
+      buscar(t, 'bloque', pedido.id).texto = 'si a<b, escribe';
+    }),
+    []
+  );
+  assert.deepEqual(
+    problemas((t) => {
+      buscar(t, 'bloque', paso.id).texto = 'si a<b, escribe';
+    }),
+    [`bloque/${paso.id}.texto: marca «<b, escribe» que asesorias/proceso-pasos no puede mostrar`]
+  );
+});
