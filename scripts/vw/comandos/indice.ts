@@ -57,4 +57,9 @@ export const comandos: Entrada[] = [
     descripcion: 'Matriz de pedidos contra el puente de Webflow: el checkout debe dar lo esperado',
     cargar: () => import('./probar-puente.ts'),
   },
+  {
+    nombre: 'auditar',
+    descripcion: 'Auditoría de mantenimiento: datos, comercio, límites, sitio, repo (0 sano, 1 hallazgos, 2 error)',
+    cargar: () => import('./auditar.ts'),
+  },
 ];
