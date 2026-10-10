@@ -1,0 +1,425 @@
+[
+  {
+    "id": "184-igg-food-gluten-related-disorders-panel",
+    "nombre": "184 IgG Food + Gluten-Related Disorders Panel",
+    "tipo": "examen",
+    "precio": 48870,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-021"
+  },
+  {
+    "id": "184-igg-food-sensitivity-25-comprehensive-ige-combo-panel",
+    "nombre": "184 IgG Food Sensitivity & 25 Comprehensive IgE Combo Panel",
+    "tipo": "examen",
+    "precio": 53190,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-022"
+  },
+  {
+    "id": "184-igg-food-sensitivity-50-expanded-ige-combo-panel",
+    "nombre": "184 IgG Food Sensitivity & 50 Expanded IgE Combo Panel",
+    "tipo": "examen",
+    "precio": 79650,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-023"
+  },
+  {
+    "id": "184-igg-food-sensitivity-panel",
+    "nombre": "184 IgG Food Sensitivity Panel",
+    "tipo": "examen",
+    "precio": 32130,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-019"
+  },
+  {
+    "id": "198-vegetarian-food-panel-iga-igg-igg4",
+    "nombre": "198 Vegetarian Food Panel: IgA/IgG/IgG4",
+    "tipo": "examen",
+    "precio": 53865,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-015"
+  },
+  {
+    "id": "205-igg-food-sensitivity-25-comprehensive-ige-combo-panel",
+    "nombre": "205 IgG Food Sensitivity & 25 Comprehensive IgE Combo Panel",
+    "tipo": "examen",
+    "precio": 58860,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-024"
+  },
+  {
+    "id": "205-igg-food-sensitivity-50-expanded-ige-combo-panel",
+    "nombre": "205 IgG Food Sensitivity & 50 Expanded IgE Combo Panel",
+    "tipo": "examen",
+    "precio": 85860,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-025"
+  },
+  {
+    "id": "240-food-panel-iga-igg-igg4",
+    "nombre": "240 Food Panel: IgA/IgG/IgG4",
+    "tipo": "examen",
+    "precio": 70065,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-017"
+  },
+  {
+    "id": "96-igg-food-gluten-related-disorders-panel",
+    "nombre": "96 IgG Food + Gluten-Related Disorders Panel",
+    "tipo": "examen",
+    "precio": 36450,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-020"
+  },
+  {
+    "id": "96-igg-food-sensitivity-panel",
+    "nombre": "96 IgG Food Sensitivity Panel",
+    "tipo": "examen",
+    "precio": 17415,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-018"
+  },
+  {
+    "id": "96-vegetarian-food-panel-iga-igg-igg4",
+    "nombre": "96 Vegetarian Food Panel: IgA/IgG/IgG4",
+    "tipo": "examen",
+    "precio": 44415,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-016"
+  },
+  {
+    "id": "all-tox",
+    "nombre": "All Tox",
+    "tipo": "examen",
+    "precio": 55215,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-036"
+  },
+  {
+    "id": "candida-albicans-en-sangre",
+    "nombre": "Candida albicans en sangre",
+    "tipo": "examen",
+    "precio": 16875,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-009"
+  },
+  {
+    "id": "cardiometabolic-profile",
+    "nombre": "Cardiometabolic Profile",
+    "tipo": "examen",
+    "precio": 29970,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-026"
+  },
+  {
+    "id": "cargo-laboratorio",
+    "nombre": "Cargo del laboratorio (servicio y autorización)",
+    "tipo": "cargo",
+    "precio": 2500,
+    "impuesto": "standard-exempt",
+    "enviable": false,
+    "sku": "FEE-LAB"
+  },
+  {
+    "id": "celiac-and-gluten-sensitivity-blood-spot",
+    "nombre": "Celiac and Gluten Sensitivity (blood spot)",
+    "tipo": "examen",
+    "precio": 12015,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-014"
+  },
+  {
+    "id": "comprehensive-hormone-plus-profile",
+    "nombre": "Comprehensive Hormone Plus Profile",
+    "tipo": "examen",
+    "precio": 29835,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-013"
+  },
+  {
+    "id": "comprehensive-neurotransmitter-profile",
+    "nombre": "Comprehensive Neurotransmitter Profile",
+    "tipo": "examen",
+    "precio": 37395,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-028"
+  },
+  {
+    "id": "comprehensive-stool-analysis-parasitology",
+    "nombre": "Comprehensive Stool Analysis + Parasitology",
+    "tipo": "examen",
+    "precio": 44955,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-001"
+  },
+  {
+    "id": "culture-pcr-parasitology-cpp",
+    "nombre": "Culture, PCR, Parasitology (CPP)",
+    "tipo": "examen",
+    "precio": 25380,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-006"
+  },
+  {
+    "id": "dna-oxidative-damage",
+    "nombre": "DNA Oxidative Damage",
+    "tipo": "examen",
+    "precio": 15660,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-032"
+  },
+  {
+    "id": "dutch-adrenal-only",
+    "nombre": "DUTCH adrenal only",
+    "tipo": "examen",
+    "precio": 24300,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-012"
+  },
+  {
+    "id": "dutch-plus-hormonas-sexuales-adrenal",
+    "nombre": "DUTCH Plus (hormonas sexuales, adrenal)",
+    "tipo": "examen",
+    "precio": 54000,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-010"
+  },
+  {
+    "id": "dutch-solo-hormonas",
+    "nombre": "DUTCH solo hormonas",
+    "tipo": "examen",
+    "precio": 24300,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-011"
+  },
+  {
+    "id": "expanded-mold-immunoreactivity-panel",
+    "nombre": "Expanded Mold Immunoreactivity Panel",
+    "tipo": "examen",
+    "precio": 41040,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-031"
+  },
+  {
+    "id": "findwhy-weight-control-profile",
+    "nombre": "FindWhy Weight Control Profile",
+    "tipo": "examen",
+    "precio": 22545,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-033"
+  },
+  {
+    "id": "gi-advanced-profile-includes-zonulin-and-h-pylori",
+    "nombre": "GI-Advanced Profile (includes Zonulin and H. pylori)",
+    "tipo": "examen",
+    "precio": 52515,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-008"
+  },
+  {
+    "id": "gi-effects-3-days",
+    "nombre": "GI Effects – 3 days",
+    "tipo": "examen",
+    "precio": 59265,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-002"
+  },
+  {
+    "id": "guia-glp1-retatrutida",
+    "nombre": "Todas se están inyectando: guía de GLP-1 y RETA",
+    "tipo": "guia",
+    "precio": 1299,
+    "impuesto": "digital-goods",
+    "enviable": false,
+    "sku": "GUIA-03"
+  },
+  {
+    "id": "guia-hormonas-30",
+    "nombre": "Vuelve a sentirte tú",
+    "tipo": "guia",
+    "precio": 1999,
+    "impuesto": "digital-goods",
+    "enviable": false,
+    "sku": "GUIA-04"
+  },
+  {
+    "id": "guia-hormonas-30-oferta",
+    "nombre": "Vuelve a sentirte tú (−15%)",
+    "tipo": "oferta",
+    "precio": 1699,
+    "impuesto": "digital-goods",
+    "enviable": false,
+    "sku": "GUIA-04-OFERTA"
+  },
+  {
+    "id": "h-pylori",
+    "nombre": "H. pylori",
+    "tipo": "examen",
+    "precio": 14715,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-005"
+  },
+  {
+    "id": "hackear-tu-cerebro",
+    "nombre": "Cómo hackear tu cerebro para dejar el azúcar y las harinas en 14 días",
+    "tipo": "guia",
+    "precio": 999,
+    "impuesto": "digital-goods",
+    "enviable": false,
+    "sku": "GUIA-01"
+  },
+  {
+    "id": "hepatic-detox-profile",
+    "nombre": "Hepatic Detox Profile",
+    "tipo": "examen",
+    "precio": 17820,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-035"
+  },
+  {
+    "id": "initial-layer-cycle",
+    "nombre": "Initial Layer Cycle",
+    "tipo": "asesoria",
+    "precio": 26900,
+    "impuesto": "service-professional",
+    "enviable": false,
+    "sku": "ASE-INITIAL-LAYER-CYCLE"
+  },
+  {
+    "id": "layer-session",
+    "nombre": "Layer Session",
+    "tipo": "asesoria",
+    "precio": 15000,
+    "impuesto": "service-professional",
+    "enviable": false,
+    "sku": "ASE-LAYER-SESSION"
+  },
+  {
+    "id": "metales-pesados-minerales",
+    "nombre": "Metales pesados + minerales",
+    "tipo": "examen",
+    "precio": 16875,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-034"
+  },
+  {
+    "id": "microbiology-profile",
+    "nombre": "Microbiology Profile",
+    "tipo": "examen",
+    "precio": 15120,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-004"
+  },
+  {
+    "id": "mold-mycotoxin-building",
+    "nombre": "Mold & Mycotoxin Building",
+    "tipo": "examen",
+    "precio": 40365,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-029"
+  },
+  {
+    "id": "mycotoxins-panel",
+    "nombre": "Mycotoxins Panel",
+    "tipo": "examen",
+    "precio": 40365,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-030"
+  },
+  {
+    "id": "next-layer-cycle",
+    "nombre": "Next Layer Cycle",
+    "tipo": "asesoria",
+    "precio": 21000,
+    "impuesto": "service-professional",
+    "enviable": false,
+    "sku": "ASE-NEXT-LAYER-CYCLE"
+  },
+  {
+    "id": "organic-acids",
+    "nombre": "Organic Acids",
+    "tipo": "examen",
+    "precio": 25245,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-037"
+  },
+  {
+    "id": "recetario-30-desayunos",
+    "nombre": "30 desayunos antiinflamatorios express",
+    "tipo": "guia",
+    "precio": 1999,
+    "impuesto": "digital-goods",
+    "enviable": false,
+    "sku": "GUIA-02"
+  },
+  {
+    "id": "recetario-30-desayunos-oferta",
+    "nombre": "30 desayunos antiinflamatorios express (−15%)",
+    "tipo": "oferta",
+    "precio": 1699,
+    "impuesto": "digital-goods",
+    "enviable": false,
+    "sku": "GUIA-02-OFERTA"
+  },
+  {
+    "id": "sibo-en-aliento-3h",
+    "nombre": "SIBO en aliento 3H",
+    "tipo": "examen",
+    "precio": 30375,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-003"
+  },
+  {
+    "id": "vaginosis-profile",
+    "nombre": "Vaginosis Profile",
+    "tipo": "examen",
+    "precio": 15390,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-027"
+  },
+  {
+    "id": "yeast-culture-sensitivities",
+    "nombre": "Yeast Culture & Sensitivities",
+    "tipo": "examen",
+    "precio": 9450,
+    "impuesto": "service-professional",
+    "enviable": true,
+    "sku": "EX-007"
+  }
+]

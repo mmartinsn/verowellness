@@ -19,7 +19,8 @@
     "empaquetar": "node scripts/empaquetar.mjs",
     "verificar:entrega": "node scripts/verificar-entrega.mjs",
     "entrega": "npm run build && npm run empaquetar && npm run verificar:entrega",
-    "verify": "npm run lint && npm run format:check && npm run check && npm run build"
+    "verify": "npm run lint && npm run format:check && npm run check && npm run build",
+    "vw": "node --env-file-if-exists=.env --import ./scripts/vw/cargador/registrar.ts scripts/vw/cli.ts"
   },
   "dependencies": {
     "astro": "7.3.3",

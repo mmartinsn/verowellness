@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sitio",
+    "nombre": "Ajustes del sitio",
+    "descuentoOferta": 15,
+    "ofertaGuias": [
+      "recetario-30-desayunos",
+      "guia-hormonas-30"
+    ],
+    "cargoLaboratorio": "cargo-laboratorio",
+    "wholescriptsRegistro": "https://www.wholescripts.com/",
+    "wholescriptsPendiente": true
+  }
+]

@@ -1,0 +1,86 @@
+[
+  {
+    "id": "layer-session",
+    "nombre": "Layer Session",
+    "clave": "LAYER_SESSION",
+    "producto": "layer-session",
+    "consultas": "1 consulta",
+    "etiqueta": "Consulta individual",
+    "descripcion": "Una consulta de 90 minutos para escuchar tu historia, revisar tus formularios y definir tu plan de acción.",
+    "descripcionCorta": "1 consulta de 90 min · historia, formularios y plan de acción.",
+    "incluye": [
+      "Escucha de tu historia",
+      "Revisión de tus formularios",
+      "Plan de acción"
+    ],
+    "incluyeCheckout": [
+      "Escucha de tu historia",
+      "Revisión de tus formularios",
+      "Plan de acción"
+    ],
+    "confirmacionTitulo": "¡Listo, bienvenida!",
+    "confirmacionTexto": "Tu pago está confirmado. Agenda tu cita a continuación; recibirás The Layer Assessment por email antes de la cita.",
+    "calendlyUrl": "https://calendly.com/veronicawellness/layer-session",
+    "calendlyEtiqueta": "Calendly — Layer Session booking",
+    "publica": true,
+    "orden": 1
+  },
+  {
+    "id": "initial-layer-cycle",
+    "nombre": "Initial Layer Cycle",
+    "clave": "INITIAL_LAYER_CYCLE",
+    "producto": "initial-layer-cycle",
+    "consultas": "2 consultas",
+    "etiqueta": "Para nuevos clientes",
+    "etiquetaNota": "También aplica si tienes 6 meses o más sin asistir a una asesoría y necesitas plantear una nueva estrategia.",
+    "descripcion": "Dos sesiones privadas de 90 minutos, separadas ~30 días, a completar en un máximo de 60.",
+    "descripcionCorta": "2 sesiones privadas de 90 min · separación recomendada de aproximadamente 30 días · ciclo a completar dentro de 60 días.",
+    "incluye": [
+      "The Layer Assessment",
+      "The Layer Map — Alta Prioridad · Prioridad Secundaria · Mantenimiento",
+      "Top 3 Priorities",
+      "The Layer Plan",
+      "The Layer Review"
+    ],
+    "incluyeCheckout": [
+      "The Layer Assessment",
+      "The Layer Map",
+      "Top 3 Priorities",
+      "The Layer Plan"
+    ],
+    "bonus": "Incluye gratis la «Guía de alimentación anti-inflamatoria como estilo de vida».",
+    "confirmacionTitulo": "¡Listo, bienvenida!",
+    "confirmacionTexto": "Tu Initial Layer Cycle está confirmado. Agenda tu primera sesión a continuación — recibirás The Layer Assessment por email antes de tu cita.",
+    "calendlyUrl": "https://calendly.com/veronicawellness/layer-assessment",
+    "calendlyEtiqueta": "Calendly — Layer Assessment booking",
+    "publica": true,
+    "orden": 2
+  },
+  {
+    "id": "next-layer-cycle",
+    "nombre": "Next Layer Cycle",
+    "clave": "NEXT_LAYER_CYCLE",
+    "producto": "next-layer-cycle",
+    "consultas": "2 consultas de control",
+    "etiqueta": "Tarifa de continuidad",
+    "descripcion": "Para quienes ya completaron su Initial Layer Cycle. Dos sesiones privadas de 90 minutos para continuar profundizando, revisar tu evolución y redefinir prioridades sin empezar de cero.",
+    "descripcionCorta": "2 sesiones privadas de 90 min · para pacientes en seguimiento.",
+    "incluye": [
+      "Revisión de tu evolución",
+      "Redefinición de prioridades",
+      "Layer Plan actualizado"
+    ],
+    "incluyeCheckout": [
+      "Revisión de tu evolución",
+      "Nuevas prioridades identificadas",
+      "Layer Plan actualizado"
+    ],
+    "notaPie": "Si tienes 6 meses o más sin asistir a una asesoría, deberás adquirir nuevamente el Initial Layer Cycle, ya que es necesario plantear tu estrategia desde cero.",
+    "confirmacionTitulo": "¡Listo, seguimos!",
+    "confirmacionTexto": "Tu Next Layer Cycle está confirmado. Agenda tu próxima sesión a continuación.",
+    "calendlyUrl": "https://calendly.com/veronicawellness/next-layer-session",
+    "calendlyEtiqueta": "Calendly — Next Layer session booking",
+    "publica": false,
+    "orden": 3
+  }
+]

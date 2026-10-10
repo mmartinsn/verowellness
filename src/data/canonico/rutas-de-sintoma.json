@@ -1,0 +1,511 @@
+[
+  {
+    "id": "alimentos-1",
+    "nombre": "Siento que algunos alimentos me caen mal · 1",
+    "sintoma": "alimentos",
+    "pregunta": "¿Te conviene explorar una prueba relacionada con celiaquía y gluten? Esta es nuestra opción:",
+    "examenes": [
+      "celiac-and-gluten-sensitivity-blood-spot"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "animo-1",
+    "nombre": "Sufro de ansiedad o depresión · 1",
+    "sintoma": "animo",
+    "pregunta": "¿Te conviene explorar un perfil de neurotransmisores? Esta es nuestra opción:",
+    "examenes": [
+      "comprehensive-neurotransmitter-profile"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "articulaciones-1",
+    "nombre": "Tengo dolores articulares · 1",
+    "sintoma": "articulaciones",
+    "pregunta": "¿Te conviene hacer algún examen gastrointestinal? Estas son nuestras opciones:",
+    "examenes": [
+      "comprehensive-stool-analysis-parasitology",
+      "gi-effects-3-days",
+      "gi-advanced-profile-includes-zonulin-and-h-pylori"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "autoinmune-1",
+    "nombre": "Tengo una condición autoinmune · 1",
+    "sintoma": "autoinmune",
+    "pregunta": "¿Te conviene hacer algún examen gastrointestinal? Estas son nuestras opciones:",
+    "examenes": [
+      "comprehensive-stool-analysis-parasitology",
+      "gi-effects-3-days",
+      "gi-advanced-profile-includes-zonulin-and-h-pylori"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "contaminantes-1",
+    "nombre": "Quiero explorar mi exposición a contaminantes · 1",
+    "sintoma": "contaminantes",
+    "pregunta": "¿Te conviene explorar exámenes de contaminantes y metales? Estas son nuestras opciones:",
+    "examenes": [
+      "metales-pesados-minerales",
+      "all-tox"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "digestion-1",
+    "nombre": "Tengo molestias digestivas · 1",
+    "sintoma": "digestion",
+    "pregunta": "¿Te conviene hacer algún examen gastrointestinal? Estas son nuestras opciones:",
+    "examenes": [
+      "comprehensive-stool-analysis-parasitology",
+      "gi-effects-3-days",
+      "gi-advanced-profile-includes-zonulin-and-h-pylori",
+      "sibo-en-aliento-3h",
+      "microbiology-profile",
+      "h-pylori",
+      "culture-pcr-parasitology-cpp"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "embarazo-1",
+    "nombre": "Estoy buscando embarazo · 1",
+    "sintoma": "embarazo",
+    "pregunta": "¿Te conviene explorar tu perfil hormonal? Estas son nuestras opciones:",
+    "examenes": [
+      "dutch-plus-hormonas-sexuales-adrenal",
+      "comprehensive-hormone-plus-profile"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "energia-1",
+    "nombre": "Me siento agotada o me cuesta descansar · 1",
+    "sintoma": "energia",
+    "pregunta": "¿Te conviene explorar tu perfil hormonal? Estas son nuestras opciones:",
+    "examenes": [
+      "dutch-plus-hormonas-sexuales-adrenal",
+      "dutch-adrenal-only"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "hormonas-1",
+    "nombre": "Quiero entender mis hormonas · 1",
+    "sintoma": "hormonas",
+    "pregunta": "¿Te conviene explorar tu perfil hormonal? Estas son nuestras opciones:",
+    "examenes": [
+      "dutch-plus-hormonas-sexuales-adrenal",
+      "comprehensive-hormone-plus-profile"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "intima-1",
+    "nombre": "Tengo molestias íntimas recurrentes · 1",
+    "sintoma": "intima",
+    "pregunta": "¿Te conviene hacer un examen vaginal? Estas son nuestras opciones:",
+    "examenes": [
+      "vaginosis-profile",
+      "yeast-culture-sensitivities-salud-vaginal"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "largo-plazo-1",
+    "nombre": "Quiero cuidar mi salud a largo plazo · 1",
+    "sintoma": "largo-plazo",
+    "pregunta": "¿Te conviene hacer una evaluación metabólica? Esta es nuestra opción:",
+    "examenes": [
+      "cardiometabolic-profile"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "moho-1",
+    "nombre": "Me preocupa la exposición al moho · 1",
+    "sintoma": "moho",
+    "pregunta": "¿Te conviene evaluar el ambiente? Esta es nuestra opción:",
+    "examenes": [
+      "mold-mycotoxin-building"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "peso-1",
+    "nombre": "Me cuesta perder peso o mejorar mi composición corporal · 1",
+    "sintoma": "peso",
+    "pregunta": "¿Te conviene hacer una evaluación metabólica? Esta es nuestra opción:",
+    "examenes": [
+      "cardiometabolic-profile"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "piel-1",
+    "nombre": "Tengo alergias o reacciones en la piel · 1",
+    "sintoma": "piel",
+    "pregunta": "¿Te conviene explorar paneles que incluyan IgE a alimentos? Estas son nuestras opciones:",
+    "examenes": [
+      "184-igg-food-sensitivity-25-comprehensive-ige-combo-panel",
+      "184-igg-food-sensitivity-50-expanded-ige-combo-panel",
+      "205-igg-food-sensitivity-25-comprehensive-ige-combo-panel",
+      "205-igg-food-sensitivity-50-expanded-ige-combo-panel"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "respiratorias-1",
+    "nombre": "Tengo alergias respiratorias · 1",
+    "sintoma": "respiratorias",
+    "pregunta": "¿Te conviene explorar los exámenes relacionados con alimentos? Estas son nuestras opciones:",
+    "examenes": [
+      "celiac-and-gluten-sensitivity-blood-spot",
+      "198-vegetarian-food-panel-iga-igg-igg4",
+      "96-vegetarian-food-panel-iga-igg-igg4",
+      "240-food-panel-iga-igg-igg4",
+      "96-igg-food-sensitivity-panel",
+      "184-igg-food-sensitivity-panel",
+      "96-igg-food-gluten-related-disorders-panel",
+      "184-igg-food-gluten-related-disorders-panel",
+      "184-igg-food-sensitivity-25-comprehensive-ige-combo-panel",
+      "184-igg-food-sensitivity-50-expanded-ige-combo-panel",
+      "205-igg-food-sensitivity-25-comprehensive-ige-combo-panel",
+      "205-igg-food-sensitivity-50-expanded-ige-combo-panel"
+    ],
+    "orden": 1
+  },
+  {
+    "id": "alimentos-2",
+    "nombre": "Siento que algunos alimentos me caen mal · 2",
+    "sintoma": "alimentos",
+    "pregunta": "¿Te conviene explorar los exámenes relacionados con alimentos? Estas son nuestras opciones:",
+    "examenes": [
+      "198-vegetarian-food-panel-iga-igg-igg4",
+      "96-vegetarian-food-panel-iga-igg-igg4",
+      "240-food-panel-iga-igg-igg4",
+      "96-igg-food-sensitivity-panel",
+      "184-igg-food-sensitivity-panel",
+      "96-igg-food-gluten-related-disorders-panel",
+      "184-igg-food-gluten-related-disorders-panel",
+      "184-igg-food-sensitivity-25-comprehensive-ige-combo-panel",
+      "184-igg-food-sensitivity-50-expanded-ige-combo-panel",
+      "205-igg-food-sensitivity-25-comprehensive-ige-combo-panel",
+      "205-igg-food-sensitivity-50-expanded-ige-combo-panel"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "animo-2",
+    "nombre": "Sufro de ansiedad o depresión · 2",
+    "sintoma": "animo",
+    "pregunta": "¿Te conviene explorar tu perfil hormonal? Estas son nuestras opciones:",
+    "examenes": [
+      "dutch-plus-hormonas-sexuales-adrenal"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "articulaciones-2",
+    "nombre": "Tengo dolores articulares · 2",
+    "sintoma": "articulaciones",
+    "pregunta": "¿Te conviene hacer un examen de ácidos orgánicos? Esta es nuestra opción:",
+    "examenes": [
+      "organic-acids"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "autoinmune-2",
+    "nombre": "Tengo una condición autoinmune · 2",
+    "sintoma": "autoinmune",
+    "pregunta": "¿Te conviene hacer un examen de ácidos orgánicos? Esta es nuestra opción:",
+    "examenes": [
+      "organic-acids"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "contaminantes-2",
+    "nombre": "Quiero explorar mi exposición a contaminantes · 2",
+    "sintoma": "contaminantes",
+    "pregunta": "¿Quieres consultar el perfil hepático de nuestro catálogo?",
+    "examenes": [
+      "hepatic-detox-profile"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "digestion-2",
+    "nombre": "Tengo molestias digestivas · 2",
+    "sintoma": "digestion",
+    "pregunta": "¿Te conviene evaluar Candida? Esta es nuestra opción:",
+    "examenes": [
+      "candida-albicans-en-sangre",
+      "yeast-culture-sensitivities"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "embarazo-2",
+    "nombre": "Estoy buscando embarazo · 2",
+    "sintoma": "embarazo",
+    "pregunta": "¿Te conviene hacer algún examen gastrointestinal? Estas son nuestras opciones:",
+    "examenes": [
+      "comprehensive-stool-analysis-parasitology",
+      "gi-effects-3-days",
+      "gi-advanced-profile-includes-zonulin-and-h-pylori"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "energia-2",
+    "nombre": "Me siento agotada o me cuesta descansar · 2",
+    "sintoma": "energia",
+    "pregunta": "¿Te conviene hacer un examen de ácidos orgánicos? Esta es nuestra opción:",
+    "examenes": [
+      "organic-acids"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "intima-2",
+    "nombre": "Tengo molestias íntimas recurrentes · 2",
+    "sintoma": "intima",
+    "pregunta": "¿Te conviene evaluar Candida? Esta es nuestra opción:",
+    "examenes": [
+      "candida-albicans-en-sangre"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "largo-plazo-2",
+    "nombre": "Quiero cuidar mi salud a largo plazo · 2",
+    "sintoma": "largo-plazo",
+    "pregunta": "¿Te conviene explorar un marcador de estrés oxidativo? Esta es nuestra opción:",
+    "examenes": [
+      "dna-oxidative-damage"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "moho-2",
+    "nombre": "Me preocupa la exposición al moho · 2",
+    "sintoma": "moho",
+    "pregunta": "¿Te conviene explorar la respuesta inmune a mohos? Esta es nuestra opción:",
+    "examenes": [
+      "expanded-mold-immunoreactivity-panel"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "peso-2",
+    "nombre": "Me cuesta perder peso o mejorar mi composición corporal · 2",
+    "sintoma": "peso",
+    "pregunta": "¿Quieres conocer tus predisposiciones genéticas relacionadas con el peso? Esta es nuestra opción:",
+    "examenes": [
+      "findwhy-weight-control-profile"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "piel-2",
+    "nombre": "Tengo alergias o reacciones en la piel · 2",
+    "sintoma": "piel",
+    "pregunta": "¿Te conviene hacer algún examen gastrointestinal? Estas son nuestras opciones:",
+    "examenes": [
+      "comprehensive-stool-analysis-parasitology",
+      "gi-effects-3-days",
+      "gi-advanced-profile-includes-zonulin-and-h-pylori"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "respiratorias-2",
+    "nombre": "Tengo alergias respiratorias · 2",
+    "sintoma": "respiratorias",
+    "pregunta": "¿Te conviene hacer algún examen gastrointestinal? Estas son nuestras opciones:",
+    "examenes": [
+      "comprehensive-stool-analysis-parasitology",
+      "gi-effects-3-days",
+      "gi-advanced-profile-includes-zonulin-and-h-pylori"
+    ],
+    "orden": 2
+  },
+  {
+    "id": "alimentos-3",
+    "nombre": "Siento que algunos alimentos me caen mal · 3",
+    "sintoma": "alimentos",
+    "pregunta": "¿Te conviene hacer algún examen gastrointestinal? Estas son nuestras opciones:",
+    "examenes": [
+      "comprehensive-stool-analysis-parasitology",
+      "gi-effects-3-days",
+      "gi-advanced-profile-includes-zonulin-and-h-pylori",
+      "sibo-en-aliento-3h",
+      "microbiology-profile",
+      "h-pylori",
+      "culture-pcr-parasitology-cpp"
+    ],
+    "orden": 3
+  },
+  {
+    "id": "animo-3",
+    "nombre": "Sufro de ansiedad o depresión · 3",
+    "sintoma": "animo",
+    "pregunta": "¿Te conviene hacer algún examen gastrointestinal? Estas son nuestras opciones:",
+    "examenes": [
+      "gi-advanced-profile-includes-zonulin-and-h-pylori"
+    ],
+    "orden": 3
+  },
+  {
+    "id": "articulaciones-3",
+    "nombre": "Tengo dolores articulares · 3",
+    "sintoma": "articulaciones",
+    "pregunta": "Otras opciones complementarias según la evaluación:",
+    "examenes": [
+      "celiac-and-gluten-sensitivity-blood-spot",
+      "cardiometabolic-profile"
+    ],
+    "orden": 3
+  },
+  {
+    "id": "autoinmune-3",
+    "nombre": "Tengo una condición autoinmune · 3",
+    "sintoma": "autoinmune",
+    "pregunta": "Otras opciones complementarias según el diagnóstico y los antecedentes:",
+    "examenes": [
+      "celiac-and-gluten-sensitivity-blood-spot",
+      "cardiometabolic-profile"
+    ],
+    "orden": 3
+  },
+  {
+    "id": "contaminantes-3",
+    "nombre": "Quiero explorar mi exposición a contaminantes · 3",
+    "sintoma": "contaminantes",
+    "pregunta": "¿Te conviene explorar exámenes relacionados con moho y micotoxinas? Estas son nuestras opciones:",
+    "examenes": [
+      "mold-mycotoxin-building",
+      "expanded-mold-immunoreactivity-panel",
+      "mycotoxins-panel"
+    ],
+    "orden": 3
+  },
+  {
+    "id": "embarazo-3",
+    "nombre": "Estoy buscando embarazo · 3",
+    "sintoma": "embarazo",
+    "pregunta": "¿Te conviene hacer un examen de ácidos orgánicos? Esta es nuestra opción:",
+    "examenes": [
+      "organic-acids"
+    ],
+    "orden": 3
+  },
+  {
+    "id": "largo-plazo-3",
+    "nombre": "Quiero cuidar mi salud a largo plazo · 3",
+    "sintoma": "largo-plazo",
+    "pregunta": "¿Te conviene explorar tu perfil hormonal? Estas son nuestras opciones:",
+    "examenes": [
+      "dutch-plus-hormonas-sexuales-adrenal"
+    ],
+    "orden": 3
+  },
+  {
+    "id": "moho-3",
+    "nombre": "Me preocupa la exposición al moho · 3",
+    "sintoma": "moho",
+    "pregunta": "¿Quieres consultar la opción de micotoxinas en orina?",
+    "examenes": [
+      "mycotoxins-panel"
+    ],
+    "orden": 3
+  },
+  {
+    "id": "peso-3",
+    "nombre": "Me cuesta perder peso o mejorar mi composición corporal · 3",
+    "sintoma": "peso",
+    "pregunta": "¿Te conviene explorar tu perfil hormonal? Estas son nuestras opciones:",
+    "examenes": [
+      "dutch-plus-hormonas-sexuales-adrenal",
+      "comprehensive-hormone-plus-profile"
+    ],
+    "orden": 3
+  },
+  {
+    "id": "piel-3",
+    "nombre": "Tengo alergias o reacciones en la piel · 3",
+    "sintoma": "piel",
+    "pregunta": "¿Te conviene evaluar Candida? Esta es nuestra opción:",
+    "examenes": [
+      "candida-albicans-en-sangre"
+    ],
+    "orden": 3
+  },
+  {
+    "id": "respiratorias-3",
+    "nombre": "Tengo alergias respiratorias · 3",
+    "sintoma": "respiratorias",
+    "pregunta": "¿Te conviene explorar exámenes relacionados con moho y micotoxinas? Estas son nuestras opciones:",
+    "examenes": [
+      "mold-mycotoxin-building",
+      "expanded-mold-immunoreactivity-panel",
+      "mycotoxins-panel"
+    ],
+    "orden": 3
+  },
+  {
+    "id": "animo-4",
+    "nombre": "Sufro de ansiedad o depresión · 4",
+    "sintoma": "animo",
+    "pregunta": "¿Te conviene evaluar Candida? Esta es nuestra opción:",
+    "examenes": [
+      "candida-albicans-en-sangre"
+    ],
+    "orden": 4
+  },
+  {
+    "id": "embarazo-4",
+    "nombre": "Estoy buscando embarazo · 4",
+    "sintoma": "embarazo",
+    "pregunta": "¿Te conviene hacer una evaluación metabólica? Esta es nuestra opción:",
+    "examenes": [
+      "cardiometabolic-profile"
+    ],
+    "orden": 4
+  },
+  {
+    "id": "largo-plazo-4",
+    "nombre": "Quiero cuidar mi salud a largo plazo · 4",
+    "sintoma": "largo-plazo",
+    "pregunta": "¿Te conviene hacer un examen de ácidos orgánicos? Esta es nuestra opción:",
+    "examenes": [
+      "organic-acids"
+    ],
+    "orden": 4
+  },
+  {
+    "id": "piel-4",
+    "nombre": "Tengo alergias o reacciones en la piel · 4",
+    "sintoma": "piel",
+    "pregunta": "¿Te conviene explorar la respuesta inmune a mohos? Esta es nuestra opción:",
+    "examenes": [
+      "expanded-mold-immunoreactivity-panel"
+    ],
+    "orden": 4
+  },
+  {
+    "id": "animo-5",
+    "nombre": "Sufro de ansiedad o depresión · 5",
+    "sintoma": "animo",
+    "pregunta": "¿Te conviene hacer un examen de ácidos orgánicos? Esta es nuestra opción:",
+    "examenes": [
+      "organic-acids"
+    ],
+    "orden": 5
+  }
+]

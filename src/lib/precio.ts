@@ -25,3 +25,11 @@ export function desglose(subtotal: number, taxRate = TAX_RATE): Desglose {
 export function usd(n: number): string {
   return `$${n.toFixed(2)}`;
 }
+
+export function desdeCentavos(centavos: number): number {
+  return centavos / 100;
+}
+
+export function aCentavos(monto: number): number {
+  return Math.round(monto * 100);
+}
