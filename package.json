@@ -5,7 +5,7 @@
   "description": "Veronica Wellness / The Layer Method™ — sitio web (Astro 7, estático)",
   "type": "module",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.18.0"
   },
   "scripts": {
     "dev": "astro dev",
