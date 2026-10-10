@@ -129,3 +129,36 @@ test('una lista con una línea vacía se rechaza', () => {
     [`bloque/${problema.id}.items: tiene una línea vacía`]
   );
 });
+
+test('el texto que se pinta como HTML solo admite las marcas del diseño', () => {
+  const [paso] = enSeccion(real, 'proceso-pasos');
+  const con = (campo: string, valor: string) =>
+    problemas((t) => {
+      buscar(t, 'bloque', paso.id)[campo] = valor;
+    });
+  assert.deepEqual(con('texto', 'Uno <strong>dos</strong><br />tres'), []);
+  assert.deepEqual(con('texto', 'Hola <script>alert(1)</script>'), [
+    `bloque/${paso.id}.texto: marca «<script>» que asesorias/proceso-pasos no puede mostrar`,
+    `bloque/${paso.id}.texto: marca «</script>» que asesorias/proceso-pasos no puede mostrar`,
+  ]);
+  assert.deepEqual(con('texto', 'Uno <img src=x onerror=alert(1)> dos'), [
+    `bloque/${paso.id}.texto: marca «<img src=x onerror=alert(1)>» que asesorias/proceso-pasos no puede mostrar`,
+  ]);
+  assert.deepEqual(con('titulo', 'Paso <strong>uno</strong>'), [
+    `bloque/${paso.id}.titulo: marca «<strong>» que asesorias/proceso-pasos no puede mostrar`,
+    `bloque/${paso.id}.titulo: marca «</strong>» que asesorias/proceso-pasos no puede mostrar`,
+  ]);
+});
+
+test('una sección que no pinta HTML no acepta marcas, que se verían literales', () => {
+  const [pilar] = enSeccion(real, 'pasos-pedido');
+  assert.deepEqual(
+    problemas((t) => {
+      buscar(t, 'bloque', pilar.id).texto = 'Uno <strong>dos</strong>';
+    }),
+    [
+      `bloque/${pilar.id}.texto: marca «<strong>» que examenes/pasos-pedido no puede mostrar`,
+      `bloque/${pilar.id}.texto: marca «</strong>» que examenes/pasos-pedido no puede mostrar`,
+    ]
+  );
+});

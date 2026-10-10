@@ -1,9 +1,11 @@
 import type { RegistroLibre } from './entidad.ts';
-import { ASESORIAS, REGISTROS_FIJOS, SECCIONES } from './secciones.ts';
+import { ASESORIAS, CAMPO_HTML, MARCAS_HTML, REGISTROS_FIJOS, SECCIONES } from './secciones.ts';
 import type { Problema } from './validar.ts';
 
 type Lector = (clave: string) => readonly RegistroLibre[];
 type Anota = (entidad: string, id: string, campo: string, mensaje: string) => void;
+
+const MARCA = /<[^>]*>|[<>]/g;
 
 const conValor = (v: unknown) =>
   Array.isArray(v) ? v.length > 0 : typeof v === 'string' ? v.trim() !== '' : v !== undefined;
@@ -21,6 +23,10 @@ function revisarBloques(leer: Lector, anota: Anota) {
     cuenta.set(clave, (cuenta.get(clave) ?? 0) + 1);
     for (const campo of s.campos)
       if (!conValor(b[campo])) anota('bloque', b.id, campo, `la sección ${clave} lo necesita`);
+    for (const [campo, valor] of Object.entries(b))
+      for (const marca of typeof valor === 'string' ? (valor.match(MARCA) ?? []) : [])
+        if (!(s.html && campo === CAMPO_HTML && MARCAS_HTML.includes(marca)))
+          anota('bloque', b.id, campo, `marca «${marca}» que ${clave} no puede mostrar`);
   }
   for (const [clave, s] of declaradas) {
     const n = cuenta.get(clave) ?? 0;

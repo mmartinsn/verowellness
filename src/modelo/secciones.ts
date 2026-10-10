@@ -52,6 +52,10 @@ export const SECCIONES: readonly Seccion[] = [
   una('tienda', 'aviso-legal', 'texto'),
 ];
 
+export const CAMPO_HTML = 'texto';
+
+export const MARCAS_HTML: readonly string[] = ['<strong>', '</strong>', '<br />'];
+
 export const ASESORIAS = {
   LAYER_SESSION: 'layer-session',
   INITIAL_LAYER_CYCLE: 'initial-layer-cycle',
