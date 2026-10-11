@@ -413,6 +413,11 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     Suplementos. Hasta entonces la auditoría marcará la siembra pendiente. Los cambios 46 y 47 del
     documento (anteriores a suplementos) no se tocaron.
 
+42. **2026-10-10 — Suplementos con menos texto.** A pedido de Mari, Codex acortó a la mitad los
+    párrafos del hero, los tres puntos, el texto central del estante, la introducción del frasco
+    01 y el paso 2, sin cambiar la idea de Verónica. Va en el snapshot (siembra pendiente, como la
+    decisión 41).
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

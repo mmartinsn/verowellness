@@ -314,7 +314,7 @@
     "seccion": "principios",
     "orden": 1,
     "titulo": "Suplementación según tus capas",
-    "texto": "Tu Layer Plan incluye suplementos seleccionados según las capas que necesitas trabajar y tus síntomas actuales.",
+    "texto": "Selecciono suplementos para tu Layer Plan según tus síntomas y las capas que trabajamos.",
     "items": [],
     "marcado": false
   },
@@ -396,7 +396,7 @@
     "seccion": "principios",
     "orden": 2,
     "titulo": "Cada etapa tiene un propósito",
-    "texto": "A medida que avanzamos, ajustamos tu esquema para reducir la inflamación, apoyar las vías de eliminación y favorecer la recuperación.",
+    "texto": "Ajustamos tu esquema para reducir la inflamación, apoyar la eliminación y favorecer tu recuperación.",
     "items": [],
     "marcado": false
   },
@@ -470,7 +470,7 @@
     "seccion": "principios",
     "orden": 3,
     "titulo": "Bienestar que se sostiene",
-    "texto": "Una vez trabajadas las bases, definimos qué suplementos tiene sentido mantener como parte de tu estilo de vida, según tus necesidades.",
+    "texto": "Tras trabajar las bases, definimos qué suplementos mantener según tus necesidades.",
     "items": [],
     "marcado": false
   },
@@ -533,7 +533,7 @@
     "pagina": "suplementos",
     "seccion": "orden",
     "orden": 1,
-    "texto": "Aprovechar los nutrientes empieza por cuidar el terreno: tu digestión, absorción y vías de eliminación. En The Layer Method, trabajamos estas bases y organizamos la suplementación según tus síntomas y la capa que necesita atención. Aprenderás qué tomar, para qué y durante cuánto tiempo, con un esquema que evoluciona contigo.",
+    "texto": "Primero cuidamos tu digestión, absorción y eliminación. Después organizamos los suplementos según tus síntomas y aprenderás qué tomar, para qué y durante cuánto tiempo.",
     "items": [],
     "marcado": false
   },
@@ -543,7 +543,7 @@
     "pagina": "suplementos",
     "seccion": "frascos",
     "orden": 1,
-    "texto": "Necesitas remover alimentos inflamatorios y absorber los nutrientes de los alimentos, asegurar el aporte de proteína, electrolitos, hidratación y fibra en tu día a día.",
+    "texto": "Necesitas retirar alimentos inflamatorios, absorber nutrientes y cuidar tu aporte diario de proteína, electrolitos, agua y fibra.",
     "items": [
       "Enzimas digestivas",
       "Electrolitos",
