@@ -441,6 +441,12 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     `veronica-bata-laptop.jpg` (inicio y Asesorías › entregables) en JPEG calidad 95: la anterior
     pesaba 66 KB y se veía borrosa. Las dos `<Image>` piden `quality={90}` y una versión de 1024 px.
 
+46. **2026-10-11 — Los términos también en exámenes, y la página de Términos con texto.** Mari no
+    los veía en el checkout de exámenes: allí solo estaba el enlace a «Términos de Servicio», que
+    abría la página «contenido pendiente». Ahora el paso 4 de exámenes muestra el mismo recuadro y
+    las dos casillas de Verónica (puede sumar la cita de lectura), y `/legal/terminos/` muestra
+    los términos (mismo origen: Textos de sección › checkout). La tienda sigue con sus casillas.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

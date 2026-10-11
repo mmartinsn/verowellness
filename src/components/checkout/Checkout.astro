@@ -89,8 +89,9 @@ interface Props {
   etiquetaProducto?: string;
 }
 const { ciclo, carrito, extras, textos = {}, etiquetaProducto = 'Programa' } = Astro.props;
-// The 1:1 plans (the checkouts without a cart) show Verónica's terms before paying.
-const conTerminos = !carrito;
+// Verónica's terms show before paying in the 1:1 plans (no cart) and in the exams checkout, which
+// can add a reading appointment (Mari, 2026-10-11). The shop keeps the plain checkboxes.
+const conTerminos = !carrito || !!extras?.lectura;
 const p = desglose(ciclo.subtotal);
 const impuestoPct = Math.round(p.taxRate * 100);
 

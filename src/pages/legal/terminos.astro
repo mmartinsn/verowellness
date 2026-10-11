@@ -1,8 +1,76 @@
 ---
-import LegalPlaceholder from '../../components/LegalPlaceholder.astro';
+/**
+ * Términos — Verónica's «Términos para aceptar antes del pago» (2026-10-11), the same text the
+ * checkout shows in its consent step (Textos de sección › checkout › terminos).
+ */
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { terminos } from '../../data/terminos';
 ---
 
-<LegalPlaceholder
-  title="Términos de Servicio"
-  description="Términos de Servicio de Veronica Wellness."
-/>
+<SiteLayout
+  title="Términos y políticas — Veronica Wellness"
+  description="Términos y políticas de las asesorías de Veronica Wellness: alcance, reservas, cambios, vigencia y reembolsos."
+  noindex
+  mobileCta={false}
+>
+  <section class="legal">
+    <div class="wrap">
+      <span class="eyebrow">Legal</span>
+      <h1>Términos y políticas de las asesorías</h1>
+      <div class="cuerpo">
+        {
+          terminos.map((t) => (
+            <>
+              {t.grupo && <p class="grupo">{t.grupo}</p>}
+              <h2>{t.titulo}</h2>
+              {t.parrafos.map((p) => (
+                <p>{p}</p>
+              ))}
+            </>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .legal {
+    padding: 64px 0 96px;
+  }
+  .eyebrow {
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(34px, 5vw, 56px);
+    line-height: 1.05;
+  }
+  .cuerpo {
+    max-width: 760px;
+    margin-top: 32px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgb(48 47 42 / 0.85);
+  }
+  .cuerpo p + p {
+    margin-top: 10px;
+  }
+  .grupo {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgb(48 47 42 / 0.12);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #8a4b31;
+  }
+  h2 {
+    margin: 28px 0 8px;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--color-charcoal);
+  }
+</style>
