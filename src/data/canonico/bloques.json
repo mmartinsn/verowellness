@@ -609,5 +609,229 @@
     ],
     "nota": "El resto se define en tu Layer Plan, según lo que muestre esta Layer.",
     "marcado": false
+  },
+  {
+    "id": "checkout-terminos-1",
+    "nombre": "checkout · terminos · 1",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 1,
+    "titulo": "1. Identificación y enfoque del acompañamiento",
+    "texto": "El enfoque holístico considera a la persona en su conjunto: alimentación, descanso, movimiento, estrés, hábitos y entorno. La perspectiva funcional explora cómo estos factores se relacionan con el bienestar y ayuda a organizar prioridades individuales. Estos principios orientan el acompañamiento; no constituyen por sí mismos un diagnóstico ni una promesa de identificar o resolver la causa de una enfermedad.\n\nThe Layer Method incluye revisión del contexto compartido, alimentación, hábitos y suplementación; un Layer Map de prioridades; un Layer Plan de recomendaciones; y seguimiento dentro del alcance permitido. Los resultados de pruebas que aportes se consideran como contexto y deben ser evaluados clínicamente también por tu médico. La asesoría no sustituye esa evaluación ni presenta criterios funcionales como diagnósticos confirmados.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-2",
+    "nombre": "checkout · terminos · 2",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 2,
+    "titulo": "2. Relación con la atención médica y admisión",
+    "texto": "Las asesorías son complementarias: no sustituyen las recomendaciones de tu médico tratante, sus diagnósticos, controles, dietas terapéuticas ni tratamientos. No se ofrecen diagnósticos ni prescripción o ajuste de medicamentos u hormonas. Si alguna sugerencia difiere de una indicación médica, no la implementes hasta revisarla con tu médico. No retrases una evaluación médica para aplicar primero el plan de bienestar.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-3",
+    "nombre": "checkout · terminos · 3",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 3,
+    "titulo": "3. Participación y expectativas",
+    "texto": "Proporciona información veraz, comunica antecedentes y cambios relevantes y consulta con tus profesionales sanitarios antes de realizar cambios que puedan afectar tu tratamiento. Puedes preguntar, rechazar una sugerencia o detener tu participación. No se garantizan resultados de salud, peso, composición corporal ni plazos de mejoría. Ante una urgencia, llama al 911 en Estados Unidos o al servicio local de emergencias; el correo no se monitorea continuamente.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-4",
+    "nombre": "checkout · terminos · 4",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 4,
+    "etiqueta": "Condiciones económicas y de agenda",
+    "titulo": "4. Compra y contenido del plan",
+    "texto": "El número de sesiones, los materiales incluidos, el precio total, la moneda y los impuestos aplicables se muestran antes del pago y en el comprobante. Los cargos de estas políticas están expresados en dólares estadounidenses. Productos, suplementos, pruebas y servicios externos no están incluidos.\n\nCada sesión comprende aprox 90 minutos en total. Los primeros 15 minutos se destinan a la revisión privada de formularios y a un preplan; están incluidos en ese tiempo. La conversación directa dura aproximadamente 75 minutos, según la duración confirmada. El material se entrega por correo dentro de 72 horas hábiles posteriores a la cita, entendidas como tres días hábiles a la misma hora de finalización, excluidos sábados, domingos y feriados federales de Estados Unidos.\n\nLas dudas sobre el material se responden únicamente por correo, en una o dos jornadas de respuesta por semana, mientras el plan esté vigente. No se ofrece atención inmediata ni seguimiento continuo. Nuevos temas que requieran otra sesión se comunicarán antes de generar un cargo.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-5",
+    "nombre": "checkout · terminos · 5",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 5,
+    "titulo": "5. Reserva y requisitos obligatorios",
+    "texto": "Debes reservar tu primera asesoría dentro de los 30 días calendario posteriores a la compra. Si no lo haces, el plan caduca y sus sesiones no utilizadas quedan canceladas sin reembolso, salvo derechos legales aplicables. El plazo es para reservar, no necesariamente para realizar la primera sesión. Si solicitas reserva a tiempo y no hay disponibilidad, se preservará tu derecho y se acordará una fecha por escrito.\n\nDebes confirmar tu asistencia al menos 12 horas antes y enviar TODOS los formularios completos a más tardar 30 minutos antes del inicio programado. Ambos requisitos son obligatorios. La falta de confirmación al límite de 12 horas o de formularios completos al límite de 30 minutos suspende la cita. El envío posterior no la reactiva automáticamente. Para recuperarla aplica la tarifa de USD 45 que debe ser pagada en las próximas 48h para mantener su cupo y el límite del punto 7.\n\nEl tiempo máximo de espera por usted es de 25 minutos desde la hora reservada, incluidos los 15 minutos de preparación. Si no estás disponible para iniciar la conversación al vencer ese margen, se considera inasistencia. Llegar tarde no extiende la hora de finalización.\n\nSi manda el material dentro de los primeros 15min de su cita, los 15min de preparación no son negociables, sumando un total de 30min perdidos de la cita, lo que supera los 25min de espera, por lo tanto, la cita no se llevará a cabo, ya que el servicio perderá calidad y deberá hacer el pago de los $45 para reagendar si no desea perder su cita.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-6",
+    "nombre": "checkout · terminos · 6",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 6,
+    "titulo": "6. Un cambio gratuito y cambios adicionales",
+    "texto": "Puedes cambiar el horario de su cita una sola vez sin costo con aviso escrito de al menos 24 horas. Para la segunda reprogramación solicitada se deberá aplicar la tarifa de USD 45 y si necesita una tercera reprogramación, el servicio queda automáticamente cancelado y perderá la cita. Si avisas con menos de 24 horas, aplica el régimen de incumplimiento del punto 7. Las solicitudes se envían al correo oficial; se toma la hora de recepción y la zona horaria indicada en la reserva. Las tarifas se pagan antes de confirmar la nueva fecha.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-7",
+    "nombre": "checkout · terminos · 7",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 7,
+    "titulo": "7. Recuperación por incumplimiento",
+    "texto": "Cancelar con menos de 24 horas, no asistir, superar el margen de espera o incumplir los requisitos previos permite recuperar la cita una sola vez por USD 45. Si vuelves a incumplir en la cita recuperada, pierdes esa sesión y debes pagar íntegramente una nueva asesoría o plan disponible. La tarifa de USD 45 no recupera una sesión perdida por un segundo incumplimiento.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-8",
+    "nombre": "checkout · terminos · 8",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 8,
+    "etiqueta": "Vigencia del plan y donación de sesiones",
+    "titulo": "8. Continuidad entre sesiones",
+    "texto": "La siguiente sesión del mismo plan debe realizarse dentro de los 60 días calendario posteriores a la anterior. Reserva con anticipación. Desde el día 61 y antes de cumplirse 90 días, la cita queda suspendida y podrá reactivarse por USD 45. La reactivación y la sesión deben completarse antes de que se cumplan los 90 días. Al cumplirse ese plazo, la sesión caduca y será necesario adquirir un nuevo plan.\n\nSi el retraso es atribuible a Veronica Wellness o a falta de disponibilidad tras una solicitud oportuna, se acordará una extensión sin cargo. Una reprogramación, transferencia o pago de tarifa no reinicia los plazos de vigencia.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-9",
+    "nombre": "checkout · terminos · 9",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 9,
+    "titulo": "9. Planes no reembolsables",
+    "texto": "LOS PLANES NO SON REEMBOLSABLES por cambio de opinión, decisión de no continuar, considerar cumplidos tus objetivos, inasistencia o vencimiento atribuible a ti. Puedes donar las sesiones no utilizadas y vigentes conforme al punto 11. Esta política no elimina reembolsos ni otros derechos obligatorios previstos por la ley, ni permite retener el pago de servicios que Veronica Wellness no pueda prestar conforme a estos términos.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-10",
+    "nombre": "checkout · terminos · 10",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 10,
+    "titulo": "11. Plan individual y donación definitiva",
+    "texto": "El plan pertenece a una sola persona. No se pueden repartir ni alternar sus citas entre dos personas ni mantener dos procesos activos con el mismo paquete. Si consideras que ya cumpliste tus objetivos y te queda una sesión, puedes cerrar tu proceso y regalársela a alguien más. También puedes decidir cerrar tu proceso y donar todas tus sesiones restantes y vigentes a una sola persona.\n\nLa donación se solicita por correo y se hace efectiva con nuestra confirmación escrita. La persona beneficiaria debe cumplir los criterios de admisión, aceptar estos términos y completar sus propios formularios. El saldo cedido deja de estar disponible para ti. No se comparte tu información ni tu material personalizado. Se mantienen los vencimientos y cargos aplicables. Si la persona propuesta no es elegible, no se confirma la cesión y puedes proponer a otra dentro de la vigencia.\n\nEl cierre es administrativo y no certifica la resolución de síntomas ni el logro de objetivos de salud. La donación no equivale a un reembolso ni implica un beneficio fiscal o donación a una organización benéfica.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-11",
+    "nombre": "checkout · terminos · 11",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 11,
+    "titulo": "12. Cambios de la asesora y problemas técnicos",
+    "texto": "Si Veronica Wellness cambia tu cita, se reprograma sin costo y sin consumir tu cambio gratuito. Los retrasos de la asesora no reducen tu tiempo de atención. Si no puede prestarse el servicio ni acordarse una alternativa razonable.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-12",
+    "nombre": "checkout · terminos · 12",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 12,
+    "etiqueta": "Privacidad y aceptación de la compra",
+    "titulo": "13. Información personal y comunicaciones",
+    "texto": "Las sesiones serán grabadas automáticamente. El servicio no incluye envío de grabación. La información podrá ser utilizada para las redes sociales previo a su consentimiento.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-13",
+    "nombre": "checkout · terminos · 13",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 13,
+    "titulo": "14. Experiencias e imágenes en redes sociales",
+    "texto": "Veronica Wellness podrá solicitar tu autorización para compartir experiencias del acompañamiento con fines educativos o de testimonio del servicio en sus redes sociales. La publicación de tu caso individual, sus detalles o fotografías de síntomas requiere una autorización separada, voluntaria y específica, incluso si se pretende ocultar tu identidad. No se exige aceptar para comprar o recibir el servicio.\n\nCuando autorices una publicación anónima, se retirarán nombres, rostro y otros elementos que puedan identificarte, incluidos tatuajes, fondos, fechas, textos visibles y metadatos. No se promete anonimato absoluto si el contexto permite reconocerte. Si se desea mostrar tu rostro, nombre, voz u otros rasgos identificables, se pedirá autorización expresa adicional antes de publicar el contenido concreto.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-14",
+    "nombre": "checkout · terminos · 14",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 14,
+    "titulo": "15. Materiales y participación voluntaria",
+    "texto": "Las guías y materiales se entregan para uso personal. No pueden revenderse ni distribuirse comercialmente sin autorización escrita. Puedes compartirlos con los profesionales que participan en tu atención y ejercer los derechos de acceso a tu información que te correspondan.\n\nComprendes el alcance de la asesoría y que las decisiones sobre tu atención sanitaria deben abordarse con profesionales autorizados. La participación voluntaria no exonera a Veronica Wellness por recomendaciones inadecuadas, conductas ilícitas o responsabilidades que no puedan limitarse legalmente. Se mantienen tus derechos y las obligaciones propias del prestador.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-15",
+    "nombre": "checkout · terminos · 15",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 15,
+    "titulo": "16. Revisión con tu especialista",
+    "texto": "Las recomendaciones sobre alimentación, estilo de vida o suplementación se formulan desde el enfoque holístico y funcional descrito, considerando la información disponible y las limitaciones de cada propuesta. Antes de iniciar suplementos o cambios que puedan afectar tu salud o tratamiento, revísalos con tu médico, farmacéutico u otro profesional sanitario competente, especialmente si tienes alergias, enfermedades crónicas, cirugía próxima, embarazo o lactancia, o tomas medicamentos.\n\nSi existe discrepancia con las indicaciones de tu especialista, no implementes la recomendación hasta aclararla con él. No suspendas, sustituyas ni modifiques medicamentos, hormonas, dietas terapéuticas o tratamientos prescritos por tu cuenta. Tu criterio personal complementa la consulta profesional; no la reemplaza cuando sea necesaria.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-16",
+    "nombre": "checkout · terminos · 16",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 16,
+    "titulo": "17. Información completa y aplicación responsable",
+    "texto": "Debes informar de forma completa y actualizada tus condiciones conocidas, alergias, embarazo o lactancia, medicamentos, suplementos y restricciones indicadas por tus profesionales tratantes. Comunica cambios relevantes antes de implementar nuevas recomendaciones. No aumentes cantidades, combines productos ni extiendas su uso por iniciativa propia suponiendo que ello forma parte del plan. Ante dudas, solicita aclaración.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-17",
+    "nombre": "checkout · terminos · 17",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 17,
+    "titulo": "18. Variabilidad y posibles reacciones",
+    "texto": "Las respuestas individuales y la evidencia disponible varían según la recomendación. Los cambios de alimentación, ejercicio y suplementos pueden causar intolerancias, molestias, alergias, interacciones u otros efectos adversos. “Natural”, “holístico” o “funcional” no significa inocuo ni garantiza eficacia. No se prometen curas, equilibrio hormonal, corrección de laboratorios ni ausencia de reacciones. Las precauciones específicas deben explicarse cuando corresponda; este aviso no las sustituye.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-18",
+    "nombre": "checkout · terminos · 18",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 18,
+    "titulo": "19. Qué hacer si aparece malestar",
+    "texto": "Si una nueva recomendación o producto te causa malestar, deja de aplicarla o utilizarlo y consulta con un profesional sanitario. No atribuyas automáticamente los síntomas a un proceso de adaptación o “desintoxicación”. No suspendas medicamentos prescritos sin indicación profesional. Ante síntomas intensos, persistentes o de alarma, busca atención inmediata; llama al 911 en Estados Unidos o al servicio local de emergencias. Informa también a Veronica Wellness, pero no esperes su respuesta para recibir atención.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-terminos-19",
+    "nombre": "checkout · terminos · 19",
+    "pagina": "checkout",
+    "seccion": "terminos",
+    "orden": 19,
+    "titulo": "20. Decisiones voluntarias y atribución de responsabilidad",
+    "texto": "Puedes aceptar, rechazar o pedir aclaraciones sobre cualquier recomendación. Reconoces que omitir información relevante, modificar por tu cuenta una recomendación o aplicarla contra una indicación médica puede aumentar riesgos. La responsabilidad por un daño se determinará según sus causas, las actuaciones de cada parte y la legislación aplicable; no se atribuye automáticamente toda consecuencia a la persona usuaria.\n\nAceptar estos términos no garantiza que no habrá malestar ni implica una renuncia general a reclamar. Veronica Wellness conserva la responsabilidad que legalmente le corresponda por sus propias actuaciones. Estas condiciones tampoco autorizan actividades fuera del alcance permitido ni sustituyen las explicaciones y precauciones individuales del servicio.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-consentimiento-1",
+    "nombre": "checkout · consentimiento · 1",
+    "pagina": "checkout",
+    "seccion": "consentimiento",
+    "orden": 1,
+    "items": [
+      "He leído y acepto los Términos y Condiciones, incluidos los plazos, requisitos obligatorios, cargos por cambios e inasistencia, vigencia y política de planes no reembolsables, con las excepciones legales indicadas.",
+      "Comprendo el alcance de la asesoría, la variabilidad de las respuestas individuales y las precauciones indicadas. Me comprometo a informar mis antecedentes y a consultar con mi profesional sanitario antes de implementar recomendaciones que puedan afectar mi condición de salud o tratamiento."
+    ],
+    "marcado": false
   }
 ]

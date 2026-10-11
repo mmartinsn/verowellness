@@ -16,6 +16,7 @@ import { zelle } from '../../data/oferta';
 import { desglose, usd } from '../../lib/precio';
 import { href } from '../../lib/url';
 import { legal, marca } from '../../data/site';
+import { terminos, casillas } from '../../data/terminos';
 
 /** What the checkout sells. A `Ciclo` from data/oferta satisfies it as is. */
 export interface ProductoCheckout {
@@ -88,6 +89,8 @@ interface Props {
   etiquetaProducto?: string;
 }
 const { ciclo, carrito, extras, textos = {}, etiquetaProducto = 'Programa' } = Astro.props;
+// The 1:1 plans (the checkouts without a cart) show Verónica's terms before paying.
+const conTerminos = !carrito;
 const p = desglose(ciclo.subtotal);
 const impuestoPct = Math.round(p.taxRate * 100);
 
@@ -419,21 +422,54 @@ const metodos = [
       <p class="step-subtitle">Un último paso antes de confirmar tu reserva.</p>
 
       <div class="consent-box">
+        {
+          conTerminos && (
+            <div class="terminos" tabindex="0" aria-labelledby="terminos-t">
+              <p class="terminos-t" id="terminos-t">
+                Términos y políticas de las asesorías
+              </p>
+              {terminos.map((t) => (
+                <>
+                  {t.grupo && <p class="terminos-grupo">{t.grupo}</p>}
+                  <h2 class="terminos-h">{t.titulo}</h2>
+                  {t.parrafos.map((p) => (
+                    <p>{p}</p>
+                  ))}
+                </>
+              ))}
+            </div>
+          )
+        }
         <div class="consent-check">
           <input type="checkbox" id="consent-terms" />
           <label for="consent-terms">
-            He leído y acepto los <a href={href(legal.terminos)} target="_blank" rel="noopener"
-              >Términos de Servicio</a
-            > y la <a href={href(legal.privacidad)} target="_blank" rel="noopener"
-              >Política de Privacidad</a
-            > de {marca.nombre}.
+            {
+              conTerminos ? (
+                casillas[0]
+              ) : (
+                <>
+                  He leído y acepto los{' '}
+                  <a href={href(legal.terminos)} target="_blank" rel="noopener">
+                    Términos de Servicio
+                  </a>{' '}
+                  y la{' '}
+                  <a href={href(legal.privacidad)} target="_blank" rel="noopener">
+                    Política de Privacidad
+                  </a>{' '}
+                  de {marca.nombre}.
+                </>
+              )
+            }
           </label>
         </div>
         <div class="consent-check">
           <input type="checkbox" id="consent-policy" />
           <label for="consent-policy">
-            Entiendo la política de reactivación de 6 meses y las condiciones de reprogramación de
-            sesiones.
+            {
+              conTerminos
+                ? casillas[1]
+                : 'Entiendo la política de reactivación de 6 meses y las condiciones de reprogramación de sesiones.'
+            }
           </label>
         </div>
         <p class="medical-disclaimer">
@@ -973,7 +1009,48 @@ const metodos = [
     line-height: 1.55;
   }
 
-  /* Consent */
+  /* Consent — the 1:1 terms read in a scrolling box above the two checkboxes. */
+  .terminos {
+    max-height: 340px;
+    overflow-y: auto;
+    padding: 18px 20px;
+    margin-bottom: 8px;
+    border: 1px solid rgb(48 47 42 / 0.14);
+    border-radius: 14px;
+    background: var(--color-white);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: rgb(48 47 42 / 0.8);
+  }
+  .terminos:focus-visible {
+    outline: 2px solid var(--color-clay-deep);
+    outline-offset: 2px;
+  }
+  .terminos p + p {
+    margin-top: 8px;
+  }
+  .terminos-t {
+    font-family: var(--font-serif);
+    font-size: 21px;
+    line-height: 1.2;
+    color: var(--color-charcoal);
+  }
+  .terminos-grupo {
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 1px solid rgb(48 47 42 / 0.12);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #8a4b31;
+  }
+  .terminos .terminos-h {
+    margin: 16px 0 6px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--color-charcoal);
+  }
   .consent-box {
     background: var(--color-ivory);
     border-radius: var(--radius-md);

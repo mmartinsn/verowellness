@@ -418,6 +418,18 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     01 y el paso 2, sin cambiar la idea de Verónica. Va en el snapshot (siembra pendiente, como la
     decisión 41).
 
+43. **2026-10-11 — Términos de las asesorías antes de pagar.** Del documento «Politicas_y_Terminos
+    VW Corregido» va al sitio solo la parte «Términos para aceptar antes del pago» (puntos 1–20)
+    y sus dos casillas obligatorias; el correo para Calendly, la autorización de publicaciones y
+    la revisión jurídica interna no van en el sitio. Se muestran en el paso 4 (Consentimiento) de
+    los tres checkouts de asesorías, en un recuadro que se desplaza, con las dos casillas de
+    Verónica en lugar de las anteriores; «Continuar» exige las dos. Tienda y exámenes no cambian.
+    Van en Textos de sección › `checkout` (`terminos`, 19 bloques; `consentimiento`): siembra
+    pendiente para Santiago. Solo se corrigieron erratas («le pago», «se verá a cabo», «envio») y
+    se quitó el ™. **Para Verónica:** el documento salta del punto 9 al 11, y el punto 12 termina
+    con una frase incompleta («Si no puede prestarse el servicio ni acordarse una alternativa
+    razonable.»); se publicaron tal cual.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
