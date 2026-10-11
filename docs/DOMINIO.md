@@ -5,10 +5,19 @@ Lo que decidió Santiago el 10-oct-2026 (`DECISIONES.md` § 39): el sitio de Ast
 `pago.veronicawellness.com`. Stripe se conecta en modo prueba. Este documento es el plan de esa
 sesión: qué hay hoy, qué se cambia, quién lo hace y cómo se comprueba.
 
-**En pausa desde el 10-oct:** el inicio de sesión de GoDaddy pide una verificación que llega a
-Verónica, y no contestó. Se retoma cuando ella pueda dar el código en el momento.
+**Hecho el 11-oct-2026 (05:14 UTC el push, `2341f65`).** `npm run vw -- dominio`: 14/14 registros
+y 6/7 respuestas (falta «Enforce HTTPS»). El puente pasó 30/30 contra
+`https://pago.veronicawellness.com`. Stripe quedó conectado con la cuenta que Verónica ya usa,
+**Maria Veronica Dudamell Romero** (`acct_1S3TXVPqxSdMxp6R`, de septiembre, con cobros y
+transferencias andando), con «Enable Checkout» apagado. «Veronicawellness» (`acct_1S3rIiEXiwR6Mg7z`)
+no se pudo conectar: Stripe la marca conectada a otra plataforma. El primer intento creó una cuenta
+nueva (`acct_1UPEgy3MuDbIPwCY`, «Webflow Ecommerce»), que se desconectó sin ventas; cerrarla es de
+Verónica. Datos de la tienda: Veronica Wellness, 6220 NW 173rd St 719, Hialeah, FL 33015, USD,
+inglés (EE. UU.). La línea base de paridad pasó
+a ser `d90fad4` (último commit de Mari) construido en el dominio. Lo que sigue es el registro del
+plan, tal como se siguió.
 
-## Lo que hay hoy (los 20 registros de GoDaddy, leídos en su panel y con `nslookup` el 10-oct)
+## Lo que había (los 20 registros de GoDaddy, leídos en su panel y con `nslookup` el 10-oct)
 
 | Tipo  | Nombre                                           | Valor                                                           | Qué es                                                      |
 | ----- | ------------------------------------------------ | --------------------------------------------------------------- | ----------------------------------------------------------- |
