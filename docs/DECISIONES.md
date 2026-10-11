@@ -435,6 +435,12 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     asesorías (Layer Session, Initial y Next), en la confirmación después de pagar; los tres
     enlaces de ejemplo de `calendly.com/veronicawellness` daban 404. Siembra pendiente para Santiago.
 
+45. **2026-10-11 — Foto de bata y laptop: pelo oscuro, sin stickers y nítida.** Codex oscureció el
+    pelo (mechones claros incluidos, como la foto del bowl) y borró los dos stickers de la laptop;
+    la cara se comparó con el original. Mari aprobó la versión y la pasó; reemplaza
+    `veronica-bata-laptop.jpg` (inicio y Asesorías › entregables) en JPEG calidad 95: la anterior
+    pesaba 66 KB y se veía borrosa. Las dos `<Image>` piden `quality={90}` y una versión de 1024 px.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

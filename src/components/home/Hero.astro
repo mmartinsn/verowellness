@@ -85,8 +85,9 @@ import { href } from '../../lib/url';
           <Image
             src={retrato}
             alt={`${marca.creadora}, creadora de ${marca.metodo}, con bata y laptop`}
-            widths={[440, 660, 880]}
+            widths={[440, 660, 880, 1024]}
             sizes="(min-width: 992px) 440px, min(90vw, 440px)"
+            quality={90}
             loading="eager"
             fetchpriority="high"
           />
