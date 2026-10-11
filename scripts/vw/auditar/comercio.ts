@@ -1,13 +1,47 @@
-import { existsSync, readFileSync } from 'node:fs';
+import path from 'node:path';
 import { leerSnapshot, type Tabla } from '../comun/snapshot.ts';
 import type { ApiWebflow } from '../webflow/api.ts';
+import {
+  ARCHIVO_CONFIRMACION,
+  generarConfirmacion,
+  PAGINA_CONFIRMACION,
+} from '../comercio/confirmacion.ts';
 import { diferenciasDePedido, type ItemPedido } from '../comercio/pedidos.ts';
 import { ARCHIVO_PUENTE, catalogoDe, generarPuente, VOLVER } from '../comercio/puente.ts';
+import { leerArchivo, publicadoEnPagina } from '../webflow/codigo-de-pagina.ts';
 import { conectar } from '../webflow/conexion.ts';
 import { error, hallazgo, medir, ok, type Auditoria, type Verificacion } from './tipos.ts';
 
 const C = 'comercio';
 const DIAS_SIN_CUMPLIR = 3;
+
+const generadoAlDia = (
+  nombre: string,
+  generado: string,
+  archivo: string,
+  comando: string
+): Verificacion =>
+  leerArchivo(archivo) === generado
+    ? ok(C, nombre, generado.length)
+    : hallazgo(
+        C,
+        nombre,
+        `webflow/${path.basename(archivo)} no coincide con el snapshot; correr vw ${comando}`
+      );
+
+async function codigoPublicado(
+  api: ApiWebflow,
+  nombre: string,
+  slug: string,
+  archivo: string,
+  comando: string
+): Promise<Verificacion> {
+  const publicado = await publicadoEnPagina(api, slug);
+  if (publicado === null) return hallazgo(C, nombre, `no existe la página «${slug}»`);
+  return publicado === leerArchivo(archivo)
+    ? ok(C, nombre, publicado.length)
+    : hallazgo(C, nombre, `la página «${slug}» tiene otra versión; correr vw ${comando} --aplicar`);
+}
 
 interface PedidoWf {
   orderId?: string;
@@ -37,17 +71,22 @@ export const auditarComercio: Auditoria = async ({ conWebflow }) => {
         )
   );
   resultados.push(
-    ...(await medir(C, 'puente generado al día', async () => {
-      const generado = generarPuente(tabla, VOLVER);
-      const archivo = existsSync(ARCHIVO_PUENTE) ? readFileSync(ARCHIVO_PUENTE, 'utf8') : '';
-      return archivo === generado
-        ? ok(C, 'puente generado al día', generado.length)
-        : hallazgo(
-            C,
-            'puente generado al día',
-            'webflow/pedido.html no coincide con el snapshot; correr vw puente'
-          );
-    }))
+    ...(await medir(C, 'puente generado al día', async () =>
+      generadoAlDia(
+        'puente generado al día',
+        generarPuente(tabla, VOLVER),
+        ARCHIVO_PUENTE,
+        'puente'
+      )
+    )),
+    ...(await medir(C, 'confirmación generada al día', async () =>
+      generadoAlDia(
+        'confirmación generada al día',
+        generarConfirmacion(tabla, VOLVER),
+        ARCHIVO_CONFIRMACION,
+        'confirmacion'
+      )
+    ))
   );
   if (!conWebflow) return resultados;
   let api: ApiWebflow;
@@ -65,20 +104,18 @@ export const auditarComercio: Auditoria = async ({ conWebflow }) => {
         ? ok(C, 'moneda de la tienda', defaultCurrency)
         : hallazgo(C, 'moneda de la tienda', `es ${defaultCurrency}, se espera USD`);
     })),
-    ...(await medir(C, 'puente publicado en Webflow', async () => {
-      const pagina = (await api.paginas()).find((p) => p.slug === 'pedido');
-      if (!pagina)
-        return hallazgo(C, 'puente publicado en Webflow', 'no existe la página «pedido»');
-      const publicado = await api.codigoLibre(pagina.id, 'footer');
-      const local = existsSync(ARCHIVO_PUENTE) ? readFileSync(ARCHIVO_PUENTE, 'utf8') : '';
-      return publicado === local
-        ? ok(C, 'puente publicado en Webflow', publicado.length)
-        : hallazgo(
-            C,
-            'puente publicado en Webflow',
-            'la página «pedido» tiene otra versión; correr vw puente --aplicar'
-          );
-    })),
+    ...(await medir(C, 'puente publicado en Webflow', () =>
+      codigoPublicado(api, 'puente publicado en Webflow', 'pedido', ARCHIVO_PUENTE, 'puente')
+    )),
+    ...(await medir(C, 'confirmación publicada en Webflow', () =>
+      codigoPublicado(
+        api,
+        'confirmación publicada en Webflow',
+        PAGINA_CONFIRMACION,
+        ARCHIVO_CONFIRMACION,
+        'confirmacion'
+      )
+    )),
     ...(await medir(C, 'plantillas de colección en borrador', async () => {
       const productos = (await api.colecciones()).find((c) => c.slug === 'product')?.id;
       const publicas = (await api.paginas())

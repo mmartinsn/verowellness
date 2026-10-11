@@ -6,17 +6,37 @@ import { ejecutar as sembrar } from '../scripts/vw/comandos/sembrar.ts';
 import { leerSnapshot } from '../scripts/vw/comun/snapshot.ts';
 import { bajar } from '../scripts/vw/webflow/bajar.ts';
 import { ARCHIVO_PUENTE } from '../scripts/vw/comercio/puente.ts';
+import { ARCHIVO_CONFIRMACION } from '../scripts/vw/comercio/confirmacion.ts';
+import { ejecutar as confirmacion } from '../scripts/vw/comandos/confirmacion.ts';
 import { PAGO } from '../src/lib/despliegue.ts';
 import { T1, T2, colecciones, item, webflowFalso } from './apoyo/webflow-falso.ts';
 
 const conCambioSinPublicar = { lastUpdated: T2, lastPublished: T1 };
 
 let puenteGuardado = '';
+let confirmacionGuardada = '';
 before(() => {
   puenteGuardado = readFileSync(ARCHIVO_PUENTE, 'utf8');
+  confirmacionGuardada = readFileSync(ARCHIVO_CONFIRMACION, 'utf8');
 });
 after(() => {
   writeFileSync(ARCHIVO_PUENTE, puenteGuardado);
+  writeFileSync(ARCHIVO_CONFIRMACION, confirmacionGuardada);
+});
+
+test('confirmacion --aplicar no publica si Webflow tiene cambios sin publicar', async () => {
+  const { sitio, escrituras } = webflowFalso({ fechas: conCambioSinPublicar });
+  assert.equal(await confirmacion(['--aplicar'], async () => sitio), 1);
+  assert.deepEqual(escrituras, []);
+});
+
+test('confirmacion --aplicar escribe el código cuando no hay nada pendiente', async () => {
+  const { sitio, escrituras } = webflowFalso();
+  await assert.rejects(
+    confirmacion(['--aplicar'], async () => sitio),
+    /escritura detenida/
+  );
+  assert.deepEqual(escrituras, ['escribirCodigoLibre']);
 });
 
 test('sembrar --aplicar no escribe nada si Webflow tiene cambios sin publicar', async () => {

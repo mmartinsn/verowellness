@@ -1,0 +1,67 @@
+<script>
+(() => {
+const CATALOGO = {"porNombre":{"184 igg food + gluten-related disorders panel":{"id":"184-igg-food-gluten-related-disorders-panel","tipo":"examen"},"184 igg food sensitivity & 25 comprehensive ige combo panel":{"id":"184-igg-food-sensitivity-25-comprehensive-ige-combo-panel","tipo":"examen"},"184 igg food sensitivity & 50 expanded ige combo panel":{"id":"184-igg-food-sensitivity-50-expanded-ige-combo-panel","tipo":"examen"},"184 igg food sensitivity panel":{"id":"184-igg-food-sensitivity-panel","tipo":"examen"},"198 vegetarian food panel: iga/igg/igg4":{"id":"198-vegetarian-food-panel-iga-igg-igg4","tipo":"examen"},"205 igg food sensitivity & 25 comprehensive ige combo panel":{"id":"205-igg-food-sensitivity-25-comprehensive-ige-combo-panel","tipo":"examen"},"205 igg food sensitivity & 50 expanded ige combo panel":{"id":"205-igg-food-sensitivity-50-expanded-ige-combo-panel","tipo":"examen"},"240 food panel: iga/igg/igg4":{"id":"240-food-panel-iga-igg-igg4","tipo":"examen"},"96 igg food + gluten-related disorders panel":{"id":"96-igg-food-gluten-related-disorders-panel","tipo":"examen"},"96 igg food sensitivity panel":{"id":"96-igg-food-sensitivity-panel","tipo":"examen"},"96 vegetarian food panel: iga/igg/igg4":{"id":"96-vegetarian-food-panel-iga-igg-igg4","tipo":"examen"},"all tox":{"id":"all-tox","tipo":"examen"},"candida albicans en sangre":{"id":"candida-albicans-en-sangre","tipo":"examen"},"cardiometabolic profile":{"id":"cardiometabolic-profile","tipo":"examen"},"cargo del laboratorio (servicio y autorización)":{"id":"cargo-laboratorio","tipo":"cargo"},"celiac and gluten sensitivity (blood spot)":{"id":"celiac-and-gluten-sensitivity-blood-spot","tipo":"examen"},"comprehensive hormone plus profile":{"id":"comprehensive-hormone-plus-profile","tipo":"examen"},"comprehensive neurotransmitter profile":{"id":"comprehensive-neurotransmitter-profile","tipo":"examen"},"comprehensive stool analysis + parasitology":{"id":"comprehensive-stool-analysis-parasitology","tipo":"examen"},"culture, pcr, parasitology (cpp)":{"id":"culture-pcr-parasitology-cpp","tipo":"examen"},"dna oxidative damage":{"id":"dna-oxidative-damage","tipo":"examen"},"dutch adrenal only":{"id":"dutch-adrenal-only","tipo":"examen"},"dutch plus (hormonas sexuales, adrenal)":{"id":"dutch-plus-hormonas-sexuales-adrenal","tipo":"examen"},"dutch solo hormonas":{"id":"dutch-solo-hormonas","tipo":"examen"},"expanded mold immunoreactivity panel":{"id":"expanded-mold-immunoreactivity-panel","tipo":"examen"},"findwhy weight control profile":{"id":"findwhy-weight-control-profile","tipo":"examen"},"gi-advanced profile (includes zonulin and h. pylori)":{"id":"gi-advanced-profile-includes-zonulin-and-h-pylori","tipo":"examen"},"gi effects – 3 days":{"id":"gi-effects-3-days","tipo":"examen"},"todas se están inyectando: guía de glp-1 y reta":{"id":"guia-glp1-retatrutida","tipo":"guia","guia":"guia-glp1-retatrutida"},"vuelve a sentirte tú":{"id":"guia-hormonas-30","tipo":"guia","guia":"guia-hormonas-30"},"vuelve a sentirte tú (−15%)":{"id":"guia-hormonas-30-oferta","tipo":"oferta","guia":"guia-hormonas-30"},"h. pylori":{"id":"h-pylori","tipo":"examen"},"cómo hackear tu cerebro para dejar el azúcar y las harinas en 14 días":{"id":"hackear-tu-cerebro","tipo":"guia","guia":"hackear-tu-cerebro"},"cómo hackear tu cerebro para dejar el azúcar y las harinas en 14 días (−15%)":{"id":"hackear-tu-cerebro-oferta","tipo":"oferta","guia":"hackear-tu-cerebro"},"hepatic detox profile":{"id":"hepatic-detox-profile","tipo":"examen"},"initial layer cycle":{"id":"initial-layer-cycle","tipo":"asesoria"},"layer session":{"id":"layer-session","tipo":"asesoria"},"metales pesados + minerales":{"id":"metales-pesados-minerales","tipo":"examen"},"microbiology profile":{"id":"microbiology-profile","tipo":"examen"},"mold & mycotoxin building":{"id":"mold-mycotoxin-building","tipo":"examen"},"mycotoxins panel":{"id":"mycotoxins-panel","tipo":"examen"},"next layer cycle":{"id":"next-layer-cycle","tipo":"asesoria"},"organic acids":{"id":"organic-acids","tipo":"examen"},"30 desayunos antiinflamatorios express":{"id":"recetario-30-desayunos","tipo":"guia","guia":"recetario-30-desayunos"},"30 desayunos antiinflamatorios express (−15%)":{"id":"recetario-30-desayunos-oferta","tipo":"oferta","guia":"recetario-30-desayunos"},"sibo en aliento 3h":{"id":"sibo-en-aliento-3h","tipo":"examen"},"vaginosis profile":{"id":"vaginosis-profile","tipo":"examen"},"yeast culture & sensitivities":{"id":"yeast-culture-sensitivities","tipo":"examen"}}};
+const VOLVER = "https://veronicawellness.com/";
+const normalizarNombre = (nombre        ) =>
+  nombre.normalize('NFC').replace(/\s+/g, ' ').trim().toLowerCase();
+
+function destinoGracias(
+  nombres          ,
+  descargas            ,
+  catalogo                 
+)                {
+  const productos = nombres
+    .map((n) => catalogo.porNombre[normalizarNombre(n)])
+    .filter((p)                       => !!p);
+  const asesoria = productos.find((p) => p.tipo === 'asesoria');
+  const guias = [...new Set(productos.flatMap((p) => (p.guia ? [p.guia] : [])))];
+  const q = new URLSearchParams();
+  let ruta        ;
+  if (productos.some((p) => p.tipo === 'examen')) {
+    ruta = 'gracias/examenes/';
+    if (asesoria) q.set('lectura', '1');
+  } else if (asesoria) ruta = `gracias/${asesoria.id}/`;
+  else if (guias.length) {
+    ruta = 'gracias/tienda/';
+    q.set('guias', guias.join(','));
+  } else return null;
+  const seguras = descargas.filter((d) => d.nombre && /^https:\/\//.test(d.url));
+  if (seguras.length) q.set('descargas', JSON.stringify(seguras));
+  const query = q.toString();
+  return query ? `${ruta}?${query}` : ruta;
+}
+const ITEM = '.w-commerce-commercecheckoutorderitem';
+const NOMBRE = '.w-commerce-commerceboldtextblock';
+const DESCARGA = '[data-node-type="commerce-downloads-button"]';
+const PLAZO_MS = 10000;
+const PASO_MS = 150;
+
+const texto = (nodo                            ) => nodo?.textContent?.trim() ?? '';
+
+function leerNombres()           {
+  return [...document.querySelectorAll(`${ITEM} ${NOMBRE}`)].map(texto).filter(Boolean);
+}
+
+function leerDescargas()             {
+  return [...document.querySelectorAll                   (DESCARGA)].map((a) => ({
+    nombre: texto(a.closest(ITEM)?.querySelector(NOMBRE)) || texto(a),
+    url: a.href,
+  }));
+}
+
+async function llevarAGracias() {
+  const limite = Date.now() + PLAZO_MS;
+  while (Date.now() < limite) {
+    const nombres = leerNombres();
+    if (nombres.length) {
+      const destino = destinoGracias(nombres, leerDescargas(), CATALOGO);
+      if (destino) location.replace(VOLVER + destino);
+      return;
+    }
+    await new Promise((r) => setTimeout(r, PASO_MS));
+  }
+}
+
+llevarAGracias();
+})();
+</script>

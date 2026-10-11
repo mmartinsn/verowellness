@@ -88,7 +88,15 @@ export function webflowFalso(
     items: async (id: string, enVivo = false) =>
       id === SLUG_CATEGORIAS ? categorias() : ((enVivo ? vivos : borradores)[id] ?? []),
     productos: async () => [],
-    paginas: async () => [{ id: 'p-pedido', slug: 'pedido', title: 'Pedido', draft: false }],
+    paginas: async () => [
+      { id: 'p-pedido', slug: 'pedido', title: 'Pedido', draft: false },
+      {
+        id: 'p-confirmacion',
+        slug: 'order-confirmation',
+        title: 'Order Confirmation',
+        draft: false,
+      },
+    ],
     codigoLibre: async () => opciones.codigo ?? 'versión vieja',
     dominiosPropios: async () => opciones.dominios ?? [{ id: 'd-pago', url: new URL(PAGO).host }],
     escribirCodigoLibre: anota('escribirCodigoLibre'),

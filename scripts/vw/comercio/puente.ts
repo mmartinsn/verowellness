@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
-import { stripTypeScriptTypes } from 'node:module';
 import path from 'node:path';
+import { envolver, javascript } from './inyectable.ts';
 import type { Catalogo } from '../../../src/lib/comercio/reglas.ts';
 import type { Tabla } from '../comun/snapshot.ts';
 import { URL_PUBLICA, WEBFLOW_IO } from '../../../src/lib/despliegue.ts';
@@ -59,14 +59,6 @@ function tokens(): Record<(typeof TOKENS)[number], string> {
   ) as Record<(typeof TOKENS)[number], string>;
 }
 
-const javascript = (archivo: string) =>
-  stripTypeScriptTypes(readFileSync(path.resolve(archivo), 'utf8'), { mode: 'strip' })
-    .replace(/^import[^;]+;\s*$/gm, '')
-    .replace(/^declare const[^;]+;\s*$/gm, '')
-    .replace(/^export /gm, '')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-
 export function generarPuente(tabla: Tabla, volver: string): string {
   const t = tokens();
   const estilo = [
@@ -82,12 +74,11 @@ export function generarPuente(tabla: Tabla, volver: string): string {
     '[data-vw-estado] a{color:' + t['color-clay-rich'] + '}',
     '.w-commerce-commercecartwrapper{position:absolute;left:-9999px}',
   ].join('');
-  const codigo = [
+  return `<style>${estilo}</style>\n${envolver([
     `const CATALOGO = ${JSON.stringify(catalogoDe(tabla))};`,
     `const VOLVER = ${JSON.stringify(volver)};`,
     `const TEXTOS = ${JSON.stringify(TEXTOS)};`,
     javascript('src/lib/comercio/reglas.ts'),
     javascript('webflow/puente.ts'),
-  ].join('\n');
-  return `<style>${estilo}</style>\n<script>\n(() => {\n${codigo}\n})();\n</script>\n`;
+  ])}`;
 }
