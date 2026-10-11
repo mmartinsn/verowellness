@@ -13,11 +13,11 @@ import HeroTienda from '../components/tienda/HeroTienda.astro';
 import Capitulo from '../components/tienda/Capitulo.astro';
 import Seleccion from '../components/tienda/Seleccion.astro';
 import SiguientePaso from '../components/tienda/SiguientePaso.astro';
-import { productos, avisoLegal, precioTienda } from '../data/tienda';
+import { productos, productosALaVenta, avisoLegal, precioTienda } from '../data/tienda';
 import { grafoSitio } from '../lib/schema';
 import { href } from '../lib/url';
 
-const productosLd = productos.map((p) => ({
+const productosLd = productosALaVenta.map((p) => ({
   '@type': 'Product',
   name: p.tituloPortada,
   description: p.subtitulo,
@@ -52,7 +52,9 @@ const productosLd = productos.map((p) => ({
                 <span class="i-num">{p.num}</span>
                 <span class="i-nombre">{p.nombre}</span>
                 {p.bestSeller && <span class="i-best">★ Más vendido</span>}
-                <span class="i-precio">{precioTienda(p.precio)}</span>
+                <span class="i-precio">
+                  {p.proximamente ? 'Próximamente' : precioTienda(p.precio)}
+                </span>
               </a>
             </li>
           ))

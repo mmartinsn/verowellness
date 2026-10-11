@@ -8,6 +8,7 @@
     "tituloPortada": "Cómo hackear tu cerebro para dejar el azúcar y las harinas en 14 días",
     "portada": "tienda/portada-hackear.jpg",
     "masVendido": false,
+    "proximamente": false,
     "subtitulo": "Una ruta de 14 días para observar qué dispara tus antojos, organizar tus comidas y responder de otra manera.",
     "gancho": "¿Empiezas el día decidida a comer mejor y terminas la tarde buscando algo dulce que te calme?",
     "paraTi": [],
@@ -21,7 +22,8 @@
     "nota": "Los 14 días describen la estructura de la propuesta, no un plazo garantizado de resultados. Los cambios de alimentación requieren valorar tu caso.",
     "boton": "Comprar ebook",
     "tono": "clay",
-    "orden": 1
+    "orden": 1,
+    "oferta": "hackear-tu-cerebro-oferta"
   },
   {
     "id": "recetario-30-desayunos",
@@ -33,6 +35,7 @@
     "tituloPortada": "30 Desayunos Antiinflamatorios Express",
     "portada": "tienda/portada-recetario.jpg",
     "masVendido": true,
+    "proximamente": false,
     "subtitulo": "30 recetas dulces y saladas, con entre 26 y 35 g de proteína por porción.",
     "gancho": "Quieres empezar tu día con un mejor desayuno, pero ya te aburriste de los huevos de siempre.",
     "paraTi": [],
@@ -56,6 +59,7 @@
     "tituloPortada": "Todas a tu alrededor ya se están inyectando. Tú decide hacerlo bien.",
     "portada": "tienda/portada-glp1.jpg",
     "masVendido": false,
+    "proximamente": false,
     "subtitulo": "Las preguntas que conviene hacer y las bases de alimentación y hábitos que acompañan el proceso.",
     "gancho": "Antes de tu próxima decisión sobre las inyecciones, entiende qué necesitas cuidar además del peso.",
     "paraTi": [],
@@ -81,6 +85,7 @@
     "tituloPortada": "Vuelve a sentirte tú",
     "portada": "tienda/portada-hormonas.jpg",
     "masVendido": true,
+    "proximamente": true,
     "subtitulo": "Entre los 30 y los 40 muchas mujeres notan cambios: menos energía, un ciclo distinto, peor descanso o más antojos.",
     "gancho": "Entiende tus hormonas a partir de los 30 y empieza por lo que sí puedes cambiar.",
     "paraTi": [],

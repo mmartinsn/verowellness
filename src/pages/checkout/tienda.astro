@@ -7,7 +7,7 @@
 import CheckoutLayout from '../../layouts/CheckoutLayout.astro';
 import Checkout from '../../components/checkout/Checkout.astro';
 import {
-  productos,
+  productosALaVenta,
   CLAVE_TIENDA,
   guiasCheckout,
   ofertaPopupGuias,
@@ -49,7 +49,7 @@ const pedido = {
     carrito={{
       clave: CLAVE_TIENDA,
       volver: href('/tienda'),
-      catalogo: productos.map(({ id, nombre, precio }) => ({ id, nombre, precio })),
+      catalogo: productosALaVenta.map(({ id, nombre, precio }) => ({ id, nombre, precio })),
     }}
   />
 </CheckoutLayout>

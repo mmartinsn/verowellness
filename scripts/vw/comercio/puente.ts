@@ -32,7 +32,12 @@ export function catalogoDe(tabla: Tabla): Catalogo {
   const ajustes = tabla.ajustes[0];
   const guias = new Map(tabla.guia.map((g) => [g.id, g]));
   return {
-    vendibles: [...de('asesoria'), ...de('guia'), ...de('examen')],
+    // A guide marked «Próximamente» is not sold until it has its PDF.
+    vendibles: [
+      ...de('asesoria'),
+      ...de('guia').filter((id) => !tabla.guia.some((g) => g.producto === id && g.proximamente)),
+      ...de('examen'),
+    ],
     examenes: de('examen'),
     guias: de('guia'),
     cargo: ajustes.cargoLaboratorio as string,

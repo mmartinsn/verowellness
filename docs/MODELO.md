@@ -108,6 +108,7 @@ Las guías y recetarios en PDF de la tienda. Colección `guias`, ordenada por `o
 | Título portada | `titulo-portada` | texto | sí | Título impreso en la portada. |
 | Portada | `portada` | imagen en src/assets/tienda/ | sí | Imagen de la portada. |
 | Más vendido | `mas-vendido` | booleano | siempre (sí o no) | Marca «Más vendido». |
+| Proximamente | `proximamente` | booleano | siempre (sí o no) | Se muestra como «Próximamente» y no se vende (por ejemplo, sin PDF todavía). |
 | Subtítulo | `subtitulo` | texto | sí | Subtítulo bajo el nombre. |
 | Gancho | `gancho` | texto | sí | Pregunta o frase de entrada. |
 | Para ti | `para-ti` | lista (una línea por elemento) | no | «Para ti si…», una línea por punto. |

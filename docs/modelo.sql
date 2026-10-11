@@ -45,6 +45,7 @@ CREATE TABLE guias (
   titulo_portada text NOT NULL,
   portada text NOT NULL,
   mas_vendido boolean NOT NULL DEFAULT false,
+  proximamente boolean NOT NULL DEFAULT false,
   subtitulo text NOT NULL,
   gancho text NOT NULL,
   para_ti text[] NOT NULL DEFAULT '{}',

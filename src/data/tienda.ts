@@ -14,6 +14,8 @@ export interface Producto {
   precio: number;
   portada: ImageMetadata;
   bestSeller?: boolean;
+  /** Shown as «Próximamente» and not sold (Mari, 2026-10-11: the hormones guide has no PDF yet). */
+  proximamente?: boolean;
   subtitulo: string;
   gancho: string;
   paraTi?: string[];
@@ -34,7 +36,8 @@ const aProducto = (g: Fila<'guia'>): Producto => {
     nombre: producto.nombre,
     tituloPortada: g.tituloPortada,
     precio: desdeCentavos(producto.precio),
-    ...siVerdadero('bestSeller', g.masVendido),
+    ...siVerdadero('bestSeller', g.masVendido && !g.proximamente),
+    ...siVerdadero('proximamente', g.proximamente),
     portada: imagen(g.portada),
     subtitulo: g.subtitulo,
     gancho: g.gancho,
@@ -54,8 +57,11 @@ export function precioTienda(n: number): string {
   return `USD ${Number.isInteger(n) ? n : n.toFixed(2).replace('.', ',')}`;
 }
 
+/** The guides that can be bought now (not «Próximamente»). */
+export const productosALaVenta = productos.filter((p) => !p.proximamente);
+
 export function guiasCheckout() {
-  return productos.map((p) => ({
+  return productosALaVenta.map((p) => ({
     id: p.id,
     nombre: p.nombre,
     precio: p.precio,

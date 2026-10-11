@@ -452,6 +452,15 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     «Continuar»; el consentimiento bloquea hasta marcar las dos casillas. Botones renombrados
     (`btn-consent-next`, `btn-pago-next`) y `scripts/capturas.mjs` al día.
 
+48. **2026-10-11 — «Vuelve a sentirte tú» queda «Próximamente».** No hay PDF todavía (Mari). Campo
+    nuevo `guia.proximamente`: la guía se ve en la tienda con «Próximamente» en lugar de precio y
+    botones, sin «Más vendido», y sale de la selección, del checkout, del JSON-LD y de los
+    vendibles del puente (un pedido con ella no pasa). La oferta del recetario pasa a «Cómo
+    hackear tu cerebro» −15 % (USD 8.49, producto nuevo `hackear-tu-cerebro-oferta`, SKU
+    `GUIA-01-OFERTA`), como pedía Verónica en el cambio 46. Prueba del puente actualizada.
+    **Para Santiago:** `vw esquema --aplicar` (campo nuevo) y `vw sembrar --aplicar` (producto
+    nuevo y oferta).
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

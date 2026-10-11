@@ -86,6 +86,9 @@ export const guia = entidad({
     tituloPortada: texto({ ayuda: 'Título impreso en la portada.' }),
     portada: imagen('tienda', { ayuda: 'Imagen de la portada.' }),
     masVendido: booleano({ ayuda: 'Marca «Más vendido».' }),
+    proximamente: booleano({
+      ayuda: 'Se muestra como «Próximamente» y no se vende (por ejemplo, sin PDF todavía).',
+    }),
     subtitulo: texto({ multilinea: true, ayuda: 'Subtítulo bajo el nombre.' }),
     gancho: texto({ multilinea: true, ayuda: 'Pregunta o frase de entrada.' }),
     paraTi: lista({ requerido: false, ayuda: '«Para ti si…», una línea por punto.' }),

@@ -57,7 +57,13 @@ const { producto: p, espejo = false } = Astro.props;
             </span>
           )
         }
-        <span class="cap-precio">{precioTienda(p.precio)}</span>
+        {
+          p.proximamente ? (
+            <span class="cap-pronto">Próximamente</span>
+          ) : (
+            <span class="cap-precio">{precioTienda(p.precio)}</span>
+          )
+        }
       </div>
       <h2 id={`${p.id}-titulo`} class="cap-nombre">{p.nombre}</h2>
       <p class="cap-sub">{p.subtitulo}</p>
@@ -97,18 +103,30 @@ const { producto: p, espejo = false } = Astro.props;
 
       {p.nota && <p class="cap-nota">{p.nota}</p>}
 
-      <div class="cap-acciones">
-        <button
-          type="button"
-          class="btn btn-outline cap-add"
-          data-tienda-add={p.id}
-          aria-pressed="false"
-        >
-          <span class="add-off">Añadir a mi selección</span>
-          <span class="add-on">✓ Añadido</span>
-        </button>
-        <button type="button" class="btn btn-primary" data-tienda-comprar={p.id}>{p.boton}</button>
-      </div>
+      {
+        p.proximamente ? (
+          <div class="cap-acciones">
+            <span class="btn btn-outline cap-off" aria-disabled="true">
+              Próximamente
+            </span>
+          </div>
+        ) : (
+          <div class="cap-acciones">
+            <button
+              type="button"
+              class="btn btn-outline cap-add"
+              data-tienda-add={p.id}
+              aria-pressed="false"
+            >
+              <span class="add-off">Añadir a mi selección</span>
+              <span class="add-on">✓ Añadido</span>
+            </button>
+            <button type="button" class="btn btn-primary" data-tienda-comprar={p.id}>
+              {p.boton}
+            </button>
+          </div>
+        )
+      }
     </div>
   </div>
 </article>
@@ -317,6 +335,21 @@ const { producto: p, espejo = false } = Astro.props;
       height: 86px;
       font-size: 10.5px;
     }
+  }
+  .cap-pronto {
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 9px 16px;
+    border-radius: var(--radius-pill);
+    border: 1.5px dashed #8a4b31;
+    color: #8a4b31;
+    white-space: nowrap;
+  }
+  .cap-off {
+    cursor: default;
+    opacity: 0.55;
   }
   .cap-precio {
     font-family: var(--font-serif);

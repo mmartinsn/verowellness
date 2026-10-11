@@ -16,7 +16,14 @@ test('un pedido armado por el sitio pasa', () => {
     pedido(['h-pylori', 1], ['organic-acids', 1], ['layer-session', 1], ['cargo-laboratorio', 2]),
     []
   );
-  assert.deepEqual(pedido(['recetario-30-desayunos', 1], ['guia-hormonas-30-oferta', 1]), []);
+  assert.deepEqual(pedido(['recetario-30-desayunos', 1], ['hackear-tu-cerebro-oferta', 1]), []);
+});
+
+test('una guía «Próximamente» no se vende, ni su oferta', () => {
+  assert.deepEqual(pedido(['guia-hormonas-30', 1]), ['guia-hormonas-30 ×1 (el sitio arma ×0)']);
+  assert.deepEqual(pedido(['recetario-30-desayunos', 1], ['guia-hormonas-30-oferta', 1]), [
+    'guia-hormonas-30-oferta ×1 (el sitio arma ×0)',
+  ]);
 });
 
 test('la oferta comprada sola se marca', () => {
