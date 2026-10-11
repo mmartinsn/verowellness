@@ -41,6 +41,7 @@ export const SECCIONES: readonly Seccion[] = [
   una('asesorias', 'entregables-niveles', 'items'),
   una('asesorias', 'entregables-plan', 'items'),
   una('asesorias', 'entregables-extra', 'items'),
+  una('asesorias', 'pacientes', 'titulo', 'texto', 'enlaceTexto'),
   una('examenes', 'porque-rutina', 'items'),
   una('examenes', 'porque-funcional', 'items'),
   varias('examenes', 'porque-pilares', 'titulo', 'texto', 'icono'),

@@ -474,6 +474,13 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     Session con Zelle, exámenes con lectura, tienda con la oferta, y una vuelta simulada con
     enlaces.
 
+50. **2026-10-11 — Landing para pacientes.** `veronicawellness.com/pacientes/`: landing aparte
+    («es externa, no iría en la página»), sin menú ni pie del sitio, fuera del sitemap y con
+    `noindex`, para que Verónica la mande por link. Muestra el precio especial de pacientes, el
+    Next Layer Cycle (2 consultas de control, USD 210), con su descripción, lo que incluye, la nota
+    de los 6 meses y el botón al checkout del Next. Titular, frase y botón: Codex (Textos de
+    sección › asesorias › pacientes; siembra pendiente).
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

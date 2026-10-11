@@ -921,5 +921,17 @@
     "texto": "Descarga tu regalo incluido en el Initial Layer Cycle: la «Guía de alimentación anti-inflamatoria como estilo de vida».",
     "items": [],
     "marcado": false
+  },
+  {
+    "id": "asesorias-pacientes-1",
+    "nombre": "asesorias · pacientes · 1",
+    "pagina": "asesorias",
+    "seccion": "pacientes",
+    "orden": 1,
+    "titulo": "Sigamos construyendo tu siguiente capa",
+    "texto": "Si ya completaste tu Initial Layer Cycle, te acompaño en tu Next Layer Cycle con dos consultas de control por USD 210.",
+    "items": [],
+    "marcado": false,
+    "enlaceTexto": "Reserva y paga"
   }
 ]
