@@ -17,6 +17,7 @@ import { desglose, usd } from '../../lib/precio';
 import { href } from '../../lib/url';
 import { legal, marca } from '../../data/site';
 import { terminos, casillas } from '../../data/terminos';
+import { bloque } from '../../lib/datos/bloques';
 
 /** What the checkout sells. A `Ciclo` from data/oferta satisfies it as is. */
 export interface ProductoCheckout {
@@ -92,6 +93,10 @@ const { ciclo, carrito, extras, textos = {}, etiquetaProducto = 'Programa' } = A
 // Verónica's terms show before paying in the 1:1 plans (no cart) and in the exams checkout, which
 // can add a reading appointment (Mari, 2026-10-11). The shop keeps the plain checkboxes.
 const conTerminos = !carrito || !!extras?.lectura;
+// Exams are only paid in the USA (Mari, 2026-10-11): from any other country the buyer writes to
+// Verónica on Instagram instead of going on.
+const soloUsa = !!extras?.lectura;
+const contactoDirecto = bloque('sitio', 'continuidad').enlace as string;
 // After paying, each product has its own thank-you page (src/pages/gracias).
 const gracias = href(
   `/gracias/${carrito ? (extras?.lectura ? 'examenes' : 'tienda') : ciclo.id.toLowerCase().replaceAll('_', '-')}/`
@@ -148,6 +153,7 @@ const metodos = [
   data-carrito={carrito ? JSON.stringify(carrito) : undefined}
   data-pedido={textos.pedido}
   data-gracias={gracias}
+  data-solo-usa={soloUsa ? '' : undefined}
   data-extras={extras ? JSON.stringify(extras) : undefined}
 >
   <main class="checkout-main" id="main">
@@ -222,6 +228,18 @@ const metodos = [
               {paises.map((c) => <option>{c}</option>)}
             </select>
             <span class="field-error">Selecciona tu país.</span>
+            {
+              soloUsa && (
+                <p class="solo-usa" id="pais-usa" hidden>
+                  <strong>Los exámenes son válidos solo para pago en USA.</strong> Si te encuentras
+                  en Latinoamérica,{' '}
+                  <a href={contactoDirecto} target="_blank" rel="noopener">
+                    comunícate conmigo
+                  </a>
+                  .
+                </p>
+              )
+            }
           </div>
           <div class="field full">
             <label for="fuente">¿Cómo conociste a {marca.nombre}? *</label>
@@ -752,6 +770,20 @@ const metodos = [
   }
   .field-error.show {
     display: block;
+  }
+  .solo-usa {
+    margin-top: 8px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1.5px dashed rgb(138 75 49 / 0.5);
+    background: rgb(231 183 160 / 0.16);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--color-charcoal);
+  }
+  .solo-usa a {
+    font-weight: 700;
+    text-decoration: underline;
   }
   .phone-row {
     display: grid;
@@ -1817,6 +1849,17 @@ const metodos = [
       btn.addEventListener('click', () => goToStep(Number(btn.dataset.goto)));
     });
 
+    /* ── Step 1: exams only for the USA — the note shows as soon as another country is picked ── */
+    const fueraDeUsa = () => {
+      if (!('soloUsa' in root!.dataset)) return true;
+      const pais = $<HTMLSelectElement>('pais')!;
+      const ok = !pais.value || pais.value === 'Estados Unidos';
+      $('pais-usa')!.hidden = ok;
+      if (!ok) pais.classList.add('invalid');
+      return ok;
+    };
+    $('pais')?.addEventListener('change', fueraDeUsa);
+
     /* ── Step 1: validate and (INTEGRATION POINT) upsert the CRM client ── */
     $('form-datos')?.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -1832,6 +1875,7 @@ const metodos = [
         el.closest('.field')?.querySelector('.field-error')?.classList.toggle('show', bad);
         if (bad) valid = false;
       }
+      if (!fueraDeUsa()) valid = false;
       if (!valid) return;
 
       state.client = {

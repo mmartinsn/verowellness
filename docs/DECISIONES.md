@@ -487,6 +487,11 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     «¿Ya eres mi paciente?»). Se habló de WhatsApp (botón sin el número escrito, aunque va en el
     enlace); Mari eligió Instagram.
 
+52. **2026-10-11 — Checkout de exámenes solo para Estados Unidos.** Si el país no es «Estados
+    Unidos», aparece el aviso de la decisión 51 (con el Instagram) bajo el campo y no se puede
+    pasar del paso 1. Asesorías y tienda no cambian. **Para Santiago:** en Webflow, la zona de
+    envío de los exámenes solo con Estados Unidos, para que la caja real aplique la misma regla.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
