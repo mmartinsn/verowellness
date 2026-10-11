@@ -1,7 +1,6 @@
 /**
  * sitemap.xml — only the pages meant to be found: home, The Method, 1:1, Exámenes, Tienda and Suplementos. Variants,
- * checkout, legal placeholders and 404 stay out. While `prototipo` is true every page is noindex
- * anyway; the sitemap is ready for the move to the real domain (declare it in that robots.txt).
+ * checkout, legal placeholders and 404 stay out. Declared in public/robots.txt.
  */
 import type { APIRoute } from 'astro';
 import { href } from '../lib/url';

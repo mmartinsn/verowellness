@@ -53,12 +53,10 @@ export const legal = {
 };
 
 /**
- * While the site is the GitHub Pages prototype, every page carries `noindex`. The robots.txt under
- * /verowellness/ does not protect anything (crawlers only read /robots.txt at the host root), so
- * this flag is what keeps the preview out of search. Set to `false` when moving to
- * veronicawellness.com (see README, «Despliegue»).
+ * `true` put `noindex` on every page while the site was the GitHub Pages prototype. Off since the
+ * move to veronicawellness.com (2026-10-11): pages are indexable unless they pass `noindex`.
  */
-export const prototipo = true;
+export const prototipo = false;
 
 /** Social-sharing image (1200 × 630), built by scripts/og-image.mjs. */
 export const imagenSocial = {
