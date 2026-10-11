@@ -36,21 +36,24 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
       Integrations → API access → Generate API token, con CMS, Ecommerce y Sites en «Read-only».
       Va como secret `WEBFLOW_SITE_TOKEN` del repo (lo pone Mari). El token de escritura no sale
       de la máquina de quien siembra.
-- [ ] **Pasarela**: Settings → Ecommerce → Payments → conectar Stripe (empresa de EE. UU.) y
-      PayPal. Santiago ya tiene acceso a Stripe (10-oct); se conecta en modo prueba en la sesión del
-      dominio (`DOMINIO.md`). Sin pasarela el checkout no cobra.
-- [ ] **Impuesto** (Verónica): Settings → Ecommerce → Taxes → cálculo automático en EE. UU. Las
-      clases ya están puestas en cada producto (`service-professional`, `digital-goods`,
-      `standard-exempt` para el cargo de laboratorio). El 7 % fijo del prototipo no existe en Webflow.
-- [ ] **Envío de exámenes** (Verónica): los exámenes piden dirección; hace falta al menos una zona
-      y un método de envío (el prototipo no cobraba envío; la FAQ menciona un cargo internacional).
-- [ ] **Datos de la empresa** para la tienda (dirección; opcional en Webflow).
-- [ ] **PDF de las 4 guías** (Verónica): se suben y se ponen como descarga del producto.
-- [ ] **Calendly**: las tres URL del prototipo dan 404; van las reales en Asesorías.
+- [x] **Pasarela** (11-oct): Stripe conectado con la cuenta que Verónica ya usa
+      (`DOMINIO.md`). Webflow no tiene modo de prueba: «Enable Checkout» es lo que empieza a cobrar.
+      PayPal sin conectar.
+- [ ] **Impuesto** (Verónica): el cálculo automático de EE. UU. ya está encendido, con Florida como
+      sede (la dirección de la tienda). Las clases están en cada producto (`service-professional`,
+      `digital-goods`, `standard-exempt` para el cargo de laboratorio). El 7 % fijo del prototipo no
+      existe en Webflow: falta su texto para la FAQ y para el resumen del checkout del sitio, que
+      hoy suman 7 %.
+- [x] **Envío de exámenes** (11-oct, Santiago): zona «Domestic Shipping» (EE. UU.) con el método
+      «Envío incluido», gratis por pedido, con la frase de la FAQ. Fuera de EE. UU. se contacta a
+      Verónica: no hay zona internacional.
+- [x] **Datos de la empresa** (11-oct): Veronica Wellness, 6220 NW 173rd St 719, Hialeah, FL 33015.
+- [ ] **PDF de las guías** (Verónica): se suben y se ponen como descarga del producto.
+- [x] **Calendly**: las reales en Asesorías (Mari, 11-oct).
 - [ ] **Checkout** (Mari): vestirlo con la marca (Cormorant + Nunito, ivory, charcoal, clay) y
       agregar los campos extra (teléfono, «¿cómo me conociste?», consentimiento). Apple Pay y Google
       Pay se saltan esos campos.
-- [ ] **Dominio** (`pago.veronicawellness.com`; pasos y registros en `DOMINIO.md`) y redirigir el inicio y las categorías del sitio
+- [ ] **Dominio**: `pago.veronicawellness.com` hecho el 11-oct (`DOMINIO.md`). Falta redirigir el inicio y las categorías del sitio
       de Webflow al sitio de Astro. **Las páginas de producto no se redirigen**: el puente abre
       `/product/<slug>` en un marco para usar su «Add to Cart», y con una redirección deja de
       poder leerlo.
@@ -74,8 +77,13 @@ Desde el 11-oct cada producto tiene su página de gracias en el sitio: `/gracias
 termina en ellas. Con el cobro real falta que la confirmación de pedido de Webflow
 (`pago.veronicawellness.com`) mande a la persona a la suya:
 
-- [ ] **Script en «Order Confirmation»** (como el puente: generado y aplicado por API). Lee el
-      pedido de la página y redirige:
+- [x] **Script en «Order Confirmation»** (11-oct): `npm run vw -- confirmacion --aplicar`
+      (`webflow/confirmacion.ts`, la regla en `src/lib/comercio/confirmacion.ts`). Lee los nombres
+      de los productos que Webflow pinta en la confirmación, los cruza con el snapshot y redirige.
+      **Por verificar con el primer pedido real**: que los nombres salgan en
+      `.w-commerce-commerceboldtextblock` como en la plantilla. La plantilla publicada no tiene
+      bloque de descargas, así que hoy `descargas=` va vacío y la página de gracias dice que el
+      enlace llega por correo. La regla:
   - con un examen → `/gracias/examenes/`, y `lectura=1` si el pedido trae una asesoría;
   - con una asesoría (sin exámenes) → `/gracias/<slug de la asesoría>/`;
   - solo guías → `/gracias/tienda/?guias=<ids>`;
