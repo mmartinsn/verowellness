@@ -1,6 +1,6 @@
 ---
 /**
- * Five-step checkout: datos → resumen → pago → consentimiento → confirmar, then the confirmation
+ * Five-step checkout: datos → resumen → consentimiento → pago → confirmar, then the confirmation
  * screen. It sells either one cycle (fixed price, booking embed on confirmation) or, with
  * `carrito`, the lab tests the visitor picked on /examenes/: the script then reads the selection
  * from localStorage and rewrites the summary and every amount on the page.
@@ -108,8 +108,8 @@ const config = {
 const pasos = [
   { n: 1, label: 'Tus datos' },
   { n: 2, label: 'Resumen' },
-  { n: 3, label: 'Pago' },
-  { n: 4, label: 'Consentimiento' },
+  { n: 3, label: 'Consentimiento' },
+  { n: 4, label: 'Pago' },
   { n: 5, label: 'Confirmar' },
 ];
 
@@ -347,80 +347,15 @@ const metodos = [
 
       <div class="step-actions">
         <button type="button" class="link-btn" data-goto="1">&larr; Editar mis datos</button>
-        <button type="button" class="btn btn-primary" data-goto="3"
-          >Continuar a método de pago</button
-        >
+        <button type="button" class="btn btn-primary" data-goto="3">Continuar</button>
       </div>
     </section>
 
-    <!-- STEP 3 — MÉTODO DE PAGO -->
+    <!-- STEP 3 — CONSENTIMIENTO (Mari, 2026-10-11: between the summary and the payment) -->
     <section class="step" id="step-3">
       <p class="step-eyebrow">Paso 3</p>
-      <h1 class="step-title">Método de pago</h1>
-      <p class="step-subtitle">Elige cómo prefieres completar tu pago.</p>
-
-      <div class="pay-methods" id="pay-methods">
-        {
-          metodos.map((m) => (
-            <label class="pay-method" data-method={m.id} id={`option-${m.id}`}>
-              <input type="radio" name="metodo_pago" value={m.id} />
-              <span>
-                <span class="pay-method-label">{m.label}</span>
-                <br />
-                <span class="pay-method-sub">{m.sub}</span>
-              </span>
-              <span class="pay-method-icon">{m.icon}</span>
-            </label>
-          ))
-        }
-      </div>
-
-      <!-- Panels: real integrations mount here -->
-      <div class="pay-panel" id="panel-stripe">
-        <div class="integration-placeholder">
-          INTEGRATION POINT: Stripe Elements / Payment Element<br />
-          stripe.elements().create('payment').mount('#panel-stripe')
-        </div>
-      </div>
-      <div class="pay-panel" id="panel-apple_pay">
-        <div class="integration-placeholder">
-          INTEGRATION POINT: Stripe Payment Request Button (Apple Pay)<br />
-          paymentRequestButton.mount('#panel-apple_pay')
-        </div>
-      </div>
-      <div class="pay-panel" id="panel-paypal">
-        <div class="integration-placeholder">
-          INTEGRATION POINT: PayPal Buttons SDK<br />
-          paypal.Buttons().render('#panel-paypal')
-        </div>
-      </div>
-      <div class="pay-panel" id="panel-zelle">
-        <div class="zelle-box">
-          Envía tu pago por Zelle a:
-          <strong class="addr-line">{zelle.titular}</strong>
-          <strong class="addr-line">{zelle.correo}</strong>
-          <div class="zelle-note">
-            Monto exacto a enviar: <strong class="amount" data-total>{usd(p.total)}</strong>.<br
-            /><br />
-            Tu reserva quedará marcada como <em>pendiente de verificación</em> hasta que confirmemos tu
-            pago manualmente (24–48h). Te contactaremos por email para agendar en cuanto se verifique.
-          </div>
-        </div>
-      </div>
-
-      <div class="step-actions">
-        <button type="button" class="link-btn" data-goto="2">&larr; Atrás</button>
-        <button type="button" class="btn btn-primary" id="btn-to-step4" data-goto="4" disabled>
-          Continuar
-        </button>
-      </div>
-    </section>
-
-    <!-- STEP 4 — CONSENTIMIENTO -->
-    <section class="step" id="step-4">
-      <p class="step-eyebrow">Paso 4</p>
       <h1 class="step-title">Consentimiento</h1>
-      <p class="step-subtitle">Un último paso antes de confirmar tu reserva.</p>
+      <p class="step-subtitle">Antes de continuar al pago.</p>
 
       <div class="consent-box">
         {
@@ -483,8 +418,71 @@ const metodos = [
       </div>
 
       <div class="step-actions">
+        <button type="button" class="link-btn" data-goto="2">&larr; Atrás</button>
+        <button type="button" class="btn btn-primary" id="btn-consent-next" data-goto="4" disabled>
+          Continuar
+        </button>
+      </div>
+    </section>
+
+    <!-- STEP 4 — MÉTODO DE PAGO -->
+    <section class="step" id="step-4">
+      <p class="step-eyebrow">Paso 4</p>
+      <h1 class="step-title">Método de pago</h1>
+      <p class="step-subtitle">Elige cómo prefieres completar tu pago.</p>
+
+      <div class="pay-methods" id="pay-methods">
+        {
+          metodos.map((m) => (
+            <label class="pay-method" data-method={m.id} id={`option-${m.id}`}>
+              <input type="radio" name="metodo_pago" value={m.id} />
+              <span>
+                <span class="pay-method-label">{m.label}</span>
+                <br />
+                <span class="pay-method-sub">{m.sub}</span>
+              </span>
+              <span class="pay-method-icon">{m.icon}</span>
+            </label>
+          ))
+        }
+      </div>
+
+      <!-- Panels: real integrations mount here -->
+      <div class="pay-panel" id="panel-stripe">
+        <div class="integration-placeholder">
+          INTEGRATION POINT: Stripe Elements / Payment Element<br />
+          stripe.elements().create('payment').mount('#panel-stripe')
+        </div>
+      </div>
+      <div class="pay-panel" id="panel-apple_pay">
+        <div class="integration-placeholder">
+          INTEGRATION POINT: Stripe Payment Request Button (Apple Pay)<br />
+          paymentRequestButton.mount('#panel-apple_pay')
+        </div>
+      </div>
+      <div class="pay-panel" id="panel-paypal">
+        <div class="integration-placeholder">
+          INTEGRATION POINT: PayPal Buttons SDK<br />
+          paypal.Buttons().render('#panel-paypal')
+        </div>
+      </div>
+      <div class="pay-panel" id="panel-zelle">
+        <div class="zelle-box">
+          Envía tu pago por Zelle a:
+          <strong class="addr-line">{zelle.titular}</strong>
+          <strong class="addr-line">{zelle.correo}</strong>
+          <div class="zelle-note">
+            Monto exacto a enviar: <strong class="amount" data-total>{usd(p.total)}</strong>.<br
+            /><br />
+            Tu reserva quedará marcada como <em>pendiente de verificación</em> hasta que confirmemos tu
+            pago manualmente (24–48h). Te contactaremos por email para agendar en cuanto se verifique.
+          </div>
+        </div>
+      </div>
+
+      <div class="step-actions">
         <button type="button" class="link-btn" data-goto="3">&larr; Atrás</button>
-        <button type="button" class="btn btn-primary" id="btn-to-step5" data-goto="5" disabled>
+        <button type="button" class="btn btn-primary" id="btn-pago-next" data-goto="5" disabled>
           Continuar
         </button>
       </div>
@@ -1858,8 +1856,8 @@ const metodos = [
     const stepLabels: Record<number, string> = {
       1: 'Tus datos',
       2: 'Resumen',
-      3: 'Pago',
-      4: 'Consentimiento',
+      3: 'Consentimiento',
+      4: 'Pago',
       5: 'Confirmar',
     };
     function goToStep(n: number | 'confirmation') {
@@ -1952,16 +1950,16 @@ const metodos = [
         label.querySelector('input')!.checked = true;
         $(`panel-${method}`)?.classList.add('show');
         state.payment_method = method;
-        $<HTMLButtonElement>('btn-to-step4')!.disabled = false;
+        $<HTMLButtonElement>('btn-pago-next')!.disabled = false;
       });
     });
 
-    /* ── Step 4: consent ── */
+    /* ── Step 3: consent ── */
     const checkConsent = () => {
       const ok =
         $<HTMLInputElement>('consent-terms')!.checked &&
         $<HTMLInputElement>('consent-policy')!.checked;
-      $<HTMLButtonElement>('btn-to-step5')!.disabled = !ok;
+      $<HTMLButtonElement>('btn-consent-next')!.disabled = !ok;
     };
     $('consent-terms')?.addEventListener('change', checkConsent);
     $('consent-policy')?.addEventListener('change', checkConsent);

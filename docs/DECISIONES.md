@@ -447,6 +447,11 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     las dos casillas de Verónica (puede sumar la cita de lectura), y `/legal/terminos/` muestra
     los términos (mismo origen: Textos de sección › checkout). La tienda sigue con sus casillas.
 
+47. **2026-10-11 — El consentimiento va antes del pago.** Mari: los pasos quedan Tus datos →
+    Resumen → Consentimiento → Pago → Confirmar, en todos los checkouts. El resumen sigue con
+    «Continuar»; el consentimiento bloquea hasta marcar las dos casillas. Botones renombrados
+    (`btn-consent-next`, `btn-pago-next`) y `scripts/capturas.mjs` al día.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

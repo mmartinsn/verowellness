@@ -124,26 +124,26 @@ async function recorridoCheckout(browser) {
   await page.waitForSelector('#step-2.active');
   await shot(2);
 
-  // Step 2 → 3, pick Zelle (the only method with visible content in the prototype).
+  // Step 2 → 3 — both consents required.
   await page.click('#step-2 [data-goto="3"]');
   await page.waitForSelector('#step-3.active');
-  await page.click('.pay-method[data-method="zelle"]');
-  await shot(3);
-  const total3 = await page.$eval('#panel-zelle [data-total]', (el) => el.textContent);
-  console.log(`checkout paso 3: Zelle muestra el total ${total3}`);
-  await page.click('#btn-to-step4');
-  await page.waitForSelector('#step-4.active');
-
-  // Step 4 — both consents required.
-  const disabledBefore = await page.$eval('#btn-to-step5', (b) => b.disabled);
+  const disabledBefore = await page.$eval('#btn-consent-next', (b) => b.disabled);
   await page.click('#consent-terms');
   await page.click('#consent-policy');
-  const disabledAfter = await page.$eval('#btn-to-step5', (b) => b.disabled);
+  const disabledAfter = await page.$eval('#btn-consent-next', (b) => b.disabled);
   console.log(
-    `checkout paso 4: Continuar deshabilitado antes=${disabledBefore} después=${disabledAfter} (esperado true/false)`
+    `checkout paso 3: Continuar deshabilitado antes=${disabledBefore} después=${disabledAfter} (esperado true/false)`
   );
+  await shot(3);
+  await page.click('#btn-consent-next');
+  await page.waitForSelector('#step-4.active');
+
+  // Step 4 — pick Zelle (the only method with visible content in the prototype).
+  await page.click('.pay-method[data-method="zelle"]');
   await shot(4);
-  await page.click('#btn-to-step5');
+  const total4 = await page.$eval('#panel-zelle [data-total]', (el) => el.textContent);
+  console.log(`checkout paso 4: Zelle muestra el total ${total4}`);
+  await page.click('#btn-pago-next');
   await page.waitForSelector('#step-5.active');
   await shot(5);
 
