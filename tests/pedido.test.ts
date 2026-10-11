@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { urlPedido } from '../src/lib/comercio/pedido.ts';
+import { productosDe, urlPedido, type MapaProductos } from '../src/lib/comercio/pedido.ts';
 import { leerItems } from '../src/lib/comercio/reglas.ts';
 
 const comercio = { modo: 'webflow' as const, pago: 'https://pago.example.com' };
@@ -18,5 +18,55 @@ test('lo que arma la URL lo lee igual el puente', () => {
   assert.deepEqual(
     leerItems(items).map((l) => l.producto),
     ['recetario-30-desayunos', 'guia-hormonas-30-oferta']
+  );
+});
+
+const mapa: MapaProductos = {
+  ciclos: { INITIAL_LAYER_CYCLE: 'initial-layer-cycle', LAYER_SESSION: 'layer-session' },
+  examenes: { 'gi-map': 'gi-map', 'dutch-plus-a': 'dutch-plus', 'dutch-plus-b': 'dutch-plus' },
+  guias: {
+    'hackear-tu-cerebro': { producto: 'hackear-tu-cerebro', oferta: 'hackear-tu-cerebro-oferta' },
+    'guia-glp1-retatrutida': { producto: 'guia-glp1-retatrutida' },
+  },
+};
+
+test('un ciclo con una guía agregada va con sus dos productos', () => {
+  assert.deepEqual(
+    productosDe(
+      {
+        ciclo: 'INITIAL_LAYER_CYCLE',
+        items: [],
+        guias: [{ id: 'guia-glp1-retatrutida', oferta: false }],
+      },
+      mapa
+    ),
+    ['initial-layer-cycle', 'guia-glp1-retatrutida']
+  );
+});
+
+test('los exámenes van por su producto, y la lectura por el de su asesoría', () => {
+  assert.deepEqual(
+    productosDe({ items: ['gi-map', 'dutch-plus-a'], guias: [], lectura: 'LAYER_SESSION' }, mapa),
+    ['gi-map', 'dutch-plus', 'layer-session']
+  );
+});
+
+test('en la tienda, la guía de la oferta va como su producto de oferta', () => {
+  assert.deepEqual(
+    productosDe(
+      {
+        items: ['guia-glp1-retatrutida'],
+        guias: [{ id: 'hackear-tu-cerebro', oferta: true }],
+      },
+      mapa
+    ),
+    ['guia-glp1-retatrutida', 'hackear-tu-cerebro-oferta']
+  );
+});
+
+test('lo que no está en el mapa no viaja', () => {
+  assert.deepEqual(
+    productosDe({ ciclo: 'OTRO', items: ['nada'], guias: [{ id: 'nada', oferta: true }] }, mapa),
+    []
   );
 });

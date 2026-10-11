@@ -15,7 +15,8 @@
 import { zelle } from '../../data/oferta';
 import { desglose, usd } from '../../lib/precio';
 import { href } from '../../lib/url';
-import { legal, marca } from '../../data/site';
+import { comercio, legal, marca } from '../../data/site';
+import { mapaProductos } from '../../data/pedido-webflow';
 import { terminos, casillas } from '../../data/terminos';
 import { bloque } from '../../lib/datos/bloques';
 
@@ -144,6 +145,8 @@ const metodos = [
   { id: 'paypal', label: 'PayPal', sub: 'Paga con tu cuenta de PayPal', icon: 'PAYPAL' },
   { id: 'zelle', label: 'Zelle', sub: 'Verificación manual · 24–48h', icon: 'ZELLE' },
 ];
+const enWebflow = comercio.modo === 'webflow';
+const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
 ---
 
 <div
@@ -155,6 +158,7 @@ const metodos = [
   data-gracias={gracias}
   data-solo-usa={soloUsa ? '' : undefined}
   data-extras={extras ? JSON.stringify(extras) : undefined}
+  data-webflow={webflow ? JSON.stringify(webflow) : undefined}
 >
   <main class="checkout-main" id="main">
     <div class="mobile-progress" id="mobile-progress">
@@ -470,24 +474,33 @@ const metodos = [
       </div>
 
       <!-- Panels: real integrations mount here -->
-      <div class="pay-panel" id="panel-stripe">
-        <div class="integration-placeholder">
-          INTEGRATION POINT: Stripe Elements / Payment Element<br />
-          stripe.elements().create('payment').mount('#panel-stripe')
-        </div>
-      </div>
-      <div class="pay-panel" id="panel-apple_pay">
-        <div class="integration-placeholder">
-          INTEGRATION POINT: Stripe Payment Request Button (Apple Pay)<br />
-          paymentRequestButton.mount('#panel-apple_pay')
-        </div>
-      </div>
-      <div class="pay-panel" id="panel-paypal">
-        <div class="integration-placeholder">
-          INTEGRATION POINT: PayPal Buttons SDK<br />
-          paypal.Buttons().render('#panel-paypal')
-        </div>
-      </div>
+      {
+        !enWebflow && (
+          <>
+            <div class="pay-panel" id="panel-stripe">
+              <div class="integration-placeholder">
+                INTEGRATION POINT: Stripe Elements / Payment Element
+                <br />
+                stripe.elements().create('payment').mount('#panel-stripe')
+              </div>
+            </div>
+            <div class="pay-panel" id="panel-apple_pay">
+              <div class="integration-placeholder">
+                INTEGRATION POINT: Stripe Payment Request Button (Apple Pay)
+                <br />
+                paymentRequestButton.mount('#panel-apple_pay')
+              </div>
+            </div>
+            <div class="pay-panel" id="panel-paypal">
+              <div class="integration-placeholder">
+                INTEGRATION POINT: PayPal Buttons SDK
+                <br />
+                paypal.Buttons().render('#panel-paypal')
+              </div>
+            </div>
+          </>
+        )
+      }
       <div class="pay-panel" id="panel-zelle">
         <div class="zelle-box">
           Envía tu pago por Zelle a:
@@ -1568,6 +1581,12 @@ const metodos = [
    * Checkout behaviour — a client-side prototype. Every `INTEGRATION POINT` comment marks where a
    * real system (CRM, Stripe, PayPal, Zelle verification, Calendly) plugs in.
    */
+  import {
+    productosDe,
+    urlPedido,
+    type MapaProductos,
+    type Seleccion,
+  } from '../../lib/comercio/pedido';
   type Config = {
     cycle_type: string;
     cycle_label: string;
@@ -1649,7 +1668,7 @@ const metodos = [
     } = { client: null, order: null, payment_method: null };
 
     /* ── Extras: guides, the tests' reading appointment and the lab fee (changes 12, 39–41, 46) ── */
-    type Linea = { id: string; nombre: string; precio: number };
+    type Linea = { id: string; nombre: string; precio: number; ref?: string; oferta?: boolean };
     const extras: {
       guias?: { id: string; nombre: string; precio: number; portada?: string }[];
       popupGuias?: { orden: string[]; descuento: number };
@@ -1735,7 +1754,12 @@ const metodos = [
           'input[name="lectura-opcion"]:checked'
         )?.value;
         const o = extras.lectura!.find((x) => x.id === id) ?? extras.lectura![0];
-        poner({ id: 'lectura', nombre: `Lectura: ${o.rotulo} · ${o.nombre}`, precio: o.precio });
+        poner({
+          id: 'lectura',
+          nombre: `Lectura: ${o.rotulo} · ${o.nombre}`,
+          precio: o.precio,
+          ref: o.id,
+        });
       };
       bloqueLectura.querySelectorAll('input').forEach((i) => i.addEventListener('change', leer));
     }
@@ -1765,6 +1789,7 @@ const metodos = [
           id: `guia:${g.id}`,
           nombre: `${g.nombre} (−${Math.round(desc * 100)}%)`,
           precio: r2(g.precio * (1 - desc)),
+          oferta: true,
         });
         const c = checks.find((x) => x.value === g.id);
         if (c) {
@@ -1960,11 +1985,32 @@ const metodos = [
       btn.textContent = `Confirmar y pagar ${usd(config.total)}`;
     }
 
+    const webflow: { pago: string; mapa: MapaProductos } | null = root.dataset.webflow
+      ? JSON.parse(root.dataset.webflow)
+      : null;
+    const seleccion = (): Seleccion => ({
+      ...(root!.dataset.carrito ? {} : { ciclo: config.cycle_type }),
+      items: items.map((i) => i.id),
+      guias: lineas
+        .filter((l) => l.id.startsWith('guia:'))
+        .map((l) => ({ id: l.id.slice(5), oferta: !!l.oferta })),
+      ...(lineas.find((l) => l.id === 'lectura')?.ref
+        ? { lectura: lineas.find((l) => l.id === 'lectura')!.ref }
+        : {}),
+    });
+
     $('btn-pay')?.addEventListener('click', () => {
       const btn = $<HTMLButtonElement>('btn-pay')!;
       btn.disabled = true;
       btn.textContent = 'Procesando...';
       if (state.order) state.order.payment_method = state.payment_method;
+      if (webflow && state.payment_method !== 'zelle') {
+        window.location.href = urlPedido(
+          { modo: 'webflow', pago: webflow.pago },
+          productosDe(seleccion(), webflow.mapa)
+        );
+        return;
+      }
 
       // INTEGRATION POINT — branch by provider:
       //   stripe / apple_pay → confirm PaymentIntent client-side, verify server-side via webhook

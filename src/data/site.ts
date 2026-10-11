@@ -69,6 +69,6 @@ export const imagenSocial = {
 export const copyright = `© ${new Date().getFullYear()} Veronica Wellness. Todos los derechos reservados.`;
 
 export const comercio: Comercio = {
-  modo: 'prototipo',
+  modo: 'webflow',
   pago: PAGO,
 };
