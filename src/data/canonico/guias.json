@@ -3,6 +3,7 @@
     "id": "hackear-tu-cerebro",
     "nombre": "Cómo hackear tu cerebro para dejar el azúcar y las harinas en 14 días",
     "producto": "hackear-tu-cerebro",
+    "oferta": "hackear-tu-cerebro-oferta",
     "num": "01",
     "paginas": 34,
     "tituloPortada": "Cómo hackear tu cerebro para dejar el azúcar y las harinas en 14 días",
@@ -22,8 +23,7 @@
     "nota": "Los 14 días describen la estructura de la propuesta, no un plazo garantizado de resultados. Los cambios de alimentación requieren valorar tu caso.",
     "boton": "Comprar ebook",
     "tono": "clay",
-    "orden": 1,
-    "oferta": "hackear-tu-cerebro-oferta"
+    "orden": 1
   },
   {
     "id": "recetario-30-desayunos",

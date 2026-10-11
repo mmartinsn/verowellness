@@ -297,6 +297,15 @@
     "sku": "GUIA-01"
   },
   {
+    "id": "hackear-tu-cerebro-oferta",
+    "nombre": "Cómo hackear tu cerebro para dejar el azúcar y las harinas en 14 días (−15%)",
+    "tipo": "oferta",
+    "precio": 849,
+    "impuesto": "digital-goods",
+    "enviable": false,
+    "sku": "GUIA-01-OFERTA"
+  },
+  {
     "id": "hepatic-detox-profile",
     "nombre": "Hepatic Detox Profile",
     "tipo": "examen",
@@ -385,15 +394,6 @@
     "impuesto": "digital-goods",
     "enviable": false,
     "sku": "GUIA-02"
-  },
-  {
-    "id": "hackear-tu-cerebro-oferta",
-    "nombre": "Cómo hackear tu cerebro para dejar el azúcar y las harinas en 14 días (−15%)",
-    "tipo": "oferta",
-    "precio": 849,
-    "impuesto": "digital-goods",
-    "enviable": false,
-    "sku": "GUIA-01-OFERTA"
   },
   {
     "id": "recetario-30-desayunos-oferta",
