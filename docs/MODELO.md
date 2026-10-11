@@ -131,10 +131,8 @@ Valores de funcionamiento del sitio. Hay un solo registro. Colección `ajustes`;
 | Descuento oferta | `descuento-oferta` | entero | sí | Porcentaje de descuento de la guía ofrecida en el pedido. |
 | Oferta guías | `oferta-guias` | ⇉ Guías (ordenadas) | no | Guías que se ofrecen con descuento dentro del pedido, en orden de prioridad. |
 | Cargo laboratorio | `cargo-laboratorio` | → Producto | sí | Producto del cargo de laboratorio. |
-| Wholescripts registro | `wholescripts-registro` | enlace | sí | Página de registro en Wholescripts. |
-| Wholescripts codigo | `wholescripts-codigo` | texto | no | Código de la cuenta en Wholescripts. |
-| Wholescripts apellido | `wholescripts-apellido` | texto | no | Apellido para buscar la cuenta. |
-| Wholescripts pendiente | `wholescripts-pendiente` | booleano | siempre (sí o no) | Si la cuenta de Wholescripts está por confirmar. |
+| Fullscript registro | `fullscript-registro` | enlace | sí | Enlace de registro en Fullscript (donde se compran los suplementos). |
+| Fullscript pendiente | `fullscript-pendiente` | booleano | siempre (sí o no) | Si el enlace propio de Fullscript está por confirmar. |
 | Zelle titular | `zelle-titular` | texto | sí | Titular de la cuenta de Zelle. |
 | Zelle correo | `zelle-correo` | texto | sí | Correo de la cuenta de Zelle. |
 

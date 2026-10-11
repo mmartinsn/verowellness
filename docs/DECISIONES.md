@@ -392,6 +392,27 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     `normalizarPedido` del puente) y avisa antes de enviar si alguno no cuadra. Mari y Verónica no
     tienen que decidir nada.
 
+41. **2026-10-10 — Suplementos: cambios 48–50 de Verónica** (documento «AJUSTES PAGINA WEB INICIO
+    THE METHOD 1-1 y examenes CON SUPLEMENTOS», desde la sección de suplementos, a pedido de Mari).
+    **Wholescripts pasa a Fullscript** (enlace propio de Verónica pendiente: el botón va a la
+    portada). **48:** H1 «Un suplemento no es una estrategia para sanar, es una herramienta.» y sus
+    dos párrafos. **49:** los tres puntos pasan a «El estante de Vero · No más frascos sin
+    criterio.» con sus textos; el estante abre directo con «El orden importa.» y su texto central;
+    cada frasco muestra lo que Verónica escribió por capa, **sin nombres de productos** (irían a
+    comprarlos en Amazon) y con «Cómo comprar mis marcas favoritas» hacia los pasos; acentos
+    corregidos; el enlace también va en Vías de eliminación aunque el documento no lo repetía.
+    **50:** paso 2 con su texto en tono neutro (fuera «juntas»), título «Elige tus suplementos»
+    (Codex); «Ir a Fullscript»; nota «Solo para envíos en USA» con el Instagram para otros países.
+    **En el modelo de Webflow (decisión 38):** `ajustes.wholescripts*` → `fullscriptRegistro` y
+    `fullscriptPendiente` (fuera código y apellido, que Fullscript no usa); dos secciones nuevas en
+    Textos de sección: `suplementos/orden` (texto central) y `suplementos/frascos` (5 bloques, el
+    orden es la Layer; `texto` = introducción, `items`, `nota` = cierre, `enlaceTexto` = el enlace).
+    La colección **Suplementos** (17 productos con marca) y la pregunta `inicio-01` ya no alimentan
+    esta página. **Para Santiago:** `vw esquema` y `--aplicar` (campos de Fullscript), `vw sembrar
+--aplicar`, y decidir si se borran en Webflow los campos de Wholescripts y la colección
+    Suplementos. Hasta entonces la auditoría marcará la siembra pendiente. Los cambios 46 y 47 del
+    documento (anteriores a suplementos) no se tocaron.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

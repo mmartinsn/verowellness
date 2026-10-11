@@ -1,7 +1,7 @@
 ---
 /**
  * Suplementos — short page: why Verónica recommends supplements the way she does, and how to buy
- * them on Wholescripts (she recommends, she does not sell; Mari, 2026-09-23, after
+ * them on Fullscript (she recommends, she does not sell; Mari, 2026-09-23, after
  * nutriwhitesalud.com/supplement). The hero is Verónica's photo; the «Información del criterio»
  * label sits, full size, beside the three access steps;
  * «El estante de Vero» (one bottle per Layer) holds her tips and picks (2026-09-24).
@@ -15,7 +15,7 @@ import { Image } from 'astro:assets';
 import Etiqueta from '../components/suplementos/Etiqueta.astro';
 import fotoSuplementos from '../assets/fotos/veronica-suplementos.png';
 import Estante from '../components/suplementos/Estante.astro';
-import { wholescripts, principios, avisoSuplementos } from '../data/suplementos';
+import { fullscript, contactoFueraUsa, principios, avisoSuplementos } from '../data/suplementos';
 import { grafoSitio } from '../lib/schema';
 import { marca } from '../data/site';
 import { href } from '../lib/url';
@@ -25,7 +25,7 @@ const tonos = ['clay-deep', 'sage-deep', 'rose-deep'];
 
 <SiteLayout
   title="Suplementos recomendados para ti | Veronica Wellness"
-  description="Conoce cómo valoro los suplementos dentro de tu plan de nutrición. Revisa los criterios de selección y los pasos para acceder a Wholescripts."
+  description="Conoce cómo valoro los suplementos dentro de tu plan de nutrición. Revisa los criterios de selección y los pasos para acceder a Fullscript."
   theme="inicio"
   mobileCta={false}
   jsonLd={grafoSitio(Astro.site)}
@@ -36,13 +36,18 @@ const tonos = ['clay-deep', 'sage-deep', 'rose-deep'];
       <div class="s-copy">
         <span class="eyebrow">Suplementos</span>
         <h1 id="s-titulo" class="s-titulo" data-split>
-          Un suplemento no es una estrategia. <em class="grad-text"
-            >Es una herramienta dentro de una.</em
+          Un suplemento no es una estrategia para sanar, <em class="grad-text"
+            >es una herramienta.</em
           >
         </h1>
         <p class="s-bajada">
-          No vendo suplementos. Cuando uno tiene sentido para tu contexto, te lo recomiendo — y lo
-          compras directamente en Wholescripts.
+          Que un suplemento esté de moda o le funcione a alguien más no significa que sea para ti.
+          Empieza por entender qué necesita tu cuerpo hoy.
+        </p>
+        <p class="s-bajada">
+          La marca, la procedencia y la calidad también cuentan. Por eso, para comprar online,
+          prefiero Fullscript: una plataforma que conecta las recomendaciones de profesionales de
+          salud con suplementos de marcas evaluadas y controles de almacenamiento y distribución.
         </p>
         <div class="s-ctas">
           <a class="btn btn-primary" href="#acceso" data-magnet="0.25">Cómo acceder</a>
@@ -68,8 +73,8 @@ const tonos = ['clay-deep', 'sage-deep', 'rose-deep'];
 
   <section class="s-principios" aria-labelledby="s-por-que">
     <div class="wrap">
-      <span class="eyebrow">Por qué los recomiendo así</span>
-      <h2 id="s-por-que" class="s-h2">Menos frascos. Más criterio.</h2>
+      <span class="eyebrow">El estante de Vero</span>
+      <h2 id="s-por-que" class="s-h2">No más frascos sin criterio.</h2>
       <ol class="p-lista">
         {
           principios.map((p, i) => (
@@ -98,49 +103,44 @@ const tonos = ['clay-deep', 'sage-deep', 'rose-deep'];
             <li>
               <span class="a-n">1</span>
               <div>
-                <strong>Regístrate en Wholescripts</strong>
-                <p>
-                  Crea tu cuenta con el enlace de abajo{
-                    wholescripts.codigo && (
-                      <>
-                        {' '}
-                        y el código de referido <code>{wholescripts.codigo}</code>
-                      </>
-                    )
-                  }{
-                    wholescripts.apellido && (
-                      <>
-                        . Apellido de la profesional: <code>{wholescripts.apellido}</code>
-                      </>
-                    )
-                  }.
-                </p>
+                <strong>Regístrate en Fullscript</strong>
+                <p>Crea tu cuenta con el enlace de abajo.</p>
               </div>
             </li>
             <li>
               <span class="a-n">2</span>
               <div>
-                <strong>Busca lo que está en tu plan</strong>
-                <p>Compra solo lo que definimos juntas en tu Layer Plan.</p>
+                <strong>Elige tus suplementos</strong>
+                <p>
+                  Puedes comprar los suplementos que más sientas que necesitas. Recuerda que las
+                  capas se trabajan combinadas, de acuerdo a tus necesidades: no son fases aisladas.
+                  Si ya estás en asesorías, te llegarán a tu correo los que definimos en tu Layer
+                  Plan.
+                </p>
               </div>
             </li>
             <li>
               <span class="a-n">3</span>
               <div>
                 <strong>Recíbelo en casa</strong>
-                <p>El pago y el envío los gestiona Wholescripts.</p>
+                <p>El pago y el envío los gestiona Fullscript.</p>
               </div>
             </li>
           </ol>
           <a
             class="a-btn"
-            href={wholescripts.registro}
+            href={fullscript.registro}
             target="_blank"
             rel="noopener"
             data-magnet="0.2"
           >
-            Ir a Wholescripts <span aria-hidden="true">↗</span>
+            Ir a Fullscript <span aria-hidden="true">↗</span>
           </a>
+          <p class="a-nota">
+            <strong>Solo para envíos en USA.</strong> Si estás en otro país,
+            <a href={contactoFueraUsa} target="_blank" rel="noopener">escríbeme por Instagram</a>
+            para evaluar la disponibilidad de logística.
+          </p>
         </div>
       </div>
       <!-- The criterion label, at full size where it can be read (Mari, 2026-09-24). -->
@@ -414,6 +414,24 @@ const tonos = ['clay-deep', 'sage-deep', 'rose-deep'];
   }
   .a-btn:hover {
     background: var(--color-white);
+  }
+  .a-nota {
+    margin-top: 18px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 1px solid rgb(240 196 174 / 0.35);
+    background: rgb(255 255 255 / 0.06);
+    font-size: 14px;
+    line-height: 1.55;
+    color: rgb(251 250 246 / 0.82);
+  }
+  .a-nota strong {
+    color: #f0c4ae;
+  }
+  .a-nota a {
+    color: var(--color-bone);
+    font-weight: 700;
+    border-bottom: 1px solid rgb(251 250 246 / 0.45);
   }
 
   /* ── Note ── */

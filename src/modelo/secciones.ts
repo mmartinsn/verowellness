@@ -49,6 +49,8 @@ export const SECCIONES: readonly Seccion[] = [
   una('suplementos', 'etiqueta-no', 'items'),
   varias('suplementos', 'principios', 'titulo', 'texto'),
   una('suplementos', 'aviso', 'texto'),
+  una('suplementos', 'orden', 'texto'),
+  varias('suplementos', 'frascos', 'items'),
   una('tienda', 'aviso-legal', 'texto'),
 ];
 

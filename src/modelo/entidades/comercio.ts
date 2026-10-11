@@ -114,10 +114,12 @@ export const ajustes = entidad({
       ayuda: 'Guías que se ofrecen con descuento dentro del pedido, en orden de prioridad.',
     }),
     cargoLaboratorio: referencia('producto', { ayuda: 'Producto del cargo de laboratorio.' }),
-    wholescriptsRegistro: enlace({ ayuda: 'Página de registro en Wholescripts.' }),
-    wholescriptsCodigo: texto({ requerido: false, ayuda: 'Código de la cuenta en Wholescripts.' }),
-    wholescriptsApellido: texto({ requerido: false, ayuda: 'Apellido para buscar la cuenta.' }),
-    wholescriptsPendiente: booleano({ ayuda: 'Si la cuenta de Wholescripts está por confirmar.' }),
+    fullscriptRegistro: enlace({
+      ayuda: 'Enlace de registro en Fullscript (donde se compran los suplementos).',
+    }),
+    fullscriptPendiente: booleano({
+      ayuda: 'Si el enlace propio de Fullscript está por confirmar.',
+    }),
     zelleTitular: texto({ ayuda: 'Titular de la cuenta de Zelle.' }),
     zelleCorreo: texto({ ayuda: 'Correo de la cuenta de Zelle.' }),
   },

@@ -63,10 +63,8 @@ CREATE TABLE ajustes (
   nombre text NOT NULL,
   descuento_oferta integer NOT NULL,
   cargo_laboratorio text NOT NULL REFERENCES productos (id),
-  wholescripts_registro text NOT NULL,
-  wholescripts_codigo text,
-  wholescripts_apellido text,
-  wholescripts_pendiente boolean NOT NULL DEFAULT false,
+  fullscript_registro text NOT NULL,
+  fullscript_pendiente boolean NOT NULL DEFAULT false,
   zelle_titular text NOT NULL,
   zelle_correo text NOT NULL
 );

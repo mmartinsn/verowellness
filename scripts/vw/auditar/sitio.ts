@@ -9,8 +9,7 @@ const S = 'sitio';
 const RECURSO = new RegExp(`(?:src|href)="(${BASE}/_astro/[^"]+)"`, 'g');
 const DIST = path.resolve('dist');
 const PESO_MAXIMO = 2_500_000;
-const EXTERNOS_VIGILADOS =
-  /^https:\/\/(calendly\.com|ig\.me|www\.instagram\.com|www\.wholescripts\.com)/;
+const EXTERNOS_VIGILADOS = /^https:\/\/(calendly\.com|ig\.me|www\.instagram\.com|fullscript\.com)/;
 
 function archivos(carpeta: string): string[] {
   return readdirSync(carpeta).flatMap((n) => {

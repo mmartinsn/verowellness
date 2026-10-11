@@ -5,8 +5,8 @@
  * bottle (or tapping it) lifts it and shows its card: what Verónica reviews in that Layer before
  * supplementing, her line for the Layer as the tip, and her picks.
  *
- * Every word is Verónica's (data/layers, the FAQ answer). The picks live in data/suplementos
- * `recomendaciones` (from NutriWhite's list, placed by Layer; pending Verónica's confirmation).
+ * Every word is Verónica's (data/layers; the central text and each bottle's contents are her
+ * change 49 of 2026-10-10, in data/suplementos `tipOrden` and `recomendaciones`).
  */
 import { layers } from '../../data/layers';
 import { recomendaciones, tipOrden } from '../../data/suplementos';
@@ -25,7 +25,6 @@ const etiqueta = (color: string) =>
 <section class="estante-sec" aria-labelledby="estante-titulo">
   <div class="wrap">
     <div class="e-cabeza">
-      <span class="eyebrow">El estante de Vero</span>
       <h2 id="estante-titulo" class="e-h2">El orden <em class="grad-text">importa.</em></h2>
       <p class="e-tip">{tipOrden}</p>
     </div>
@@ -63,7 +62,7 @@ const etiqueta = (color: string) =>
       <div class="fichas">
         {
           layers.map((l, i) => {
-            const picks = recomendaciones[l.num];
+            const frasco = recomendaciones[l.num];
             return (
               <article
                 id={`ficha-${l.num}`}
@@ -85,20 +84,17 @@ const etiqueta = (color: string) =>
                 </div>
                 <div class="f-der">
                   <p class="f-label">Mis recomendaciones</p>
-                  {picks.length > 0 ? (
-                    <ul class="f-picks">
-                      {picks.map((p) => (
-                        <li>
-                          <span class="p-nom">{p.nombre}</span>
-                          <span class="p-marca">{p.marca}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p class="f-vacio">
-                      Se definen en tu Layer Plan, según lo que muestre esta Layer.{' '}
-                      <a href="#acceso">Cómo acceder →</a>
-                    </p>
+                  {frasco.intro && <p class="f-intro">{frasco.intro}</p>}
+                  <ul class="f-picks">
+                    {frasco.items.map((t) => (
+                      <li>{t}</li>
+                    ))}
+                  </ul>
+                  {frasco.cierre && <p class="f-vacio">{frasco.cierre}</p>}
+                  {frasco.comprar && (
+                    <a class="f-comprar" href="#acceso">
+                      {frasco.comprar} <span aria-hidden="true">→</span>
+                    </a>
                   )}
                 </div>
               </article>
@@ -119,6 +115,8 @@ const etiqueta = (color: string) =>
   }
   .e-cabeza {
     max-width: 780px;
+    margin-inline: auto;
+    text-align: center;
   }
   .e-h2 {
     font-family: var(--font-serif);
@@ -355,26 +353,62 @@ const etiqueta = (color: string) =>
     background: color-mix(in srgb, var(--tono) 26%, transparent);
     color: var(--color-charcoal);
   }
-  .f-picks li {
-    display: flex;
+  .f-picks {
     flex-direction: column;
-    gap: 2px;
-    padding: 10px 16px;
+  }
+  .f-picks li {
+    position: relative;
+    padding: 9px 14px 9px 34px;
     border-radius: 12px;
+    background: color-mix(in srgb, var(--tono) 14%, var(--color-white));
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--color-charcoal);
+  }
+  .f-picks li::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 15px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--tono);
+  }
+  .f-intro {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgb(35 34 30 / 0.8);
+  }
+  .f-intro + .f-picks,
+  .f-picks + .f-vacio,
+  .f-picks + .f-comprar {
+    margin-top: 12px;
+  }
+  .f-comprar {
+    display: inline-flex;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 11px 18px;
+    border-radius: var(--radius-pill);
     background: var(--color-charcoal);
     color: var(--color-bone);
-  }
-  .p-nom {
-    font-size: 14.5px;
-    font-weight: 700;
-    line-height: 1.2;
-  }
-  .p-marca {
-    font-size: 10.5px;
+    font-size: 13px;
     font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-clay);
+    letter-spacing: 0.04em;
+    transition: background 0.25s ease;
+  }
+  .f-comprar:hover {
+    background: #8a4b31;
+  }
+  @media (max-width: 640px) {
+    .f-comprar {
+      padding: 11px 14px;
+      font-size: 12.5px;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
   }
   .f-vacio {
     font-size: 15px;
