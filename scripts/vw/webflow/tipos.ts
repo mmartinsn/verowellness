@@ -46,3 +46,8 @@ export interface PrecioWf {
   unit: string;
   currency?: string;
 }
+
+export interface DominioWf {
+  id: string;
+  url: string;
+}

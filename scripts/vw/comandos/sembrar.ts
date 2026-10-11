@@ -3,7 +3,13 @@ import { informarProblemas, problemasDe } from '../comun/problemas.ts';
 import { leerSnapshot } from '../comun/snapshot.ts';
 import { leerSitio } from '../webflow/conexion.ts';
 import { incompatibles, planEsquema } from '../webflow/esquema.ts';
-import { avisoPendientes, decidir, pendientesDePublicar } from '../webflow/publicacion.ts';
+import {
+  avisoPendientes,
+  decidir,
+  dominiosAPublicar,
+  pendientesDePublicar,
+  publicadoEn,
+} from '../webflow/publicacion.ts';
 import { sembrar, type Resumen } from '../webflow/sembrar.ts';
 
 const pendiente = (r: Resumen) => r.crear + r.actualizar;
@@ -46,12 +52,13 @@ export async function ejecutar(args: string[], abrir = leerSitio): Promise<numbe
   if (paso === 'seco' && total)
     console.log('En seco: nada se escribió. Repite con --aplicar para ejecutarlo.');
   if (paso !== 'aplicar') return paso === 'negar' ? 1 : 0;
+  const dominios = await dominiosAPublicar(sitio.api);
   await sembrar(sitio, tabla, true);
-  await sitio.api.publicarSitio();
+  await sitio.api.publicarSitio(dominios);
   const segunda = await sembrar(await abrir(), tabla, false);
   const restante = segunda.reduce((n, r) => n + pendiente(r), 0);
   console.log(
-    `Aplicado y publicado en webflow.io (${sitio.api.c.solicitudes} solicitudes). Segunda vuelta:`
+    `Aplicado y publicado en ${publicadoEn(dominios)} (${sitio.api.c.solicitudes} solicitudes). Segunda vuelta:`
   );
   imprimir(segunda);
   return restante === 0 ? 0 : 1;

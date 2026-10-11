@@ -6,6 +6,7 @@ import { ejecutar as sembrar } from '../scripts/vw/comandos/sembrar.ts';
 import { leerSnapshot } from '../scripts/vw/comun/snapshot.ts';
 import { bajar } from '../scripts/vw/webflow/bajar.ts';
 import { ARCHIVO_PUENTE } from '../scripts/vw/comercio/puente.ts';
+import { PAGO } from '../src/lib/despliegue.ts';
 import { T1, T2, colecciones, item, webflowFalso } from './apoyo/webflow-falso.ts';
 
 const conCambioSinPublicar = { lastUpdated: T2, lastPublished: T1 };
@@ -53,6 +54,34 @@ test('puente --aplicar escribe el código cuando no hay nada pendiente', async (
   );
   assert.deepEqual(escrituras, ['escribirCodigoLibre']);
 });
+
+const pagoPropio = !new URL(PAGO).host.endsWith('.webflow.io');
+
+test(
+  'puente --aplicar no escribe nada si el dominio de pago no está verificado en Webflow',
+  { skip: !pagoPropio },
+  async () => {
+    const { sitio, escrituras } = webflowFalso({ dominios: [] });
+    await assert.rejects(
+      puente(['--aplicar'], async () => sitio),
+      /verificado/
+    );
+    assert.deepEqual(escrituras, []);
+  }
+);
+
+test(
+  'sembrar --aplicar no escribe nada si el dominio de pago no está verificado en Webflow',
+  { skip: !pagoPropio },
+  async () => {
+    const { sitio, escrituras } = webflowFalso({ dominios: [] });
+    await assert.rejects(
+      sembrar(['--aplicar'], async () => sitio),
+      /verificado/
+    );
+    assert.deepEqual(escrituras, []);
+  }
+);
 
 test('bajar aborta si a Webflow le falta un campo del modelo', async () => {
   const lista = colecciones();

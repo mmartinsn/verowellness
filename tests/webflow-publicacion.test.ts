@@ -3,11 +3,57 @@ import assert from 'node:assert/strict';
 import {
   avisoPendientes,
   decidir,
+  dominiosAPublicar,
   itemsSinPublicar,
   pendientesDePublicar,
+  publicadoEn,
   sitioSinPublicar,
 } from '../scripts/vw/webflow/publicacion.ts';
+import type { DominioWf } from '../scripts/vw/webflow/tipos.ts';
 import { T1, T2, item, webflowFalso } from './apoyo/webflow-falso.ts';
+
+const conDominios = (dominios: DominioWf[]) => {
+  const llamadas: string[] = [];
+  return {
+    llamadas,
+    api: {
+      dominiosPropios: async () => {
+        llamadas.push('dominiosPropios');
+        return dominios;
+      },
+    },
+  };
+};
+
+test('con la caja en webflow.io se publica solo ahí, sin preguntar por dominios', async () => {
+  const { api, llamadas } = conDominios([]);
+  assert.deepEqual(
+    await dominiosAPublicar(api, 'https://veronicas-radical-site-497b87.webflow.io'),
+    []
+  );
+  assert.deepEqual(llamadas, []);
+  assert.equal(publicadoEn([], 'https://veronicas-radical-site-497b87.webflow.io'), 'webflow.io');
+});
+
+test('con la caja en un dominio propio verificado se publica también en él', async () => {
+  const pago = 'https://pago.veronicawellness.com';
+  for (const url of ['pago.veronicawellness.com', 'https://pago.veronicawellness.com/']) {
+    const { api } = conDominios([
+      { id: 'otro', url: 'veronicawellness.com' },
+      { id: 'd-pago', url },
+    ]);
+    assert.deepEqual(await dominiosAPublicar(api, pago), ['d-pago']);
+  }
+  assert.equal(publicadoEn(['d-pago'], pago), 'webflow.io y pago.veronicawellness.com');
+});
+
+test('con la caja en un dominio propio sin verificar se niega', async () => {
+  const { api } = conDominios([{ id: 'otro', url: 'veronicawellness.com' }]);
+  await assert.rejects(
+    dominiosAPublicar(api, 'https://pago.veronicawellness.com'),
+    /pago\.veronicawellness\.com verificado/
+  );
+});
 
 test('un ítem editado después de publicarse está pendiente', () => {
   assert.deepEqual(

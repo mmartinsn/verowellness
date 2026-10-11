@@ -3,7 +3,13 @@ import { bandera, opcion } from '../comun/args.ts';
 import { leerSnapshot } from '../comun/snapshot.ts';
 import { ARCHIVO_PUENTE, generarPuente, VOLVER } from '../comercio/puente.ts';
 import { leerSitio } from '../webflow/conexion.ts';
-import { avisoPendientes, decidir, pendientesDePublicar } from '../webflow/publicacion.ts';
+import {
+  avisoPendientes,
+  decidir,
+  dominiosAPublicar,
+  pendientesDePublicar,
+  publicadoEn,
+} from '../webflow/publicacion.ts';
 
 const SLUG_PAGINA = 'pedido';
 
@@ -30,8 +36,11 @@ export async function ejecutar(args: string[], abrir = leerSitio): Promise<numbe
   if (paso === 'seco')
     console.log('La página «Pedido» tiene otra versión. Repite con --aplicar para publicarla.');
   if (paso !== 'aplicar') return 1;
+  const dominios = await dominiosAPublicar(api);
   await api.escribirCodigoLibre(pagina.id, 'footer', codigo);
-  await api.publicarSitio();
-  console.log('Puente escrito en la página «Pedido» y sitio publicado en webflow.io.');
+  await api.publicarSitio(dominios);
+  console.log(
+    `Puente escrito en la página «Pedido» y sitio publicado en ${publicadoEn(dominios)}.`
+  );
   return 0;
 }

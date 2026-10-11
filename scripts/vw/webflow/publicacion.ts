@@ -1,6 +1,7 @@
+import { PAGO } from '../../../src/lib/despliegue.ts';
 import type { Sitio } from './conexion.ts';
 import { coleccionesCms } from './esquema.ts';
-import type { ColeccionWf, ItemWf } from './tipos.ts';
+import type { ColeccionWf, DominioWf, ItemWf } from './tipos.ts';
 
 export interface Lectura {
   vivos: Map<string, ItemWf[]>;
@@ -70,6 +71,25 @@ export const sinPublicar = (fechas: Fechas, { vivos, borradores }: Lectura): str
 
 export const pendientesDePublicar = async (sitio: Sitio): Promise<string[]> =>
   sinPublicar(await sitio.api.sitio(), await leerColecciones(sitio));
+
+const hostDe = (url: string) => url.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+
+export async function dominiosAPublicar(
+  api: { dominiosPropios(): Promise<DominioWf[]> },
+  pago = PAGO
+): Promise<string[]> {
+  const host = hostDe(pago);
+  if (host.endsWith('.webflow.io')) return [];
+  const dominio = (await api.dominiosPropios()).find((d) => hostDe(d.url) === host);
+  if (!dominio)
+    throw new Error(
+      `Webflow no tiene ${host} verificado (Publishing → Verify domain): la publicación no lo alcanzaría.`
+    );
+  return [dominio.id];
+}
+
+export const publicadoEn = (dominios: string[], pago = PAGO) =>
+  dominios.length ? `webflow.io y ${hostDe(pago)}` : 'webflow.io';
 
 export const decidir = (aplicar: boolean, escrituras: number, pendientes: number): Paso =>
   !aplicar ? 'seco' : escrituras === 0 ? 'nada' : pendientes > 0 ? 'negar' : 'aplicar';

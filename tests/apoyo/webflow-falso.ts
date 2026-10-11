@@ -1,3 +1,4 @@
+import { PAGO } from '../../src/lib/despliegue.ts';
 import type { Sitio } from '../../scripts/vw/webflow/conexion.ts';
 import {
   CATEGORIAS,
@@ -8,7 +9,7 @@ import {
   SLUG_SKUS,
 } from '../../scripts/vw/webflow/esquema.ts';
 import type { Fechas } from '../../scripts/vw/webflow/publicacion.ts';
-import type { ColeccionWf, ItemWf } from '../../scripts/vw/webflow/tipos.ts';
+import type { ColeccionWf, DominioWf, ItemWf } from '../../scripts/vw/webflow/tipos.ts';
 
 export const T1 = '2026-10-10T08:00:00.000Z';
 export const T2 = '2026-10-10T09:00:00.000Z';
@@ -71,6 +72,7 @@ export function webflowFalso(
     borradores?: Record<string, ItemWf[]>;
     colecciones?: ColeccionWf[];
     codigo?: string;
+    dominios?: DominioWf[];
   } = {}
 ): Falso {
   const escrituras: string[] = [];
@@ -88,6 +90,7 @@ export function webflowFalso(
     productos: async () => [],
     paginas: async () => [{ id: 'p-pedido', slug: 'pedido', title: 'Pedido', draft: false }],
     codigoLibre: async () => opciones.codigo ?? 'versión vieja',
+    dominiosPropios: async () => opciones.dominios ?? [{ id: 'd-pago', url: new URL(PAGO).host }],
     escribirCodigoLibre: anota('escribirCodigoLibre'),
     publicarSitio: anota('publicarSitio'),
     crearProducto: anota('crearProducto'),

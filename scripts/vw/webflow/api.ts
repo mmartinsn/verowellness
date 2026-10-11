@@ -1,5 +1,5 @@
 import type { ClienteWebflow } from './cliente.ts';
-import type { CampoWf, ColeccionWf, ItemWf, ProductoWf } from './tipos.ts';
+import type { CampoWf, ColeccionWf, DominioWf, ItemWf, ProductoWf } from './tipos.ts';
 
 export interface NuevoCampo {
   type: string;
@@ -146,8 +146,18 @@ export class ApiWebflow {
     return this.c.pedir('PUT', `/pages/${pagina}/custom_code/freeform/${lugar}`, { content });
   }
 
-  publicarSitio() {
-    return this.c.post(`/sites/${this.c.sitio}/publish`, { publishToWebflowSubdomain: true });
+  async dominiosPropios(): Promise<DominioWf[]> {
+    const r = await this.c.get<{ customDomains?: DominioWf[] }>(
+      `/sites/${this.c.sitio}/custom_domains`
+    );
+    return r.customDomains ?? [];
+  }
+
+  publicarSitio(customDomains: string[] = []) {
+    return this.c.post(`/sites/${this.c.sitio}/publish`, {
+      publishToWebflowSubdomain: true,
+      ...(customDomains.length ? { customDomains } : {}),
+    });
   }
 
   sitio() {
