@@ -2,7 +2,16 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { auditarComercio } from '../scripts/vw/auditar/comercio.ts';
 import { colecciones } from '../scripts/vw/auditar/limites.ts';
+import { estadoEnlace } from '../scripts/vw/auditar/sitio.ts';
 import { coleccionesCms } from '../scripts/vw/webflow/esquema.ts';
+
+test('un enlace externo está caído con 404, 410, 5xx o sin respuesta; 401, 403 y 429 bloquean robots', () => {
+  assert.equal(estadoEnlace(200), 'vivo');
+  assert.equal(estadoEnlace(301), 'vivo');
+  for (const s of [401, 403, 429]) assert.equal(estadoEnlace(s), 'bloquea robots');
+  for (const s of [400, 404, 410, 500, 503]) assert.equal(estadoEnlace(s), 'caído');
+  assert.equal(estadoEnlace(null), 'caído');
+});
 
 const delModelo = () => [...coleccionesCms().map((e) => e.coleccion), 'product', 'sku', 'category'];
 

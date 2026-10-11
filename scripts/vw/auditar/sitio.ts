@@ -55,13 +55,25 @@ async function enlacesExternos(): Promise<Verificacion> {
       if (EXTERNOS_VIGILADOS.test(href)) urls.add(href.replaceAll('&amp;', '&'));
   for (const a of leerSnapshot().asesoria) urls.add(a.calendlyUrl as string);
   const caidos: string[] = [];
+  const bloquean: string[] = [];
   for (const url of urls) {
     const r = await fetch(url, { redirect: 'follow' }).catch(() => null);
-    if (!r || r.status >= 400) caidos.push(`${url} (${r?.status ?? 'sin respuesta'})`);
+    const estado = estadoEnlace(r?.status ?? null);
+    if (estado === 'caído') caidos.push(`${url} (${r?.status ?? 'sin respuesta'})`);
+    if (estado === 'bloquea robots') bloquean.push(`${url} (${r?.status})`);
   }
+  const nota = bloquean.length ? `bloquean robots: ${bloquean.join(' · ')}` : undefined;
   return caidos.length === 0
-    ? ok(S, 'enlaces externos', urls.size)
+    ? ok(S, 'enlaces externos', urls.size, nota)
     : hallazgo(S, 'enlaces externos', caidos.join(' · '), caidos.length);
+}
+
+const BLOQUEO_A_ROBOTS = new Set([401, 403, 429]);
+
+export function estadoEnlace(status: number | null): 'vivo' | 'bloquea robots' | 'caído' {
+  if (status === null) return 'caído';
+  if (status < 400) return 'vivo';
+  return BLOQUEO_A_ROBOTS.has(status) ? 'bloquea robots' : 'caído';
 }
 
 function seo(): Verificacion {
