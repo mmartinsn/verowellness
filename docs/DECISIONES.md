@@ -481,6 +481,12 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     de los 6 meses y el botón al checkout del Next. Titular, frase y botón: Codex (Textos de
     sección › asesorias › pacientes; siembra pendiente).
 
+51. **2026-10-11 — Exámenes: aviso «solo USA».** Bajo el aviso de que los exámenes no son
+    obligatorios: «Los exámenes son válidos solo para pago en USA. Si te encuentras en
+    Latinoamérica, comunícate conmigo», con el enlace al Instagram de Verónica (el mismo de
+    «¿Ya eres mi paciente?»). Se habló de WhatsApp (botón sin el número escrito, aunque va en el
+    enlace); Mari eligió Instagram.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
