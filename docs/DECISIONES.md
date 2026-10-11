@@ -430,6 +430,11 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     con una frase incompleta («Si no puede prestarse el servicio ni acordarse una alternativa
     razonable.»); se publicaron tal cual.
 
+44. **2026-10-11 — Calendly real.** Mari pasó el enlace de Verónica:
+    `https://calendly.com/verodudamell/asesoria-nutricional` (responde 200). Va en las tres
+    asesorías (Layer Session, Initial y Next), en la confirmación después de pagar; los tres
+    enlaces de ejemplo de `calendly.com/veronicawellness` daban 404. Siembra pendiente para Santiago.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

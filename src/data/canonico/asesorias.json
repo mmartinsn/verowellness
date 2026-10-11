@@ -20,7 +20,7 @@
     ],
     "confirmacionTitulo": "¡Listo, bienvenida!",
     "confirmacionTexto": "Tu pago está confirmado. Agenda tu cita a continuación; recibirás The Layer Assessment por email antes de la cita.",
-    "calendlyUrl": "https://calendly.com/veronicawellness/layer-session",
+    "calendlyUrl": "https://calendly.com/verodudamell/asesoria-nutricional",
     "calendlyEtiqueta": "Calendly — Layer Session booking",
     "publica": true,
     "orden": 1
@@ -51,7 +51,7 @@
     "bonus": "Incluye gratis la «Guía de alimentación anti-inflamatoria como estilo de vida».",
     "confirmacionTitulo": "¡Listo, bienvenida!",
     "confirmacionTexto": "Tu Initial Layer Cycle está confirmado. Agenda tu primera sesión a continuación — recibirás The Layer Assessment por email antes de tu cita.",
-    "calendlyUrl": "https://calendly.com/veronicawellness/layer-assessment",
+    "calendlyUrl": "https://calendly.com/verodudamell/asesoria-nutricional",
     "calendlyEtiqueta": "Calendly — Layer Assessment booking",
     "publica": true,
     "orden": 2
@@ -78,7 +78,7 @@
     "notaPie": "Si tienes 6 meses o más sin asistir a una asesoría, deberás adquirir nuevamente el Initial Layer Cycle, ya que es necesario plantear tu estrategia desde cero.",
     "confirmacionTitulo": "¡Listo, seguimos!",
     "confirmacionTexto": "Tu Next Layer Cycle está confirmado. Agenda tu próxima sesión a continuación.",
-    "calendlyUrl": "https://calendly.com/veronicawellness/next-layer-session",
+    "calendlyUrl": "https://calendly.com/verodudamell/asesoria-nutricional",
     "calendlyEtiqueta": "Calendly — Next Layer session booking",
     "publica": false,
     "orden": 3
