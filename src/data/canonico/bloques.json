@@ -833,5 +833,93 @@
     "texto": "Puedes aceptar, rechazar o pedir aclaraciones sobre cualquier recomendación. Reconoces que omitir información relevante, modificar por tu cuenta una recomendación o aplicarla contra una indicación médica puede aumentar riesgos. La responsabilidad por un daño se determinará según sus causas, las actuaciones de cada parte y la legislación aplicable; no se atribuye automáticamente toda consecuencia a la persona usuaria.\n\nAceptar estos términos no garantiza que no habrá malestar ni implica una renuncia general a reclamar. Veronica Wellness conserva la responsabilidad que legalmente le corresponda por sus propias actuaciones. Estas condiciones tampoco autorizan actividades fuera del alcance permitido ni sustituyen las explicaciones y precauciones individuales del servicio.",
     "items": [],
     "marcado": false
+  },
+  {
+    "id": "checkout-gracias-pasos-1",
+    "nombre": "checkout · gracias-pasos · 1",
+    "pagina": "checkout",
+    "seccion": "gracias-pasos",
+    "orden": 1,
+    "titulo": "Reserva tu cita",
+    "texto": "Reserva tu primera cita dentro de los 30 días posteriores a la compra.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-gracias-pasos-2",
+    "nombre": "checkout · gracias-pasos · 2",
+    "pagina": "checkout",
+    "seccion": "gracias-pasos",
+    "orden": 2,
+    "titulo": "Confirma tu asistencia",
+    "texto": "Responde al correo para confirmar tu asistencia al menos 12 horas antes.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-gracias-pasos-3",
+    "nombre": "checkout · gracias-pasos · 3",
+    "pagina": "checkout",
+    "seccion": "gracias-pasos",
+    "orden": 3,
+    "titulo": "Envía tus formularios",
+    "texto": "Envía todos los formularios completos a más tardar 30 minutos antes; sin ellos no puedo iniciar la sesión.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-gracias-pasos-4",
+    "nombre": "checkout · gracias-pasos · 4",
+    "pagina": "checkout",
+    "seccion": "gracias-pasos",
+    "orden": 4,
+    "titulo": "Prepárate para conectar",
+    "texto": "Conéctate 5 minutos antes desde un lugar tranquilo, con buena conexión, cámara y audio; revisaré tus formularios en privado durante los primeros 15 minutos mientras esperas en la sala de Zoom.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-gracias-pasos-5",
+    "nombre": "checkout · gracias-pasos · 5",
+    "pagina": "checkout",
+    "seccion": "gracias-pasos",
+    "orden": 5,
+    "titulo": "Recibe tu material",
+    "texto": "Te enviaré el material por correo en un máximo de 72 horas hábiles y responderé tus dudas solo por correo.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-gracias-examenes-1",
+    "nombre": "checkout · gracias-examenes · 1",
+    "pagina": "checkout",
+    "seccion": "gracias-examenes",
+    "orden": 1,
+    "titulo": "Gracias por tu compra",
+    "texto": "Tu pago está confirmado y abajo encontrarás los próximos pasos.",
+    "nota": "Si agregaste la cita de lectura de tu examen, agenda tu cita aquí.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-gracias-tienda-1",
+    "nombre": "checkout · gracias-tienda · 1",
+    "pagina": "checkout",
+    "seccion": "gracias-tienda",
+    "orden": 1,
+    "titulo": "Gracias por tu compra",
+    "texto": "Tu pago está confirmado; aquí puedes descargar tus guías y el enlace también llegará a tu correo.",
+    "items": [],
+    "marcado": false
+  },
+  {
+    "id": "checkout-gracias-bonus-1",
+    "nombre": "checkout · gracias-bonus · 1",
+    "pagina": "checkout",
+    "seccion": "gracias-bonus",
+    "orden": 1,
+    "texto": "Descarga tu regalo incluido en el Initial Layer Cycle: la «Guía de alimentación anti-inflamatoria como estilo de vida».",
+    "items": [],
+    "marcado": false
   }
 ]

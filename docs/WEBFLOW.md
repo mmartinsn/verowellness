@@ -66,6 +66,30 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
       pasarela, el impuesto, el envío, los mensajes del puente y los correos, y de conectar el paso
       de resumen del sitio (`comercio.modo`).
 
+## Vuelta a las páginas de gracias (TYP) — para Santiago
+
+Desde el 11-oct cada producto tiene su página de gracias en el sitio: `/gracias/layer-session/`,
+`/gracias/initial-layer-cycle/`, `/gracias/next-layer-cycle/`, `/gracias/examenes/` y
+`/gracias/tienda/` (`src/pages/gracias/[tipo].astro`, DECISIONES § 49). El checkout de prueba ya
+termina en ellas. Con el cobro real falta que la confirmación de pedido de Webflow
+(`pago.veronicawellness.com`) mande a la persona a la suya:
+
+- [ ] **Script en «Order Confirmation»** (como el puente: generado y aplicado por API). Lee el
+      pedido de la página y redirige:
+  - con un examen → `/gracias/examenes/`, y `lectura=1` si el pedido trae una asesoría;
+  - con una asesoría (sin exámenes) → `/gracias/<slug de la asesoría>/`;
+  - solo guías → `/gracias/tienda/?guias=<ids>`;
+  - en todos, `descargas=` con la lista JSON `[{"nombre","url"}]` de los enlaces de descarga que
+    Webflow muestra para ese pedido (el nombre como lo escribe Webflow; la TYP ignora el sufijo
+    «(−15%)» y los acentos al emparejar). Solo se aceptan URL `https://`.
+- [ ] **Descargas**: los PDF de las guías como descarga de cada producto digital (también en sus
+      ofertas) y la «Guía de alimentación anti-inflamatoria» como descarga del Initial Layer Cycle
+      (bonus; la TYP la busca por «anti-inflamatoria» en el nombre). **Por verificar:** que la
+      página de confirmación de Webflow exponga esos enlaces, y que un producto de servicio admita
+      una descarga; si no, el bonus necesita otra vía.
+- PDF en la carpeta «Ebook y cursos» de Mari: hackear, recetario, GLP-1 y la guía
+  anti-inflamatoria. «Vuelve a sentirte tú» no tiene PDF (por eso está «Próximamente», § 48).
+
 ## Dónde se edita cada página
 
 Para Mari y Verónica: qué colección de Webflow alimenta cada página del sitio. Sale del código (los

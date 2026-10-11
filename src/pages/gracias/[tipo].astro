@@ -1,0 +1,412 @@
+---
+/**
+ * Thank-you pages (TYP), one per product (Mari, 2026-10-11): the three 1:1 plans (Calendly and the
+ * steps before the session; the Initial adds its bonus guide), the exams (next steps; Calendly when
+ * the reading appointment was added) and the shop (the downloads of what was bought).
+ *
+ * The page reads its query string — the prototype checkout and the Webflow return script both
+ * write it:
+ *   pago=zelle                  payment still to verify by hand: no Calendly, the pending note
+ *   guias=id1,id2               shop: the guides bought (ids of data/tienda)
+ *   lectura=1                   exams: the reading appointment was added
+ *   descargas=[{nombre,url}]    JSON, URL-encoded: Webflow's per-order download links
+ * Without `descargas`, each download says the link arrives by email: the PDFs are only ever
+ * served by Webflow, per order.
+ */
+import { Image } from 'astro:assets';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { ciclos } from '../../data/oferta';
+import { productos } from '../../data/tienda';
+import {
+  pasosAsesoria,
+  graciasExamenes,
+  graciasTienda,
+  textoBonus,
+  zellePendiente,
+} from '../../data/gracias';
+
+export function getStaticPaths() {
+  return [
+    ...Object.values(ciclos).map((c) => ({
+      params: { tipo: c.slug },
+      props: { tipo: 'asesoria', ciclo: c },
+    })),
+    { params: { tipo: 'examenes' }, props: { tipo: 'examenes' } },
+    { params: { tipo: 'tienda' }, props: { tipo: 'tienda' } },
+  ];
+}
+
+const { tipo, ciclo } = Astro.props as {
+  tipo: 'asesoria' | 'examenes' | 'tienda';
+  ciclo?: (typeof ciclos)[keyof typeof ciclos];
+};
+const calendly = ciclos.LAYER_SESSION.confirmacion.calendlyUrl;
+const titulo =
+  tipo === 'asesoria'
+    ? ciclo!.confirmacion.titulo
+    : tipo === 'examenes'
+      ? graciasExamenes.titulo
+      : graciasTienda.titulo;
+const texto =
+  tipo === 'asesoria'
+    ? ciclo!.confirmacion.texto
+    : tipo === 'examenes'
+      ? graciasExamenes.texto
+      : graciasTienda.texto;
+const conBonus = tipo === 'asesoria' && !!ciclo!.bonus;
+---
+
+<SiteLayout
+  title={`${titulo} — Veronica Wellness`}
+  description="Confirmación de tu compra en Veronica Wellness."
+  noindex
+  mobileCta={false}
+>
+  <section class="typ" data-typ={tipo}>
+    <div class="wrap typ-wrap">
+      <svg class="typ-icono" viewBox="0 0 56 56" fill="none" aria-hidden="true">
+        <circle cx="28" cy="28" r="27" stroke="currentColor" stroke-width="1.5"></circle>
+        <path
+          d="M17 29l7 7 15-16"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+      {tipo === 'asesoria' && <span class="eyebrow">{ciclo!.nombre}</span>}
+      <h1 class="typ-titulo">{titulo}</h1>
+      <p class="typ-texto">{texto}</p>
+
+      <p class="typ-zelle" data-zelle hidden>
+        Tu pago por Zelle está <strong>pendiente de verificación</strong>. {zellePendiente}
+      </p>
+
+      {
+        tipo === 'tienda' && (
+          <ul class="typ-descargas">
+            {productos.map((p) => (
+              <li class="descarga" data-guia={p.id} hidden>
+                <Image src={p.portada} alt="" widths={[120]} sizes="60px" />
+                <span class="d-nombre">{p.nombre}</span>
+                <a class="btn btn-primary d-btn" data-btn hidden target="_blank" rel="noopener">
+                  Descargar PDF
+                </a>
+                <span class="d-correo" data-correo>
+                  El enlace de descarga llega a tu correo.
+                </span>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      {
+        conBonus && (
+          <div class="typ-bonus" data-bonus>
+            <span class="bonus-tag">Bonus</span>
+            <p>{textoBonus}</p>
+            <a class="btn btn-primary d-btn" data-btn hidden target="_blank" rel="noopener">
+              Descargar PDF
+            </a>
+            <span class="d-correo" data-correo>
+              El enlace de descarga llega a tu correo.
+            </span>
+          </div>
+        )
+      }
+
+      {
+        tipo === 'examenes' && (
+          <ol class="typ-pasos">
+            {graciasExamenes.pasos.map((p, i) => (
+              <li>
+                <span class="paso-n">{i + 1}</span>
+                <div>
+                  <strong>{p.titulo}</strong>
+                  <p>{p.texto}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        )
+      }
+
+      {
+        (tipo === 'asesoria' || tipo === 'examenes') && calendly && (
+          <div class="typ-agenda" data-agenda hidden={tipo === 'examenes'}>
+            {tipo === 'examenes' && <p class="agenda-nota">{graciasExamenes.lectura}</p>}
+            <div class="calendly-inline-widget" data-url={calendly} />
+            <a class="agenda-link" href={calendly} target="_blank" rel="noopener">
+              Abrir el calendario en otra pestaña ↗
+            </a>
+          </div>
+        )
+      }
+
+      {
+        tipo === 'asesoria' && (
+          <div class="typ-antes">
+            <h2>Antes de tu cita</h2>
+            <ol class="typ-pasos">
+              {pasosAsesoria.map((p, i) => (
+                <li>
+                  <span class="paso-n">{i + 1}</span>
+                  <div>
+                    <strong>{p.titulo}</strong>
+                    <p>{p.texto}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</SiteLayout>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-typ]');
+  if (root) {
+    const q = new URLSearchParams(location.search);
+    const zelle = q.get('pago') === 'zelle';
+    let descargas: { nombre: string; url: string }[] = [];
+    try {
+      const v: unknown = JSON.parse(q.get('descargas') ?? '[]');
+      if (Array.isArray(v))
+        descargas = v.filter(
+          (d): d is { nombre: string; url: string } =>
+            typeof d?.nombre === 'string' && /^https:\/\//.test(String(d?.url))
+        );
+    } catch {
+      // A malformed list just means the links arrive by email.
+    }
+    // Webflow names the offer «… (−15%)»: compare names without accents or that suffix.
+    const norma = (s: string) =>
+      s
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .toLowerCase()
+        .replace(/\s*\(.*\)\s*$/, '')
+        .trim();
+    const enlace = (nombre: string) =>
+      descargas.find((d) => norma(d.nombre) === norma(nombre))?.url;
+    const activar = (box: Element, url: string | undefined) => {
+      if (!url) return;
+      const a = box.querySelector<HTMLAnchorElement>('[data-btn]')!;
+      a.href = url;
+      a.hidden = false;
+      box.querySelector<HTMLElement>('[data-correo]')!.hidden = true;
+    };
+
+    if (zelle) {
+      root.querySelector<HTMLElement>('[data-zelle]')!.hidden = false;
+      root.querySelector<HTMLElement>('[data-agenda]')?.setAttribute('hidden', '');
+    } else if (q.get('lectura') === '1') {
+      root.querySelector<HTMLElement>('[data-agenda]')?.removeAttribute('hidden');
+    }
+
+    const compradas = new Set((q.get('guias') ?? '').split(',').filter(Boolean));
+    root.querySelectorAll<HTMLElement>('[data-guia]').forEach((li) => {
+      const nombre = li.querySelector('.d-nombre')!.textContent ?? '';
+      if (compradas.has(li.dataset.guia!) || enlace(nombre)) li.hidden = false;
+      if (!zelle) activar(li, enlace(nombre));
+    });
+
+    const bonus = root.querySelector('[data-bonus]');
+    if (bonus && !zelle)
+      activar(bonus, descargas.find((d) => norma(d.nombre).includes('anti-inflamatoria'))?.url);
+
+    if (root.querySelector('[data-agenda]:not([hidden])')) {
+      const s = document.createElement('script');
+      s.src = 'https://assets.calendly.com/assets/external/widget.js';
+      s.async = true;
+      document.head.append(s);
+    }
+  }
+</script>
+
+<style>
+  .typ {
+    padding: clamp(48px, 7vw, 96px) 0 96px;
+  }
+  .typ-wrap {
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 18px;
+  }
+  .typ-icono {
+    width: 56px;
+    height: 56px;
+    color: var(--color-clay-deep);
+  }
+  .typ-titulo {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(38px, 5vw, 60px);
+    line-height: 1.05;
+  }
+  .typ-texto {
+    font-size: clamp(16px, 1.3vw, 18px);
+    line-height: 1.65;
+    color: rgb(35 34 30 / 0.8);
+    max-width: 560px;
+  }
+  .typ-zelle {
+    max-width: 560px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    background: rgb(231 183 160 / 0.22);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .typ-zelle[hidden] {
+    display: none;
+  }
+  .typ-descargas {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    display: grid;
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .descarga {
+    display: grid;
+    grid-template-columns: 60px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    border-radius: 18px;
+    background: var(--color-white);
+    border: 1px solid rgb(35 34 30 / 0.1);
+    text-align: left;
+  }
+  .descarga[hidden],
+  .d-btn[hidden],
+  .d-correo[hidden] {
+    display: none;
+  }
+  .descarga :global(img) {
+    width: 60px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 3px 6px 6px 3px;
+    box-shadow: 6px 8px 16px rgb(35 34 30 / 0.18);
+  }
+  .d-nombre {
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.35;
+  }
+  .d-correo {
+    font-size: 13px;
+    color: rgb(35 34 30 / 0.65);
+  }
+  .typ-bonus {
+    width: 100%;
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+    padding: 22px 24px;
+    border-radius: 20px;
+    border: 1.5px solid var(--color-clay-deep);
+    background: linear-gradient(135deg, rgb(231 183 160 / 0.3), rgb(216 171 166 / 0.16));
+  }
+  .bonus-tag {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    background: #8a4b31;
+    color: var(--color-bone);
+  }
+  .typ-bonus p {
+    font-size: 15.5px;
+    line-height: 1.55;
+    max-width: 520px;
+  }
+  .typ-agenda {
+    width: 100%;
+    margin-top: 8px;
+  }
+  .typ-agenda[hidden] {
+    display: none;
+  }
+  .calendly-inline-widget {
+    min-width: 300px;
+    height: 700px;
+  }
+  .agenda-nota {
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .agenda-link {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    border-bottom: 1px solid rgb(35 34 30 / 0.3);
+  }
+  .typ-antes {
+    width: 100%;
+    margin-top: 16px;
+  }
+  .typ-antes h2 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(28px, 3vw, 38px);
+    margin-bottom: 14px;
+  }
+  .typ-pasos {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    display: grid;
+    gap: 10px;
+    text-align: left;
+  }
+  .typ-pasos li {
+    display: flex;
+    gap: 16px;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: var(--color-white);
+    border: 1px solid rgb(35 34 30 / 0.08);
+  }
+  .paso-n {
+    flex: 0 0 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-clay-deep);
+    font-family: var(--font-serif);
+    font-size: 18px;
+    color: #8a4b31;
+  }
+  .typ-pasos strong {
+    display: block;
+    font-size: 15.5px;
+  }
+  .typ-pasos p {
+    margin-top: 3px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: rgb(35 34 30 / 0.75);
+  }
+  @media (max-width: 600px) {
+    .descarga {
+      grid-template-columns: 52px minmax(0, 1fr);
+    }
+    .descarga .d-btn,
+    .descarga .d-correo {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

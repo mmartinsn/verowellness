@@ -92,6 +92,10 @@ const { ciclo, carrito, extras, textos = {}, etiquetaProducto = 'Programa' } = A
 // Verónica's terms show before paying in the 1:1 plans (no cart) and in the exams checkout, which
 // can add a reading appointment (Mari, 2026-10-11). The shop keeps the plain checkboxes.
 const conTerminos = !carrito || !!extras?.lectura;
+// After paying, each product has its own thank-you page (src/pages/gracias).
+const gracias = href(
+  `/gracias/${carrito ? (extras?.lectura ? 'examenes' : 'tienda') : ciclo.id.toLowerCase().replaceAll('_', '-')}/`
+);
 const p = desglose(ciclo.subtotal);
 const impuestoPct = Math.round(p.taxRate * 100);
 
@@ -143,6 +147,7 @@ const metodos = [
   data-config={JSON.stringify(config)}
   data-carrito={carrito ? JSON.stringify(carrito) : undefined}
   data-pedido={textos.pedido}
+  data-gracias={gracias}
   data-extras={extras ? JSON.stringify(extras) : undefined}
 >
   <main class="checkout-main" id="main">
@@ -529,40 +534,6 @@ const metodos = [
     </section>
 
     <!-- CONFIRMACIÓN -->
-    <section class="step" id="step-confirmation">
-      <div class="confirm-wrap">
-        <svg class="confirm-icon" viewBox="0 0 56 56" fill="none" aria-hidden="true">
-          <circle cx="28" cy="28" r="27" stroke="currentColor" stroke-width="1.5"></circle>
-          <path
-            d="M17 29l7 7 15-16"
-            stroke="currentColor"
-            stroke-width="2.2"
-            stroke-linecap="round"
-            stroke-linejoin="round"></path>
-        </svg>
-        <h1 class="confirm-title" id="confirm-title">{ciclo.confirmacion.titulo}</h1>
-        <p class="confirm-sub" id="confirm-sub">{ciclo.confirmacion.texto}</p>
-
-        <div id="zelle-pending-note" class="zelle-pending-note" hidden>
-          Tu pago por Zelle está <strong>pendiente de verificación</strong>. {
-            textos.zellePendiente ??
-              'En cuanto lo confirmemos (24–48h) te enviaremos el enlace para agendar tu primera sesión.'
-          }
-        </div>
-
-        {
-          ciclo.confirmacion.calendlyUrl && (
-            <div class="integration-placeholder calendly-embed" id="calendly-embed">
-              INTEGRATION POINT: Calendly / Acuity inline widget
-              <br />
-              Calendly.initInlineWidget({'{'} url: '{ciclo.confirmacion.calendlyUrl}' {'}'})
-              <br />
-              <br />[ {ciclo.confirmacion.calendlyEtiqueta} ]
-            </div>
-          )
-        }
-      </div>
-    </section>
   </main>
 
   <!-- RESUMEN (sticky) -->
@@ -1142,46 +1113,6 @@ const metodos = [
   }
   [hidden] {
     display: none !important;
-  }
-
-  /* Confirmation */
-  .confirm-wrap {
-    text-align: center;
-    padding: 20px 0 40px;
-  }
-  .confirm-icon {
-    width: 56px;
-    height: 56px;
-    margin: 0 auto 24px;
-    color: var(--color-olive);
-  }
-  .confirm-title {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    font-size: clamp(30px, 4vw, 42px);
-    margin: 0 0 14px;
-  }
-  .confirm-sub {
-    color: rgb(48 47 42 / 0.7);
-    max-width: 480px;
-    margin: 0 auto 36px;
-    font-size: 16px;
-  }
-  .calendly-embed {
-    max-width: 720px;
-    margin: 0 auto;
-    background: var(--color-ivory);
-    padding: 60px 30px;
-  }
-  .zelle-pending-note {
-    max-width: 480px;
-    margin: 0 auto 30px;
-    background: var(--color-sand);
-    border-radius: var(--radius-md);
-    padding: 18px 22px;
-    font-size: 14px;
-    color: rgb(48 47 42 / 0.7);
-    text-align: left;
   }
 
   /* Mobile */
@@ -2018,15 +1949,18 @@ const metodos = [
       }, 900);
     });
 
+    // The thank-you page reads what it needs from the query string (see src/pages/gracias).
     $('btn-continue-after-pay')?.addEventListener('click', () => {
-      if (lastOutcome === 'pending') {
-        $('confirm-title')!.textContent = 'Reserva recibida';
-        $('confirm-sub')!.textContent =
-          `Registramos tu ${root!.dataset.pedido ?? config.cycle_label}. Verificaremos tu pago por Zelle en las próximas 24–48h.`;
-        $('zelle-pending-note')?.removeAttribute('hidden');
-        $('calendly-embed')?.setAttribute('hidden', '');
-      }
-      goToStep('confirmation');
+      const q = new URLSearchParams();
+      if (lastOutcome === 'pending') q.set('pago', 'zelle');
+      const guias = [
+        ...items.map((it) => it.id),
+        ...lineas.filter((l) => l.id.startsWith('guia:')).map((l) => l.id.slice(5)),
+      ];
+      if (root!.dataset.gracias?.includes('/tienda')) q.set('guias', guias.join(','));
+      if (lineas.some((l) => l.id === 'lectura')) q.set('lectura', '1');
+      const query = q.toString();
+      window.location.href = `${root!.dataset.gracias}${query ? `?${query}` : ''}`;
     });
   }
 </script>

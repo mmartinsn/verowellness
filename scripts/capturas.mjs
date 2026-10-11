@@ -151,11 +151,10 @@ async function recorridoCheckout(browser) {
   await page.click('#btn-pay');
   await page.waitForSelector('#step5-success:not([hidden])', { timeout: 5000 });
   await shot('5-pagado');
-  await page.click('#btn-continue-after-pay');
-  await page.waitForSelector('#step-confirmation.active');
+  await Promise.all([page.waitForNavigation(), page.click('#btn-continue-after-pay')]);
   await shot(6);
-  const titulo = await page.$eval('#confirm-title', (el) => el.textContent);
-  console.log(`checkout confirmación: "${titulo}"`);
+  const titulo = await page.$eval('h1', (el) => el.textContent);
+  console.log(`checkout → ${new URL(page.url()).pathname}: "${titulo}"`);
 
   const problemas = logs.filter((l) => /error|pageerror/i.test(l));
   console.log(

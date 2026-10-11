@@ -461,6 +461,19 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     **Para Santiago:** `vw esquema --aplicar` (campo nuevo) y `vw sembrar --aplicar` (producto
     nuevo y oferta).
 
+49. **2026-10-11 — Una página de gracias (TYP) por producto.** Mari eligió: una por producto,
+    descargas protegidas de Webflow (nunca un PDF público) y el bonus del Initial en su TYP.
+    `/gracias/<asesoría>/`: título y texto de la confirmación, Calendly en la página y «Antes de
+    tu cita» (5 pasos que Codex resumió de las políticas de Verónica, en tono neutro); el Initial
+    suma el bonus. `/gracias/examenes/`: los pasos 2–4 del pedido y Calendly si sumó la lectura.
+    `/gracias/tienda/`: cada guía comprada con «Descargar PDF» si llega el enlace de Webflow, o
+    «El enlace de descarga llega a tu correo». Zelle: nota de pago pendiente y sin Calendly.
+    Textos en Textos de sección › checkout › `gracias-*` (siembra pendiente). El checkout de prueba
+    ya termina en la TYP (se quitó el paso de confirmación interno). Lo de Webflow (script de
+    vuelta y descargas) está en `WEBFLOW.md` para Santiago. Probado: Initial con PayPal, Layer
+    Session con Zelle, exámenes con lectura, tienda con la oferta, y una vuelta simulada con
+    enlaces.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.

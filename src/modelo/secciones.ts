@@ -54,6 +54,10 @@ export const SECCIONES: readonly Seccion[] = [
   una('tienda', 'aviso-legal', 'texto'),
   varias('checkout', 'terminos', 'titulo', 'texto'),
   una('checkout', 'consentimiento', 'items'),
+  varias('checkout', 'gracias-pasos', 'titulo', 'texto'),
+  una('checkout', 'gracias-examenes', 'titulo', 'texto', 'nota'),
+  una('checkout', 'gracias-tienda', 'titulo', 'texto'),
+  una('checkout', 'gracias-bonus', 'texto'),
 ];
 
 export const CAMPO_HTML = 'texto';
