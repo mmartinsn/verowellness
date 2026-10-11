@@ -53,6 +53,12 @@ export const comandos: Entrada[] = [
     cargar: () => import('./probar-puente.ts'),
   },
   {
+    nombre: 'dominio',
+    descripcion:
+      'Registros DNS del dominio en GoDaddy, Cloudflare y Google, y respuestas del sitio (--solo-dns)',
+    cargar: () => import('./dominio.ts'),
+  },
+  {
     nombre: 'auditar',
     descripcion:
       'Auditoría de mantenimiento: datos, comercio, límites, sitio, repo (0 sano, 1 hallazgos, 2 error)',

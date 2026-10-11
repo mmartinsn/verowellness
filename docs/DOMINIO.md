@@ -70,6 +70,12 @@ registros CAA (pueden impedir que GitHub o Webflow saquen el certificado).
    La verificación de la cuenta va primero porque GitHub pide que un dominio que apunta a Pages esté
    reclamado: si no, otra cuenta lo puede tomar.
 
+   Para comprobar: `npm run vw -- dominio --solo-dns` compara los 14 registros de la tabla de
+   arriba y de esta en Cloudflare y Google (por HTTPS: en esta máquina Node no tiene DNS por UDP).
+   Si ya se había preguntado antes de guardar, pueden tener el «no existe» guardado hasta 10 min;
+   el servidor de GoDaddy contesta al instante:
+   `nslookup -type=TXT _webflow.pago.veronicawellness.com ns45.domaincontrol.com`.
+
 4. **GitHub, con la cuenta de Mari:** «Verify» en los dominios verificados de la cuenta; después,
    en el repo, Settings → Pages → Custom domain = `veronicawellness.com` → Save. Desde aquí hasta
    el paso 5 el sitio se ve roto, así que 4 y 5 van de corrido.
@@ -83,17 +89,20 @@ registros CAA (pueden impedir que GitHub o Webflow saquen el certificado).
    anda `http://`.
 8. **Puente:** con la raíz respondiendo, `npm run vw -- puente --aplicar`; luego
    `npm run vw -- probar-puente --base https://pago.veronicawellness.com`.
-9. **Stripe en modo prueba:** Settings → Ecommerce → Payments → Stripe → conectar. Ver en esa
-   pantalla si Webflow ofrece modo de prueba. Si lo ofrece, se activa y se hace una compra con la
-   tarjeta de prueba de Stripe. **Si no lo ofrece, no se activa «Enable Checkout»**: con la cuenta
-   real conectada, activarlo empieza a cobrar. No depende del dominio.
-10. **Comprobar:** `nslookup` de `@`, `www` y `pago` contra `ns45.domaincontrol.com`, 1.1.1.1 y
-    8.8.8.8 (y que el resto de la tabla de arriba siga igual); `https://veronicawellness.com/` da
-    200 con `noindex`; `www` y `mmartinsn.github.io/verowellness/` redirigen al dominio; el pedido
-    de prueba llega al checkout en `pago.`; `npm run vw -- auditar` sin hallazgos nuevos; capturas
-    contra el dominio (`npm run capturas -- --base https://veronicawellness.com`). Y que `/1-1/`
-    lleve a `/asesorias/`: bajo `/verowellness/` esa redirección daba 404 porque Astro no le
-    antepone la base al destino (medido el 10-oct); con la base vacía queda bien sola.
+9. **Stripe:** no depende del dominio, pero sí de Verónica. Lo que se vio el 10-oct en el Designer
+   (CMS → Ecommerce → Setup guide → Add payment provider): antes de los pagos, Webflow pide los
+   datos de la tienda (nombre del negocio, dirección comercial, moneda e idioma), que son de
+   Verónica. El sitio tiene plan **Ecommerce Standard** (42 USD al mes, 2 % por transacción,
+   pagado con la tarjeta de Verónica desde el 4-oct), así que el hosting ya está. En la
+   documentación y el foro de Webflow no aparece un modo de prueba para la tienda: **conectar
+   Stripe no cobra, «Enable Checkout» sí**, y queda apagado hasta el cobro real.
+10. **Comprobar:** `npm run vw -- dominio` da 14/14 registros y 7/7 respuestas: el inicio en 200
+    con el mismo `robots` que `dist/`, `robots.txt` igual a `public/robots.txt`, `/1-1/` lleva a
+    `/asesorias/` (bajo `/verowellness/` daba 404 porque Astro no le antepone la base al destino),
+    `www`, `mmartinsn.github.io/verowellness/` y `http://` llevan a `https://veronicawellness.com/`,
+    y `pago.` en 200. Además, el pedido de prueba llega al checkout en `pago.`,
+    `npm run vw -- auditar` sin hallazgos nuevos y capturas contra el dominio
+    (`npm run capturas -- --base https://veronicawellness.com`).
 
 ## Seguridad de la cuenta de GoDaddy
 
