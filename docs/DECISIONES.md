@@ -491,6 +491,30 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     Unidos», aparece el aviso de la decisión 51 (con el Instagram) bajo el campo y no se puede
     pasar del paso 1. Asesorías y tienda no cambian. **Para Santiago:** en Webflow, la zona de
     envío de los exámenes solo con Estados Unidos, para que la caja real aplique la misma regla.
+    Hecho el 11-oct (decisión 54).
+
+53. **2026-10-11 — El checkout del sitio cobra en la caja de Webflow** (Santiago). Con
+    `comercio.modo = 'webflow'`, Tarjeta, Apple Pay y PayPal llevan lo elegido (ciclo, exámenes o
+    guías, guías agregadas, la oferta del popup y la cita de lectura) al puente de
+    `pago.veronicawellness.com`, que arma el carrito nativo; Zelle sigue en el sitio con
+    verificación manual. El paso de pago ya no muestra los marcadores técnicos de Stripe y PayPal.
+    Probado de punta a punta en Chrome: asesoría con guía, exámenes con lectura y cargo ×2, tienda
+    con la oferta. Detalle en `INTEGRACION.md` § Cómo fluye el cobro.
+
+54. **2026-10-11 — Cobro real encendido** (Santiago). «Enable checkout» en Webflow, con Stripe (la
+    cuenta que Verónica ya usa, `DOMINIO.md`) y PayPal (lo conectó Mari). Envío de exámenes: solo
+    Estados Unidos, método «Envío incluido» gratis con la frase de la FAQ; desde fuera se contacta
+    a Verónica (decisiones 51 y 52). Impuesto: el cálculo automático de Webflow, con Florida como
+    sede. Quedaron abiertos al encender, con su riesgo dicho: Privacidad y Aviso médico sin texto,
+    el «sumamos el 7 %» del sitio y la FAQ (Webflow cobra según Florida), las guías sin PDF en
+    Webflow (la página de gracias dice que el enlace llega por correo), los correos y la caja de
+    Webflow en inglés, y los mensajes del puente.
+
+55. **2026-10-11 — De la confirmación de Webflow a la página de gracias** (lo pidió Mari en la
+    decisión 49). `vw confirmacion` publica en «Order Confirmation» un script que lee los productos
+    del pedido y lleva a `/gracias/examenes/` (con `lectura=1` si trae asesoría), a la de la
+    asesoría o a `/gracias/tienda/?guias=…`. La plantilla de Webflow no tiene bloque de descargas:
+    hoy `descargas=` va vacío. Se verifica con el primer pedido real.
 
 ## Abiertas — para Mari y Verónica
 
@@ -502,12 +526,9 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   vea con la tabla de arriba.
 - **¿Fotos con el pelo claro o oscurecido?** Regla de Mari para el recetario vs. su uso aquí.
 - **Textos legales** y **aviso médico**: los redacta Verónica.
-- **Pasarelas**: Stripe y PayPal se conectan en Webflow (decisión 38); falta que Verónica lo haga.
-  Zelle no entra al checkout de Webflow: ¿se ofrece aparte o se deja?
-- **Impuesto**: Webflow lo calcula por dirección en EE. UU.; ¿qué texto reemplaza «sumamos el 7 %»?
-- **Agenda**: las URL de Calendly del prototipo dan 404; faltan las reales de cada evento.
-- **Exámenes**: el envío del kit (¿gratis en EE. UU.?, ¿cargo internacional?) y confirmar USD 25
-  de cargo de laboratorio por examen.
+- **Impuesto**: Webflow lo calcula por dirección en EE. UU. (decisión 54); ¿qué texto reemplaza
+  «sumamos el 7 %» en la FAQ y en el resumen del checkout del sitio?
+- **Exámenes**: confirmar USD 25 de cargo de laboratorio por examen.
 - **Apple Pay y Google Pay** se saltan teléfono, «¿cómo me conociste?» y el consentimiento del
   checkout: ¿se dejan las billeteras o se pide el consentimiento antes, en el sitio?
 - **Mensajes de la página «Pedido»** de Webflow (`scripts/vw/comercio/puente.ts`): «Preparando tu

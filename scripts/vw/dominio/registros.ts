@@ -50,6 +50,7 @@ export const REGISTROS: Registro[] = [
   ]),
   deVeronica('TXT', '@', [
     'google-site-verification=FyyB7oXDcSYpIRzSp2YadM2DVTZWQuz6nu7VboZm_q8',
+    'google-site-verification=dsjPu1sHHoC2OL5a4Hu9lDZB21WGBRzlr9yVpc-bYlQ',
     `v=spf1 include:dc-aa8e722993._spfm.${DOMINIO} ~all`,
   ]),
   deVeronica('TXT', 'dc-aa8e722993._spfm', ['v=spf1 include:_spf.google.com ~all']),
