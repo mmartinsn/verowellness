@@ -582,6 +582,40 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
       <span>Cargo del laboratorio</span><span data-fee></span>
     </div>
     <div class="summary-line total"><span>Total</span><span data-total>{usd(p.total)}</span></div>
+    {
+      enWebflow && (
+        <div class="cupon" data-cupon>
+          <form class="cupon-form" data-cupon-form>
+            <label for="cupon-codigo">Código de descuento</label>
+            <div class="cupon-fila">
+              <input
+                id="cupon-codigo"
+                name="cupon"
+                type="text"
+                autocomplete="off"
+                autocapitalize="characters"
+                spellcheck="false"
+                maxlength="64"
+              />
+              <button type="submit" class="cupon-btn">
+                Aplicar
+              </button>
+            </div>
+          </form>
+          <div class="cupon-puesto" data-cupon-puesto hidden>
+            <span>
+              Código <strong data-cupon-valor />
+            </span>
+            <button type="button" class="link-btn" data-cupon-quitar>
+              Quitar
+            </button>
+          </div>
+          <p class="cupon-nota" data-cupon-nota hidden>
+            El descuento se aplica en el último paso, al pagar con tarjeta, Apple Pay o PayPal.
+          </p>
+        </div>
+      )
+    }
     <ul class="summary-includes" data-incluye>
       {ciclo.incluyeCheckout.map((i) => <li>{i}</li>)}
     </ul>
@@ -890,6 +924,51 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
     text-decoration: underline;
     text-underline-offset: 3px;
     font-weight: 800;
+  }
+  .cupon {
+    margin-top: 14px;
+  }
+  .cupon-form label {
+    display: block;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  .cupon-fila {
+    display: flex;
+    gap: 8px;
+  }
+  .cupon-fila input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 14px;
+  }
+  .cupon-btn {
+    flex-shrink: 0;
+    border: 1.5px solid var(--color-charcoal);
+    background: var(--color-white);
+    color: var(--color-charcoal);
+    border-radius: var(--radius-md);
+    padding: 0 16px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .cupon-btn:hover {
+    background: var(--color-charcoal);
+    color: var(--color-bone);
+  }
+  .cupon-puesto {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14.5px;
+  }
+  .cupon-nota {
+    font-size: 12.5px;
+    color: rgb(48 47 42 / 0.7);
+    margin: 6px 0 0;
+    line-height: 1.5;
   }
   .summary-includes {
     list-style: none;
@@ -1587,6 +1666,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
     type MapaProductos,
     type Seleccion,
   } from '../../lib/comercio/pedido';
+  import { cookieCupon, dominioCompartido, limpiarCupon } from '../../lib/comercio/cupon';
   type Config = {
     cycle_type: string;
     cycle_label: string;
@@ -1999,12 +2079,36 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
         : {}),
     });
 
+    // Discount code: the site only carries it; Webflow's checkout checks and applies it.
+    let cupon = '';
+    const cuponForm = document.querySelector<HTMLFormElement>('[data-cupon-form]');
+    const mostrarCupon = () => {
+      cuponForm?.toggleAttribute('hidden', !!cupon);
+      document.querySelector('[data-cupon-puesto]')?.toggleAttribute('hidden', !cupon);
+      document.querySelector('[data-cupon-nota]')?.toggleAttribute('hidden', !cupon);
+      const valor = document.querySelector('[data-cupon-valor]');
+      if (valor) valor.textContent = cupon;
+    };
+    cuponForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const campo = cuponForm.querySelector<HTMLInputElement>('input')!;
+      cupon = limpiarCupon(campo.value);
+      campo.value = '';
+      mostrarCupon();
+    });
+    document.querySelector('[data-cupon-quitar]')?.addEventListener('click', () => {
+      cupon = '';
+      mostrarCupon();
+    });
+
     $('btn-pay')?.addEventListener('click', () => {
       const btn = $<HTMLButtonElement>('btn-pay')!;
       btn.disabled = true;
       btn.textContent = 'Procesando...';
       if (state.order) state.order.payment_method = state.payment_method;
       if (webflow && state.payment_method !== 'zelle') {
+        const dominio = dominioCompartido(location.hostname, new URL(webflow.pago).hostname);
+        document.cookie = cookieCupon(cupon, dominio, !cupon);
         window.location.href = urlPedido(
           { modo: 'webflow', pago: webflow.pago },
           productosDe(seleccion(), webflow.mapa)

@@ -54,6 +54,12 @@ export const comandos: Entrada[] = [
     cargar: () => import('./confirmacion.ts'),
   },
   {
+    nombre: 'cupon',
+    descripcion:
+      'Genera webflow/cupon.html: la caja de Webflow aplica el código escrito en el resumen del sitio',
+    cargar: () => import('./cupon.ts'),
+  },
+  {
     nombre: 'probar-puente',
     descripcion: 'Matriz de pedidos contra el puente de Webflow: el checkout debe dar lo esperado',
     cargar: () => import('./probar-puente.ts'),
