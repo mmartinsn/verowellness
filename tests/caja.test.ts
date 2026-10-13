@@ -9,7 +9,7 @@ import {
   leerTraspaso,
   limpiarCupon,
 } from '../src/lib/comercio/traspaso.ts';
-import { generarCaja } from '../scripts/vw/comercio/caja.ts';
+import { ERRORES, ES, generarCaja } from '../scripts/vw/comercio/caja.ts';
 
 test('el sitio y la caja comparten veronicawellness.com; dominios ajenos no comparten nada', () => {
   assert.equal(
@@ -124,8 +124,12 @@ test('la caja rellena email, nombre y país, resume el email, aplica el código 
             ? bloqueCliente
             : null,
     createElement: () => new Elemento(),
+    querySelectorAll: () => [],
+    createTreeWalker: () => ({ nextNode: () => null }),
+    documentElement: { lang: 'en', classList: { add() {} } },
+    body: { prepend() {}, append() {} },
   };
-  vm.runInNewContext(generarCaja().replace(/^<script>|<\/script>\s*$/g, ''), {
+  vm.runInNewContext(generarCaja().replace(/^<style>.*<\/style>\n<script>|<\/script>\s*$/gs, ''), {
     document,
     window: { Webflow: {} },
     location: { hostname: 'pago.veronicawellness.com' },
@@ -136,6 +140,11 @@ test('la caja rellena email, nombre y país, resume el email, aplica el código 
       }
     },
     HTMLSelectElement: Seleccion,
+    NodeFilter: { SHOW_TEXT: 4 },
+    MutationObserver: class {
+      observe() {}
+    },
+    Intl,
     setTimeout,
     Date,
     JSON,
@@ -151,4 +160,78 @@ test('la caja rellena email, nombre y país, resume el email, aplica el código 
   assert.deepEqual(enviados, ['VEROPRUEBA']);
   assert.equal(cookies.length, 1);
   assert.match(cookies[0], /^vw_caja=;.*max-age=0.*domain=veronicawellness\.com/);
+});
+
+test('la caja queda en español: textos, errores, el botón y la línea del descuento', () => {
+  const nodos = [
+    'Customer Info',
+    '  Order Summary ',
+    'Place Order',
+    'Discount (VEROPRUEBA)',
+    '$ 150.00 USD',
+    'Total',
+  ].map((nodeValue) => ({ nodeValue }));
+  const errores = new Map<string, string>();
+  const boton = new Map([['data-loading-text', 'Placing Order...']]);
+  const conAtributos = (m: Map<string, string>) => ({
+    getAttribute: (a: string) => m.get(a) ?? null,
+    setAttribute: (a: string, v: string) => m.set(a, v),
+  });
+  const html = {
+    lang: 'en',
+    clases: [] as string[],
+    classList: { add: (c: string) => html.clases.push(c) },
+  };
+  const document = {
+    documentElement: html,
+    body: { prepend() {}, append() {} },
+    querySelector: () => null,
+    querySelectorAll: (sel: string) =>
+      sel === '[data-loading-text]'
+        ? [conAtributos(boton)]
+        : sel === '.w-checkout-error-msg'
+          ? [conAtributos(errores)]
+          : [],
+    createElement: () => new Elemento(),
+    createTreeWalker: () => {
+      let i = 0;
+      return { nextNode: () => nodos[i++] ?? null };
+    },
+  };
+  const codigo = generarCaja()
+    .replace(/^<style>.*<\/style>\n<script>/s, '')
+    .replace(/<\/script>\s*$/, '')
+    .replace(/principal\(\);\s*\}\)\(\);\s*$/, '})();');
+  vm.runInNewContext(codigo, {
+    document,
+    NodeFilter: { SHOW_TEXT: 4 },
+    MutationObserver: class {
+      observe() {}
+    },
+    Intl,
+    JSON,
+    location: { hostname: 'pago.veronicawellness.com' },
+  });
+  assert.deepEqual(
+    nodos.map((n) => n.nodeValue),
+    [
+      'Tus datos',
+      '  Resumen del pedido ',
+      'Confirmar y pagar',
+      'Descuento (VEROPRUEBA)',
+      '$ 150.00 USD',
+      'Total',
+    ]
+  );
+  assert.equal(boton.get('data-loading-text'), 'Procesando…');
+  assert.equal(errores.get('data-w-invalid-discount-error'), 'Este código no es válido.');
+  assert.equal(html.lang, 'es');
+  assert.deepEqual(html.clases, ['vw-lista']);
+});
+
+test('cada texto de la caja de Webflow tiene su traducción', () => {
+  const caja = readFileSync('webflow/caja.html', 'utf8');
+  assert.ok(caja.includes('Resumen del pedido'));
+  for (const [ingles, espanol] of Object.entries(ES)) assert.notEqual(ingles, espanol);
+  assert.ok(Object.keys(ERRORES).every((a) => /^data-w-[a-z-]+-error$/.test(a)));
 });
