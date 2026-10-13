@@ -65,7 +65,7 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
       `npm run vw -- probar-puente` avisa si se rompen.
 - [ ] **Correos de la tienda** (Mari y Verónica): la confirmación de pedido y los demás salen en
       inglés y con el diseño de Webflow. El texto es de Verónica.
-- [ ] **Lo que el sitio pasa a la caja** (13-oct): `webflow/caja.html` en el pie de la página
+- [x] **Lo que el sitio pasa a la caja** (13-oct, pegado por Mari en Checkout y probado; falta en Checkout (PayPal)): `webflow/caja.html` en el pie de la página
       Checkout (`npm run vw -- caja --aplicar`, o pegado a mano en su Custom code «Before
       </body>», reemplazando el `cupon.html` anterior). El campo «Discount Code» de la caja ya está
       (Mari, 13-oct). DECISIONES § 56.
