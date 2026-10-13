@@ -527,6 +527,10 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     código y borra la cookie. Un código escrito sin pulsar «Aplicar» también viaja. Si no sirve, el
     error es el de Webflow, en la caja. La dirección y la tarjeta las sigue pidiendo Webflow: Stripe
     exige la dirección de facturación y el sitio no la pregunta. Zelle no pasa por Webflow.
+    El mismo `caja.html` pone la caja en español (textos, errores y nombres de país, también lo
+    que Webflow redibuja) y con el marco y los estilos del checkout del sitio; las fuentes se
+    sirven desde `veronicawellness.com/fonts/` porque el sitio no las carga de Google. Lo que no se
+    alcanza: lo de dentro de los campos de tarjeta de Stripe y los correos de la tienda.
 
 ## Abiertas — para Mari y Verónica
 

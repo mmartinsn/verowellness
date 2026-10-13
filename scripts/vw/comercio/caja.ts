@@ -111,22 +111,22 @@ body{background:${t('color-bone')};color:${t('color-charcoal')};font-family:${t(
 .w-commerce-commercelayoutcontainer{max-width:1180px;margin:0 auto}
 .w-commerce-commercelayoutsidebar{position:sticky;top:28px}
 .w-commerce-commercecartapplepaybutton{border-radius:${t('radius-pill')};min-height:50px}
-.${c}blockheader{background:transparent;border:0;padding:0 0 10px;margin:0}
-.${c}blockheader h2{font-family:${t('font-serif')};font-weight:500;font-size:30px;line-height:1.1;margin:0;color:${t('color-charcoal')}}
+.${c}blockheader,.${c}summaryblockheader{background:transparent;border:0;padding:0 0 10px;margin:0}
+.${c}blockheader h2,.${c}summaryblockheader h2{font-family:${t('font-serif')};font-weight:500;font-size:30px;line-height:1.1;margin:0;color:${t('color-charcoal')}}
 .${c}blockheader div{font-size:13px;color:rgb(48 47 42 / .6)}
-.${c}blockcontent{background:${t('color-white')};border:0;border-radius:${t('radius-lg')};padding:24px 26px;margin-bottom:28px;box-shadow:0 1px 0 rgb(48 47 42 / .06)}
+.${c}blockcontent,.${c}shippingmethodslist{background:${t('color-white')};border:0;border-radius:${t('radius-lg')};padding:24px 26px;margin-bottom:28px;box-shadow:0 1px 0 rgb(48 47 42 / .06)}
 .${c}customerinfowrapper,.${c}shippingaddresswrapper,.${c}shippingmethodswrapper,.${c}billingaddresswrapper,.${c}paymentinfowrapper,.${c}orderitemswrapper,.${c}ordersummarywrapper{margin-bottom:8px}
 .${c}label,.${c}formcontainer label{font-family:${t('font-sans')};font-weight:700;font-size:13px;color:${t('color-charcoal')};margin-bottom:6px}
-.${c}formcontainer input.w-input,.${c}formcontainer select,.${c}formcontainer .w-select,.${c}emailinput,.${c}cardnumber,.${c}cardexpirationdate,.${c}cardsecuritycode,.${c}discountsinput{font-family:${t('font-sans')};font-size:16px;color:${t('color-charcoal')};background:${t('color-ivory')};border:1.5px solid rgb(48 47 42 / .12);border-radius:${t('radius-md')};padding:13px 16px;height:auto;min-height:50px;box-shadow:none;margin-bottom:16px}
-.${c}formcontainer input.w-input:focus,.${c}formcontainer select:focus,.${c}discountsinput:focus,.${c}cardnumber.StripeElement--focus,.${c}cardexpirationdate.StripeElement--focus,.${c}cardsecuritycode.StripeElement--focus{border-color:${t('color-clay-deep')};background:${t('color-white')};box-shadow:0 0 0 4px rgb(214 154 124 / .18);outline:none}
+.${c}formcontainer input[type='text'],.${c}formcontainer input[type='email'],.${c}formcontainer select,.${c}emailinput,.${c}cardnumber,.${c}cardexpirationdate,.${c}cardsecuritycode,.${c}discountsinput{font-family:${t('font-sans')};font-size:16px;color:${t('color-charcoal')};background:${t('color-ivory')};border:1.5px solid rgb(48 47 42 / .12);border-radius:${t('radius-md')};padding:13px 16px;height:auto;min-height:50px;box-shadow:none;margin-bottom:16px}
+.${c}formcontainer input[type='text']:focus,.${c}formcontainer input[type='email']:focus,.${c}formcontainer select:focus,.${c}discountsinput:focus,.${c}cardnumber.StripeElement--focus,.${c}cardexpirationdate.StripeElement--focus,.${c}cardsecuritycode.StripeElement--focus{border-color:${t('color-clay-deep')};background:${t('color-white')};box-shadow:0 0 0 4px rgb(214 154 124 / .18);outline:none}
 .${c}orderitemslist{margin:0;padding:0}
 .${c}orderitem{padding:10px 0;border-bottom:1px solid rgb(48 47 42 / .08)}
 .${c}orderitem:last-child{border-bottom:0}
-.${c}summarylineitem{font-size:14.5px;color:rgb(48 47 42 / .7);padding:6px 0}
+.${c}summarylineitem,.${c}ordersummaryextraitemslistitem{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:14.5px;color:rgb(48 47 42 / .7);padding:6px 0}
 .${c}summarytotal{font-weight:800;color:${t('color-charcoal')};font-size:17px}
-.${c}discounts{background:${t('color-ivory')};border:0;border-radius:${t('radius-md')};padding:16px;margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+.${c}discounts{background:${t('color-ivory')};border:0;border-radius:${t('radius-md')};padding:16px;margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
 .${c}discountslabel{width:100%;font-weight:700;font-size:13px;margin:0}
-.${c}discountsinput{flex:1;min-width:0;margin:0;background:${t('color-white')}}
+.${c}discounts input.${c}discountsinput{flex:1;min-width:0;margin:0;background:${t('color-white')}}
 .${c}discountsbutton{flex-shrink:0;border:1.5px solid ${t('color-charcoal')};background:${t('color-white')};color:${t('color-charcoal')};border-radius:${t('radius-md')};padding:0 18px;min-height:50px;font-family:${t('font-sans')};font-weight:800;font-size:14px;cursor:pointer}
 .${c}discountsbutton:hover{background:${t('color-charcoal')};color:${t('color-bone')}}
 .${c}placeorderbutton{display:flex;align-items:center;justify-content:center;width:100%;margin-top:20px;background:${t('color-clay')};color:${t('color-charcoal')};font-family:${t('font-sans')};font-weight:800;font-size:15px;letter-spacing:.02em;padding:17px 32px;border-radius:${t('radius-pill')};border:0;text-decoration:none;transition:background .2s,box-shadow .2s,transform .2s}
