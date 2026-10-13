@@ -1666,7 +1666,12 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
     type MapaProductos,
     type Seleccion,
   } from '../../lib/comercio/pedido';
-  import { cookieCupon, dominioCompartido, limpiarCupon } from '../../lib/comercio/cupon';
+  import {
+    CODIGO_PAIS,
+    cookieTraspaso,
+    dominioCompartido,
+    limpiarCupon,
+  } from '../../lib/comercio/traspaso';
   type Config = {
     cycle_type: string;
     cycle_label: string;
@@ -2107,8 +2112,19 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
       btn.textContent = 'Procesando...';
       if (state.order) state.order.payment_method = state.payment_method;
       if (webflow && state.payment_method !== 'zelle') {
-        const dominio = dominioCompartido(location.hostname, new URL(webflow.pago).hostname);
-        document.cookie = cookieCupon(cupon, dominio, !cupon);
+        // A code typed but not applied still counts: «Aplicar» is easy to skip.
+        const pendiente = cuponForm?.querySelector<HTMLInputElement>('input')?.value ?? '';
+        const valor = (id: string) =>
+          (document.getElementById(id) as HTMLInputElement | null)?.value.trim() ?? '';
+        document.cookie = cookieTraspaso(
+          {
+            cupon: cupon || limpiarCupon(pendiente),
+            email: valor('email'),
+            nombre: `${valor('nombre')} ${valor('apellido')}`,
+            pais: CODIGO_PAIS[valor('pais')],
+          },
+          dominioCompartido(location.hostname, new URL(webflow.pago).hostname)
+        );
         window.location.href = urlPedido(
           { modo: 'webflow', pago: webflow.pago },
           productosDe(seleccion(), webflow.mapa)

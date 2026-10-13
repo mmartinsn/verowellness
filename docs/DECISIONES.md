@@ -516,14 +516,17 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     asesoría o a `/gracias/tienda/?guias=…`. La plantilla de Webflow no tiene bloque de descargas:
     hoy `descargas=` va vacío. Se verifica con el primer pedido real.
 
-56. **2026-10-13 — Código de descuento en el resumen del pedido** (lo pidió Mari). Los cupones se
-    crean en Webflow (Ecommerce → Discounts) y su caja tiene el campo «Discount Code» (Checkout,
-    puesto a mano el 13-oct). El resumen del checkout del sitio tiene además su propio campo: el
-    sitio no puede validar el código (la API de Webflow no expone los descuentos), así que solo lo
-    lleva, en la cookie `vw_cupon` de `veronicawellness.com` (30 min), y `webflow/cupon.html`, en el
-    pie de la página Checkout de Webflow (`npm run vw -- cupon --aplicar`), lo escribe en el campo,
-    pulsa «Apply» y borra la cookie. Si el código no sirve, el error es el de Webflow, en la caja.
-    Zelle no pasa por Webflow: ahí el código no se aplica.
+56. **2026-10-13 — Del checkout del sitio a la caja de Webflow sin repetir datos, con código de
+    descuento** (lo pidió Mari). Los cupones se crean en Webflow (Ecommerce → Discounts) y su caja
+    tiene el campo «Discount Code» (Checkout, puesto a mano el 13-oct). El resumen del checkout del
+    sitio tiene su propio campo; el sitio no puede validar el código (la API de Webflow no expone
+    los descuentos), así que solo lo lleva. Viaja con el email, el nombre y el país del paso 1 en la
+    cookie `vw_caja` de `veronicawellness.com` (30 min, `src/lib/comercio/traspaso.ts`), y
+    `webflow/caja.html`, en el pie de la página Checkout de Webflow (`npm run vw -- caja
+--aplicar`), rellena lo vacío, cambia el bloque del email por una línea con «Cambiar», envía el
+    código y borra la cookie. Un código escrito sin pulsar «Aplicar» también viaja. Si no sirve, el
+    error es el de Webflow, en la caja. La dirección y la tarjeta las sigue pidiendo Webflow: Stripe
+    exige la dirección de facturación y el sitio no la pregunta. Zelle no pasa por Webflow.
 
 ## Abiertas — para Mari y Verónica
 
