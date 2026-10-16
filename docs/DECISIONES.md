@@ -545,9 +545,16 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     solo con Klarna, en español, con precio y nombre del snapshot y envío solo a EE. UU. cuando hay
     exámenes; al pagar vuelve a la página de gracias que corresponde. Los pedidos con Klarna quedan
     en Stripe (la auditoría los lee); el código de descuento no aplica, como con Zelle. Klarna
-    cuesta 5,99 % + 30 ¢ por cobro y no se le puede cargar recargo. Se prueba primero con la clave
-    de prueba de Stripe y después Santiago hace una compra real y la reembolsa. Detalle en
-    `INTEGRACION.md` § Cómo fluye el cobro.
+    cuesta 5,99 % + 30 ¢ por cobro y no se le puede cargar recargo. Detalle en `INTEGRACION.md`
+    § Cómo fluye el cobro.
+    **En producción el 16-oct, sin pasar por el modo de prueba** (Santiago: «lets go ahead directly
+    in prod»): app `verowellness-cobro` de Webflow Cloud (`d2bc1f98…`, entorno `main` en `/cobro`),
+    clave restringida real de `acct_1S3TX…` (Checkout Sessions, Products y Prices en escritura),
+    sitio de Webflow publicado con sus cambios pendientes (Santiago: «Publícalo», «los cambios no
+    importan») y `comercio.klarna = true` (`da67de7`). Verificado sin cobrar: sesiones de asesoría
+    con guía y oferta (USD 297.48) y de exámenes con lectura (USD 1,220.60) en la cuenta correcta,
+    con los totales del snapshot y envío solo a EE. UU. **Para revertir:** `comercio.klarna = false`
+    y push (el sitio deja de ofrecerlo); la app se borra con `apps delete` de la CLI de Webflow.
 
 58. **2026-10-18 — La guía de hormonas sale a la venta con la marca «Nuevo»** (Mari). Deja de ser
     «Próximamente»; pierde «Más vendido» (no puede serlo una guía recién publicada) y gana el campo
@@ -590,6 +597,8 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   reglas de Klarna). Los pedidos con Klarna no están en Webflow: Verónica los ve en Stripe
   (Payments) y desde ahí envía los exámenes; conviene encender los recibos de Stripe para la
   compradora. Un código de descuento no se aplica con Klarna; ¿se avisa en la nota del cupón?
+  **Impuesto:** la sesión de Klarna va sin impuesto mientras el resumen del sitio suma 7 % y la caja
+  de Webflow cobra el de Florida; se decide al saber qué cobra Webflow con una dirección de Florida.
 - **Mensajes de la página «Pedido»** de Webflow (`scripts/vw/comercio/puente.ts`): «Preparando tu
   pedido…», «No encontramos productos en tu pedido.», «No pudimos preparar tu pedido.», «Intentar de
   nuevo» y «Volver a Veronica Wellness» son provisionales, escritos al armar el puente; no son de

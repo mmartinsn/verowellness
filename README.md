@@ -114,7 +114,7 @@ local `dominio` y se hace con `docs/DOMINIO.md`. Ningún enlace hay que tocar po
 - [x] Base de datos y tienda en Webflow, con el puente de cobro probado (decisión 38)
 - [ ] Pagos reales: Verónica conecta Stripe y PayPal en Webflow; Mari diseña el paso de resumen y se pasa `comercio.modo` a `'webflow'`
 - [ ] Impuesto automático, envío de exámenes y datos de la empresa en Webflow (`docs/WEBFLOW.md`)
-- [ ] Klarna: encenderlo en Stripe, desplegar `cobro/` con la clave de prueba, probar, pasar a la real y poner `comercio.klarna = true` (decisión 57)
+- [x] Klarna por Stripe Checkout desde `cobro/`, encendido el 16-oct (decisión 57); falta la compra real de prueba
 - [ ] PDF de las cuatro guías como descarga de cada producto
 - [ ] Agenda: las URL reales de Calendly (las del prototipo dan 404)
 - [ ] Textos legales de Verónica en `/legal/*`

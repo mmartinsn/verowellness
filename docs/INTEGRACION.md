@@ -79,8 +79,9 @@ veronicawellness.com (Astro)                       pago.veronicawellness.com (We
   (el ciclo, los exámenes o guías del carrito, las guías agregadas, la oferta del popup y la cita
   de lectura, traducidos con `src/data/pedido-webflow.ts`) y mandan al puente con `urlPedido()`.
   Zelle sigue en el sitio, con verificación manual. En `'prototipo'` el pago vuelve a simularse.
-- **Interruptor** `comercio.klarna` en `src/data/site.ts`, en `false` hasta que `/cobro/version`
-  diga `stripe: "real"`: con `true`, el checkout ofrece Klarna a quien eligió «Estados Unidos».
+- **Interruptor** `comercio.klarna` en `src/data/site.ts`, en `true` desde el 16-oct (`da67de7`):
+  el checkout ofrece Klarna a quien eligió «Estados Unidos». En `false`, Klarna desaparece del sitio
+  sin tocar el cobro.
 - **Klarna no puede ir por la caja de Webflow**: la caja dibuja los campos de tarjeta de Stripe
   (Card Elements), no el Payment Element, así que un método con redirección no aparece aunque
   esté encendido en Stripe (DECISIONES § 57). Va por `cobro/`, una app de Webflow Cloud montada en
@@ -92,7 +93,11 @@ veronicawellness.com (Astro)                       pago.veronicawellness.com (We
   quedan en Stripe, no en Webflow**: la dimensión «Cobro» de la auditoría los lee con
   `STRIPE_LECTURA` y compara reglas y precio. `vw cobro` genera `cobro/src/generado.ts` (snapshot,
   reglas y textos en un módulo autónomo, con su `VERSION`) y `--aplicar` lo despliega;
-  `/cobro/version` dice qué versión corre y si la clave de Stripe es de prueba o real.
+  `/cobro/version` dice qué versión corre y si la clave de Stripe es de prueba o real. El
+  despliegue usa el login de la CLI de Webflow (`webflow auth login` en `cobro/`, lo hace Santiago;
+  el token de workspace no alcanza); un secret nuevo pide `--forzar`, y cambiar la ruta pide
+  publicar el sitio. La clave se lee con `cloudflare:workers` (`cobro/src/entorno.ts`): con Astro 7,
+  `locals.runtime.env` da 500. Los errores se leen con `apps logs runtime --json` de la CLI.
 - **Después de pagar**, el script de la página «Order Confirmation» (`webflow/confirmacion.ts`,
   `vw confirmacion`) lee los productos de la confirmación y lleva a la página de gracias que
   corresponde, con la misma regla probada en `src/lib/comercio/confirmacion.ts`.
@@ -136,7 +141,7 @@ mismas dos direcciones que `scripts/vw/webflow/` (sembrar y bajar) y el puerto d
 | `puente [--aplicar]`                               | Genera `webflow/pedido.html` y lo publica en la página «Pedido»         | Webflow, con `--aplicar` |
 | `probar-puente [--rondas N]`                       | Pedidos de prueba contra el checkout real (nunca compra)                | un carrito de prueba     |
 | `confirmacion [--aplicar]`                         | Genera `webflow/confirmacion.html` y lo publica en «Order Confirmation» | Webflow, con `--aplicar` |
-| `cobro [--aplicar]`                                | Genera `cobro/src/generado.ts` y lo despliega en Webflow Cloud          | Webflow Cloud            |
+| `cobro [--aplicar] [--forzar]`                     | Genera `cobro/src/generado.ts` y lo despliega en Webflow Cloud          | Webflow Cloud            |
 | `dominio [--solo-dns]`                             | Los 14 registros del dominio y las 7 respuestas del sitio               | nada                     |
 | `exportar docs\|csv [--con-datos]`                 | `docs/MODELO.md`, `docs/modelo.sql`, datos en SQL o CSV                 | docs/ y exportacion/     |
 | `auditar [--solo …] [--sin-webflow] [--sin-build]` | La auditoría de mantenimiento (ver `MANTENIMIENTO.md`)                  | el reporte               |

@@ -38,7 +38,7 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
       de la máquina de quien siembra.
 - [x] **Pasarela** (11-oct): Stripe conectado con la cuenta que Verónica ya usa
       (`DOMINIO.md`). Webflow no tiene modo de prueba: «Enable Checkout» es lo que empieza a cobrar.
-      PayPal sin conectar.
+      PayPal lo conectó Mari ese día.
 - [ ] **Impuesto** (Verónica): el cálculo automático de EE. UU. ya está encendido, con Florida como
       sede (la dirección de la tienda). Las clases están en cada producto (`service-professional`,
       `digital-goods`, `standard-exempt` para el cargo de laboratorio). El 7 % fijo del prototipo no
@@ -67,13 +67,15 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
       `npm run vw -- probar-puente` avisa si se rompen.
 - [ ] **Correos de la tienda** (Mari y Verónica): la confirmación de pedido y los demás salen en
       inglés y con el diseño de Webflow. El texto es de Verónica.
-- [x] **Lo que el sitio pasa a la caja** (13-oct, pegado por Mari en Checkout y probado; falta en Checkout (PayPal)): `webflow/caja.html` en el pie de la página
-      Checkout (`npm run vw -- caja --aplicar`, o pegado a mano en su Custom code «Before
+- [x] **Lo que el sitio pasa a la caja** (13-oct, pegado por Mari en Checkout y en Checkout (PayPal), y
+      probado): `webflow/caja.html` en el pie de las dos páginas de la caja (`npm run vw -- caja --aplicar`, o pegado a mano en su Custom code «Before
       </body>», reemplazando el `cupon.html` anterior). El campo «Discount Code» de la caja ya está
       (Mari, 13-oct). DECISIONES § 56.
-- [ ] **Enable Checkout** (Santiago, al final): es el interruptor del cobro real. Va después de la
-      pasarela, el impuesto, el envío, los mensajes del puente y los correos, y de conectar el paso
-      de resumen del sitio (`comercio.modo`).
+- [x] **Enable Checkout** (Santiago, 11-oct): el interruptor del cobro real, encendido con lo que
+      quedó abierto en DECISIONES § 54.
+- [x] **App de Webflow Cloud** `verowellness-cobro` en `pago.veronicawellness.com/cobro` (16-oct,
+      DECISIONES § 57): el cobro con Klarna, con el secret `STRIPE_KLARNA_KEY` (clave restringida real
+      de `acct_1S3TX…`). Se despliega con `vw cobro --aplicar` o la CLI de Webflow (`INTEGRACION.md`).
 
 ## Vuelta a las páginas de gracias (TYP) — para Santiago
 
