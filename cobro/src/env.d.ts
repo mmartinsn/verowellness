@@ -1,5 +1,3 @@
-declare namespace App {
-  interface Locals {
-    runtime?: { env?: Record<string, string | undefined> };
-  }
+declare module 'cloudflare:workers' {
+  export const env: unknown;
 }

@@ -11,12 +11,13 @@ import {
   sesionKlarna,
   urlDeVuelta,
 } from '../generado.ts';
+import { claveStripe } from '../entorno.ts';
 import { estado } from '../estado.ts';
 import { crearSesion } from '../stripe.ts';
 
 export const prerender = false;
 
-export const GET: APIRoute = async ({ url, request, locals }) => {
+export const GET: APIRoute = async ({ url, request }) => {
   const lineas = normalizarPedido(leerItems(url.searchParams.get('items') ?? ''), CATALOGO);
   const sesion = sesionKlarna(lineas, PRODUCTOS, {
     volver: VOLVER,
@@ -24,7 +25,7 @@ export const GET: APIRoute = async ({ url, request, locals }) => {
     email: leerTraspaso(request.headers.get('cookie') ?? '')?.email,
   });
   if (!sesion) return estado('vacio', null, 400);
-  const clave = locals.runtime?.env?.STRIPE_KLARNA_KEY;
+  const clave = claveStripe();
   if (!clave) console.error('Falta el secret STRIPE_KLARNA_KEY en el entorno de Webflow Cloud');
   const destino = clave ? await crearSesion(clave, sesion) : null;
   if (!destino) return estado('error', url.toString(), 502);

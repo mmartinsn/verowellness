@@ -43,3 +43,6 @@ cobro/dev.vars
 cobro/node_modules/
 cobro/dist/
 cobro/.astro/
+cobro/.tmp/
+cobro/.wrangler/
+cobro/wrangler.json

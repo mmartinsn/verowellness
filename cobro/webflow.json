@@ -1,5 +1,6 @@
 {
   "cloud": {
-    "framework": "astro"
+    "framework": "astro",
+    "app_id": "d2bc1f98-0e9b-4034-b01a-47474c3d457f"
   }
 }

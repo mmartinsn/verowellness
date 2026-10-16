@@ -7,6 +7,9 @@
     "build": "astro build"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^14.1.7",
+    "@astrojs/react": "^6.0.6",
+    "@cloudflare/vite-plugin": "^1.64.0",
     "astro": "7.3.3"
   }
 }
