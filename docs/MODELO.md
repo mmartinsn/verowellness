@@ -331,7 +331,7 @@ Cada compra, con sus montos en centavos. Colección `pedidos`.
 | Cliente | `cliente` | → Cliente | sí | Quien compra. |
 | Fecha | `fecha` | fecha | sí | Momento de la compra. |
 | Estado | `estado` | opción: `iniciado`, `pendiente`, `pagado`, `cumplido`, `reembolsado` | sí | Estado del pedido. |
-| Método pago | `metodo-pago` | opción: `tarjeta`, `apple-pay`, `google-pay`, `paypal`, `zelle` | sí | Cómo se pagó. |
+| Método pago | `metodo-pago` | opción: `tarjeta`, `apple-pay`, `google-pay`, `paypal`, `klarna`, `zelle` | sí | Cómo se pagó. |
 | Moneda | `moneda` | opción: `USD` | sí | Moneda. |
 | Subtotal | `subtotal` | dinero (centavos de USD) | sí | Suma de las líneas. |
 | Impuesto | `impuesto` | dinero (centavos de USD) | sí | Impuesto cobrado. |

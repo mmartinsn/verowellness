@@ -60,6 +60,12 @@ export const comandos: Entrada[] = [
     cargar: () => import('./caja.ts'),
   },
   {
+    nombre: 'cobro',
+    descripcion:
+      'Genera cobro/src/generado.ts: el cobro con Klarna en Webflow Cloud; --aplicar lo despliega',
+    cargar: () => import('./cobro.ts'),
+  },
+  {
     nombre: 'probar-puente',
     descripcion: 'Matriz de pedidos contra el puente de Webflow: el checkout debe dar lo esperado',
     cargar: () => import('./probar-puente.ts'),

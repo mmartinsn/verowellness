@@ -138,6 +138,9 @@ async function recorridoCheckout(browser) {
   await page.click('#btn-consent-next');
   await page.waitForSelector('#step-4.active');
 
+  console.log(
+    `checkout paso 4: Klarna visible con Venezuela=${await klarnaVisible(page)} (esperado false)`
+  );
   // Step 4 — pick Zelle (the only method with visible content in the prototype).
   await page.click('.pay-method[data-method="zelle"]');
   await shot(4);
@@ -163,6 +166,61 @@ async function recorridoCheckout(browser) {
   await page.close();
 }
 
+const klarnaVisible = (page) =>
+  page
+    .$eval('#option-klarna', (el) => window.getComputedStyle(el).display !== 'none')
+    .catch(() => false);
+
+async function recorridoKlarna(browser) {
+  const page = await browser.newPage();
+  await page.setViewport(VIEWPORTS.desktop);
+  await page.setRequestInterception(true);
+  let destino = null;
+  page.on('request', (r) => {
+    if (new URL(r.url()).hostname.startsWith('pago.')) {
+      destino ??= r.url();
+      r.abort();
+    } else r.continue();
+  });
+  await page.goto(`${BASE}/checkout/layer-session/`, { waitUntil: 'networkidle0' });
+  if (!(await page.$('#option-klarna'))) {
+    console.log('checkout Klarna: apagado (comercio.klarna en src/data/site.ts)');
+    await page.close();
+    return;
+  }
+  await page.type('#nombre', 'Prueba');
+  await page.type('#apellido', 'Interna');
+  await page.type('#email', 'prueba@example.com');
+  await page.type('#telefono', '305 555 0101');
+  await page.select('#pais', 'Estados Unidos');
+  await page.select('#fuente', 'Instagram');
+  await page.click('#form-datos button[type=submit]');
+  await page.waitForSelector('#step-2.active');
+  await page.click('#step-2 [data-goto="3"]');
+  await page.click('#consent-terms');
+  await page.click('#consent-policy');
+  await page.click('#btn-consent-next');
+  await page.waitForSelector('#step-4.active');
+  console.log(
+    `checkout paso 4: Klarna visible con Estados Unidos=${await klarnaVisible(page)} (esperado true)`
+  );
+  await page.click('.pay-method[data-method="klarna"]');
+  await page.screenshot({
+    path: path.join(OUT, 'checkout-paso-4-klarna.png'),
+    fullPage: true,
+  });
+  await page.click('#btn-pago-next');
+  await page.waitForSelector('#step-5.active');
+  await page.screenshot({
+    path: path.join(OUT, 'checkout-paso-5-klarna.png'),
+    fullPage: true,
+  });
+  await page.click('#btn-pay');
+  for (let i = 0; i < 30 && !destino; i++) await new Promise((r) => setTimeout(r, 100));
+  console.log(`checkout Klarna → ${destino ?? 'no salió hacia el dominio de pago'}`);
+  await page.close();
+}
+
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: true });
 try {
   await mkdir(OUT, { recursive: true });
@@ -171,6 +229,7 @@ try {
       await capturaRuta(browser, ruta, nombre, vp);
   }
   await recorridoCheckout(browser);
+  await recorridoKlarna(browser);
   console.log(`\nListo → ${OUT}`);
 } finally {
   await browser.close();

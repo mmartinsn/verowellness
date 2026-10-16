@@ -34,7 +34,14 @@ export const ESTADOS_PEDIDO = [
   'reembolsado',
 ] as const;
 
-export const METODOS_PAGO = ['tarjeta', 'apple-pay', 'google-pay', 'paypal', 'zelle'] as const;
+export const METODOS_PAGO = [
+  'tarjeta',
+  'apple-pay',
+  'google-pay',
+  'paypal',
+  'klarna',
+  'zelle',
+] as const;
 
 export const MONEDAS = ['USD'] as const;
 

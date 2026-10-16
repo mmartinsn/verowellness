@@ -1,3 +1,4 @@
+import { auditarCobro } from '../auditar/cobro.ts';
 import { auditarComercio } from '../auditar/comercio.ts';
 import { auditarContenido } from '../auditar/contenido.ts';
 import { auditarDatos } from '../auditar/datos.ts';
@@ -11,6 +12,7 @@ import { bandera, opcion } from '../comun/args.ts';
 const DIMENSIONES: Record<string, Auditoria> = {
   datos: auditarDatos,
   comercio: auditarComercio,
+  cobro: auditarCobro,
   limites: auditarLimites,
   sitio: auditarSitio,
   repo: auditarRepo,

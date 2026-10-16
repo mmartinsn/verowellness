@@ -532,6 +532,23 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     sirven desde `veronicawellness.com/fonts/` porque el sitio no las carga de Google. Lo que no se
     alcanza: lo de dentro de los campos de tarjeta de Stripe y los correos de la tienda.
 
+57. **2026-10-15 — Klarna, por Stripe Checkout y no por la caja de Webflow** (Santiago). La caja de
+    Webflow dibuja los campos de tarjeta de Stripe (Card Elements, medido en
+    `pago.veronicawellness.com/checkout` el 15-oct), no el Payment Element: Klarna no aparece ahí
+    aunque se encienda en Stripe, y Webflow no lo ofrece (la idea del wishlist lleva 549 votos sin
+    respuesta). En el paso de pago del sitio aparece «Klarna» solo con `comercio.modo = 'webflow'`,
+    `comercio.klarna = true` (`src/data/site.ts`, apagado hasta que el cobro corra con la clave
+    real) y país «Estados Unidos» (un negocio de EE. UU. solo cobra con Klarna a compradoras de
+    EE. UU.).
+    Lleva el pedido a `pago.veronicawellness.com/cobro/klarna`, una app de Webflow Cloud en el
+    sitio de Verónica, que lo normaliza con las mismas reglas del puente y abre Stripe Checkout
+    solo con Klarna, en español, con precio y nombre del snapshot y envío solo a EE. UU. cuando hay
+    exámenes; al pagar vuelve a la página de gracias que corresponde. Los pedidos con Klarna quedan
+    en Stripe (la auditoría los lee); el código de descuento no aplica, como con Zelle. Klarna
+    cuesta 5,99 % + 30 ¢ por cobro y no se le puede cargar recargo. Se prueba primero con la clave
+    de prueba de Stripe y después Santiago hace una compra real y la reembolsa. Detalle en
+    `INTEGRACION.md` § Cómo fluye el cobro.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
@@ -547,6 +564,11 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
 - **Exámenes**: confirmar USD 25 de cargo de laboratorio por examen.
 - **Apple Pay y Google Pay** se saltan teléfono, «¿cómo me conociste?» y el consentimiento del
   checkout: ¿se dejan las billeteras o se pide el consentimiento antes, en el sitio?
+- **Klarna** (decisión 57): el renglón «Paga en cuotas» bajo «Klarna» en el paso de pago es
+  provisional, escrito al armarlo; hace falta el de Mari o Verónica (las promesas de cuotas tienen
+  reglas de Klarna). Los pedidos con Klarna no están en Webflow: Verónica los ve en Stripe
+  (Payments) y desde ahí envía los exámenes; conviene encender los recibos de Stripe para la
+  compradora. Un código de descuento no se aplica con Klarna; ¿se avisa en la nota del cupón?
 - **Mensajes de la página «Pedido»** de Webflow (`scripts/vw/comercio/puente.ts`): «Preparando tu
   pedido…», «No encontramos productos en tu pedido.», «No pudimos preparar tu pedido.», «Intentar de
   nuevo» y «Volver a Veronica Wellness» son provisionales, escritos al armar el puente; no son de

@@ -10,5 +10,10 @@ export const javascript = (archivo: string) =>
     .replace(/\n{3,}/g, '\n\n')
     .trim();
 
+export const sinImports = (archivo: string) =>
+  readFileSync(path.resolve(archivo), 'utf8')
+    .replace(/^import[^;]+;\s*$/gm, '')
+    .trim();
+
 export const envolver = (partes: string[]) =>
   `<script>\n(() => {\n${partes.join('\n')}\n})();\n</script>\n`;

@@ -5,6 +5,7 @@ export type ModoComercio = 'prototipo' | 'webflow';
 export interface Comercio {
   modo: ModoComercio;
   pago: string;
+  klarna?: boolean;
 }
 
 export interface MapaProductos {
@@ -32,9 +33,20 @@ export function productosDe(seleccion: Seleccion, mapa: MapaProductos): string[]
   ].filter((p): p is string => !!p);
 }
 
-export function urlPedido(comercio: Comercio, productos: string[]): string {
+export const RUTA_COBRO = '/cobro';
+
+function urlConItems(ruta: string, comercio: Comercio, productos: string[]): URL {
   const lineas: Linea[] = [...new Set(productos)].map((producto) => ({ producto, cantidad: 1 }));
-  const url = new URL('/pedido', comercio.pago);
+  const url = new URL(ruta, comercio.pago);
   url.searchParams.set('items', escribirItems(lineas));
+  return url;
+}
+
+export const urlPedido = (comercio: Comercio, productos: string[]) =>
+  urlConItems('/pedido', comercio, productos).toString();
+
+export function urlKlarna(comercio: Comercio, productos: string[], desde: string): string {
+  const url = urlConItems(`${RUTA_COBRO}/klarna`, comercio, productos);
+  url.searchParams.set('desde', desde);
   return url.toString();
 }

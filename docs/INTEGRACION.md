@@ -58,6 +58,9 @@ veronicawellness.com (Astro)                       pago.veronicawellness.com (We
   selección + resumen + ofertas ──urlPedido()──▶   /pedido?items=…  → carrito nativo → /checkout
                                                     (puente: vacía el carrito viejo, agrega cada
                                                      producto con su formulario nativo)
+  Klarna (país = Estados Unidos) ──urlKlarna()──▶  /cobro/klarna?items=…  (Webflow Cloud)
+                                                    → normalizarPedido() → sesión de Stripe
+                                                      Checkout solo con Klarna → /gracias/…
 ```
 
 - **Webflow no tiene API de carrito ni de checkout**: su checkout solo corre en páginas de
@@ -76,6 +79,20 @@ veronicawellness.com (Astro)                       pago.veronicawellness.com (We
   (el ciclo, los exámenes o guías del carrito, las guías agregadas, la oferta del popup y la cita
   de lectura, traducidos con `src/data/pedido-webflow.ts`) y mandan al puente con `urlPedido()`.
   Zelle sigue en el sitio, con verificación manual. En `'prototipo'` el pago vuelve a simularse.
+- **Interruptor** `comercio.klarna` en `src/data/site.ts`, en `false` hasta que `/cobro/version`
+  diga `stripe: "real"`: con `true`, el checkout ofrece Klarna a quien eligió «Estados Unidos».
+- **Klarna no puede ir por la caja de Webflow**: la caja dibuja los campos de tarjeta de Stripe
+  (Card Elements), no el Payment Element, así que un método con redirección no aparece aunque
+  esté encendido en Stripe (DECISIONES § 57). Va por `cobro/`, una app de Webflow Cloud montada en
+  `pago.veronicawellness.com/cobro`: recibe los mismos `items` que el puente, los pasa por
+  `normalizarPedido()`, arma la sesión con `sesionKlarna()` (`src/lib/comercio/cobro.ts`: precio y
+  nombre del snapshot, envío solo a EE. UU. si hay exámenes, página de gracias con la misma regla
+  que la confirmación) y redirige a Stripe. El email llega en la cookie `vw_caja` de la decisión
+  56; el código de descuento no aplica (los cupones viven en Webflow). **Los pedidos con Klarna
+  quedan en Stripe, no en Webflow**: la dimensión «Cobro» de la auditoría los lee con
+  `STRIPE_LECTURA` y compara reglas y precio. `vw cobro` genera `cobro/src/generado.ts` (snapshot,
+  reglas y textos en un módulo autónomo, con su `VERSION`) y `--aplicar` lo despliega;
+  `/cobro/version` dice qué versión corre y si la clave de Stripe es de prueba o real.
 - **Después de pagar**, el script de la página «Order Confirmation» (`webflow/confirmacion.ts`,
   `vw confirmacion`) lee los productos de la confirmación y lleva a la página de gracias que
   corresponde, con la misma regla probada en `src/lib/comercio/confirmacion.ts`.
@@ -119,6 +136,7 @@ mismas dos direcciones que `scripts/vw/webflow/` (sembrar y bajar) y el puerto d
 | `puente [--aplicar]`                               | Genera `webflow/pedido.html` y lo publica en la página «Pedido»         | Webflow, con `--aplicar` |
 | `probar-puente [--rondas N]`                       | Pedidos de prueba contra el checkout real (nunca compra)                | un carrito de prueba     |
 | `confirmacion [--aplicar]`                         | Genera `webflow/confirmacion.html` y lo publica en «Order Confirmation» | Webflow, con `--aplicar` |
+| `cobro [--aplicar]`                                | Genera `cobro/src/generado.ts` y lo despliega en Webflow Cloud          | Webflow Cloud            |
 | `dominio [--solo-dns]`                             | Los 14 registros del dominio y las 7 respuestas del sitio               | nada                     |
 | `exportar docs\|csv [--con-datos]`                 | `docs/MODELO.md`, `docs/modelo.sql`, datos en SQL o CSV                 | docs/ y exportacion/     |
 | `auditar [--solo …] [--sin-webflow] [--sin-build]` | La auditoría de mantenimiento (ver `MANTENIMIENTO.md`)                  | el reporte               |
@@ -133,8 +151,10 @@ publica el sitio entero y los arrastraría. Se publican o se descartan en Webflo
 las funciones con parámetros (entradas en `scripts/vw/comun/entradas.ts`) y falla con un export
 nuevo que no esté declarado allí.
 
-Variables en `.env` (ver `.env.example`): `WEBFLOW_SITE_TOKEN` (token del sitio) y
-`WEBFLOW_SITE_ID`.
+Variables en `.env` (ver `.env.example`): `WEBFLOW_SITE_TOKEN` (token del sitio),
+`WEBFLOW_SITE_ID` y `STRIPE_LECTURA` (clave restringida de Stripe, solo lectura de Checkout
+Sessions, para la auditoría del cobro). La clave que crea las sesiones (`STRIPE_KLARNA_KEY`) no
+está en esta máquina: es un secret del entorno de Webflow Cloud.
 
 ## Archivos
 
@@ -152,6 +172,8 @@ Variables en `.env` (ver `.env.example`): `WEBFLOW_SITE_TOKEN` (token del sitio)
 | `src/lib/comercio/reglas.ts`                 | Reglas del pedido                                                                                                                       | —                                 | —                                                  | —                                                             | `tests/reglas-comercio.test.ts`                                      | La misma fuente para el sitio y el puente                                                                                                             |
 | `src/lib/comercio/pedido.ts`                 | URL del puente y la lista de productos de lo elegido en el checkout (`productosDe`)                                                     | —                                 | —                                                  | lo que no está en el mapa no viaja                            | `tests/pedido.test.ts`, prueba de punta a punta en Chrome            | El puerto de cobro: otro adaptador cambia esto                                                                                                        |
 | `src/lib/comercio/confirmacion.ts`           | A qué página de gracias va cada pedido                                                                                                  | los nombres de la confirmación    | —                                                  | `null` si no reconoce nada: queda la confirmación de Webflow  | `tests/confirmacion.test.ts`                                         | La misma regla que corre en Webflow                                                                                                                   |
+| `src/lib/comercio/cobro.ts`                  | La sesión de Stripe Checkout con Klarna para un pedido normalizado, y a dónde vuelve si cancela                                         | el snapshot (por `vw cobro`)      | —                                                  | `null` con un producto desconocido o un pedido vacío          | `tests/cobro.test.ts`                                                | Solo Klarna: tarjeta, Apple Pay y PayPal siguen en la caja de Webflow                                                                                 |
+| `cobro/`                                     | La app de Webflow Cloud en `pago.veronicawellness.com/cobro`: `GET /klarna` y `GET /version`                                            | `generado.ts`, cookie `vw_caja`   | una sesión en Stripe                               | página con los mensajes del puente                            | `tests/cobro.test.ts` (el módulo generado), recorrido en modo prueba | Un módulo autónomo porque Webflow Cloud construye solo esa carpeta                                                                                    |
 | `src/data/pedido-webflow.ts`                 | Ciclo, examen y guía del sitio → producto de Webflow                                                                                    | el snapshot                       | —                                                  | —                                                             | cruce con el catálogo del puente                                     | Lo lee el checkout con `comercio.modo = 'webflow'`                                                                                                    |
 | `src/lib/despliegue.ts`                      | Dónde vive el sitio y la caja: sitio, base, URL pública y dominio de pago                                                               | —                                 | —                                                  | —                                                             | paridad                                                              | Lo leen `astro.config.mjs`, la auditoría, las capturas y el puente: cambiar de dominio es cambiar este archivo                                        |
 | `src/lib/json-ld.ts`                         | El JSON-LD con `<` escapado                                                                                                             | —                                 | —                                                  | —                                                             | `tests/json-ld.test.ts`                                              | Un texto de Webflow no puede cerrar el `<script>`                                                                                                     |

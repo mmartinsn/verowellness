@@ -11,7 +11,7 @@ export const VOLVER = URL_PUBLICA;
 
 export const TIENDA = WEBFLOW_IO;
 
-const TEXTOS = {
+export const TEXTOS = {
   preparando: 'Preparando tu pedido…',
   vacio: 'No encontramos productos en tu pedido.',
   error: 'No pudimos preparar tu pedido.',
@@ -59,9 +59,9 @@ function tokens(): Record<(typeof TOKENS)[number], string> {
   ) as Record<(typeof TOKENS)[number], string>;
 }
 
-export function generarPuente(tabla: Tabla, volver: string): string {
+export function estiloDeEstado(): string {
   const t = tokens();
-  const estilo = [
+  return [
     'body{margin:0;background:' +
       t['color-ivory'] +
       ';color:' +
@@ -72,8 +72,12 @@ export function generarPuente(tabla: Tabla, volver: string): string {
     '[data-vw-estado]{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center}',
     '[data-vw-estado] p{font-family:' + t['font-serif'] + ';font-size:28px;margin:0}',
     '[data-vw-estado] a{color:' + t['color-clay-rich'] + '}',
-    '.w-commerce-commercecartwrapper{position:absolute;left:-9999px}',
   ].join('');
+}
+
+export function generarPuente(tabla: Tabla, volver: string): string {
+  const estilo =
+    estiloDeEstado() + '.w-commerce-commercecartwrapper{position:absolute;left:-9999px}';
   return `<style>${estilo}</style>\n${envolver([
     `const CATALOGO = ${JSON.stringify(catalogoDe(tabla))};`,
     `const VOLVER = ${JSON.stringify(volver)};`,

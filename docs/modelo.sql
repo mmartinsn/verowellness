@@ -207,7 +207,7 @@ CREATE TABLE pedidos (
   cliente text NOT NULL REFERENCES clientes (id),
   fecha timestamptz NOT NULL,
   estado text NOT NULL CHECK (estado IN ('iniciado', 'pendiente', 'pagado', 'cumplido', 'reembolsado')),
-  metodo_pago text NOT NULL CHECK (metodo_pago IN ('tarjeta', 'apple-pay', 'google-pay', 'paypal', 'zelle')),
+  metodo_pago text NOT NULL CHECK (metodo_pago IN ('tarjeta', 'apple-pay', 'google-pay', 'paypal', 'klarna', 'zelle')),
   moneda text NOT NULL CHECK (moneda IN ('USD')),
   subtotal integer NOT NULL CHECK (subtotal >= 0),
   impuesto integer NOT NULL CHECK (impuesto >= 0),

@@ -24,6 +24,13 @@ export function destinoGracias(
   const productos = nombres
     .map((n) => catalogo.porNombre[normalizarNombre(n)])
     .filter((p): p is ProductoGracias => !!p);
+  return destinoDeProductos(productos, descargas);
+}
+
+export function destinoDeProductos(
+  productos: ProductoGracias[],
+  descargas: Descarga[]
+): string | null {
   const asesoria = productos.find((p) => p.tipo === 'asesoria');
   const guias = [...new Set(productos.flatMap((p) => (p.guia ? [p.guia] : [])))];
   const q = new URLSearchParams();

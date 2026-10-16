@@ -1,6 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { productosDe, urlPedido, type MapaProductos } from '../src/lib/comercio/pedido.ts';
+import {
+  productosDe,
+  urlKlarna,
+  urlPedido,
+  type MapaProductos,
+} from '../src/lib/comercio/pedido.ts';
 import { leerItems } from '../src/lib/comercio/reglas.ts';
 
 const comercio = { modo: 'webflow' as const, pago: 'https://pago.example.com' };
@@ -9,6 +14,17 @@ test('arma la URL del puente con los productos sin repetir', () => {
   const url = new URL(urlPedido(comercio, ['h-pylori', 'layer-session', 'h-pylori']));
   assert.equal(url.origin + url.pathname, 'https://pago.example.com/pedido');
   assert.equal(url.searchParams.get('items'), 'h-pylori,layer-session');
+});
+
+test('Klarna va al cobro del dominio de pago con los mismos items que el puente', () => {
+  const productos = ['h-pylori', 'layer-session', 'h-pylori'];
+  const url = new URL(urlKlarna(comercio, productos, '/checkout/layer-session/'));
+  assert.equal(url.origin + url.pathname, 'https://pago.example.com/cobro/klarna');
+  assert.equal(
+    url.searchParams.get('items'),
+    new URL(urlPedido(comercio, productos)).searchParams.get('items')
+  );
+  assert.equal(url.searchParams.get('desde'), '/checkout/layer-session/');
 });
 
 test('lo que arma la URL lo lee igual el puente', () => {

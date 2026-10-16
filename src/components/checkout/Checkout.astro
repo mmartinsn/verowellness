@@ -139,13 +139,16 @@ const paises = [
 ];
 const fuentes = ['Instagram', 'Referido', 'Google', 'Cliente anterior', 'Otro'];
 
+const enWebflow = comercio.modo === 'webflow';
 const metodos = [
   { id: 'stripe', label: 'Tarjeta', sub: 'Pago seguro procesado por Stripe', icon: 'STRIPE' },
   { id: 'apple_pay', label: 'Apple Pay', sub: 'Pago rápido con tu wallet de Apple', icon: '' },
   { id: 'paypal', label: 'PayPal', sub: 'Paga con tu cuenta de PayPal', icon: 'PAYPAL' },
+  ...(enWebflow && comercio.klarna
+    ? [{ id: 'klarna', label: 'Klarna', sub: 'Paga en cuotas', icon: 'KLARNA' }]
+    : []),
   { id: 'zelle', label: 'Zelle', sub: 'Verificación manual · 24–48h', icon: 'ZELLE' },
 ];
-const enWebflow = comercio.modo === 'webflow';
 const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
 ---
 
@@ -1045,6 +1048,9 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
   #option-apple_pay {
     display: none; /* shown by the script only when the device supports Apple Pay */
   }
+  #option-klarna {
+    display: none;
+  }
   .pay-method-label {
     font-weight: 700;
     font-size: 15px;
@@ -1662,6 +1668,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
    */
   import {
     productosDe,
+    urlKlarna,
     urlPedido,
     type MapaProductos,
     type Seleccion,
@@ -1681,7 +1688,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
     total: number;
     currency: string;
   };
-  type Metodo = 'stripe' | 'apple_pay' | 'paypal' | 'zelle';
+  type Metodo = 'stripe' | 'apple_pay' | 'paypal' | 'klarna' | 'zelle';
 
   const root = document.getElementById('checkout');
   if (root) {
@@ -2013,8 +2020,21 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
         payment_status: 'STARTED',
       };
       console.info('[CRM] createOrder (STARTED)', state.order);
+      klarnaSegunPais(state.client.country);
       goToStep(2);
     });
+
+    function klarnaSegunPais(pais: string) {
+      const opcion = $('option-klarna');
+      if (!opcion) return;
+      const enUsa = pais === 'Estados Unidos';
+      opcion.style.display = enUsa ? 'flex' : 'none';
+      if (enUsa || state.payment_method !== 'klarna') return;
+      opcion.classList.remove('selected');
+      opcion.querySelector('input')!.checked = false;
+      state.payment_method = null;
+      $<HTMLButtonElement>('btn-pago-next')!.disabled = true;
+    }
 
     /* ── Step 3: payment method ── */
     // Apple Pay only when the device can use it.
@@ -2053,6 +2073,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
       stripe: 'Tarjeta (Stripe)',
       apple_pay: 'Apple Pay',
       paypal: 'PayPal',
+      klarna: 'Klarna',
       zelle: 'Zelle (verificación manual)',
     };
     let lastOutcome: 'paid' | 'pending' | null = null;
@@ -2125,10 +2146,12 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
           },
           dominioCompartido(location.hostname, new URL(webflow.pago).hostname)
         );
-        window.location.href = urlPedido(
-          { modo: 'webflow', pago: webflow.pago },
-          productosDe(seleccion(), webflow.mapa)
-        );
+        const comercio = { modo: 'webflow' as const, pago: webflow.pago };
+        const productos = productosDe(seleccion(), webflow.mapa);
+        window.location.href =
+          state.payment_method === 'klarna'
+            ? urlKlarna(comercio, productos, location.pathname)
+            : urlPedido(comercio, productos);
         return;
       }
 

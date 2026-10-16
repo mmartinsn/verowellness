@@ -63,7 +63,8 @@ interactividad (menú, acordeones, checkout) son `<script>` de Astro por compone
 | `src/data/canonico/`       | **El snapshot de la base de datos**: lo publicado en Webflow, en forma canónica. Lo escribe `npm run vw -- bajar`         |
 | `src/modelo/`              | **El modelo de datos**: una declaración por entidad, validación y reglas de negocio (`docs/MODELO.md`, generado)          |
 | `src/lib/datos/`           | Acceso al snapshot (validado al construir), imágenes y plantillas de precios                                              |
-| `src/lib/comercio/`        | Reglas del pedido y la URL del puente de cobro                                                                            |
+| `src/lib/comercio/`        | Reglas del pedido, la URL del puente de cobro y la sesión de Stripe con Klarna                                            |
+| `cobro/`                   | La app de Webflow Cloud en `pago.veronicawellness.com/cobro` que cobra con Klarna; `npm run vw -- cobro` la genera        |
 | `webflow/`                 | El puente que corre en la página «Pedido» de Webflow y su versión generada                                                |
 | `scripts/vw/`              | `npm run vw`: esquema, siembra y bajada de Webflow, puente, exportación, auditoría                                        |
 | `tests/`                   | Pruebas de las reglas del pedido                                                                                          |
@@ -113,6 +114,7 @@ local `dominio` y se hace con `docs/DOMINIO.md`. Ningún enlace hay que tocar po
 - [x] Base de datos y tienda en Webflow, con el puente de cobro probado (decisión 38)
 - [ ] Pagos reales: Verónica conecta Stripe y PayPal en Webflow; Mari diseña el paso de resumen y se pasa `comercio.modo` a `'webflow'`
 - [ ] Impuesto automático, envío de exámenes y datos de la empresa en Webflow (`docs/WEBFLOW.md`)
+- [ ] Klarna: encenderlo en Stripe, desplegar `cobro/` con la clave de prueba, probar, pasar a la real y poner `comercio.klarna = true` (decisión 57)
 - [ ] PDF de las cuatro guías como descarga de cada producto
 - [ ] Agenda: las URL reales de Calendly (las del prototipo dan 404)
 - [ ] Textos legales de Verónica en `/legal/*`
