@@ -71,5 +71,5 @@ export const copyright = `© ${new Date().getFullYear()} Veronica Wellness. Todo
 export const comercio: Comercio = {
   modo: 'webflow',
   pago: PAGO,
-  klarna: false,
+  klarna: true,
 };
