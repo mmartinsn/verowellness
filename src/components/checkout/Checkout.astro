@@ -1706,12 +1706,22 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
       } = JSON.parse(root.dataset.carrito);
       const porId = new Map(carrito.catalogo.map((i) => [i.id, i]));
       let ids: string[] = [];
-      try {
-        const v = JSON.parse(localStorage.getItem(carrito.clave) ?? '[]');
-        ids = Array.isArray(v) ? v : [];
-      } catch {
-        // Storage unavailable: the cart reads as empty and the page says so.
+      // A direct link (e.g. from a downloadable guide) can name the test: ?examen=<id>.
+      const directo = new URLSearchParams(location.search).get('examen');
+      if (directo && porId.has(directo)) {
+        try {
+          localStorage.setItem(carrito.clave, JSON.stringify([directo]));
+        } catch {
+          ids = [directo];
+        }
       }
+      if (!ids.length)
+        try {
+          const v = JSON.parse(localStorage.getItem(carrito.clave) ?? '[]');
+          ids = Array.isArray(v) ? v : [];
+        } catch {
+          // Storage unavailable: the cart reads as empty and the page says so.
+        }
       items = ids.map((id) => porId.get(id)).filter((i): i is NonNullable<typeof i> => !!i);
       const round = (n: number) => Math.round(n * 100) / 100;
       config.subtotal = round(items.reduce((sum, i) => sum + i.precio, 0));
@@ -1854,6 +1864,18 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
         });
       };
       bloqueLectura.querySelectorAll('input').forEach((i) => i.addEventListener('change', leer));
+      // ?lectura=<consultation id> arrives with that reading appointment already added.
+      const pedida = new URLSearchParams(location.search).get('lectura');
+      const opcion = bloqueLectura.querySelector<HTMLInputElement>(
+        `input[name="lectura-opcion"][value="${CSS.escape(pedida ?? '')}"]`
+      );
+      if (pedida && opcion) {
+        bloqueLectura.querySelector<HTMLInputElement>(
+          'input[name="lectura-sino"][value="si"]'
+        )!.checked = true;
+        opcion.checked = true;
+        leer();
+      }
     }
     // Shop: on arrival, offer one guide at a discount — the first in `orden` not already in the cart.
     const popup = root.querySelector<HTMLDialogElement>('[data-popup-guia]');
