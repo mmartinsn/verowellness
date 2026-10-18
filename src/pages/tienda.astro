@@ -52,6 +52,7 @@ const productosLd = productosALaVenta.map((p) => ({
                 <span class="i-num">{p.num}</span>
                 <span class="i-nombre">{p.nombre}</span>
                 {p.bestSeller && <span class="i-best">★ Más vendido</span>}
+                {p.nuevo && <span class="i-best">✦ Nuevo</span>}
                 <span class="i-precio">
                   {p.proximamente ? 'Próximamente' : precioTienda(p.precio)}
                 </span>

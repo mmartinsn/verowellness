@@ -14,6 +14,8 @@ export interface Producto {
   precio: number;
   portada: ImageMetadata;
   bestSeller?: boolean;
+  /** Marked «Nuevo» in the shop (Mari, 2026-10-18: the hormones guide goes on sale). */
+  nuevo?: boolean;
   /** Shown as «Próximamente» and not sold (Mari, 2026-10-11: the hormones guide has no PDF yet). */
   proximamente?: boolean;
   subtitulo: string;
@@ -38,6 +40,7 @@ const aProducto = (g: Fila<'guia'>): Producto => {
     precio: desdeCentavos(producto.precio),
     ...siVerdadero('bestSeller', g.masVendido && !g.proximamente),
     ...siVerdadero('proximamente', g.proximamente),
+    ...siVerdadero('nuevo', !!g.nuevo && !g.proximamente),
     portada: imagen(g.portada),
     subtitulo: g.subtitulo,
     gancho: g.gancho,

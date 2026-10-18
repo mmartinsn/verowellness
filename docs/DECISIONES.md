@@ -549,6 +549,15 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     de prueba de Stripe y después Santiago hace una compra real y la reembolsa. Detalle en
     `INTEGRACION.md` § Cómo fluye el cobro.
 
+58. **2026-10-18 — La guía de hormonas sale a la venta con la marca «Nuevo»** (Mari). Deja de ser
+    «Próximamente»; pierde «Más vendido» (no puede serlo una guía recién publicada) y gana el campo
+    nuevo `guia.nuevo`, que pinta «✦ Nuevo» en el índice, junto al precio y como sello en la
+    portada. Portada = página 1 del PDF final; 53 páginas. El checkout de exámenes acepta
+    `?examen=<id>&lectura=<clave de asesoría>` para el botón del DUTCH Plus de la guía.
+    **Pendiente de Santiago:** `vw esquema --aplicar` (campo nuevo) y `vw sembrar --aplicar`, y
+    subir el PDF como descarga del producto `guia-hormonas-30` en Webflow: sin él, la compra no
+    entrega nada.
+
 ## Abiertas — para Mari y Verónica
 
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
