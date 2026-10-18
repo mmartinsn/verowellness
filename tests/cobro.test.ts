@@ -31,8 +31,15 @@ function lineas(s: URLSearchParams) {
       centavos: Number(s.get(`line_items[${i}][price_data][unit_amount]`)),
       nombre: s.get(`line_items[${i}][price_data][product_data][name]`)!,
     });
-  return salida;
+  return salida.filter((l) => l.producto !== 'impuesto');
 }
+
+const impuesto = (s: URLSearchParams) => {
+  for (let i = 0; s.has(`line_items[${i}][quantity]`); i++)
+    if (s.get(`line_items[${i}][price_data][product_data][metadata][producto]`) === 'impuesto')
+      return Number(s.get(`line_items[${i}][price_data][unit_amount]`));
+  return 0;
+};
 
 test('una asesoría: solo Klarna, en español, a su página de gracias y sin pedir envío', () => {
   const s = sesion('initial-layer-cycle')!;
@@ -83,6 +90,17 @@ test('exámenes con lectura: cargo de laboratorio por examen, envío solo a EE. 
     `${examenes[0]},${examenes[1]},layer-session,cargo-laboratorio:2`
   );
   assert.equal(s.get('payment_intent_data[metadata][items]'), s.get('metadata[items]'));
+});
+
+test('impuesto fijo del 7 % solo sobre exámenes y asesorías, sin el cargo ni las guías', () => {
+  const precio = (id: string) => productos[id].precio;
+  assert.equal(impuesto(sesion('initial-layer-cycle')!), Math.round(26900 * 0.07));
+  const s = sesion(
+    `${examenes[0]},${examenes[1]},cargo-laboratorio:9,layer-session,recetario-30-desayunos`
+  )!;
+  const base = precio(examenes[0]) + precio(examenes[1]) + precio('layer-session');
+  assert.equal(impuesto(s), Math.round(base * 0.07));
+  assert.equal(impuesto(sesion('recetario-30-desayunos,hackear-tu-cerebro-oferta')!), 0);
 });
 
 test('guías con la oferta del popup: van a la tienda con sus guías', () => {

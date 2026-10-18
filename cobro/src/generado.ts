@@ -1,4 +1,4 @@
-export const VERSION = 'caff3c9d91954ba5';
+export const VERSION = '517133e94050053d';
 
 export const VOLVER = "https://veronicawellness.com/";
 
@@ -672,6 +672,18 @@ export interface OpcionesCobro {
   email?: string;
 }
 
+/** Fixed 7 % on tests and consultations only (Mari, 2026-10-18); guides and the lab fee carry none. */
+export const IMPUESTO = { tasa: 0.07, tipos: ['examen', 'asesoria'], nombre: 'Impuesto (7 %)' };
+
+/** The tax in cents for the lines of an order, rounded once on the taxed subtotal. */
+export function impuestoDe(lineas: Linea[], catalogo: CatalogoCobro): number {
+  const base = lineas.reduce((suma, l) => {
+    const p = catalogo[l.producto];
+    return IMPUESTO.tipos.includes(p?.tipo) ? suma + p.precio * l.cantidad : suma;
+  }, 0);
+  return Math.round(base * IMPUESTO.tasa);
+}
+
 export function urlDeVuelta(desde: string | null, volver: string): string {
   const base = new URL(volver);
   if (!desde || !/^\/(?!\/)[a-z0-9\-/]*$/.test(desde)) return base.toString();
@@ -708,6 +720,15 @@ export function sesionKlarna(
     sesion.set(`${linea}[price_data][product_data][name]`, producto.nombre);
     sesion.set(`${linea}[price_data][product_data][metadata][producto]`, l.producto);
   });
+  const impuesto = impuestoDe(lineas, catalogo);
+  if (impuesto > 0) {
+    const linea = `line_items[${lineas.length}]`;
+    sesion.set(`${linea}[quantity]`, '1');
+    sesion.set(`${linea}[price_data][currency]`, 'usd');
+    sesion.set(`${linea}[price_data][unit_amount]`, String(impuesto));
+    sesion.set(`${linea}[price_data][product_data][name]`, IMPUESTO.nombre);
+    sesion.set(`${linea}[price_data][product_data][metadata][producto]`, 'impuesto');
+  }
   if (productos.some((p) => p.enviable))
     sesion.set('shipping_address_collection[allowed_countries][0]', 'US');
   if (opciones.email) sesion.set('customer_email', opciones.email);

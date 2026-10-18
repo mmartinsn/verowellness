@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import path from 'node:path';
-import type { CatalogoCobro } from '../../../src/lib/comercio/cobro.ts';
+import { impuestoDe, type CatalogoCobro } from '../../../src/lib/comercio/cobro.ts';
 import { RUTA_COBRO } from '../../../src/lib/comercio/pedido.ts';
 import { PAGO } from '../../../src/lib/despliegue.ts';
 import type { Tabla } from '../comun/snapshot.ts';
@@ -102,10 +102,13 @@ export const itemsDeSesion = (s: SesionStripe): ItemPedido[] =>
     });
 
 export function diferenciaDePrecio(s: SesionStripe, productos: CatalogoCobro): string | null {
-  const esperado = itemsDeSesion(s).reduce(
-    (suma, i) => suma + (productos[i.productSlug]?.precio ?? NaN) * i.count,
-    0
-  );
+  const items = itemsDeSesion(s);
+  const esperado =
+    items.reduce((suma, i) => suma + (productos[i.productSlug]?.precio ?? NaN) * i.count, 0) +
+    impuestoDe(
+      items.map((i) => ({ producto: i.productSlug, cantidad: i.count })),
+      productos
+    );
   return esperado === s.amount_subtotal
     ? null
     : `cobrado ${s.amount_subtotal} centavos, el snapshot da ${esperado}`;
