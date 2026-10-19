@@ -48,7 +48,9 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
       «Envío incluido», gratis por pedido, con la frase de la FAQ. Fuera de EE. UU. se contacta a
       Verónica: no hay zona internacional.
 - [x] **Datos de la empresa** (11-oct): Veronica Wellness, 6220 NW 173rd St 719, Hialeah, FL 33015.
-- [ ] **PDF de las guías** (Verónica): se suben y se ponen como descarga del producto.
+- [ ] **PDF de las guías** (Verónica): se suben y se ponen como descarga del producto. Hecho para
+      «Vuelve a sentirte tú» y su oferta (−15%) el 18-oct (Mari): el PDF va en los Assets del sitio
+      de Webflow y su URL del CDN en Downloads, con el nombre del producto como «File name».
 - [x] **Calendly**: las reales en Asesorías (Mari, 11-oct).
 - [ ] **Checkout** (Mari): vestirlo con la marca (Cormorant + Nunito, ivory, charcoal, clay) y
       agregar los campos extra (teléfono, «¿cómo me conociste?», consentimiento). Apple Pay y Google
