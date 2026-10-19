@@ -16,7 +16,7 @@ import '@fontsource-variable/nunito';
 import '../styles/global.css';
 import { asset } from '../lib/url';
 import { scriptJsonLd } from '../lib/json-ld';
-import { prototipo, imagenSocial, marca, metaPixel } from '../data/site';
+import { prototipo, imagenSocial, marca, metaPixel, metaVerificacionDominio } from '../data/site';
 
 interface Props {
   title: string;
@@ -48,6 +48,7 @@ const robots = noindex || prototipo;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href={asset('favicon.svg')} type="image/svg+xml" />
+    <meta name="facebook-domain-verification" content={metaVerificacionDominio} />
     <meta name="color-scheme" content="light only" />
     <meta name="theme-color" content={theme === 'stitch' ? '#FDF9F2' : '#FBFAF6'} />
     {robots && <meta name="robots" content="noindex, nofollow" />}

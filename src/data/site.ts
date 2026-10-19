@@ -73,6 +73,8 @@ export const copyright = `© ${new Date().getFullYear()} Veronica Wellness. Todo
  * on every page, InitiateCheckout on the checkouts, Purchase on the shop thank-you page.
  */
 export const metaPixel = '1873539997108050';
+/** Domain verification of veronicawellness.com in the same portfolio (meta tag method). */
+export const metaVerificacionDominio = 'gdp107672h52nowta5puf26qugv31l';
 
 export const comercio: Comercio = {
   modo: 'webflow',
