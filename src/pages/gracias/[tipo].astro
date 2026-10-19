@@ -62,7 +62,11 @@ const conBonus = tipo === 'asesoria' && !!ciclo!.bonus;
   noindex
   mobileCta={false}
 >
-  <section class="typ" data-typ={tipo}>
+  <section
+    class="typ"
+    data-typ={tipo}
+    data-precios={JSON.stringify(Object.fromEntries(productos.map((p) => [p.id, p.precio])))}
+  >
     <div class="wrap typ-wrap">
       <svg class="typ-icono" viewBox="0 0 56 56" fill="none" aria-hidden="true">
         <circle cx="28" cy="28" r="27" stroke="currentColor" stroke-width="1.5"></circle>
@@ -169,6 +173,7 @@ const conBonus = tipo === 'asesoria' && !!ciclo!.bonus;
   const root = document.querySelector<HTMLElement>('[data-typ]');
   if (root) {
     const q = new URLSearchParams(location.search);
+    const precios = JSON.parse(root.dataset.precios ?? '{}') as Record<string, number>;
     const zelle = q.get('pago') === 'zelle';
     let descargas: { nombre: string; url: string }[] = [];
     try {
@@ -207,6 +212,30 @@ const conBonus = tipo === 'asesoria' && !!ciclo!.bonus;
     }
 
     const compradas = new Set((q.get('guias') ?? '').split(',').filter(Boolean));
+
+    // Meta pixel: one Purchase per paid shop order (a reload of the same URL does not repeat it).
+    // Zelle is still unverified, so it does not count. The value is the list price of the guides.
+    const fbq = (window as unknown as { fbq?: (...a: unknown[]) => void }).fbq;
+    if (fbq && root.dataset.typ === 'tienda' && !zelle && compradas.size) {
+      const clave = `vw-compra:${location.search}`;
+      let vista = false;
+      try {
+        vista = sessionStorage.getItem(clave) === '1';
+        sessionStorage.setItem(clave, '1');
+      } catch {
+        // Without storage a reload may count twice; better than not counting.
+      }
+      if (!vista) {
+        const ids = [...compradas].filter((id) => precios[id] !== undefined);
+        fbq('track', 'Purchase', {
+          value: ids.reduce((t, id) => t + precios[id]!, 0),
+          currency: 'USD',
+          content_ids: ids,
+          content_type: 'product',
+          num_items: ids.length,
+        });
+      }
+    }
     root.querySelectorAll<HTMLElement>('[data-guia]').forEach((li) => {
       const nombre = li.querySelector('.d-nombre')!.textContent ?? '';
       if (compradas.has(li.dataset.guia!) || enlace(nombre)) li.hidden = false;

@@ -68,6 +68,12 @@ export const imagenSocial = {
 
 export const copyright = `© ${new Date().getFullYear()} Veronica Wellness. Todos los derechos reservados.`;
 
+/**
+ * Meta pixel (dataset «Veronica Dudamell Web Data» of the business portfolio, 2026-10-18): PageView
+ * on every page, InitiateCheckout on the checkouts, Purchase on the shop thank-you page.
+ */
+export const metaPixel = '1873539997108050';
+
 export const comercio: Comercio = {
   modo: 'webflow',
   pago: PAGO,

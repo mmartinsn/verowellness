@@ -558,8 +558,20 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     subir el PDF como descarga del producto `guia-hormonas-30` en Webflow: sin él, la compra no
     entrega nada.
 
+59. **2026-10-18 — Píxel de Meta para los anuncios de la guía** (Mari). Conjunto de datos
+    «Veronica Dudamell Web Data» (`1873539997108050`, `metaPixel` en `src/data/site.ts`):
+    PageView en todas las páginas (`BaseLayout`), InitiateCheckout al abrir cualquier checkout
+    (`CheckoutLayout`) y Purchase en `/gracias/tienda/` con el precio de lista de las guías de
+    `?guias=`, en USD. Una vez por URL en la sesión (recargar no suma) y nunca con `pago=zelle`
+    (sin verificar). Las otras páginas de gracias no mandan Purchase: los anuncios venden la guía y
+    un examen o una asesoría inflarían el valor. Probado en Chrome real: las tres llegan a
+    `facebook.com/tr` con estado 200 (en Chrome automatizado el píxel no envía nada).
+
 ## Abiertas — para Mari y Verónica
 
+- **Privacidad y píxel de Meta** (decisión 59): `legal/privacidad` no menciona el píxel ni las
+  cookies de Meta, y las condiciones de Meta piden avisarlo. Hace falta el texto (Codex, con el OK
+  de Verónica).
 - **¿Borrar las variantes A y B?** El inicio ya está elegido (decisión 13); se conservan para comparar.
 - **Foto del hero:** ¿el fotograma exacto del export (no está en esta máquina) o `ZGPH1218`?
 - **¿Una sola tipografía?** El inicio trae Cormorant + Plus Jakarta; el resto del sitio, Cormorant +

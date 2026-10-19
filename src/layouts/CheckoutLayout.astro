@@ -33,6 +33,10 @@ const { title, description } = Astro.props;
   </footer>
 </BaseLayout>
 
+<script is:inline>
+  window.fbq?.('track', 'InitiateCheckout');
+</script>
+
 <style>
   .checkout-header {
     display: flex;

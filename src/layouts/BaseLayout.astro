@@ -16,7 +16,7 @@ import '@fontsource-variable/nunito';
 import '../styles/global.css';
 import { asset } from '../lib/url';
 import { scriptJsonLd } from '../lib/json-ld';
-import { prototipo, imagenSocial, marca } from '../data/site';
+import { prototipo, imagenSocial, marca, metaPixel } from '../data/site';
 
 interface Props {
   title: string;
@@ -71,6 +71,26 @@ const robots = noindex || prototipo;
       // `.no-js` keeps reveal animations disabled when scripts do not run; drop it as early as
       // possible so the first paint already knows JS is available.
       document.documentElement.classList.remove('no-js');
+    </script>
+    <script is:inline define:vars={{ metaPixel }}>
+      // Meta pixel: Meta's standard loader, written out. Pages add their own events with window.fbq.
+      if (!window.fbq) {
+        const fbq = (...a) => {
+          if (fbq.callMethod) fbq.callMethod(...a);
+          else fbq.queue.push(a);
+        };
+        fbq.push = fbq;
+        fbq.loaded = true;
+        fbq.version = '2.0';
+        fbq.queue = [];
+        window.fbq = window._fbq = fbq;
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://connect.facebook.net/en_US/fbevents.js';
+        document.head.append(s);
+      }
+      window.fbq('init', metaPixel);
+      window.fbq('track', 'PageView');
     </script>
   </head>
   <body class={bodyClass}>
