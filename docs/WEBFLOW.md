@@ -44,11 +44,11 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
       y asesorías en `standard-taxable` (Florida cobra según el condado de quien compra), guías y
       ofertas en `digital-goods` y el cargo de laboratorio en `standard-exempt`, sembrados y
       publicados. Falta el texto de Verónica para la FAQ y el resumen del checkout, que dicen «7 %».
-- [ ] **Envío de exámenes** (11-oct, Santiago): zona «Domestic Shipping» (EE. UU.) con el método
-      «Envío incluido», gratis por pedido, con la frase de la FAQ. Fuera de EE. UU. se contacta a
-      Verónica: no hay zona internacional. **No funciona el 20-oct**: con direcciones completas de
-      Hialeah y Nueva York la caja no ofrece ningún envío y no deja pagar un examen (DECISIONES
-      § 60 y § Abiertas). Revisar la zona y las condiciones del método.
+- [x] **Envío de exámenes** (20-oct, Santiago): zona «Domestic Shipping» (EE. UU.) con el método
+      «Envío incluido», tarifa fija gratis, con la frase de la FAQ («Dentro de Estados Unidos, la
+      logística está incluida en tu pago.»). El del 11-oct no estaba: la zona no tenía métodos y la
+      caja no dejaba pagar un examen (DECISIONES § 60). Fuera de EE. UU. se contacta a Verónica: no
+      hay zona internacional.
 - [x] **Datos de la empresa** (11-oct): Veronica Wellness, 6220 NW 173rd St 719, Hialeah, FL 33015.
 - [ ] **PDF de las guías** (Verónica): se suben y se ponen como descarga del producto. Hecho para
       «Vuelve a sentirte tú» y su oferta (−15%) el 18-oct (Mari): el PDF va en los Assets del sitio

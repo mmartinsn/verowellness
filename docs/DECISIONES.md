@@ -600,9 +600,13 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
       sitio; la caja, con dirección de Hialeah, cobra a una Layer Session USD 9.00 de impuesto
       estatal y 1.50 del condado (7 %) y nada a una guía.
     - **Abierto**: con tarjeta fuera de Florida se paga 0 y con Klarna 7 %, y el resumen del sitio y
-      la FAQ dicen «7 %» (§ Abiertas). Y los exámenes no se pudieron probar en la caja: para
-      direcciones de EE. UU. (Hialeah y Nueva York) Webflow no ofrece ningún envío
-      (`availableShippingMethods` vacío), así que un examen no se puede pagar con tarjeta (§ Abiertas).
+      la FAQ dicen «7 %» (§ Abiertas).
+    - **Envío de exámenes, arreglado el mismo día**: la caja no ofrecía ningún envío para EE. UU.
+      (Hialeah y Nueva York) porque la zona «Domestic Shipping» no tenía ningún método: el «Envío
+      incluido» del 11-oct no estaba. Santiago lo creó (tarifa fija, gratis, con la frase de la FAQ
+      «Dentro de Estados Unidos, la logística está incluida en tu pago.»). Verificado sin cobrar: un
+      examen de 449.55 con dirección de Hialeah da 26.97 de impuesto estatal y 4.50 del condado,
+      cargo de laboratorio 25 sin impuesto, envío 0, total 506.02, igual que el resumen del sitio.
 
 ## Abiertas — para Mari y Verónica
 
@@ -617,11 +621,6 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   vea con la tabla de arriba.
 - **¿Fotos con el pelo claro o oscurecido?** Regla de Mari para el recetario vs. su uso aquí.
 - **Textos legales** y **aviso médico**: los redacta Verónica.
-- **Envío de exámenes en la caja** (decisión 60, urgente): el 20-oct, con una dirección completa de
-  Hialeah o de Nueva York, la caja dice «No hay envío disponible para esta dirección» y no deja
-  pagar. Ningún pedido con exámenes ha pasado por la caja (los dos pedidos de Webflow son Initial
-  Layer Cycle). Hay que revisar en Webflow la zona «Domestic Shipping» y su método «Envío
-  incluido» (decisión 54). Mientras tanto los exámenes se pagan con Klarna o Zelle.
 - **Impuesto** (decisión 60): Klarna cobra 7 % fijo y la caja de Webflow el de Florida según la
   dirección (0 fuera de Florida), mientras la FAQ y el resumen del checkout dicen «7 %». ¿Qué texto
   va? Y lo que se cobra como impuesto, aun sobre servicios que Florida no grava, probablemente haya
