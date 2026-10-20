@@ -574,6 +574,28 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     un examen o una asesoría inflarían el valor. Probado en Chrome real: las tres llegan a
     `facebook.com/tr` con estado 200 (en Chrome automatizado el píxel no envía nada).
 
+60. **2026-10-20 — El impuesto: una sola regla, cobrada de dos maneras** (Santiago, sobre lo que
+    pidió Mari el 18-oct). Nada cobraba el 7 %: la sesión de Klarna iba sin impuesto (el arreglo de
+    Mari, `cc9a5b7`, no estaba desplegado) y la caja de Webflow calcula sola con TaxJar, sin tasa
+    manual (help.webflow.com, 20-oct). Con Florida como sede y las clases `service-professional` y
+    `digital-goods`, cobraba USD 0: Florida no grava servicios profesionales ni productos digitales.
+    - **La regla, una vez, en `src/lib/precio.ts`**: el 7 % (`TAX_RATE`) va sobre exámenes y
+      asesorías (`TIPOS_CON_IMPUESTO`), redondeado una vez sobre esa base, en centavos; guías,
+      ofertas y el cargo del laboratorio no llevan. La usan el resumen del checkout del sitio (cada
+      línea sabe si lleva impuesto por el `tipo` de su producto, `productoGravado` en
+      `src/data/pedido-webflow.ts`), la sesión de Klarna y la auditoría del cobro. La tienda (solo
+      guías) ya no muestra la fila del impuesto; una guía agregada a una asesoría no lo suma.
+    - **Klarna**: 7 % fijo, en la línea «Impuesto (7 %)» de Stripe Checkout.
+    - **Caja de Webflow** (tarjeta, Apple Pay, PayPal): exámenes y asesorías pasan a la clase
+      `standard-taxable`, y Webflow cobra el impuesto de Florida según la dirección de quien compra
+      (el 6 % del estado más el recargo de su condado) y nada fuera de Florida mientras sea el único
+      estado configurado. No es un 7 % fijo porque Webflow no lo permite. Se descartaron una línea de
+      impuesto armada por el puente (un producto de 1 ¢ por tantos centavos, que en los correos de
+      Webflow se vería «× 1729») y llevar exámenes y asesorías a Stripe Checkout.
+    - **Abierto**: con tarjeta fuera de Florida se paga 0 y con Klarna 7 %, y el resumen del sitio y
+      la FAQ dicen «7 %» (§ Abiertas). La siembra de las clases nuevas publica el sitio de Webflow,
+      que tiene cambios sin publicar del 19-oct (03:01 UTC): se aplica cuando Mari diga qué son.
+
 ## Abiertas — para Mari y Verónica
 
 - **Privacidad y píxel de Meta** (decisión 59): `legal/privacidad` no menciona el píxel ni las
@@ -587,8 +609,11 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   vea con la tabla de arriba.
 - **¿Fotos con el pelo claro o oscurecido?** Regla de Mari para el recetario vs. su uso aquí.
 - **Textos legales** y **aviso médico**: los redacta Verónica.
-- **Impuesto**: Webflow lo calcula por dirección en EE. UU. (decisión 54); ¿qué texto reemplaza
-  «sumamos el 7 %» en la FAQ y en el resumen del checkout del sitio?
+- **Impuesto** (decisión 60): Klarna cobra 7 % fijo y la caja de Webflow el de Florida según la
+  dirección (0 fuera de Florida), mientras la FAQ y el resumen del checkout dicen «7 %». ¿Qué texto
+  va? Y lo que se cobra como impuesto, aun sobre servicios que Florida no grava, probablemente haya
+  que declararlo al Departamento de Ingresos de Florida (supuesto sin fuente: lo confirma su
+  contador).
 - **Exámenes**: confirmar USD 25 de cargo de laboratorio por examen.
 - **Apple Pay y Google Pay** se saltan teléfono, «¿cómo me conociste?» y el consentimiento del
   checkout: ¿se dejan las billeteras o se pide el consentimiento antes, en el sitio?

@@ -39,11 +39,12 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
 - [x] **Pasarela** (11-oct): Stripe conectado con la cuenta que Verónica ya usa
       (`DOMINIO.md`). Webflow no tiene modo de prueba: «Enable Checkout» es lo que empieza a cobrar.
       PayPal lo conectó Mari ese día.
-- [ ] **Impuesto** (Verónica): el cálculo automático de EE. UU. ya está encendido, con Florida como
-      sede (la dirección de la tienda). Las clases están en cada producto (`service-professional`,
-      `digital-goods`, `standard-exempt` para el cargo de laboratorio). El 7 % fijo del prototipo no
-      existe en Webflow: falta su texto para la FAQ y para el resumen del checkout del sitio, que
-      hoy suman 7 %.
+- [ ] **Impuesto** (DECISIONES § 60): el cálculo automático de EE. UU. está encendido, con Florida
+      como sede (la dirección de la tienda), y Webflow no admite una tasa manual. En el snapshot,
+      exámenes y asesorías pasan a `standard-taxable` (Florida cobra según el condado de quien
+      compra); guías y ofertas siguen en `digital-goods` y el cargo de laboratorio en
+      `standard-exempt`. Falta `vw sembrar --aplicar`, que publica el sitio (espera a Mari), y el
+      texto de Verónica para la FAQ y el resumen del checkout, que dicen «7 %».
 - [x] **Envío de exámenes** (11-oct, Santiago): zona «Domestic Shipping» (EE. UU.) con el método
       «Envío incluido», gratis por pedido, con la frase de la FAQ. Fuera de EE. UU. se contacta a
       Verónica: no hay zona internacional.
@@ -104,7 +105,8 @@ termina en ellas. Con el cobro real falta que la confirmación de pedido de Webf
       página de confirmación de Webflow exponga esos enlaces, y que un producto de servicio admita
       una descarga; si no, el bonus necesita otra vía.
 - PDF en la carpeta «Ebook y cursos» de Mari: hackear, recetario, GLP-1 y la guía
-  anti-inflamatoria. «Vuelve a sentirte tú» no tiene PDF (por eso está «Próximamente», § 48).
+  anti-inflamatoria. «Vuelve a sentirte tú» salió a la venta el 18-oct con su PDF en los Assets de
+  Webflow (Mari, DECISIONES § 58).
 
 ## Dónde se edita cada página
 

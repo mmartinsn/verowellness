@@ -13,10 +13,10 @@
  * script re-reads them from `data-config` for the dynamic bits (button label, Zelle total).
  */
 import { zelle } from '../../data/oferta';
-import { desglose, usd } from '../../lib/precio';
+import { desglose, TAX_RATE, usd } from '../../lib/precio';
 import { href } from '../../lib/url';
 import { comercio, legal, marca } from '../../data/site';
-import { mapaProductos } from '../../data/pedido-webflow';
+import { mapaProductos, productoGravado } from '../../data/pedido-webflow';
 import { terminos, casillas } from '../../data/terminos';
 import { bloque } from '../../lib/datos/bloques';
 
@@ -102,17 +102,38 @@ const contactoDirecto = bloque('sitio', 'continuidad').enlace as string;
 const gracias = href(
   `/gracias/${carrito ? (extras?.lectura ? 'examenes' : 'tienda') : ciclo.id.toLowerCase().replaceAll('_', '-')}/`
 );
-const p = desglose(ciclo.subtotal);
-const impuestoPct = Math.round(p.taxRate * 100);
+const cicloGravado = !carrito && productoGravado(mapaProductos.ciclos[ciclo.id]);
+const p = desglose(ciclo.subtotal, cicloGravado ? TAX_RATE : 0);
+const impuestoPct = Math.round(TAX_RATE * 100);
 
 const config = {
   cycle_type: ciclo.id,
   cycle_label: ciclo.nombre,
   subtotal: p.subtotal,
-  tax_rate: p.taxRate,
+  gravado: cicloGravado,
+  tax_rate: TAX_RATE,
   tax_amount: p.impuesto,
   total: p.total,
   currency: 'USD',
+};
+const carritoDatos = carrito && {
+  ...carrito,
+  catalogo: carrito.catalogo.map((i) => ({
+    ...i,
+    gravado: productoGravado(mapaProductos.examenes[i.id] ?? mapaProductos.guias[i.id]?.producto),
+  })),
+};
+const extrasDatos = extras && {
+  ...extras,
+  guias: extras.guias?.map((g) => ({
+    ...g,
+    gravado: productoGravado(mapaProductos.guias[g.id]?.producto),
+    ofertaGravada: productoGravado(mapaProductos.guias[g.id]?.oferta),
+  })),
+  lectura: extras.lectura?.map((o) => ({
+    ...o,
+    gravado: productoGravado(mapaProductos.ciclos[o.id]),
+  })),
 };
 
 const pasos = [
@@ -156,11 +177,11 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
   class="checkout-shell"
   id="checkout"
   data-config={JSON.stringify(config)}
-  data-carrito={carrito ? JSON.stringify(carrito) : undefined}
+  data-carrito={carritoDatos ? JSON.stringify(carritoDatos) : undefined}
   data-pedido={textos.pedido}
   data-gracias={gracias}
   data-solo-usa={soloUsa ? '' : undefined}
-  data-extras={extras ? JSON.stringify(extras) : undefined}
+  data-extras={extrasDatos ? JSON.stringify(extrasDatos) : undefined}
   data-webflow={webflow ? JSON.stringify(webflow) : undefined}
 >
   <main class="checkout-main" id="main">
@@ -279,7 +300,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
         <div class="review-row">
           <span>Subtotal</span><span data-subtotal>{usd(p.subtotal)}</span>
         </div>
-        <div class="review-row">
+        <div class="review-row" data-fila-impuesto hidden={p.impuesto === 0}>
           <span>Impuesto ({impuestoPct}%)</span><span data-impuesto>{usd(p.impuesto)}</span>
         </div>
         <div class="review-row" data-fila-fee hidden>
@@ -578,7 +599,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
     <div class="summary-line">
       <span>Subtotal</span><span data-subtotal>{usd(p.subtotal)}</span>
     </div>
-    <div class="summary-line">
+    <div class="summary-line" data-fila-impuesto hidden={p.impuesto === 0}>
       <span>Impuesto ({impuestoPct}%)</span><span data-impuesto>{usd(p.impuesto)}</span>
     </div>
     <div class="summary-line" data-fila-fee hidden>
@@ -1679,10 +1700,12 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
     dominioCompartido,
     limpiarCupon,
   } from '../../lib/comercio/traspaso';
+  import { aCentavos, desdeCentavos, impuestoCentavos } from '../../lib/precio';
   type Config = {
     cycle_type: string;
     cycle_label: string;
     subtotal: number;
+    gravado: boolean;
     tax_rate: number;
     tax_amount: number;
     total: number;
@@ -1697,12 +1720,12 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
     const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
 
     /* ── Lab-test mode: the order is whatever the visitor picked on /examenes/ ── */
-    let items: { id: string; nombre: string; precio: number }[] = [];
+    let items: { id: string; nombre: string; precio: number; gravado: boolean }[] = [];
     if (root.dataset.carrito) {
       const carrito: {
         clave: string;
         volver: string;
-        catalogo: { id: string; nombre: string; precio: number }[];
+        catalogo: { id: string; nombre: string; precio: number; gravado: boolean }[];
       } = JSON.parse(root.dataset.carrito);
       const porId = new Map(carrito.catalogo.map((i) => [i.id, i]));
       let ids: string[] = [];
@@ -1723,17 +1746,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
           // Storage unavailable: the cart reads as empty and the page says so.
         }
       items = ids.map((id) => porId.get(id)).filter((i): i is NonNullable<typeof i> => !!i);
-      const round = (n: number) => Math.round(n * 100) / 100;
-      config.subtotal = round(items.reduce((sum, i) => sum + i.precio, 0));
-      config.tax_amount = round(config.subtotal * config.tax_rate);
-      config.total = round(config.subtotal + config.tax_amount);
-      root
-        .querySelectorAll('[data-subtotal]')
-        .forEach((el) => (el.textContent = usd(config.subtotal)));
-      root
-        .querySelectorAll('[data-impuesto]')
-        .forEach((el) => (el.textContent = usd(config.tax_amount)));
-      root.querySelectorAll('[data-total]').forEach((el) => (el.textContent = usd(config.total)));
+      config.subtotal = Math.round(items.reduce((sum, i) => sum + i.precio, 0) * 100) / 100;
       const lista = root.querySelector('[data-incluye]');
       lista?.replaceChildren(
         ...items.map((i) => {
@@ -1770,11 +1783,32 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
     } = { client: null, order: null, payment_method: null };
 
     /* ── Extras: guides, the tests' reading appointment and the lab fee (changes 12, 39–41, 46) ── */
-    type Linea = { id: string; nombre: string; precio: number; ref?: string; oferta?: boolean };
+    type Linea = {
+      id: string;
+      nombre: string;
+      precio: number;
+      gravado: boolean;
+      ref?: string;
+      oferta?: boolean;
+    };
     const extras: {
-      guias?: { id: string; nombre: string; precio: number; portada?: string }[];
+      guias?: {
+        id: string;
+        nombre: string;
+        precio: number;
+        portada?: string;
+        gravado: boolean;
+        ofertaGravada: boolean;
+      }[];
       popupGuias?: { orden: string[]; descuento: number };
-      lectura?: { id: string; rotulo: string; nombre: string; precio: number; texto: string }[];
+      lectura?: {
+        id: string;
+        rotulo: string;
+        nombre: string;
+        precio: number;
+        texto: string;
+        gravado: boolean;
+      }[];
       feePorItem?: number;
     } | null = root.dataset.extras ? JSON.parse(root.dataset.extras) : null;
     let base = config.subtotal;
@@ -1784,7 +1818,10 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
     const recalc = () => {
       fee = r2((extras?.feePorItem ?? 0) * items.length);
       config.subtotal = r2(base + lineas.reduce((t, l) => t + l.precio, 0));
-      config.tax_amount = r2(config.subtotal * config.tax_rate);
+      const gravable = [...items, ...lineas]
+        .filter((x) => x.gravado)
+        .reduce((t, x) => t + x.precio, config.gravado ? base : 0);
+      config.tax_amount = desdeCentavos(impuestoCentavos(aCentavos(gravable)));
       config.total = r2(config.subtotal + config.tax_amount + fee);
       root
         .querySelectorAll('[data-subtotal]')
@@ -1792,6 +1829,9 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
       root
         .querySelectorAll('[data-impuesto]')
         .forEach((el) => (el.textContent = usd(config.tax_amount)));
+      root
+        .querySelectorAll<HTMLElement>('[data-fila-impuesto]')
+        .forEach((el) => (el.hidden = config.tax_amount === 0));
       root.querySelectorAll('[data-total]').forEach((el) => (el.textContent = usd(config.total)));
       root
         .querySelectorAll<HTMLElement>('[data-fila-fee]')
@@ -1839,7 +1879,8 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
     checks.forEach((c) =>
       c.addEventListener('change', () => {
         const g = guiaPorId.get(c.value)!;
-        if (c.checked) poner({ id: `guia:${g.id}`, nombre: g.nombre, precio: g.precio });
+        if (c.checked)
+          poner({ id: `guia:${g.id}`, nombre: g.nombre, precio: g.precio, gravado: g.gravado });
         else quitar(`guia:${g.id}`);
       })
     );
@@ -1860,6 +1901,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
           id: 'lectura',
           nombre: `Lectura: ${o.rotulo} · ${o.nombre}`,
           precio: o.precio,
+          gravado: o.gravado,
           ref: o.id,
         });
       };
@@ -1903,6 +1945,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
           id: `guia:${g.id}`,
           nombre: `${g.nombre} (−${Math.round(desc * 100)}%)`,
           precio: r2(g.precio * (1 - desc)),
+          gravado: g.ofertaGravada,
           oferta: true,
         });
         const c = checks.find((x) => x.value === g.id);

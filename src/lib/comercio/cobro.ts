@@ -1,3 +1,4 @@
+import { conImpuesto, impuestoCentavos, TAX_RATE } from '../precio.ts';
 import { destinoDeProductos, type ProductoGracias } from './confirmacion.ts';
 import { escribirItems, type Linea } from './reglas.ts';
 
@@ -15,17 +16,15 @@ export interface OpcionesCobro {
   email?: string;
 }
 
-/** Fixed 7 % on tests and consultations only (Mari, 2026-10-18); guides and the lab fee carry none. */
-export const IMPUESTO = { tasa: 0.07, tipos: ['examen', 'asesoria'], nombre: 'Impuesto (7 %)' };
+export const NOMBRE_IMPUESTO = `Impuesto (${Math.round(TAX_RATE * 100)} %)`;
 
-/** The tax in cents for the lines of an order, rounded once on the taxed subtotal. */
-export function impuestoDe(lineas: Linea[], catalogo: CatalogoCobro): number {
-  const base = lineas.reduce((suma, l) => {
-    const p = catalogo[l.producto];
-    return IMPUESTO.tipos.includes(p?.tipo) ? suma + p.precio * l.cantidad : suma;
-  }, 0);
-  return Math.round(base * IMPUESTO.tasa);
-}
+export const impuestoDe = (lineas: Linea[], catalogo: CatalogoCobro): number =>
+  impuestoCentavos(
+    lineas.reduce((suma, l) => {
+      const p = catalogo[l.producto];
+      return conImpuesto(p?.tipo) ? suma + p.precio * l.cantidad : suma;
+    }, 0)
+  );
 
 export function urlDeVuelta(desde: string | null, volver: string): string {
   const base = new URL(volver);
@@ -69,7 +68,7 @@ export function sesionKlarna(
     sesion.set(`${linea}[quantity]`, '1');
     sesion.set(`${linea}[price_data][currency]`, 'usd');
     sesion.set(`${linea}[price_data][unit_amount]`, String(impuesto));
-    sesion.set(`${linea}[price_data][product_data][name]`, IMPUESTO.nombre);
+    sesion.set(`${linea}[price_data][product_data][name]`, NOMBRE_IMPUESTO);
     sesion.set(`${linea}[price_data][product_data][metadata][producto]`, 'impuesto');
   }
   if (productos.some((p) => p.enviable))

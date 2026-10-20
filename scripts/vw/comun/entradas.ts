@@ -10,6 +10,21 @@ export const ENTRADAS: Record<string, Record<string, Entradas>> = {
     examenesDeArea: (m) => (m.areas as { id: string }[]).map((a) => a.id),
   },
   oferta: { checkoutPath: ciclos, precioCard: ciclos, precios: ciclos },
+  'pedido-webflow': {
+    productoGravado: (m) => {
+      const mapa = m.mapaProductos as {
+        ciclos: Record<string, string>;
+        examenes: Record<string, string>;
+        guias: Record<string, { producto: string; oferta?: string }>;
+      };
+      return [
+        ...Object.values(mapa.ciclos),
+        ...Object.values(mapa.examenes),
+        ...Object.values(mapa.guias).flatMap((g) => [g.producto, g.oferta]),
+        'cargo-laboratorio',
+      ];
+    },
+  },
   sintomas: {
     paraQuien: async (_m, otro) => (await otro('examenes')).examenes as unknown[],
     examenesDe: (m) => (m.sintomas as { grupos: unknown[] }[]).flatMap((s) => s.grupos),
@@ -27,6 +42,7 @@ export const ENTRADAS: Record<string, Record<string, Entradas>> = {
 };
 
 export const EXPORTS_NUEVOS: Record<string, string[]> = {
+  'pedido-webflow': ['productoGravado(…)'],
   site: ['comercio'],
   testimonios: ['testimoniosAsesorias'],
 };

@@ -12,6 +12,7 @@ import { catalogoDe, estiloDeEstado, TEXTOS } from './puente.ts';
 export const ARCHIVO_COBRO = path.resolve('cobro', 'src', 'generado.ts');
 
 const FUENTES = [
+  'src/lib/precio.ts',
   'src/lib/comercio/reglas.ts',
   'src/lib/comercio/confirmacion.ts',
   'src/lib/comercio/traspaso.ts',

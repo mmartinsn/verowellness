@@ -4,6 +4,14 @@
  */
 export const TAX_RATE = 0.07;
 
+export const TIPOS_CON_IMPUESTO: readonly string[] = ['examen', 'asesoria'];
+
+export const conImpuesto = (tipo: string | undefined): boolean =>
+  !!tipo && TIPOS_CON_IMPUESTO.includes(tipo);
+
+export const impuestoCentavos = (baseCentavos: number): number =>
+  Math.round(baseCentavos * TAX_RATE);
+
 /** Round to cents the way the prototype did it (`Math.round(x * 100) / 100`). */
 export function redondear(n: number): number {
   return Math.round(n * 100) / 100;

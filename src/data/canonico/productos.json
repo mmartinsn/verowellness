@@ -4,7 +4,7 @@
     "nombre": "184 IgG Food + Gluten-Related Disorders Panel",
     "tipo": "examen",
     "precio": 48870,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-021"
   },
@@ -13,7 +13,7 @@
     "nombre": "184 IgG Food Sensitivity & 25 Comprehensive IgE Combo Panel",
     "tipo": "examen",
     "precio": 53190,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-022"
   },
@@ -22,7 +22,7 @@
     "nombre": "184 IgG Food Sensitivity & 50 Expanded IgE Combo Panel",
     "tipo": "examen",
     "precio": 79650,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-023"
   },
@@ -31,7 +31,7 @@
     "nombre": "184 IgG Food Sensitivity Panel",
     "tipo": "examen",
     "precio": 32130,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-019"
   },
@@ -40,7 +40,7 @@
     "nombre": "198 Vegetarian Food Panel: IgA/IgG/IgG4",
     "tipo": "examen",
     "precio": 53865,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-015"
   },
@@ -49,7 +49,7 @@
     "nombre": "205 IgG Food Sensitivity & 25 Comprehensive IgE Combo Panel",
     "tipo": "examen",
     "precio": 58860,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-024"
   },
@@ -58,7 +58,7 @@
     "nombre": "205 IgG Food Sensitivity & 50 Expanded IgE Combo Panel",
     "tipo": "examen",
     "precio": 85860,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-025"
   },
@@ -67,7 +67,7 @@
     "nombre": "240 Food Panel: IgA/IgG/IgG4",
     "tipo": "examen",
     "precio": 70065,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-017"
   },
@@ -76,7 +76,7 @@
     "nombre": "96 IgG Food + Gluten-Related Disorders Panel",
     "tipo": "examen",
     "precio": 36450,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-020"
   },
@@ -85,7 +85,7 @@
     "nombre": "96 IgG Food Sensitivity Panel",
     "tipo": "examen",
     "precio": 17415,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-018"
   },
@@ -94,7 +94,7 @@
     "nombre": "96 Vegetarian Food Panel: IgA/IgG/IgG4",
     "tipo": "examen",
     "precio": 44415,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-016"
   },
@@ -103,7 +103,7 @@
     "nombre": "All Tox",
     "tipo": "examen",
     "precio": 55215,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-036"
   },
@@ -112,7 +112,7 @@
     "nombre": "Candida albicans en sangre",
     "tipo": "examen",
     "precio": 16875,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-009"
   },
@@ -121,7 +121,7 @@
     "nombre": "Cardiometabolic Profile",
     "tipo": "examen",
     "precio": 29970,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-026"
   },
@@ -139,7 +139,7 @@
     "nombre": "Celiac and Gluten Sensitivity (blood spot)",
     "tipo": "examen",
     "precio": 12015,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-014"
   },
@@ -148,7 +148,7 @@
     "nombre": "Comprehensive Hormone Plus Profile",
     "tipo": "examen",
     "precio": 29835,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-013"
   },
@@ -157,7 +157,7 @@
     "nombre": "Comprehensive Neurotransmitter Profile",
     "tipo": "examen",
     "precio": 37395,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-028"
   },
@@ -166,7 +166,7 @@
     "nombre": "Comprehensive Stool Analysis + Parasitology",
     "tipo": "examen",
     "precio": 44955,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-001"
   },
@@ -175,7 +175,7 @@
     "nombre": "Culture, PCR, Parasitology (CPP)",
     "tipo": "examen",
     "precio": 25380,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-006"
   },
@@ -184,7 +184,7 @@
     "nombre": "DNA Oxidative Damage",
     "tipo": "examen",
     "precio": 15660,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-032"
   },
@@ -193,7 +193,7 @@
     "nombre": "DUTCH adrenal only",
     "tipo": "examen",
     "precio": 24300,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-012"
   },
@@ -202,7 +202,7 @@
     "nombre": "DUTCH Plus (hormonas sexuales, adrenal)",
     "tipo": "examen",
     "precio": 54000,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-010"
   },
@@ -211,7 +211,7 @@
     "nombre": "DUTCH solo hormonas",
     "tipo": "examen",
     "precio": 24300,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-011"
   },
@@ -220,7 +220,7 @@
     "nombre": "Expanded Mold Immunoreactivity Panel",
     "tipo": "examen",
     "precio": 41040,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-031"
   },
@@ -229,7 +229,7 @@
     "nombre": "FindWhy Weight Control Profile",
     "tipo": "examen",
     "precio": 22545,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-033"
   },
@@ -238,7 +238,7 @@
     "nombre": "GI-Advanced Profile (includes Zonulin and H. pylori)",
     "tipo": "examen",
     "precio": 52515,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-008"
   },
@@ -247,7 +247,7 @@
     "nombre": "GI Effects – 3 days",
     "tipo": "examen",
     "precio": 59265,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-002"
   },
@@ -283,7 +283,7 @@
     "nombre": "H. pylori",
     "tipo": "examen",
     "precio": 14715,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-005"
   },
@@ -310,7 +310,7 @@
     "nombre": "Hepatic Detox Profile",
     "tipo": "examen",
     "precio": 17820,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-035"
   },
@@ -319,7 +319,7 @@
     "nombre": "Initial Layer Cycle",
     "tipo": "asesoria",
     "precio": 26900,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": false,
     "sku": "ASE-INITIAL-LAYER-CYCLE"
   },
@@ -328,7 +328,7 @@
     "nombre": "Layer Session",
     "tipo": "asesoria",
     "precio": 15000,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": false,
     "sku": "ASE-LAYER-SESSION"
   },
@@ -337,7 +337,7 @@
     "nombre": "Metales pesados + minerales",
     "tipo": "examen",
     "precio": 16875,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-034"
   },
@@ -346,7 +346,7 @@
     "nombre": "Microbiology Profile",
     "tipo": "examen",
     "precio": 15120,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-004"
   },
@@ -355,7 +355,7 @@
     "nombre": "Mold & Mycotoxin Building",
     "tipo": "examen",
     "precio": 40365,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-029"
   },
@@ -364,7 +364,7 @@
     "nombre": "Mycotoxins Panel",
     "tipo": "examen",
     "precio": 40365,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-030"
   },
@@ -373,7 +373,7 @@
     "nombre": "Next Layer Cycle",
     "tipo": "asesoria",
     "precio": 21000,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": false,
     "sku": "ASE-NEXT-LAYER-CYCLE"
   },
@@ -382,7 +382,7 @@
     "nombre": "Organic Acids",
     "tipo": "examen",
     "precio": 25245,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-037"
   },
@@ -409,7 +409,7 @@
     "nombre": "SIBO en aliento 3H",
     "tipo": "examen",
     "precio": 30375,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-003"
   },
@@ -418,7 +418,7 @@
     "nombre": "Vaginosis Profile",
     "tipo": "examen",
     "precio": 15390,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-027"
   },
@@ -427,7 +427,7 @@
     "nombre": "Yeast Culture & Sensitivities",
     "tipo": "examen",
     "precio": 9450,
-    "impuesto": "service-professional",
+    "impuesto": "standard-taxable",
     "enviable": true,
     "sku": "EX-007"
   }
