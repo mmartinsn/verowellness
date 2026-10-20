@@ -598,7 +598,16 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
       Verificado sin cobrar: Klarna da 307.82 (Initial + guía), 666.52 (examen + Layer Session +
       cargo), 29.98 (dos guías, sin impuesto) y 19.99 (guía de hormonas), igual que el resumen del
       sitio; la caja, con dirección de Hialeah, cobra a una Layer Session USD 9.00 de impuesto
-      estatal y 1.50 del condado (7 %) y nada a una guía.
+      estatal y 1.50 del condado (7 %) y nada a una guía. **Para revertir:** las clases vuelven a
+      `service-professional` en `src/data/canonico/productos.json` y `vw sembrar --aplicar`; el
+      cobro sin impuesto, con `cobro/src/generado.ts` de `d0352ff` y `vw cobro --aplicar`.
+    - **La siembra borró el PDF de la guía de hormonas, y se repuso el mismo día.** Mari lo había
+      puesto en Webflow el 18-oct (Assets + Downloads) y el snapshot no lo tenía: la auditoría del
+      19-oct lo decía («Webflow publicado = snapshot: 2 diferencias; correr vw bajar») y se sembró
+      sin bajar antes, así que de 15:38 a 16:40 UTC la guía y su oferta quedaron sin descarga (no
+      entró ningún pedido). Ahora el snapshot lleva `descarga` en las dos y la siembra nombra el
+      archivo como el producto, como lo hizo Mari y como lo empareja la página de gracias.
+      **Regla:** si la auditoría dice que Webflow no es el snapshot, `vw bajar` antes de sembrar.
     - **Abierto**: con tarjeta fuera de Florida se paga 0 y con Klarna 7 %, y el resumen del sitio y
       la FAQ dicen «7 %» (§ Abiertas).
     - **Envío de exámenes, arreglado el mismo día**: la caja no ofrecía ningún envío para EE. UU.

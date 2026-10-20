@@ -27,7 +27,7 @@ export function productoAWebflow(p: RegistroLibre, categoria: Map<string, string
       slug: p.id,
       price: { value: p.precio, unit: 'USD', currency: 'USD' },
       sku: p.sku,
-      'download-files': p.descarga ? [{ name: 'Descarga', url: p.descarga }] : [],
+      'download-files': p.descarga ? [{ name: p.nombre, url: p.descarga }] : [],
     },
   };
 }

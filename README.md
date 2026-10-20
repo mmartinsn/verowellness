@@ -69,7 +69,7 @@ interactividad (menú, acordeones, checkout) son `<script>` de Astro por compone
 | `scripts/vw/`              | `npm run vw`: esquema, siembra y bajada de Webflow, puente, exportación, auditoría                                        |
 | `tests/`                   | Pruebas de las reglas del pedido                                                                                          |
 | `src/lib/url.ts`           | `href()`: todo enlace interno pasa por aquí para respetar el `base` y la barra final                                      |
-| `src/lib/precio.ts`        | Redondeo y desglose de impuestos, compartido por tarjetas y checkout                                                      |
+| `src/lib/precio.ts`        | Redondeo, desglose y la regla del 7 % (exámenes y asesorías), compartidos por tarjetas, checkout y Klarna                 |
 | `src/layouts/`             | `BaseLayout` (head, fuentes), `SiteLayout` (header + footer + reveal), `CheckoutLayout`                                   |
 | `src/components/`          | Compartidos en la raíz (`SiteHeader`, `SiteFooter`, `PriceCard`, `Icon`…); una subcarpeta por página                      |
 | `src/assets/`              | Las fotos que usa el sitio, optimizadas por Astro al construir                                                            |
@@ -113,7 +113,7 @@ local `dominio` y se hace con `docs/DOMINIO.md`. Ningún enlace hay que tocar po
 - [ ] Decidir tipografía y paleta finales (ver `docs/DECISIONES.md`)
 - [x] Base de datos y tienda en Webflow, con el puente de cobro probado (decisión 38)
 - [ ] Pagos reales: Verónica conecta Stripe y PayPal en Webflow; Mari diseña el paso de resumen y se pasa `comercio.modo` a `'webflow'`
-- [ ] Impuesto automático, envío de exámenes y datos de la empresa en Webflow (`docs/WEBFLOW.md`)
+- [x] Impuesto automático (Florida), envío de exámenes y datos de la empresa en Webflow, 20-oct (`docs/WEBFLOW.md`, decisión 60)
 - [x] Klarna por Stripe Checkout desde `cobro/`, encendido el 16-oct (decisión 57); falta la compra real de prueba
 - [ ] PDF de las cuatro guías como descarga de cada producto
 - [ ] Agenda: las URL reales de Calendly (las del prototipo dan 404)
