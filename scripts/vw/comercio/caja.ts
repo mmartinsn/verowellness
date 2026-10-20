@@ -43,6 +43,8 @@ export const ES: Record<string, string> = {
   'Flat-Rate': 'Tarifa fija',
   'Free Shipping': 'Envío gratis',
   'Sales Tax': 'Impuesto',
+  'State Taxes': 'Impuesto estatal',
+  'County Taxes': 'Impuesto del condado',
   Tax: 'Impuesto',
   Shipping: 'Envío',
   'There was an error processing your customer info. Please try again, or contact us if you continue to have problems.':

@@ -592,9 +592,17 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
       estado configurado. No es un 7 % fijo porque Webflow no lo permite. Se descartaron una línea de
       impuesto armada por el puente (un producto de 1 ¢ por tantos centavos, que en los correos de
       Webflow se vería «× 1729») y llevar exámenes y asesorías a Stripe Checkout.
+    - **En producción el 20-oct**: Santiago desplegó el cobro (`aae901565571984c`) y, con su «yes we
+      can publish on webflow», se publicó el sitio de Webflow con sus cambios pendientes, se
+      sembraron las clases nuevas y la guía de hormonas, y se publicaron el puente y la caja.
+      Verificado sin cobrar: Klarna da 307.82 (Initial + guía), 666.52 (examen + Layer Session +
+      cargo), 29.98 (dos guías, sin impuesto) y 19.99 (guía de hormonas), igual que el resumen del
+      sitio; la caja, con dirección de Hialeah, cobra a una Layer Session USD 9.00 de impuesto
+      estatal y 1.50 del condado (7 %) y nada a una guía.
     - **Abierto**: con tarjeta fuera de Florida se paga 0 y con Klarna 7 %, y el resumen del sitio y
-      la FAQ dicen «7 %» (§ Abiertas). La siembra de las clases nuevas publica el sitio de Webflow,
-      que tiene cambios sin publicar del 19-oct (03:01 UTC): se aplica cuando Mari diga qué son.
+      la FAQ dicen «7 %» (§ Abiertas). Y los exámenes no se pudieron probar en la caja: para
+      direcciones de EE. UU. (Hialeah y Nueva York) Webflow no ofrece ningún envío
+      (`availableShippingMethods` vacío), así que un examen no se puede pagar con tarjeta (§ Abiertas).
 
 ## Abiertas — para Mari y Verónica
 
@@ -609,6 +617,11 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   vea con la tabla de arriba.
 - **¿Fotos con el pelo claro o oscurecido?** Regla de Mari para el recetario vs. su uso aquí.
 - **Textos legales** y **aviso médico**: los redacta Verónica.
+- **Envío de exámenes en la caja** (decisión 60, urgente): el 20-oct, con una dirección completa de
+  Hialeah o de Nueva York, la caja dice «No hay envío disponible para esta dirección» y no deja
+  pagar. Ningún pedido con exámenes ha pasado por la caja (los dos pedidos de Webflow son Initial
+  Layer Cycle). Hay que revisar en Webflow la zona «Domestic Shipping» y su método «Envío
+  incluido» (decisión 54). Mientras tanto los exámenes se pagan con Klarna o Zelle.
 - **Impuesto** (decisión 60): Klarna cobra 7 % fijo y la caja de Webflow el de Florida según la
   dirección (0 fuera de Florida), mientras la FAQ y el resumen del checkout dicen «7 %». ¿Qué texto
   va? Y lo que se cobra como impuesto, aun sobre servicios que Florida no grava, probablemente haya

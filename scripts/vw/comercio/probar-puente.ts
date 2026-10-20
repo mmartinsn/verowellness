@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs';
 import puppeteer, { type Browser, type Page } from 'puppeteer-core';
 import { leerItems, normalizarPedido } from '../../../src/lib/comercio/reglas.ts';
 import type { Tabla } from '../comun/snapshot.ts';
+import { ES } from './caja.ts';
 import { catalogoDe } from './puente.ts';
 
 export interface Caso {
@@ -80,7 +81,7 @@ export function esperado(tabla: Tabla, items: string) {
   return {
     lineas: lineas.map((l) => {
       const p = precios.get(l.producto)!;
-      return `${p.nombre} Quantity: ${l.cantidad} ${dinero(Number(p.precio) * l.cantidad)}`;
+      return `${p.nombre} ${ES['Quantity:']} ${l.cantidad} ${dinero(Number(p.precio) * l.cantidad)}`;
     }),
     subtotal: lineas.length ? `Subtotal ${dinero(subtotal)}` : '',
   };
