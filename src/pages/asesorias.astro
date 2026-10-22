@@ -21,8 +21,10 @@ import { href } from '../lib/url';
 import { testimoniosAsesorias } from '../data/testimonios';
 import { grafoSitio, grafoServicio } from '../lib/schema';
 
-const initial = ciclos.INITIAL_LAYER_CYCLE;
-const conImpuesto = redondear(initial.subtotal * (1 + TAX_RATE));
+const conImpuesto = (c: (typeof ciclos)[keyof typeof ciclos]) => ({
+  label: c.nombre,
+  total: redondear(c.subtotal * (1 + TAX_RATE)),
+});
 ---
 
 <SiteLayout
@@ -45,10 +47,11 @@ const conImpuesto = redondear(initial.subtotal * (1 + TAX_RATE));
   <KlarnaCuotas
     eyebrow="Klarna en Estados Unidos"
     titulo="Dale espacio a tu bienestar. Paga en cuotas."
+    acento="Paga en cuotas."
     texto="Si estás en Estados Unidos, puedes solicitar el pago en cuotas con Klarna para tu asesoría conmigo. En el paso de pago del sitio, con Estados Unidos como país, elige Klarna para consultar las opciones disponibles para ti."
     chips={['Solo Estados Unidos', 'Opciones de cuotas', 'Elige al pagar']}
-    monto={initial.subtotal}
-    ejemplo={`${initial.nombre}: ${initial.subtotal} USD + ${Math.round(TAX_RATE * 100)} % de impuesto = ${conImpuesto.toFixed(2)} USD; si Klarna te ofrece 4 pagos sin intereses, serían aproximadamente ${redondear(conImpuesto / 4).toFixed(2)} USD por pago.`}
+    opciones={[conImpuesto(ciclos.LAYER_SESSION), conImpuesto(ciclos.INITIAL_LAYER_CYCLE)]}
+    aviso="Si Klarna te ofrece 4 pagos sin intereses."
     nota="Sujeto a aprobación de Klarna; las opciones dependen de tu perfil, el monto y tu estado, y los 4 pagos no están disponibles en Nuevo México ni Hawái."
     boton={{ label: 'Quiero reservar mi asesoría', href: href(checkoutPrincipal) }}
   />
