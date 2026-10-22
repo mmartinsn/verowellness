@@ -24,6 +24,10 @@ import BloquePrecios from '../oferta/BloquePrecios.astro';
   section {
     padding: 64px 0;
   }
+  /* Centred like the band and the cards below it, so nothing hangs off a different edge. */
+  .wrap {
+    text-align: center;
+  }
   @media (max-width: 760px) {
     section {
       padding: 36px 0;
@@ -44,9 +48,10 @@ import BloquePrecios from '../oferta/BloquePrecios.astro';
     font-weight: 500;
     color: rgb(48 47 42 / 0.72);
     max-width: 640px;
-    margin-top: 14px;
+    margin: 14px auto 0;
   }
   .bloque {
     margin-top: 40px;
+    text-align: left;
   }
 </style>
