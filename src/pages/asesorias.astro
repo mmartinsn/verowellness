@@ -16,15 +16,9 @@ import Testimonios from '../components/Testimonios.astro';
 import CtaFinal from '../components/uno-a-uno/CtaFinal.astro';
 import { marca } from '../data/site';
 import { ciclos, checkoutPrincipal } from '../data/oferta';
-import { TAX_RATE, redondear } from '../lib/precio';
 import { href } from '../lib/url';
 import { testimoniosAsesorias } from '../data/testimonios';
 import { grafoSitio, grafoServicio } from '../lib/schema';
-
-const conImpuesto = (c: (typeof ciclos)[keyof typeof ciclos]) => ({
-  label: c.nombre,
-  total: redondear(c.subtotal * (1 + TAX_RATE)),
-});
 ---
 
 <SiteLayout
@@ -45,15 +39,12 @@ const conImpuesto = (c: (typeof ciclos)[keyof typeof ciclos]) => ({
   />
   <Precios />
   <KlarnaCuotas
-    eyebrow="Klarna en Estados Unidos"
     titulo="Dale espacio a tu bienestar. Paga en cuotas."
     acento="Paga en cuotas."
-    texto="Si estás en Estados Unidos, puedes solicitar el pago en cuotas con Klarna para tu asesoría conmigo. En el paso de pago del sitio, con Estados Unidos como país, elige Klarna para consultar las opciones disponibles para ti."
-    chips={['Solo Estados Unidos', 'Opciones de cuotas', 'Elige al pagar']}
-    opciones={[conImpuesto(ciclos.LAYER_SESSION), conImpuesto(ciclos.INITIAL_LAYER_CYCLE)]}
-    aviso="Si Klarna te ofrece 4 pagos sin intereses."
-    nota="Sujeto a aprobación de Klarna; las opciones dependen de tu perfil, el monto y tu estado, y los 4 pagos no están disponibles en Nuevo México ni Hawái."
+    detalles={['Solo Estados Unidos', 'Elige al pagar']}
+    monto={ciclos.INITIAL_LAYER_CYCLE.subtotal}
     boton={{ label: 'Quiero reservar mi asesoría', href: href(checkoutPrincipal) }}
+    nota="Sujeto a aprobación de Klarna; las opciones dependen de tu perfil, el monto y tu estado, y los 4 pagos no están disponibles en Nuevo México ni Hawái."
   />
   <CtaFinal />
   <p class="lema">{marca.lema}</p>

@@ -1,558 +1,293 @@
 ---
 /**
- * «Paga en cuotas con Klarna»: the promo band for buyers in the US (Mari, 2026-10-21). Klarna only
- * shows in the checkout when the country is «Estados Unidos» (comercio.klarna, decision 57), so the
- * copy says so. The ticket on the right is the total torn into Klarna's Pay in 4, without dates:
- * Klarna says every two weeks, but when the first one is charged (checkout or shipping) varies by
- * its own pages. It is interactive: `opciones` gives tabs (each total already with the fixed 7 %,
- * decision 60); `rango` gives a slider over the order total, capped at Klarna's 1,000 USD for Pay
- * in 4. Copy from Codex (Mari's split of 2026-10-03), passed in by each page; `acento` is the part
- * of the title set in italics.
+ * «Paga en cuotas con Klarna»: one slim, elegant strip for buyers in the US (Mari, 2026-10-21: «que
+ * no tome tanto espacio, elegante, creativo, que capte la atención»). Klarna only shows in the
+ * checkout when the country is «Estados Unidos» (comercio.klarna, decision 57). The four segments
+ * fill one after another (Pay in 4, without dates: when Klarna charges the first one varies by its
+ * own pages). `monto` is the price before tax; the strip prints a quarter of it with the fixed 7 %
+ * (decision 60). Copy from Codex (Mari's split of 2026-10-03); `acento` is the italic part.
  */
 import { comercio } from '../../data/site';
-
-interface Opcion {
-  label: string;
-  total: number;
-}
+import { TAX_RATE } from '../../lib/precio';
 
 interface Props {
-  eyebrow: string;
   titulo: string;
   acento?: string;
-  texto: string;
-  chips: string[];
-  opciones?: Opcion[];
-  rango?: { min: number; max: number; paso: number; inicial: number };
-  aviso: string;
-  nota: string;
+  detalles: string[];
+  monto?: number;
   boton: { label: string; href: string };
+  nota: string;
 }
 
-const { eyebrow, titulo, acento, texto, chips, opciones, rango, aviso, nota, boton } = Astro.props;
+const { titulo, acento, detalles, monto, boton, nota } = Astro.props;
 const [antes, despues] = acento && titulo.includes(acento) ? titulo.split(acento) : [titulo, ''];
-const inicial = opciones ? opciones[opciones.length - 1].total : (rango?.inicial ?? 0);
-const totalTexto = `$${inicial.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-const cuarto = (n: number) => (Math.round((n * 100) / 4) / 100).toFixed(2);
+const cuota =
+  monto === undefined
+    ? null
+    : `$${(Math.round((monto * (1 + TAX_RATE) * 100) / 4) / 100).toFixed(2)}`;
 ---
 
 {
   comercio.klarna && (
-    <section class="klarna" aria-labelledby="klarna-titulo">
+    <section class="klarna" aria-label="Pago en cuotas con Klarna">
       <div class="wrap">
-        <div class="lienzo reveal">
-          <span class="halo" aria-hidden="true" />
-          <div class="texto">
-            <p class="sello">
-              <span class="marca">Klarna.</span>
-              <span class="eyebrow">{eyebrow}</span>
-            </p>
-            <h2 id="klarna-titulo">
+        <a class="cinta reveal" href={boton.href} aria-label={`${titulo} ${boton.label}`}>
+          <span class="marca">Klarna.</span>
+          <span class="texto">
+            <span class="titulo">
               {antes}
               {acento && <em>{acento}</em>}
               {despues}
-            </h2>
-            <p class="cuerpo">{texto}</p>
-            <ul class="chips">
-              {chips.map((c) => (
-                <li>{c}</li>
+            </span>
+            <span class="detalles">
+              {detalles.map((d) => (
+                <span>{d}</span>
               ))}
-            </ul>
-            <a class="ir" href={boton.href}>
-              {boton.label}
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M5 12h14M13 6l6 6-6 6"
-                  stroke="currentColor"
-                  stroke-width="2.2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </a>
-          </div>
-
-          <div class="boleto" data-klarna>
-            {opciones && (
-              <div class="pestanas" role="tablist" aria-label="Elige tu asesoría">
-                {opciones.map((o, i) => (
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={i === opciones.length - 1 ? 'true' : 'false'}
-                    data-total={o.total}
-                  >
-                    {o.label}
-                  </button>
-                ))}
-              </div>
-            )}
-            {rango && (
-              <label class="rango">
-                <span>
-                  Si tu pedido suma <strong data-rango-valor>${rango.inicial}</strong>
-                </span>
-                <input
-                  type="range"
-                  min={rango.min}
-                  max={rango.max}
-                  step={rango.paso}
-                  value={rango.inicial}
-                  data-rango
-                />
-                <span class="extremos" aria-hidden="true">
-                  <span>${rango.min.toLocaleString('en-US')}</span>
-                  <span>${rango.max.toLocaleString('en-US')}</span>
-                </span>
-              </label>
-            )}
-
-            <div class="papel">
-              <div class="cabeza">
-                <span class="rotulo">{opciones ? 'Total con impuesto' : 'Tu pedido'}</span>
-                <span class="total" data-total-valor>
-                  {totalTexto}
-                </span>
-              </div>
-              <ol class="talones" aria-live="polite">
-                {[1, 2, 3, 4].map((n) => (
-                  <li class="talon" style={`--n:${n}`}>
-                    <span class="barra">
-                      <span />
-                    </span>
-                    <span class="cuota" data-cuota>
-                      ${cuarto(inicial)}
-                    </span>
-                    <span class="pago">Pago {n}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-            <p class="aviso">{aviso}</p>
-          </div>
-        </div>
+            </span>
+          </span>
+          <span class="cuotas" aria-hidden="true">
+            <span class="segmentos">
+              <i />
+              <i />
+              <i />
+              <i />
+            </span>
+            <span class="monto">{cuota ? `4 × ${cuota}` : '4 pagos'}</span>
+          </span>
+          <span class="flecha" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M5 12h14M13 6l6 6-6 6"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+        </a>
         <p class="nota">{nota}</p>
       </div>
     </section>
   )
 }
 
-<script>
-  for (const raiz of document.querySelectorAll<HTMLElement>('[data-klarna]')) {
-    const total = raiz.querySelector<HTMLElement>('[data-total-valor]')!;
-    const cuotas = [...raiz.querySelectorAll<HTMLElement>('[data-cuota]')];
-    const valor = raiz.querySelector<HTMLElement>('[data-rango-valor]');
-    const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let actual = Number(total.textContent!.replace(/[^0-9.]/g, ''));
-    let cuadro = 0;
-    const pintar = (n: number) => {
-      total.textContent = `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-      const c = (Math.round((n * 100) / 4) / 100).toFixed(2);
-      cuotas.forEach((el) => (el.textContent = `$${c}`));
-    };
-    const ir = (destino: number) => {
-      cancelAnimationFrame(cuadro);
-      if (quieto) return pintar((actual = destino));
-      const desde = actual;
-      const t0 = performance.now();
-      const paso = (t: number) => {
-        const k = Math.min(1, (t - t0) / 420);
-        actual = desde + (destino - desde) * (1 - Math.pow(1 - k, 3));
-        pintar(k === 1 ? (actual = destino) : actual);
-        if (k < 1) cuadro = requestAnimationFrame(paso);
-      };
-      cuadro = requestAnimationFrame(paso);
-      raiz.classList.remove('late');
-      void raiz.offsetWidth;
-      raiz.classList.add('late');
-    };
-    for (const b of raiz.querySelectorAll<HTMLButtonElement>('[data-total]'))
-      b.addEventListener('click', () => {
-        raiz
-          .querySelectorAll('[data-total]')
-          .forEach((x) => x.setAttribute('aria-selected', String(x === b)));
-        ir(Number(b.dataset.total));
-      });
-    const rango = raiz.querySelector<HTMLInputElement>('[data-rango]');
-    const llenar = () => {
-      if (!rango) return;
-      const p = ((+rango.value - +rango.min) / (+rango.max - +rango.min)) * 100;
-      rango.style.setProperty('--lleno', `${p}%`);
-    };
-    llenar();
-    rango?.addEventListener('input', () => {
-      llenar();
-      if (valor) valor.textContent = `$${Number(rango.value).toLocaleString('en-US')}`;
-      cancelAnimationFrame(cuadro);
-      pintar((actual = Number(rango.value)));
-    });
-  }
-</script>
-
 <style>
   .klarna {
-    font-variant-numeric: lining-nums tabular-nums;
     --klarna: #ffa8cd;
-    --klarna-hondo: #e0789f;
+    --klarna-hondo: #d9668f;
     --tinta: #1d1a17;
-    padding: 28px 0 72px;
+    padding: 36px 0 44px;
   }
-  .lienzo {
+  .cinta {
     position: relative;
     overflow: hidden;
     isolation: isolate;
-    display: grid;
-    grid-template-columns: 1.05fr 1fr;
-    gap: 56px;
-    align-items: center;
-    padding: 64px 64px 60px;
-    border-radius: 40px;
-    background: linear-gradient(135deg, #ffe4ef 0%, #fdeee6 52%, #f7efe4 100%);
-    color: var(--tinta);
-  }
-  .halo {
-    position: absolute;
-    z-index: -1;
-    width: 520px;
-    height: 520px;
-    right: -140px;
-    top: -200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgb(255 168 205 / 0.75), transparent 68%);
-    filter: blur(10px);
-  }
-  .sello {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 14px;
-    margin: 0 0 22px;
+    gap: 22px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 14px 14px 14px 16px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid rgb(217 102 143 / 0.22);
+    box-shadow:
+      0 24px 48px -32px rgb(217 102 143 / 0.55),
+      0 1px 0 rgb(29 26 23 / 0.03);
+    color: var(--tinta);
+    text-decoration: none;
+    transition:
+      transform 0.4s var(--ease-out-soft),
+      box-shadow 0.4s var(--ease-out-soft),
+      border-color 0.4s;
+  }
+  /* One pink sheen across the strip when it comes into view. */
+  .cinta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      100deg,
+      transparent 30%,
+      rgb(255 168 205 / 0.35) 50%,
+      transparent 70%
+    );
+    transform: translateX(-110%);
+  }
+  .cinta.in::before {
+    transition: transform 1.6s var(--ease-out-soft) 0.3s;
+    transform: translateX(110%);
+  }
+  .cinta:hover {
+    transform: translateY(-2px);
+    border-color: rgb(217 102 143 / 0.45);
+    box-shadow:
+      0 30px 56px -30px rgb(217 102 143 / 0.65),
+      0 1px 0 rgb(29 26 23 / 0.03);
   }
   .marca {
+    flex-shrink: 0;
     font-family: var(--font-sans);
     font-weight: 900;
-    font-size: 18px;
+    font-size: 17px;
     letter-spacing: -0.01em;
     color: var(--tinta);
     background: var(--klarna);
-    padding: 7px 15px 8px;
-    border-radius: 12px;
-    box-shadow: 0 10px 22px -12px rgb(224 120 159 / 0.9);
+    padding: 12px 18px 13px;
+    border-radius: 999px;
   }
-  .eyebrow {
-    margin: 0;
-    color: var(--klarna-hondo);
+  .texto {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
   }
-  h2 {
+  .titulo {
     font-family: var(--font-serif);
     font-weight: 500;
-    font-size: clamp(36px, 4.8vw, 58px);
-    line-height: 1.02;
-    letter-spacing: -0.01em;
-    margin: 0;
+    font-size: clamp(20px, 2.1vw, 25px);
+    line-height: 1.15;
   }
-  h2 em {
+  .titulo em {
     font-style: italic;
     color: var(--klarna-hondo);
   }
-  .cuerpo {
-    font-size: 16.5px;
-    line-height: 1.6;
-    font-weight: 500;
-    margin: 18px 0 0;
-    max-width: 480px;
-    color: rgb(29 26 23 / 0.72);
-  }
-  .chips {
+  .detalles {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 18px;
-    list-style: none;
-    padding: 0;
-    margin: 22px 0 30px;
-  }
-  .chips li {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13.5px;
-    font-weight: 800;
-  }
-  .chips li::before {
-    content: '';
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--klarna-hondo);
-  }
-  .ir {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 17px 30px;
-    border-radius: 999px;
-    background: var(--tinta);
-    color: #fff;
-    font-family: var(--font-sans);
-    font-weight: 800;
-    font-size: 14.5px;
-    letter-spacing: 0.01em;
-    text-decoration: none;
-    transition:
-      transform 0.35s var(--ease-out-soft),
-      box-shadow 0.35s var(--ease-out-soft);
-  }
-  .ir svg {
-    transition: transform 0.35s var(--ease-out-soft);
-  }
-  .ir:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 22px 40px -20px rgb(29 26 23 / 0.6);
-  }
-  .ir:hover svg {
-    transform: translateX(4px);
-  }
-
-  /* The ticket: a white stub card with notches, torn into four on reveal. */
-  .boleto {
-    position: relative;
-  }
-  .pestanas {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 1fr;
-    gap: 4px;
-    padding: 5px;
-    margin-bottom: 18px;
-    border-radius: 999px;
-    background: rgb(255 255 255 / 0.55);
-    border: 1px solid rgb(29 26 23 / 0.08);
-  }
-  .pestanas button {
-    font-family: var(--font-sans);
-    font-weight: 800;
-    font-size: 13.5px;
-    padding: 11px 12px;
-    border: 0;
-    border-radius: 999px;
-    background: transparent;
-    color: rgb(29 26 23 / 0.6);
-    cursor: pointer;
-    transition:
-      background 0.25s,
-      color 0.25s,
-      box-shadow 0.25s;
-  }
-  .pestanas button[aria-selected='true'] {
-    background: var(--tinta);
-    color: #fff;
-    box-shadow: 0 8px 18px -10px rgb(29 26 23 / 0.7);
-  }
-  .rango {
-    display: block;
-    margin-bottom: 18px;
-    font-size: 15px;
-    font-weight: 700;
-  }
-  .rango strong {
-    font-family: var(--font-sans);
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: var(--klarna-hondo);
-  }
-  .rango input {
-    --lleno: 50%;
-    appearance: none;
-    width: 100%;
-    height: 8px;
-    margin: 14px 0 6px;
-    border-radius: 999px;
-    background: linear-gradient(
-      90deg,
-      var(--klarna-hondo) 0 var(--lleno),
-      rgb(29 26 23 / 0.12) var(--lleno)
-    );
-    cursor: pointer;
-  }
-  .rango input::-webkit-slider-thumb {
-    appearance: none;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: #fff;
-    border: 6px solid var(--tinta);
-    box-shadow: 0 6px 14px -6px rgb(29 26 23 / 0.6);
-  }
-  .rango input::-moz-range-thumb {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: #fff;
-    border: 6px solid var(--tinta);
-  }
-  .extremos {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    font-weight: 700;
-    color: rgb(29 26 23 / 0.45);
-  }
-  .papel {
-    position: relative;
-    background: #fff;
-    border-radius: 26px;
-    box-shadow:
-      0 40px 70px -40px rgb(160 70 105 / 0.45),
-      0 2px 0 rgb(29 26 23 / 0.04);
-  }
-  .cabeza {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 26px 28px 24px;
-    border-bottom: 2px dashed rgb(29 26 23 / 0.14);
-  }
-  .rotulo {
-    font-size: 12.5px;
+    gap: 2px 14px;
+    font-size: 11.5px;
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: rgb(29 26 23 / 0.5);
   }
-  .total {
-    font-family: var(--font-sans);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    font-size: clamp(28px, 3.2vw, 38px);
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-  }
-  .talones {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .talon {
-    display: flex;
-    flex-direction: column;
+  .detalles span {
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 22px 6px 24px;
-    background: #fff;
-    border-radius: 0 0 18px 18px;
-    transition:
-      transform 0.9s var(--ease-out-soft) calc(var(--n) * 90ms),
-      box-shadow 0.9s var(--ease-out-soft) calc(var(--n) * 90ms);
+    gap: 7px;
   }
-  .talon + .talon {
-    border-left: 2px dashed rgb(29 26 23 / 0.12);
-  }
-  .barra {
-    width: 40px;
-    height: 6px;
-    border-radius: 999px;
-    background: rgb(29 26 23 / 0.08);
-    overflow: hidden;
-  }
-  .barra span {
-    display: block;
-    height: 100%;
-    width: calc(var(--n) * 25%);
-    border-radius: inherit;
+  .detalles span::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
     background: var(--klarna-hondo);
   }
-  .cuota {
+  .cuotas {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 7px;
+    padding-left: 22px;
+    border-left: 1px solid rgb(29 26 23 / 0.08);
+  }
+  .segmentos {
+    display: flex;
+    gap: 4px;
+  }
+  .segmentos i {
+    width: 22px;
+    height: 5px;
+    border-radius: 999px;
+    background: rgb(29 26 23 / 0.1);
+    background-image: linear-gradient(var(--klarna-hondo), var(--klarna-hondo));
+    background-repeat: no-repeat;
+    background-size: 0 100%;
+    animation: llenar 4.8s ease-in-out infinite;
+  }
+  .segmentos i:nth-child(2) {
+    animation-delay: 0.6s;
+  }
+  .segmentos i:nth-child(3) {
+    animation-delay: 1.2s;
+  }
+  .segmentos i:nth-child(4) {
+    animation-delay: 1.8s;
+  }
+  @keyframes llenar {
+    0% {
+      background-size: 0 100%;
+    }
+    12%,
+    78% {
+      background-size: 100% 100%;
+    }
+    92%,
+    100% {
+      background-size: 0 100%;
+    }
+  }
+  .monto {
     font-family: var(--font-sans);
     font-weight: 800;
-    letter-spacing: -0.02em;
-    font-size: clamp(16px, 1.7vw, 20px);
-    font-variant-numeric: tabular-nums;
-    margin-top: 4px;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    font-variant-numeric: lining-nums tabular-nums;
+    white-space: nowrap;
   }
-  .pago {
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    color: rgb(29 26 23 / 0.5);
+  .flecha {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--tinta);
+    color: #fff;
+    transition: transform 0.4s var(--ease-out-soft);
   }
-  /* Torn apart once the band is on screen (the site's reveal observer adds .in). */
-  .lienzo.in .talon {
-    box-shadow: 0 18px 30px -22px rgb(160 70 105 / 0.55);
-  }
-  .lienzo.in .talon:nth-child(1) {
-    transform: translate(-10px, 14px) rotate(-3deg);
-  }
-  .lienzo.in .talon:nth-child(2) {
-    transform: translate(-3px, 22px) rotate(1.5deg);
-  }
-  .lienzo.in .talon:nth-child(3) {
-    transform: translate(3px, 16px) rotate(-1.5deg);
-  }
-  .lienzo.in .talon:nth-child(4) {
-    transform: translate(10px, 24px) rotate(3deg);
-  }
-  .lienzo.in .talon + .talon {
-    border-left-color: transparent;
-  }
-  .late .talon {
-    animation: latido 0.45s var(--ease-out-soft) calc(var(--n) * 50ms);
-  }
-  @keyframes latido {
-    40% {
-      scale: 1.06;
-    }
-  }
-  .aviso {
-    margin: 44px 0 0;
-    text-align: center;
-    font-size: 13.5px;
-    font-weight: 700;
-    color: rgb(29 26 23 / 0.6);
+  .cinta:hover .flecha {
+    transform: translateX(3px);
   }
   .nota {
-    margin: 16px auto 0;
+    margin: 12px auto 0;
     max-width: 760px;
     text-align: center;
-    font-size: 12.5px;
+    font-size: 11.5px;
     line-height: 1.5;
-    color: rgb(48 47 42 / 0.6);
+    color: rgb(48 47 42 / 0.55);
   }
-  @media (max-width: 900px) {
-    .lienzo {
-      grid-template-columns: 1fr;
-      gap: 36px;
-      padding: 40px 22px 36px;
-      border-radius: 30px;
+  @media (max-width: 760px) {
+    .cinta {
+      flex-wrap: wrap;
+      gap: 14px 14px;
+      padding: 18px 18px 16px;
+      border-radius: 26px;
     }
-    .halo {
-      width: 360px;
-      height: 360px;
-      right: -160px;
-      top: -140px;
+    .marca {
+      padding: 8px 14px 9px;
+      font-size: 15px;
     }
-    .cabeza {
-      padding: 22px 20px 20px;
+    .texto {
+      flex-basis: calc(100% - 110px);
     }
-    .talon {
-      padding: 18px 2px 20px;
+    .cuotas {
+      flex: 1;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0 0;
+      border-left: 0;
+      border-top: 1px solid rgb(29 26 23 / 0.08);
     }
-    .lienzo.in .talon:nth-child(1) {
-      transform: translate(-4px, 10px) rotate(-3deg);
-    }
-    .lienzo.in .talon:nth-child(4) {
-      transform: translate(4px, 16px) rotate(3deg);
+    .flecha {
+      width: 40px;
+      height: 40px;
+      margin-top: 12px;
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .talon {
-      transition: none;
-    }
-    .late .talon {
+    .segmentos i {
       animation: none;
+      background-size: 100% 100%;
+    }
+    .cinta.in::before {
+      transition: none;
     }
   }
 </style>

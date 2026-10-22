@@ -48,15 +48,11 @@ const description =
   <AvisoAsesoria />
   <Proceso />
   <KlarnaCuotas
-    eyebrow="Klarna en Estados Unidos"
     titulo="Tus próximos exámenes pueden pagarse en cuotas."
     acento="en cuotas."
-    texto="Si estás en Estados Unidos, Klarna puede ayudarte a distribuir el pago de los exámenes que hayas elegido. Al finalizar tu compra en el sitio, con Estados Unidos como país, selecciona Klarna y revisa qué opciones te ofrece para ese monto."
-    chips={['Pago en cuotas', 'Solo Estados Unidos', 'Opciones al pagar']}
-    rango={{ min: 150, max: 1000, paso: 5, inicial: 450 }}
-    aviso="Si Klarna te ofrece 4 pagos sin intereses."
-    nota="Sujeto a aprobación de Klarna y disponibilidad según tu perfil, monto y estado; algunos planes pueden incluir intereses."
+    detalles={['Solo Estados Unidos', 'Opciones al pagar']}
     boton={{ label: 'Explorar exámenes', href: '#catalogo' }}
+    nota="Sujeto a aprobación de Klarna y disponibilidad según tu perfil, monto y estado; algunos planes pueden incluir intereses."
   />
   <Catalogo />
   <PorSintoma />
