@@ -18,6 +18,7 @@ import HeroLupa from '../components/examenes/HeroLupa.astro';
 import PorSintoma from '../components/examenes/PorSintoma.astro';
 import AvisoAsesoria from '../components/examenes/AvisoAsesoria.astro';
 import Catalogo from '../components/examenes/Catalogo.astro';
+import KlarnaCuotas from '../components/oferta/KlarnaCuotas.astro';
 import PorQue from '../components/examenes/PorQue.astro';
 import Proceso from '../components/examenes/Proceso.astro';
 import FaqExamenes from '../components/examenes/FaqExamenes.astro';
@@ -46,6 +47,14 @@ const description =
   <HeroLupa />
   <AvisoAsesoria />
   <Proceso />
+  <KlarnaCuotas
+    eyebrow="Klarna en Estados Unidos"
+    titulo="Tus próximos exámenes pueden pagarse en cuotas."
+    texto="Si estás en Estados Unidos, Klarna puede ayudarte a distribuir el pago de los exámenes que hayas elegido. Al finalizar tu compra en el sitio, con Estados Unidos como país, selecciona Klarna y revisa qué opciones te ofrece para ese monto."
+    chips={['Pago en cuotas', 'Solo Estados Unidos', 'Opciones al pagar']}
+    nota="Sujeto a aprobación de Klarna y disponibilidad según tu perfil, monto y estado; algunos planes pueden incluir intereses."
+    boton={{ label: 'Explorar exámenes', href: '#catalogo' }}
+  />
   <Catalogo />
   <PorSintoma />
   <PorQue />

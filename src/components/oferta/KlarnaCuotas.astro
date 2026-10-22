@@ -1,0 +1,281 @@
+---
+/**
+ * «Paga en cuotas con Klarna»: the promo band for buyers in the US (Mari, 2026-10-21). Klarna only
+ * shows in the checkout when the country is «Estados Unidos» (comercio.klarna, decision 57), so the
+ * copy says so. The four-payment strip draws Klarna's Pay in 4 (today and every two weeks); with
+ * `monto` it prints each payment, with the fixed 7 % on top as in the checkout (decision 60).
+ * Copy from Codex (Mari's split of 2026-10-03), passed in by each page.
+ */
+import { TAX_RATE, usd } from '../../lib/precio';
+import { comercio } from '../../data/site';
+
+interface Props {
+  eyebrow: string;
+  titulo: string;
+  texto: string;
+  chips: string[];
+  /** Price in USD before tax; omitted, the strip shows only the four quarters. */
+  monto?: number;
+  ejemplo?: string;
+  nota: string;
+  boton: { label: string; href: string };
+  claro?: boolean;
+}
+
+const { eyebrow, titulo, texto, chips, monto, ejemplo, nota, boton, claro = false } = Astro.props;
+const cuota = monto === undefined ? null : Math.round((monto * (1 + TAX_RATE) * 100) / 4) / 100;
+const pagos = ['Hoy', '2 semanas', '4 semanas', '6 semanas'];
+---
+
+{
+  comercio.klarna && (
+    <section class:list={['klarna reveal', { claro }]} aria-labelledby="klarna-titulo">
+      <div class="wrap">
+        <div class="tarjeta">
+          <div class="texto">
+            <span class="sello">
+              <span class="pais">EE. UU.</span>
+              <span class="marca">Klarna.</span>
+            </span>
+            <span class="eyebrow">{eyebrow}</span>
+            <h2 id="klarna-titulo">{titulo}</h2>
+            <p class="cuerpo">{texto}</p>
+            <ul class="chips">
+              {chips.map((c) => (
+                <li>{c}</li>
+              ))}
+            </ul>
+            <a class="btn btn-primary" href={boton.href}>
+              {boton.label}
+            </a>
+          </div>
+
+          <div class="plan" aria-hidden={cuota === null ? 'true' : undefined}>
+            <ol class="pagos">
+              {pagos.map((cuando, i) => (
+                <li style={`--parte:${(i + 1) * 25}%`}>
+                  <span class="disco" />
+                  {cuota !== null && <span class="cuota">{usd(cuota)}</span>}
+                  <span class="cuando">{cuando}</span>
+                </li>
+              ))}
+            </ol>
+            {ejemplo && <p class="ejemplo">{ejemplo}</p>}
+          </div>
+        </div>
+        <p class="nota">{nota}</p>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .klarna {
+    --klarna: #ffa8cd;
+    padding: 24px 0 64px;
+  }
+  .tarjeta {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 48px;
+    align-items: center;
+    padding: 52px 56px;
+    border-radius: 32px;
+    background:
+      radial-gradient(120% 140% at 100% 0%, rgb(255 168 205 / 0.28), transparent 55%),
+      radial-gradient(90% 120% at 0% 100%, rgb(231 183 160 / 0.22), transparent 60%),
+      var(--color-charcoal);
+    color: var(--color-bone);
+    box-shadow: 0 40px 80px -48px rgb(48 47 42 / 0.55);
+  }
+  .claro .tarjeta {
+    background:
+      radial-gradient(120% 140% at 100% 0%, rgb(255 168 205 / 0.45), transparent 55%),
+      radial-gradient(90% 120% at 0% 100%, rgb(231 183 160 / 0.35), transparent 60%),
+      var(--color-white);
+    color: var(--color-charcoal);
+    box-shadow: 0 30px 60px -40px rgb(48 47 42 / 0.35);
+  }
+  .sello {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .pais {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1.5px solid currentColor;
+    opacity: 0.8;
+  }
+  .marca {
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    color: #17120f;
+    background: var(--klarna);
+    padding: 6px 14px 7px;
+    border-radius: 10px;
+  }
+  .tarjeta .btn {
+    background: var(--klarna);
+    color: #17120f;
+  }
+  .tarjeta .btn:hover {
+    background: #ff8fbf;
+    box-shadow: 0 22px 44px -22px rgb(255 168 205 / 0.6);
+  }
+  .eyebrow {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--klarna);
+  }
+  .claro .eyebrow {
+    color: var(--color-clay-rich);
+  }
+  h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(32px, 4.4vw, 50px);
+    line-height: 1.05;
+    margin: 0;
+  }
+  .cuerpo {
+    font-size: 17px;
+    line-height: 1.6;
+    font-weight: 500;
+    margin-top: 16px;
+    max-width: 520px;
+    opacity: 0.82;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 22px 0 28px;
+  }
+  .chips li {
+    font-size: 13.5px;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgb(251 250 246 / 0.1);
+    border: 1px solid rgb(251 250 246 / 0.18);
+  }
+  .claro .chips li {
+    background: rgb(48 47 42 / 0.05);
+    border-color: rgb(48 47 42 / 0.12);
+  }
+  .plan {
+    background: rgb(251 250 246 / 0.06);
+    border: 1px solid rgb(251 250 246 / 0.14);
+    border-radius: 24px;
+    padding: 32px 26px 26px;
+  }
+  .claro .plan {
+    background: rgb(255 255 255 / 0.7);
+    border-color: rgb(48 47 42 / 0.1);
+  }
+  .pagos {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .pagos::before {
+    content: '';
+    position: absolute;
+    top: 26px;
+    left: 12.5%;
+    right: 12.5%;
+    border-top: 2px dashed rgb(255 168 205 / 0.55);
+  }
+  .pagos li {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+  }
+  .disco {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: conic-gradient(var(--klarna) 0 var(--parte), rgb(251 250 246 / 0.16) 0);
+    box-shadow: 0 0 0 5px var(--color-charcoal);
+  }
+  .claro .disco {
+    background: conic-gradient(var(--klarna) 0 var(--parte), rgb(48 47 42 / 0.1) 0);
+    box-shadow: 0 0 0 5px var(--color-white);
+  }
+  .cuota {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 22px;
+    margin-top: 4px;
+  }
+  .cuando {
+    white-space: nowrap;
+    font-size: 12.5px;
+    font-weight: 700;
+    opacity: 0.65;
+  }
+  .ejemplo {
+    margin: 22px 0 0;
+    padding-top: 18px;
+    border-top: 1px solid rgb(251 250 246 / 0.14);
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 0.8;
+    text-align: center;
+  }
+  .claro .ejemplo {
+    border-top-color: rgb(48 47 42 / 0.1);
+  }
+  .nota {
+    margin: 14px auto 0;
+    max-width: 760px;
+    text-align: center;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: rgb(48 47 42 / 0.6);
+  }
+  @media (max-width: 860px) {
+    .tarjeta {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding: 36px 24px;
+      border-radius: 26px;
+    }
+    .klarna {
+      padding: 12px 0 40px;
+    }
+    .disco {
+      width: 42px;
+      height: 42px;
+    }
+    .pagos::before {
+      top: 21px;
+    }
+    .cuota {
+      font-size: 18px;
+    }
+    .cuando {
+      font-size: 11px;
+    }
+    .plan {
+      padding: 26px 14px 20px;
+    }
+  }
+</style>
