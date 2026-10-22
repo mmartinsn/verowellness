@@ -2,7 +2,8 @@
 /**
  * «Paga en cuotas con Klarna»: the promo band for buyers in the US (Mari, 2026-10-21). Klarna only
  * shows in the checkout when the country is «Estados Unidos» (comercio.klarna, decision 57), so the
- * copy says so. The four-payment strip draws Klarna's Pay in 4 (today and every two weeks); with
+ * copy says so. The four-payment strip draws Klarna's Pay in 4, without dates: Klarna says every two
+ * weeks, but when the first one is charged (checkout or shipping) varies by its own pages; with
  * `monto` it prints each payment, with the fixed 7 % on top as in the checkout (decision 60).
  * Copy from Codex (Mari's split of 2026-10-03), passed in by each page.
  */
@@ -24,7 +25,7 @@ interface Props {
 
 const { eyebrow, titulo, texto, chips, monto, ejemplo, nota, boton, claro = false } = Astro.props;
 const cuota = monto === undefined ? null : Math.round((monto * (1 + TAX_RATE) * 100) / 4) / 100;
-const pagos = ['Hoy', '2 semanas', '4 semanas', '6 semanas'];
+const pagos = ['Pago 1', 'Pago 2', 'Pago 3', 'Pago 4'];
 ---
 
 {
