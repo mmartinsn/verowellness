@@ -11,12 +11,9 @@ import Insight from '../components/Insight.astro';
 import Proceso from '../components/uno-a-uno/Proceso.astro';
 import Entregables from '../components/uno-a-uno/Entregables.astro';
 import Precios from '../components/uno-a-uno/Precios.astro';
-import KlarnaCuotas from '../components/oferta/KlarnaCuotas.astro';
 import Testimonios from '../components/Testimonios.astro';
 import CtaFinal from '../components/uno-a-uno/CtaFinal.astro';
 import { marca } from '../data/site';
-import { ciclos, checkoutPrincipal } from '../data/oferta';
-import { href } from '../lib/url';
 import { testimoniosAsesorias } from '../data/testimonios';
 import { grafoSitio, grafoServicio } from '../lib/schema';
 ---
@@ -38,14 +35,6 @@ import { grafoSitio, grafoServicio } from '../lib/schema';
     ids={testimoniosAsesorias}
   />
   <Precios />
-  <KlarnaCuotas
-    titulo="Dale espacio a tu bienestar. Paga en cuotas."
-    acento="Paga en cuotas."
-    detalles={['Solo Estados Unidos', 'Elige al pagar']}
-    monto={ciclos.INITIAL_LAYER_CYCLE.subtotal}
-    boton={{ label: 'Quiero reservar mi asesoría', href: href(checkoutPrincipal) }}
-    nota="Sujeto a aprobación de Klarna; las opciones dependen de tu perfil, el monto y tu estado, y los 4 pagos no están disponibles en Nuevo México ni Hawái."
-  />
   <CtaFinal />
   <p class="lema">{marca.lema}</p>
 </SiteLayout>

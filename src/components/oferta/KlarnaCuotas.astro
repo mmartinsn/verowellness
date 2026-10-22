@@ -17,9 +17,11 @@ interface Props {
   monto?: number;
   boton: { label: string; href: string };
   nota: string;
+  /** Inside a block that already has its column (the price block): no own `.wrap`, less air. */
+  incrustada?: boolean;
 }
 
-const { titulo, acento, detalles, monto, boton, nota } = Astro.props;
+const { titulo, acento, detalles, monto, boton, nota, incrustada = false } = Astro.props;
 const [antes, despues] = acento && titulo.includes(acento) ? titulo.split(acento) : [titulo, ''];
 const cuota =
   monto === undefined
@@ -29,8 +31,8 @@ const cuota =
 
 {
   comercio.klarna && (
-    <section class="klarna" aria-label="Pago en cuotas con Klarna">
-      <div class="wrap">
+    <section class:list={['klarna', { incrustada }]} aria-label="Pago en cuotas con Klarna">
+      <div class:list={{ wrap: !incrustada }}>
         <a class="cinta reveal" href={boton.href} aria-label={`${titulo} ${boton.label}`}>
           <span class="marca">Klarna.</span>
           <span class="texto">
@@ -78,6 +80,9 @@ const cuota =
     --klarna-hondo: #d9668f;
     --tinta: #1d1a17;
     padding: 36px 0 44px;
+  }
+  .klarna.incrustada {
+    padding: 28px 0 0;
   }
   .cinta {
     position: relative;
@@ -250,7 +255,8 @@ const cuota =
     text-align: center;
     font-size: 11.5px;
     line-height: 1.5;
-    color: rgb(48 47 42 / 0.55);
+    color: inherit;
+    opacity: 0.6;
   }
   @media (max-width: 760px) {
     .cinta {

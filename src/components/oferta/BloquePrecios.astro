@@ -7,6 +7,7 @@
 import { ciclos, checkoutPath, continuidad, precioCard } from '../../data/oferta';
 import { href } from '../../lib/url';
 import { cta } from '../../data/site';
+import KlarnaCuotas from './KlarnaCuotas.astro';
 
 const session = ciclos.LAYER_SESSION;
 const initial = ciclos.INITIAL_LAYER_CYCLE;
@@ -78,6 +79,16 @@ const check =
     >
   </article>
 </div>
+
+<KlarnaCuotas
+  titulo="Dale espacio a tu bienestar. Paga en cuotas."
+  acento="Paga en cuotas."
+  detalles={['Solo Estados Unidos', 'Elige al pagar']}
+  monto={initial.subtotal}
+  boton={{ label: 'Quiero reservar mi asesoría', href: href(checkoutPath(initial)) }}
+  nota="Sujeto a aprobación de Klarna; las opciones dependen de tu perfil, el monto y tu estado, y los 4 pagos no están disponibles en Nuevo México ni Hawái."
+  incrustada
+/>
 
 <!-- Existing patients: a membership strip, not a footnote (Mari, 2026-10-03: «no resalta»). -->
 <aside class="membresia reveal">
