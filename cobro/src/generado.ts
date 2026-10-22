@@ -1,4 +1,4 @@
-export const VERSION = 'aae901565571984c';
+export const VERSION = 'b3f83f7e6ea84d2f';
 
 export const VOLVER = "https://veronicawellness.com/";
 
@@ -122,98 +122,98 @@ export const PRODUCTOS: CatalogoCobro = {
     "id": "184-igg-food-gluten-related-disorders-panel",
     "tipo": "examen",
     "nombre": "184 IgG Food + Gluten-Related Disorders Panel",
-    "precio": 48870,
+    "precio": 52300,
     "enviable": true
   },
   "184-igg-food-sensitivity-25-comprehensive-ige-combo-panel": {
     "id": "184-igg-food-sensitivity-25-comprehensive-ige-combo-panel",
     "tipo": "examen",
     "nombre": "184 IgG Food Sensitivity & 25 Comprehensive IgE Combo Panel",
-    "precio": 53190,
+    "precio": 56900,
     "enviable": true
   },
   "184-igg-food-sensitivity-50-expanded-ige-combo-panel": {
     "id": "184-igg-food-sensitivity-50-expanded-ige-combo-panel",
     "tipo": "examen",
     "nombre": "184 IgG Food Sensitivity & 50 Expanded IgE Combo Panel",
-    "precio": 79650,
+    "precio": 85200,
     "enviable": true
   },
   "184-igg-food-sensitivity-panel": {
     "id": "184-igg-food-sensitivity-panel",
     "tipo": "examen",
     "nombre": "184 IgG Food Sensitivity Panel",
-    "precio": 32130,
+    "precio": 34400,
     "enviable": true
   },
   "198-vegetarian-food-panel-iga-igg-igg4": {
     "id": "198-vegetarian-food-panel-iga-igg-igg4",
     "tipo": "examen",
     "nombre": "198 Vegetarian Food Panel: IgA/IgG/IgG4",
-    "precio": 53865,
+    "precio": 57600,
     "enviable": true
   },
   "205-igg-food-sensitivity-25-comprehensive-ige-combo-panel": {
     "id": "205-igg-food-sensitivity-25-comprehensive-ige-combo-panel",
     "tipo": "examen",
     "nombre": "205 IgG Food Sensitivity & 25 Comprehensive IgE Combo Panel",
-    "precio": 58860,
+    "precio": 63000,
     "enviable": true
   },
   "205-igg-food-sensitivity-50-expanded-ige-combo-panel": {
     "id": "205-igg-food-sensitivity-50-expanded-ige-combo-panel",
     "tipo": "examen",
     "nombre": "205 IgG Food Sensitivity & 50 Expanded IgE Combo Panel",
-    "precio": 85860,
+    "precio": 91900,
     "enviable": true
   },
   "240-food-panel-iga-igg-igg4": {
     "id": "240-food-panel-iga-igg-igg4",
     "tipo": "examen",
     "nombre": "240 Food Panel: IgA/IgG/IgG4",
-    "precio": 70065,
+    "precio": 75000,
     "enviable": true
   },
   "96-igg-food-gluten-related-disorders-panel": {
     "id": "96-igg-food-gluten-related-disorders-panel",
     "tipo": "examen",
     "nombre": "96 IgG Food + Gluten-Related Disorders Panel",
-    "precio": 36450,
+    "precio": 39000,
     "enviable": true
   },
   "96-igg-food-sensitivity-panel": {
     "id": "96-igg-food-sensitivity-panel",
     "tipo": "examen",
     "nombre": "96 IgG Food Sensitivity Panel",
-    "precio": 17415,
+    "precio": 18600,
     "enviable": true
   },
   "96-vegetarian-food-panel-iga-igg-igg4": {
     "id": "96-vegetarian-food-panel-iga-igg-igg4",
     "tipo": "examen",
     "nombre": "96 Vegetarian Food Panel: IgA/IgG/IgG4",
-    "precio": 44415,
+    "precio": 47500,
     "enviable": true
   },
   "all-tox": {
     "id": "all-tox",
     "tipo": "examen",
     "nombre": "All Tox",
-    "precio": 55215,
+    "precio": 59100,
     "enviable": true
   },
   "candida-albicans-en-sangre": {
     "id": "candida-albicans-en-sangre",
     "tipo": "examen",
     "nombre": "Candida albicans en sangre",
-    "precio": 16875,
+    "precio": 18100,
     "enviable": true
   },
   "cardiometabolic-profile": {
     "id": "cardiometabolic-profile",
     "tipo": "examen",
     "nombre": "Cardiometabolic Profile",
-    "precio": 29970,
+    "precio": 32100,
     "enviable": true
   },
   "cargo-laboratorio": {
@@ -227,91 +227,91 @@ export const PRODUCTOS: CatalogoCobro = {
     "id": "celiac-and-gluten-sensitivity-blood-spot",
     "tipo": "examen",
     "nombre": "Celiac and Gluten Sensitivity (blood spot)",
-    "precio": 12015,
+    "precio": 12900,
     "enviable": true
   },
   "comprehensive-hormone-plus-profile": {
     "id": "comprehensive-hormone-plus-profile",
     "tipo": "examen",
     "nombre": "Comprehensive Hormone Plus Profile",
-    "precio": 29835,
+    "precio": 31900,
     "enviable": true
   },
   "comprehensive-neurotransmitter-profile": {
     "id": "comprehensive-neurotransmitter-profile",
     "tipo": "examen",
     "nombre": "Comprehensive Neurotransmitter Profile",
-    "precio": 37395,
+    "precio": 40000,
     "enviable": true
   },
   "comprehensive-stool-analysis-parasitology": {
     "id": "comprehensive-stool-analysis-parasitology",
     "tipo": "examen",
     "nombre": "Comprehensive Stool Analysis + Parasitology",
-    "precio": 44955,
+    "precio": 48100,
     "enviable": true
   },
   "culture-pcr-parasitology-cpp": {
     "id": "culture-pcr-parasitology-cpp",
     "tipo": "examen",
     "nombre": "Culture, PCR, Parasitology (CPP)",
-    "precio": 25380,
+    "precio": 27200,
     "enviable": true
   },
   "dna-oxidative-damage": {
     "id": "dna-oxidative-damage",
     "tipo": "examen",
     "nombre": "DNA Oxidative Damage",
-    "precio": 15660,
+    "precio": 16800,
     "enviable": true
   },
   "dutch-adrenal-only": {
     "id": "dutch-adrenal-only",
     "tipo": "examen",
     "nombre": "DUTCH adrenal only",
-    "precio": 24300,
+    "precio": 26000,
     "enviable": true
   },
   "dutch-plus-hormonas-sexuales-adrenal": {
     "id": "dutch-plus-hormonas-sexuales-adrenal",
     "tipo": "examen",
     "nombre": "DUTCH Plus (hormonas sexuales, adrenal)",
-    "precio": 54000,
+    "precio": 57800,
     "enviable": true
   },
   "dutch-solo-hormonas": {
     "id": "dutch-solo-hormonas",
     "tipo": "examen",
     "nombre": "DUTCH solo hormonas",
-    "precio": 24300,
+    "precio": 26000,
     "enviable": true
   },
   "expanded-mold-immunoreactivity-panel": {
     "id": "expanded-mold-immunoreactivity-panel",
     "tipo": "examen",
     "nombre": "Expanded Mold Immunoreactivity Panel",
-    "precio": 41040,
+    "precio": 43900,
     "enviable": true
   },
   "findwhy-weight-control-profile": {
     "id": "findwhy-weight-control-profile",
     "tipo": "examen",
     "nombre": "FindWhy Weight Control Profile",
-    "precio": 22545,
+    "precio": 24100,
     "enviable": true
   },
   "gi-advanced-profile-includes-zonulin-and-h-pylori": {
     "id": "gi-advanced-profile-includes-zonulin-and-h-pylori",
     "tipo": "examen",
     "nombre": "GI-Advanced Profile (includes Zonulin and H. pylori)",
-    "precio": 52515,
+    "precio": 56200,
     "enviable": true
   },
   "gi-effects-3-days": {
     "id": "gi-effects-3-days",
     "tipo": "examen",
     "nombre": "GI Effects – 3 days",
-    "precio": 59265,
+    "precio": 63400,
     "enviable": true
   },
   "guia-glp1-retatrutida": {
@@ -342,7 +342,7 @@ export const PRODUCTOS: CatalogoCobro = {
     "id": "h-pylori",
     "tipo": "examen",
     "nombre": "H. pylori",
-    "precio": 14715,
+    "precio": 15700,
     "enviable": true
   },
   "hackear-tu-cerebro": {
@@ -365,63 +365,63 @@ export const PRODUCTOS: CatalogoCobro = {
     "id": "hepatic-detox-profile",
     "tipo": "examen",
     "nombre": "Hepatic Detox Profile",
-    "precio": 17820,
+    "precio": 19100,
     "enviable": true
   },
   "initial-layer-cycle": {
     "id": "initial-layer-cycle",
     "tipo": "asesoria",
     "nombre": "Initial Layer Cycle",
-    "precio": 26900,
+    "precio": 28800,
     "enviable": false
   },
   "layer-session": {
     "id": "layer-session",
     "tipo": "asesoria",
     "nombre": "Layer Session",
-    "precio": 15000,
+    "precio": 16100,
     "enviable": false
   },
   "metales-pesados-minerales": {
     "id": "metales-pesados-minerales",
     "tipo": "examen",
     "nombre": "Metales pesados + minerales",
-    "precio": 16875,
+    "precio": 18100,
     "enviable": true
   },
   "microbiology-profile": {
     "id": "microbiology-profile",
     "tipo": "examen",
     "nombre": "Microbiology Profile",
-    "precio": 15120,
+    "precio": 16200,
     "enviable": true
   },
   "mold-mycotoxin-building": {
     "id": "mold-mycotoxin-building",
     "tipo": "examen",
     "nombre": "Mold & Mycotoxin Building",
-    "precio": 40365,
+    "precio": 43200,
     "enviable": true
   },
   "mycotoxins-panel": {
     "id": "mycotoxins-panel",
     "tipo": "examen",
     "nombre": "Mycotoxins Panel",
-    "precio": 40365,
+    "precio": 43200,
     "enviable": true
   },
   "next-layer-cycle": {
     "id": "next-layer-cycle",
     "tipo": "asesoria",
     "nombre": "Next Layer Cycle",
-    "precio": 21000,
+    "precio": 22500,
     "enviable": false
   },
   "organic-acids": {
     "id": "organic-acids",
     "tipo": "examen",
     "nombre": "Organic Acids",
-    "precio": 25245,
+    "precio": 27000,
     "enviable": true
   },
   "recetario-30-desayunos": {
@@ -444,32 +444,34 @@ export const PRODUCTOS: CatalogoCobro = {
     "id": "sibo-en-aliento-3h",
     "tipo": "examen",
     "nombre": "SIBO en aliento 3H",
-    "precio": 30375,
+    "precio": 32500,
     "enviable": true
   },
   "vaginosis-profile": {
     "id": "vaginosis-profile",
     "tipo": "examen",
     "nombre": "Vaginosis Profile",
-    "precio": 15390,
+    "precio": 16500,
     "enviable": true
   },
   "yeast-culture-sensitivities": {
     "id": "yeast-culture-sensitivities",
     "tipo": "examen",
     "nombre": "Yeast Culture & Sensitivities",
-    "precio": 9450,
+    "precio": 10100,
     "enviable": true
   }
 };
 
 /**
  * Money helpers shared by the server-rendered price cards and the checkout script.
- * Amounts are USD; the tax rate comes from Mari's checkout prototype (7 %).
+ * Amounts are USD. Since 2026-10-21 the 7 % is INCLUDED in the price of tests and consultations
+ * (Mari and Verónica: «a todos los precios se les suma el 7 %», rounded to the dollar), so no type
+ * carries tax on top: the checkout's tax row hides itself at 0 and Klarna adds no tax line.
  */
 export const TAX_RATE = 0.07;
 
-export const TIPOS_CON_IMPUESTO: readonly string[] = ['examen', 'asesoria'];
+export const TIPOS_CON_IMPUESTO: readonly string[] = [];
 
 export const conImpuesto = (tipo: string | undefined): boolean =>
   !!tipo && TIPOS_CON_IMPUESTO.includes(tipo);
@@ -489,7 +491,7 @@ export interface Desglose {
   taxRate: number;
 }
 
-export function desglose(subtotal: number, taxRate = TAX_RATE): Desglose {
+export function desglose(subtotal: number, taxRate = 0): Desglose {
   const impuesto = redondear(subtotal * taxRate);
   const total = redondear(subtotal + impuesto);
   return { subtotal, impuesto, total, taxRate };

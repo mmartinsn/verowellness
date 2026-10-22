@@ -54,7 +54,7 @@ test('una asesoría: solo Klarna, en español, a su página de gracias y sin ped
     {
       producto: 'initial-layer-cycle',
       cantidad: 1,
-      centavos: 26900,
+      centavos: productos['initial-layer-cycle'].precio,
       nombre: 'Initial Layer Cycle',
     },
   ]);
@@ -92,15 +92,16 @@ test('exámenes con lectura: cargo de laboratorio por examen, envío solo a EE. 
   assert.equal(s.get('payment_intent_data[metadata][items]'), s.get('metadata[items]'));
 });
 
-test('impuesto fijo del 7 % solo sobre exámenes y asesorías, sin el cargo ni las guías', () => {
-  const precio = (id: string) => productos[id].precio;
-  assert.equal(impuesto(sesion('initial-layer-cycle')!), Math.round(26900 * 0.07));
-  const s = sesion(
-    `${examenes[0]},${examenes[1]},cargo-laboratorio:9,layer-session,recetario-30-desayunos`
-  )!;
-  const base = precio(examenes[0]) + precio(examenes[1]) + precio('layer-session');
-  assert.equal(impuesto(s), Math.round(base * 0.07));
-  assert.equal(impuesto(sesion('recetario-30-desayunos,hackear-tu-cerebro-oferta')!), 0);
+test('sin línea de impuesto: el 7 % ya va en el precio (desde el 21-oct)', () => {
+  assert.equal(impuesto(sesion('initial-layer-cycle')!), 0);
+  assert.equal(
+    impuesto(
+      sesion(
+        `${examenes[0]},${examenes[1]},cargo-laboratorio:9,layer-session,recetario-30-desayunos`
+      )!
+    ),
+    0
+  );
 });
 
 test('guías con la oferta del popup: van a la tienda con sus guías', () => {

@@ -4,11 +4,10 @@
  * no tome tanto espacio, elegante, creativo, que capte la atención»). Klarna only shows in the
  * checkout when the country is «Estados Unidos» (comercio.klarna, decision 57). The four segments
  * fill one after another (Pay in 4, without dates: when Klarna charges the first one varies by its
- * own pages). `monto` is the price before tax; the strip prints a quarter of it with the fixed 7 %
- * (decision 60). Copy from Codex (Mari's split of 2026-10-03); `acento` is the italic part.
+ * own pages). `monto` is the price, the 7 % already included since 2026-10-21; the strip prints a
+ * quarter of it. Copy from Codex (Mari's split of 2026-10-03); `acento` is the italic part.
  */
 import { comercio } from '../../data/site';
-import { TAX_RATE } from '../../lib/precio';
 
 interface Props {
   titulo: string;
@@ -23,10 +22,7 @@ interface Props {
 
 const { titulo, acento, detalles, monto, boton, nota, incrustada = false } = Astro.props;
 const [antes, despues] = acento && titulo.includes(acento) ? titulo.split(acento) : [titulo, ''];
-const cuota =
-  monto === undefined
-    ? null
-    : `$${(Math.round((monto * (1 + TAX_RATE) * 100) / 4) / 100).toFixed(2)}`;
+const cuota = monto === undefined ? null : `$${(Math.round((monto * 100) / 4) / 100).toFixed(2)}`;
 ---
 
 {

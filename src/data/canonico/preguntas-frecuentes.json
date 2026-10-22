@@ -140,7 +140,7 @@
     "nombre": "¿Cómo funcionan los precios y los impuestos?",
     "pagina": "inicio",
     "pregunta": "¿Cómo funcionan los precios y los impuestos?",
-    "respuesta": "Publicamos los precios sin impuestos: {nombre:layer-session} cuesta USD {precio:layer-session} e {nombre:initial-layer-cycle}, USD {precio:initial-layer-cycle}. Sumamos el 7% al pagar, donde puedes ver el total antes de confirmar. En los exámenes se suma además un cargo del laboratorio.",
+    "respuesta": "Los precios publicados ya incluyen impuestos: {nombre:layer-session} cuesta USD {precio:layer-session} e {nombre:initial-layer-cycle}, USD {precio:initial-layer-cycle}. Puedes ver el total antes de confirmar. En los exámenes se suma aparte un cargo del laboratorio de USD {precio:cargo-laboratorio} por examen.",
     "orden": 9
   },
   {
