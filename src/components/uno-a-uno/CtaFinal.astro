@@ -1,7 +1,9 @@
 ---
 /**
- * Closing dark block: «el siguiente paso», now both offers side by side (1 consulta, 2 consultas),
- * each with its price and the site's button into its checkout (Verónica, change 35).
+ * Closing block: «el siguiente paso», both offers (1 consulta, 2 consultas) each with its price and
+ * a way into its checkout (Verónica, change 35). Light and split since 2026-10-21 (Mari: two dark
+ * boxes in a row with «¿Ya eres mi paciente?» above): the title on the left, the two offers as rows
+ * on the right, the recommended one in clay.
  */
 import { listaCiclos, checkoutPath, precioCard } from '../../data/oferta';
 import { href } from '../../lib/url';
@@ -11,37 +13,48 @@ import { cta } from '../../data/site';
 <section id="final-cta-section" class="reveal">
   <div class="wrap" id="cta">
     <div class="final-cta">
-      <h2>Deja de perseguir cada pieza por separado.</h2>
-      <p>
-        Empieza por entender tu mapa, definir tus prioridades y construir una estrategia con
-        dirección.
-      </p>
-      <div class="fc-divider" aria-hidden="true"></div>
-      <div class="fc-bottom">
+      <span class="trazo" aria-hidden="true"></span>
+      <div class="fc-texto">
+        <h2>Deja de perseguir cada pieza por separado.</h2>
+        <p>
+          Empieza por entender tu mapa, definir tus prioridades y construir una estrategia con
+          dirección.
+        </p>
+      </div>
+      <div class="fc-opciones">
         {
           listaCiclos.map((c) => (
-            <div class:list={['fc-opcion', { destacada: c.id === 'INITIAL_LAYER_CYCLE' }]}>
-              {c.id === 'INITIAL_LAYER_CYCLE' && <span class="fc-rec">Recomendada</span>}
-              <span class="fc-offer-meta">{c.consultas}</span>
-              <span class="fc-offer-label">{c.nombre}</span>
-              <span class="fc-offer-price">{precioCard(c)}</span>
-              <a
-                class:list={[
-                  'btn',
-                  'btn-block',
-                  c.id === 'INITIAL_LAYER_CYCLE' ? 'btn-primary' : 'fc-btn-contorno',
-                ]}
-                href={href(checkoutPath(c))}
-              >
-                {cta.label}
-              </a>
-            </div>
+            <a
+              class:list={['fc-fila', { destacada: c.id === 'INITIAL_LAYER_CYCLE' }]}
+              href={href(checkoutPath(c))}
+              aria-label={`${cta.label}: ${c.nombre}, ${precioCard(c)}`}
+            >
+              <span class="fc-nombre">
+                <span class="fc-meta">
+                  {c.consultas}
+                  {c.id === 'INITIAL_LAYER_CYCLE' && <span class="fc-rec">Recomendada</span>}
+                </span>
+                {c.nombre}
+              </span>
+              <span class="fc-precio">{precioCard(c)}</span>
+              <span class="fc-flecha" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M5 12h14M13 6l6 6-6 6"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </a>
           ))
         }
+        <small
+          >El siguiente paso te mostrará exactamente qué incluye tu ciclo antes de realizar el pago.</small
+        >
       </div>
-      <small
-        >El siguiente paso te mostrará exactamente qué incluye tu ciclo antes de realizar el pago.</small
-      >
     </div>
   </div>
 </section>
@@ -56,117 +69,146 @@ import { cta } from '../../data/site';
     }
   }
   .final-cta {
-    background: var(--color-charcoal);
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: center;
+    padding: clamp(40px, 5vw, 64px);
     border-radius: var(--radius-lg);
-    padding: 64px 56px;
-    text-align: center;
-    color: var(--color-bone);
+    background: var(--color-sand-light);
+    color: var(--color-charcoal);
   }
-  @media (max-width: 640px) {
-    .final-cta {
-      padding: 44px 26px;
-    }
+  /* A soft clay arc behind the title: warmth without another dark slab. */
+  .trazo {
+    position: absolute;
+    z-index: -1;
+    width: 560px;
+    height: 560px;
+    left: -220px;
+    bottom: -300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(231 183 160 / 0.55), transparent 65%);
   }
   h2 {
     font-family: var(--font-serif);
     font-weight: 500;
-    font-size: clamp(30px, 4.2vw, 46px);
-    line-height: 1.1;
-    color: var(--color-bone);
-    max-width: 640px;
-    margin: 0 auto;
+    font-size: clamp(32px, 4.2vw, 50px);
+    line-height: 1.05;
+    margin: 0;
   }
   p {
-    color: rgb(251 250 246 / 0.72);
-    max-width: 480px;
-    margin: 16px auto 0;
+    color: rgb(48 47 42 / 0.72);
+    max-width: 420px;
+    margin: 18px 0 0;
     font-size: 17px;
+    line-height: 1.6;
     font-weight: 500;
   }
-  .fc-divider {
-    height: 1px;
-    background: rgb(251 250 246 / 0.14);
-    max-width: 520px;
-    margin: 40px auto;
-  }
-  .fc-bottom {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 300px));
-    justify-content: center;
-    gap: 18px;
-  }
-  @media (max-width: 640px) {
-    .fc-bottom {
-      grid-template-columns: 1fr;
-    }
-  }
-  .fc-opcion {
+  .fc-opciones {
     display: flex;
     flex-direction: column;
+    gap: 12px;
+  }
+  .fc-fila {
+    display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 26px 22px;
-    border-radius: 24px;
-    border: 1px solid rgb(251 250 246 / 0.14);
-    background: rgb(251 250 246 / 0.04);
-  }
-  .fc-opcion {
-    position: relative;
-  }
-  .fc-rec {
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    translate: -50% 0;
-    font-size: 10.5px;
-    font-weight: 800;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    padding: 5px 12px;
-    border-radius: var(--radius-pill);
-    background: var(--color-clay);
+    gap: 18px;
+    padding: 18px 18px 18px 24px;
+    border-radius: 22px;
+    background: var(--color-white);
+    border: 1px solid rgb(48 47 42 / 0.08);
     color: var(--color-charcoal);
-    white-space: nowrap;
+    text-decoration: none;
+    transition:
+      transform 0.35s var(--ease-out-soft),
+      box-shadow 0.35s var(--ease-out-soft);
   }
-  .fc-btn-contorno {
-    background: transparent;
-    color: var(--color-clay);
-    border: 1.5px solid var(--color-clay);
+  .fc-fila:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift-warm);
   }
-  .fc-btn-contorno:hover {
+  .fc-fila.destacada {
     background: var(--color-clay);
-    color: var(--color-charcoal);
+    border-color: transparent;
   }
-  .fc-opcion.destacada {
-    border-color: var(--color-clay);
-    background: rgb(231 183 160 / 0.1);
-  }
-  .fc-opcion .btn {
-    margin-top: 10px;
-  }
-  .fc-offer-label {
+  .fc-nombre {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
     font-weight: 800;
     font-size: 15px;
     letter-spacing: 0.02em;
     text-transform: uppercase;
-    color: var(--color-clay);
   }
-  .fc-offer-meta {
+  .fc-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
     font-weight: 700;
-    font-size: 14px;
-    color: rgb(251 250 246 / 0.55);
+    letter-spacing: 0;
+    text-transform: none;
+    color: rgb(48 47 42 / 0.6);
   }
-  .fc-offer-price {
+  .fc-rec {
+    font-size: 10px;
     font-weight: 800;
-    font-size: 32px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: var(--radius-pill);
+    background: var(--color-charcoal);
     color: var(--color-bone);
+  }
+  .fc-precio {
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: -0.01em;
+  }
+  .fc-flecha {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--color-charcoal);
+    color: var(--color-bone);
+    transition: transform 0.35s var(--ease-out-soft);
+  }
+  .fc-fila:hover .fc-flecha {
+    transform: translateX(3px);
   }
   small {
     display: block;
-    margin: 26px auto 0;
+    margin-top: 6px;
     font-size: 12.5px;
-    color: rgb(251 250 246 / 0.5);
     font-weight: 600;
-    max-width: 440px;
+    color: rgb(48 47 42 / 0.55);
+  }
+  @media (max-width: 860px) {
+    .final-cta {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 36px 20px 28px;
+    }
+    .fc-meta {
+      flex-wrap: wrap;
+    }
+    .fc-fila {
+      padding: 16px 14px 16px 18px;
+      gap: 12px;
+    }
+    .fc-precio {
+      font-size: 23px;
+    }
+    .fc-flecha {
+      width: 40px;
+      height: 40px;
+    }
   }
 </style>

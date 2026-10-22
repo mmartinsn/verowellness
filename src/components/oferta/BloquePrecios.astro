@@ -16,6 +16,16 @@ const check =
   '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>';
 ---
 
+<KlarnaCuotas
+  titulo="Dale espacio a tu bienestar. Paga en cuotas."
+  acento="Paga en cuotas."
+  detalles={['Solo Estados Unidos', 'Elige al pagar']}
+  monto={initial.subtotal}
+  boton={{ label: 'Quiero reservar mi asesoría', href: href(checkoutPath(initial)) }}
+  nota="Sujeto a aprobación de Klarna; las opciones dependen de tu perfil, el monto y tu estado, y los 4 pagos no están disponibles en Nuevo México ni Hawái."
+  incrustada
+/>
+
 <div class="precios reveal">
   <article class="tier spot tilt-card">
     <div>
@@ -79,16 +89,6 @@ const check =
     >
   </article>
 </div>
-
-<KlarnaCuotas
-  titulo="Dale espacio a tu bienestar. Paga en cuotas."
-  acento="Paga en cuotas."
-  detalles={['Solo Estados Unidos', 'Elige al pagar']}
-  monto={initial.subtotal}
-  boton={{ label: 'Quiero reservar mi asesoría', href: href(checkoutPath(initial)) }}
-  nota="Sujeto a aprobación de Klarna; las opciones dependen de tu perfil, el monto y tu estado, y los 4 pagos no están disponibles en Nuevo México ni Hawái."
-  incrustada
-/>
 
 <!-- Existing patients: a membership strip, not a footnote (Mari, 2026-10-03: «no resalta»). -->
 <aside class="membresia reveal">

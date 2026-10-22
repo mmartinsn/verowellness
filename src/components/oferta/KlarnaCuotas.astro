@@ -17,7 +17,7 @@ interface Props {
   monto?: number;
   boton: { label: string; href: string };
   nota: string;
-  /** Inside a block that already has its column (the price block): no own `.wrap`, less air. */
+  /** Inside a block that already has its column (above the price cards): no own `.wrap`, less air. */
   incrustada?: boolean;
 }
 
@@ -82,7 +82,7 @@ const cuota =
     padding: 36px 0 44px;
   }
   .klarna.incrustada {
-    padding: 28px 0 0;
+    padding: 0 0 36px;
   }
   .cinta {
     position: relative;
