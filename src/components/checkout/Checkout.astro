@@ -290,11 +290,14 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
       <p class="step-eyebrow">Paso 2</p>
       <h1 class="step-title">Resumen de tu compra</h1>
       <p class="step-subtitle">
-        Revisa los detalles de tu {ciclo.nombre} antes de continuar al pago.
+        Revisa los detalles de tu <span data-nombre-pedido-frase>{ciclo.nombre}</span> antes de continuar
+        al pago.
       </p>
 
       <div class="review-card">
-        <div class="review-row"><span>{etiquetaProducto}</span><span>{ciclo.nombre}</span></div>
+        <div class="review-row">
+          <span>{etiquetaProducto}</span><span data-nombre-pedido>{ciclo.nombre}</span>
+        </div>
         <p class="review-note" data-desc-corta>{ciclo.descripcionCorta}</p>
         <div data-lineas-extra></div>
         <div class="review-row">
@@ -554,7 +557,9 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
       <p class="step-subtitle">Revisa una última vez antes de confirmar.</p>
 
       <div class="review-card" id="step5-review">
-        <div class="review-row"><span>{etiquetaProducto}</span><span>{ciclo.nombre}</span></div>
+        <div class="review-row">
+          <span>{etiquetaProducto}</span><span data-nombre-pedido>{ciclo.nombre}</span>
+        </div>
         <div class="review-row"><span>Método de pago</span><span id="final-method">—</span></div>
         <div class="review-row">
           <span>Total a pagar</span><span data-total>{usd(p.total)}</span>
@@ -593,7 +598,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
   <!-- RESUMEN (sticky) -->
   <aside class="summary-card" id="summary-card">
     <span class="summary-tag">{ciclo.etiqueta}</span>
-    <h2 class="summary-title">{ciclo.nombre}</h2>
+    <h2 class="summary-title" data-nombre-pedido>{ciclo.nombre}</h2>
     <p class="summary-desc">{ciclo.descripcionCorta}</p>
     <div data-lineas-extra></div>
     <div class="summary-line">
@@ -1719,6 +1724,17 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
     const usd = (n: number) => `$${n.toFixed(2)}`;
     const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
 
+    // Lab tests: the order is named after the test being paid, or counted when there are several.
+    const nombrarPedido = (lista: { nombre: string }[]) => {
+      if (!root.dataset.pedido?.includes('exámenes') || !lista.length) return;
+      const uno = lista.length === 1;
+      const nombre = uno ? lista[0].nombre : `${lista.length} exámenes`;
+      root.querySelectorAll('[data-nombre-pedido]').forEach((el) => (el.textContent = nombre));
+      root
+        .querySelectorAll('[data-nombre-pedido-frase]')
+        .forEach((el) => (el.textContent = uno ? nombre : 'pedido'));
+    };
+
     /* ── Lab-test mode: the order is whatever the visitor picked on /examenes/ ── */
     let items: { id: string; nombre: string; precio: number; gravado: boolean }[] = [];
     if (root.dataset.carrito) {
@@ -1765,6 +1781,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
         })
       );
       const n = items.length;
+      nombrarPedido(items);
       root
         .querySelectorAll('[data-desc-corta]')
         .forEach((el) => (el.textContent = `${n} ${n === 1 ? 'examen' : 'exámenes'}`));
@@ -1986,6 +2003,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
         x.closest('li')?.remove();
         const n = items.length;
         root.querySelectorAll('[data-desc-corta]').forEach((el) => (el.textContent = palabra(n)));
+        nombrarPedido(items);
         const vacio = root.querySelector<HTMLElement>('[data-carrito-vacio]');
         if (vacio) vacio.hidden = n > 0;
         if (state.order) state.order.items = items.map((it) => ({ id: it.id, price: it.precio }));
