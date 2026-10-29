@@ -1,0 +1,62 @@
+---
+/**
+ * Thin Black Friday bar above the header on every public page (Mari: «que se vea en todos lados»).
+ * The site is static, so the dates are checked in the browser: hidden before 1 Nov and after
+ * Cyber Monday without a rebuild.
+ */
+import { bf, campana } from '../data/black-friday';
+import { href } from '../lib/url';
+---
+
+<a
+  class="bf-bar"
+  href={href('/black-friday/')}
+  data-inicio={campana.inicio}
+  data-fin={campana.fin}
+  hidden
+>
+  <span class="bf-bar-dot" aria-hidden="true"></span>
+  {bf.banner}
+  <strong>Ver ofertas →</strong>
+</a>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.bf-bar').forEach((bar) => {
+    const ahora = Date.now();
+    const vigente =
+      ahora >= new Date(bar.dataset.inicio!).getTime() &&
+      ahora <= new Date(bar.dataset.fin!).getTime();
+    bar.hidden = !vigente && !location.pathname.includes('/black-friday');
+  });
+</script>
+
+<style>
+  .bf-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: #0a0a0a;
+    color: #f6f1e7;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 9px 16px;
+    text-decoration: none;
+  }
+  .bf-bar[hidden] {
+    display: none;
+  }
+  .bf-bar strong {
+    color: #ff4f2b;
+  }
+  .bf-bar-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ff4f2b;
+  }
+</style>

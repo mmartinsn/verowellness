@@ -617,6 +617,19 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
       examen de 449.55 con dirección de Hialeah da 26.97 de impuesto estatal y 4.50 del condado,
       cargo de laboratorio 25 sin impuesto, envío 0, total 506.02, igual que el resumen del sitio.
 
+61. **2026-10-28 — Landing de Black Friday en `/black-friday/`** (Mari: «sálte del catálogo de
+    colores, que quede grabada»; «usa Codex para los textos»). Negro, hueso y un coral `#ff4f2b`,
+    tipografía Archivo Black, cintas de «Black Friday» cruzadas y cuenta regresiva al cierre de
+    Cyber Monday (30-nov 23:59, hora del Este). Tres exámenes al −20 % (184 IgG, DUTCH Plus,
+    GI-Advanced), la lectura a USD 150 y el recetario de regalo. Textos de Codex en
+    `src/data/black-friday.ts`, fuera del snapshot porque la campaña vence y no va a Webflow. Cada
+    botón deja ese examen como selección y abre el checkout con `?cupon=BLACKFRIDAY`, que el
+    checkout ahora aplica solo. Una barra negra sobre el header en todas las páginas, visible del
+    1-nov al 30-nov por fecha en el navegador. La página lleva `noindex`.
+    - **Abierto para Santiago, antes del 1-nov:** crear en Webflow el código `BLACKFRIDAY` (−20 %
+      solo en esos tres exámenes), el precio de USD 150 de la lectura y el recetario gratis con
+      cualquier examen. Sin eso, la caja cobra precio normal aunque la página diga −20 %.
+
 ## Abiertas — para Mari y Verónica
 
 - **Privacidad y píxel de Meta** (decisión 59): `legal/privacidad` no menciona el píxel ni las
@@ -635,6 +648,8 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   va? Y lo que se cobra como impuesto, aun sobre servicios que Florida no grava, probablemente haya
   que declararlo al Departamento de Ingresos de Florida (supuesto sin fuente: lo confirma su
   contador).
+- **Black Friday** (decisión 61): Santiago crea en Webflow el código `BLACKFRIDAY`, la lectura a
+  USD 150 y el recetario gratis antes del 1-nov.
 - **Exámenes**: confirmar USD 25 de cargo de laboratorio por examen.
 - **Apple Pay y Google Pay** se saltan teléfono, «¿cómo me conociste?» y el consentimiento del
   checkout: ¿se dejan las billeteras o se pide el consentimiento antes, en el sitio?
