@@ -2209,7 +2209,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
       cupon = '';
       mostrarCupon();
     });
-    // A campaign link can bring the code already applied (?cupon=, the Black Friday landing).
+    // A campaign link can bring the code already applied (?cupon=, the Black Friday page outside the site).
     const cuponEnlace = new URLSearchParams(location.search).get('cupon');
     if (cuponEnlace) {
       cupon = limpiarCupon(cuponEnlace);

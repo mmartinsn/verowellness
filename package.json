@@ -24,7 +24,6 @@
     "test": "node --test \"tests/**/*.test.ts\""
   },
   "dependencies": {
-    "@fontsource/archivo-black": "^5.3.0",
     "astro": "7.3.3",
     "sharp": "0.35.5"
   },

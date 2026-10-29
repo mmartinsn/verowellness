@@ -617,18 +617,15 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
       examen de 449.55 con dirección de Hialeah da 26.97 de impuesto estatal y 4.50 del condado,
       cargo de laboratorio 25 sin impuesto, envío 0, total 506.02, igual que el resumen del sitio.
 
-61. **2026-10-28 — Landing de Black Friday en `/black-friday/`** (Mari: «sálte del catálogo de
-    colores, que quede grabada»; «usa Codex para los textos»). Negro, hueso y un coral `#ff4f2b`,
-    tipografía Archivo Black, cintas de «Black Friday» cruzadas y cuenta regresiva al cierre de
-    Cyber Monday (30-nov 23:59, hora del Este). Tres exámenes al −20 % (184 IgG, DUTCH Plus,
-    GI-Advanced), la lectura a USD 150 y el recetario de regalo. Textos de Codex en
-    `src/data/black-friday.ts`, fuera del snapshot porque la campaña vence y no va a Webflow. Cada
-    botón deja ese examen como selección y abre el checkout con `?cupon=BLACKFRIDAY`, que el
-    checkout ahora aplica solo. Una barra negra sobre el header en todas las páginas, visible del
-    1-nov al 30-nov por fecha en el navegador. La página lleva `noindex`.
+61. **2026-10-28 — Black Friday: página aparte, fuera del sitio** (Mari: «quiero que esté
+    publicada como link pero no dentro de mi página web»). La landing vive como página publicada
+    aparte (Claude artifact); del sitio salieron `/black-friday/` y la barra de todas las páginas
+    (estuvieron publicadas unas horas el 28-oct, con `noindex`). Queda en el sitio una sola pieza:
+    el checkout de exámenes aplica `?cupon=` del enlace. Cada botón de la página externa abre
+    `/checkout/examenes/?examen=<id>&cupon=BLACKFRIDAY`.
     - **Abierto para Santiago, antes del 1-nov:** crear en Webflow el código `BLACKFRIDAY` (−20 %
-      solo en esos tres exámenes), el precio de USD 150 de la lectura y el recetario gratis con
-      cualquier examen. Sin eso, la caja cobra precio normal aunque la página diga −20 %.
+      solo en el 184 IgG, DUTCH Plus y GI-Advanced), el precio de USD 150 de la lectura y el
+      recetario gratis con cualquier examen. Sin eso, la caja cobra precio normal.
 
 ## Abiertas — para Mari y Verónica
 
