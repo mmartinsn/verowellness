@@ -647,6 +647,10 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   contador).
 - **Black Friday** (decisión 61): Santiago crea en Webflow el código `BLACKFRIDAY`, la lectura a
   USD 150 y el recetario gratis antes del 1-nov.
+  La landing externa promete además «4 pagos sin intereses con Klarna» al precio Black Friday
+  (4 × 68.75 / 115.25 / 112.25): hoy el código no aplica con Klarna y Klarna suma 7 %. Santiago tiene
+  que hacer que el descuento valga también en Klarna antes del 1-nov; si no, se cambia el texto
+  de la landing (Mari, 2026-10-29).
 - **Exámenes**: confirmar USD 25 de cargo de laboratorio por examen.
 - **Apple Pay y Google Pay** se saltan teléfono, «¿cómo me conociste?» y el consentimiento del
   checkout: ¿se dejan las billeteras o se pide el consentimiento antes, en el sitio?
