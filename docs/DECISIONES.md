@@ -608,8 +608,8 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
       entró ningún pedido). Ahora el snapshot lleva `descarga` en las dos y la siembra nombra el
       archivo como el producto, como lo hizo Mari y como lo empareja la página de gracias.
       **Regla:** si la auditoría dice que Webflow no es el snapshot, `vw bajar` antes de sembrar.
-    - **Abierto**: con tarjeta fuera de Florida se paga 0 y con Klarna 7 %, y el resumen del sitio y
-      la FAQ dicen «7 %» (§ Abiertas).
+    - **Reemplazada por la decisión 62** (7 % dentro del precio): lo que quedaba abierto aquí (con
+      tarjeta fuera de Florida se pagaba 0 y con Klarna 7 %) ya no aplica.
     - **Envío de exámenes, arreglado el mismo día**: la caja no ofrecía ningún envío para EE. UU.
       (Hialeah y Nueva York) porque la zona «Domestic Shipping» no tenía ningún método: el «Envío
       incluido» del 11-oct no estaba. Santiago lo creó (tarifa fija, gratis, con la frase de la FAQ
@@ -627,6 +627,30 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
       solo en el 184 IgG, DUTCH Plus y GI-Advanced), el precio de USD 150 de la lectura y el
       recetario gratis con cualquier examen. Sin eso, la caja cobra precio normal.
 
+62. **2026-10-21 — Precios con el 7 % incluido** (Mari y Verónica: «a todos los precios se les suma
+    el 7 %»; en producción el 29-oct). Reemplaza la decisión 60: Webflow no deja poner una tasa fija.
+    Los 37 exámenes y las 3 asesorías suben un 7 % redondeado al dólar (Layer Session 150 → 161,
+    Initial 269 → 288, Next 210 → 225; los 40 son `round(precio × 1.07)`) y pasan a
+    `standard-exempt`; `TIPOS_CON_IMPUESTO` queda vacío en `src/lib/precio.ts`, así que ni el resumen
+    del sitio, ni la caja, ni Klarna llevan línea de impuesto, y el total no depende del estado.
+    Guías y cargo del laboratorio, igual. Mari lo dejó en `e6caba3` sin sembrar ni desplegar: del
+    22 al 29-oct el sitio mostraba 161 y la caja cobraba 160.50 con dirección de Florida y 150 fuera,
+    y Klarna 160.50.
+    - **En producción el 29-oct**: Santiago sembró Webflow (41 escrituras, segunda vuelta en 0) y
+      desplegó el cobro (`b3f83f7e6ea84d2f`). No se corrió `vw bajar` antes de sembrar: las 81
+      diferencias eran exactamente las de `e6caba3` (40 productos × precio y clase, más una pregunta
+      frecuente) y bajar las habría deshecho. **Regla de la decisión 60, afinada:** antes de bajar,
+      mirar las diferencias con `vw bajar --comprobar`; si son un cambio del repo aún sin sembrar, se
+      siembra.
+    - **Verificado sin cobrar**: `vw bajar --comprobar` da Webflow = snapshot; `probar-puente` 9/10
+      (asesoría sola 161, ciclo + 2 guías 310.98, 3 exámenes + lectura 984, Next 225; «red lenta y
+      carrito lleno» falla dos veces por el timeout de la emulación de red, no por un monto); la
+      caja da Layer Session 161.00 con dirección de Hialeah y de Nueva York, sin fila de impuesto, y
+      96 IgG + cargo 211.00 con envío 0 en Hialeah; Klarna, Layer Session USD 161.00 sin línea de
+      impuesto.
+    - **Para revertir**: precios y clases de `e6caba3^` en `src/data/canonico/productos.json` y
+      `vw sembrar --aplicar`; `cobro/src/generado.ts` de `e6caba3^` y `vw cobro --aplicar`.
+
 ## Abiertas — para Mari y Verónica
 
 - **Privacidad y píxel de Meta** (decisión 59): `legal/privacidad` no menciona el píxel ni las
@@ -640,11 +664,9 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   vea con la tabla de arriba.
 - **¿Fotos con el pelo claro o oscurecido?** Regla de Mari para el recetario vs. su uso aquí.
 - **Textos legales** y **aviso médico**: los redacta Verónica.
-- **Impuesto** (decisión 60): Klarna cobra 7 % fijo y la caja de Webflow el de Florida según la
-  dirección (0 fuera de Florida), mientras la FAQ y el resumen del checkout dicen «7 %». ¿Qué texto
-  va? Y lo que se cobra como impuesto, aun sobre servicios que Florida no grava, probablemente haya
-  que declararlo al Departamento de Ingresos de Florida (supuesto sin fuente: lo confirma su
-  contador).
+- **Impuesto** (decisión 62): el 7 % va dentro del precio y la FAQ dice «Los precios publicados ya
+  incluyen impuestos». Si eso obliga a declararlo al Departamento de Ingresos de Florida, aun sobre
+  servicios que Florida no grava, lo confirma su contador (supuesto sin fuente).
 - **Black Friday** (decisión 61): Santiago crea en Webflow el código `BLACKFRIDAY`, la lectura a
   USD 150 y el recetario gratis antes del 1-nov.
   La landing externa promete además «4 pagos sin intereses con Klarna» al precio Black Friday
