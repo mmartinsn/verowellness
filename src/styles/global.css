@@ -105,6 +105,7 @@
     scroll-padding-top: 96px;
     background: var(--color-bone);
     color-scheme: light only;
+    overflow-x: clip;
   }
   body {
     background: var(--color-bone);
@@ -115,7 +116,7 @@
     font-variant-numeric: lining-nums;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    overflow-x: clip;
     animation: page-in 0.5s ease-out both;
   }
   @keyframes page-in {

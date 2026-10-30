@@ -153,21 +153,25 @@ export const auditarComercio: Auditoria = async ({ conWebflow }) => {
         `/sites/${api.c.sitio}/orders?status=unfulfilled`,
         'orders'
       );
+      const enviables = new Set(tabla.producto.filter((p) => p.enviable === true).map((p) => p.id));
       const limite = Date.now() - DIAS_SIN_CUMPLIR * 86400000;
       const viejos = pedidos.filter(
-        (p) => p.acceptedOn && Date.parse(p.acceptedOn) < limite
+        (p) =>
+          p.acceptedOn &&
+          Date.parse(p.acceptedOn) < limite &&
+          (p.purchasedItems ?? []).some((i) => enviables.has(i.productSlug))
       ).length;
       return viejos === 0
         ? ok(
             C,
             'pedidos sin cumplir',
             pedidos.length,
-            `${pedidos.length} abiertos, ninguno de más de ${DIAS_SIN_CUMPLIR} días`
+            `${pedidos.length} abiertos, ninguno con algo por enviar de más de ${DIAS_SIN_CUMPLIR} días`
           )
         : hallazgo(
             C,
             'pedidos sin cumplir',
-            `${viejos} con más de ${DIAS_SIN_CUMPLIR} días`,
+            `${viejos} con algo por enviar y más de ${DIAS_SIN_CUMPLIR} días`,
             viejos
           );
     })),

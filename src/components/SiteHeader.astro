@@ -171,12 +171,12 @@ const current = Astro.url.pathname;
   }
 
   /* Narrow desktops: a smaller menu so the links and the CTA still fit on one line. */
-  @media (min-width: 1024px) and (max-width: 1179px) {
+  @media (min-width: 1100px) and (max-width: 1179px) {
     .header-nav a {
       font-size: 13.5px;
     }
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 1100px) {
     .header-nav {
       display: flex;
     }
@@ -245,8 +245,11 @@ const current = Astro.url.pathname;
     font-weight: 600;
     letter-spacing: 0.08em;
   }
+  :global(html[data-theme='stitch']) .header-inner {
+    max-width: 1400px;
+  }
   :global(html[data-theme='stitch']) .header-nav {
-    gap: 36px;
+    gap: clamp(14px, 1.5vw, 36px);
   }
   :global(html[data-theme='stitch']) .header-nav a {
     font-size: 12px;
@@ -284,6 +287,14 @@ const current = Astro.url.pathname;
   @media (min-width: 640px) {
     :global(html[data-theme='stitch']) .header-cta {
       display: inline-flex;
+    }
+  }
+  @media (min-width: 1100px) and (max-width: 1439px) {
+    :global(html[data-theme='stitch']) .header-nav {
+      display: none;
+    }
+    :global(html[data-theme='stitch']) .hamburger {
+      display: flex;
     }
   }
   :global(html[data-theme='stitch']) .hamburger-bars {

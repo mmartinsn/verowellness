@@ -692,6 +692,29 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     - **Para revertir**: vaciar `campanas` en `src/data/campanas.ts`, regenerar y publicar puente,
       confirmación y cobro; los productos pueden quedar (nadie los vende).
 
+64. **2026-10-30 — Lo que Mari cerró por audio y lo que se arregla sin ella** (Santiago: «Lets help
+    and enforce all what we can for ourselves»; audio de Mari en `fuentes/2026-10-30-audio-mari-pendientes.*`).
+    - **Cerrado por Mari**: el cargo del laboratorio de USD 25 por examen está confirmado. Verónica no
+      tiene contador y fue ella quien pidió subir los precios (decisión 62): no queda nada que
+      consultar. «Paga en cuotas» bajo Klarna se queda como está.
+    - **La auditoría ya no cuenta como pendiente un pedido sin nada que enviar**: Webflow deja todo
+      pedido «sin cumplir» hasta que alguien lo marca, y los dos que salían (Initial Layer Cycle del
+      17 y 18-oct) son asesorías. Ahora solo cuenta los que llevan un producto `enviable`.
+    - **Checkout con un solo `h1`**: los pasos 2 a 5 pasan a `h2` con la misma clase; se ven igual
+      (Tailwind iguala los encabezados y `.step-title` pone el resto).
+    - **Sin desborde lateral**: `html` y `body` con `overflow-x: clip` (antes solo `body` con
+      `hidden`, que en el teléfono no frena el arrastre; `clip` no rompe los `sticky`). La causa
+      eran los textos que entran deslizándose (`.reveal-right`), no los adornos ni la cinta, que ya
+      los recortan sus contenedores.
+    - **El menú completo solo donde cabe**: medido en las 11 páginas de contenido de 1024 a 1440 px,
+      el encabezado se salía de 40 a 56 px entre 1024 y 1099 en todo el sitio; ahora el menú
+      completo sale desde 1100 y debajo, la hamburguesa. En `/inicio-stitch/` no cabía nunca en su
+      columna: ahí el encabezado llega a 1400 px de ancho, el espacio entre enlaces se ajusta al
+      ancho y debajo de 1440 va la hamburguesa. Medido después: nada se sale en ninguna página.
+    - **PDFs de las guías**: en Webflow solo está el de hormonas. La guía de GLP-1 y RETA (21
+      páginas, 16-sep) y el recetario (A4 y vertical del 17-sep) están en `Veronica_Mari`; falta
+      «Cómo hackear tu cerebro» (lo tiene Mari) y que confirme cuáles son los buenos.
+
 ## Abiertas — para Mari y Verónica
 
 - **Privacidad y píxel de Meta** (decisión 59): `legal/privacidad` no menciona el píxel ni las
@@ -705,23 +728,15 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   vea con la tabla de arriba.
 - **¿Fotos con el pelo claro o oscurecido?** Regla de Mari para el recetario vs. su uso aquí.
 - **Textos legales** y **aviso médico**: los redacta Verónica.
-- **Impuesto** (decisión 62): el 7 % va dentro del precio y la FAQ dice «Los precios publicados ya
-  incluyen impuestos». Si eso obliga a declararlo al Departamento de Ingresos de Florida, aun sobre
-  servicios que Florida no grava, lo confirma su contador (supuesto sin fuente).
 - **Black Friday** (decisiones 61 y 63): el código vale en la caja y en Klarna, sin 7 % aparte.
   Las cuotas de la landing (4 × 68.75 / 115.25 / 112.25) no dan: son 68.80 / 115.60 / 112.40 sin el
   cargo del laboratorio y 75.05 / 121.85 / 118.65 con él (Mari). Verónica manda el recetario a mano
   a cada pedido de Black Friday.
-- **Exámenes**: confirmar USD 25 de cargo de laboratorio por examen.
 - **Apple Pay y Google Pay** se saltan teléfono, «¿cómo me conociste?» y el consentimiento del
   checkout: ¿se dejan las billeteras o se pide el consentimiento antes, en el sitio?
-- **Klarna** (decisión 57): el renglón «Paga en cuotas» bajo «Klarna» en el paso de pago es
-  provisional, escrito al armarlo; hace falta el de Mari o Verónica (las promesas de cuotas tienen
-  reglas de Klarna). Los pedidos con Klarna no están en Webflow: Verónica los ve en Stripe
-  (Payments) y desde ahí envía los exámenes; conviene encender los recibos de Stripe para la
-  compradora. Un código de descuento no se aplica con Klarna; ¿se avisa en la nota del cupón?
-  **Impuesto:** la sesión de Klarna va sin impuesto mientras el resumen del sitio suma 7 % y la caja
-  de Webflow cobra el de Florida; se decide al saber qué cobra Webflow con una dirección de Florida.
+- **Klarna** (decisión 57): los pedidos con Klarna no están en Webflow: Verónica los ve en Stripe
+  (Payments) y desde ahí envía los exámenes. Falta encender los recibos de Stripe para la
+  compradora (Santiago). Un código de Webflow no vale con Klarna; el de una campaña sí (decisión 63).
 - **Mensajes de la página «Pedido»** de Webflow (`scripts/vw/comercio/puente.ts`): «Preparando tu
   pedido…», «No encontramos productos en tu pedido.», «No pudimos preparar tu pedido.», «Intentar de
   nuevo» y «Volver a Veronica Wellness» son provisionales, escritos al armar el puente; no son de
@@ -731,7 +746,3 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
   y con el diseño de Webflow. Diseño de Mari y texto de Verónica. Si se rediseña la plantilla, tiene
   que conservar el botón «Add to Cart» (lo usa el puente) y conviene que conserve el campo de
   cantidad (sin él, el puente agrega de a uno).
-- **Dos desbordes del front que ya estaban en `cfdc54d`**: en el teléfono el inicio se corre 2–4
-  px de lado (los adornos del hero y la cinta de logos) y `/inicio-stitch/` en escritorio tiene el
-  botón del encabezado 93 px fuera. Además, las páginas de checkout tienen seis `h1` cada una.
-  Se arreglan con Mari porque tocan su diseño.
