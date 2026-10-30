@@ -677,8 +677,16 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
       generado), el puente generado y la auditoría; en el sitio con el reloj del navegador en el
       2-nov: 184 IgG 275.20 + regalo 0 + cargo 25 = 300.20, con la sesión 450.20, en minúsculas
       también; al quitar el código, 344 y 369; la URL lleva `cupon=BLACKFRIDAY` y la cookie solo el
-      email; con la fecha de hoy, precio normal. Falta, tras sembrar: `probar-puente` (caso Black
-      Friday, fecha fija) contra la caja real, y desde el 1-nov una sesión real de Klarna.
+      email; con la fecha de hoy, precio normal.
+    - **En producción el 30-oct**: Santiago sembró los 4 productos (segunda vuelta en 0), publicó
+      puente y confirmación, y desplegó el cobro (`971abf37db56ed1c`); el sitio salió en `3470728`.
+      `probar-puente` contra la caja real con la fecha en el 2-nov: 184 IgG + sesión + cargo =
+      450.20; con la fecha de hoy, el mismo enlace da 344 + 161 + 25 = 530. Falta desde el 1-nov una
+      sesión real de Klarna (corre con el reloj del servidor).
+    - **Lo que trabó el despliegue**: un `vw cobro --aplicar` deja el sitio de Webflow «con cambios
+      sin publicar» (29-oct: 24 s después del despliegue, sin ninguna página tocada), y `sembrar`,
+      `puente` y `confirmacion` se niegan hasta publicarlo. Además Webflow publica en segundo plano:
+      encadenados, cada paso necesita un minuto (`sleep 60`) o ve la publicación anterior a medias.
     - **El 1-dic**: archivar los cuatro productos en Webflow y sacar la campaña de `campanas.ts` y del
       snapshot.
     - **Para revertir**: vaciar `campanas` en `src/data/campanas.ts`, regenerar y publicar puente,
