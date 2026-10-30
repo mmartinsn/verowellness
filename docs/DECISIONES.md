@@ -623,9 +623,8 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     (estuvieron publicadas unas horas el 28-oct, con `noindex`). Queda en el sitio una sola pieza:
     el checkout de exámenes aplica `?cupon=` del enlace. Cada botón de la página externa abre
     `/checkout/examenes/?examen=<id>&cupon=BLACKFRIDAY`.
-    - **Abierto para Santiago, antes del 1-nov:** crear en Webflow el código `BLACKFRIDAY` (−20 %
-      solo en el 184 IgG, DUTCH Plus y GI-Advanced), el precio de USD 150 de la lectura y el
-      recetario gratis con cualquier examen. Sin eso, la caja cobra precio normal.
+    - **Resuelto en la decisión 63** sin código de Webflow: el sitio aplica `BLACKFRIDAY` en la caja y
+      en Klarna. No crear un `BLACKFRIDAY` en Webflow: se sumaría a los precios de la campaña.
 
 62. **2026-10-21 — Precios con el 7 % incluido** (Mari y Verónica: «a todos los precios se les suma
     el 7 %»; en producción el 29-oct). Reemplaza la decisión 60: Webflow no deja poner una tasa fija.
@@ -651,6 +650,40 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     - **Para revertir**: precios y clases de `e6caba3^` en `src/data/canonico/productos.json` y
       `vw sembrar --aplicar`; `cobro/src/generado.ts` de `e6caba3^` y `vw cobro --aplicar`.
 
+63. **2026-10-29 — Black Friday: el código `BLACKFRIDAY` aplica solo todos los precios de la
+    campaña** (Santiago: «activate an automatic "blackfriday" code for all of the prices of bf», del
+    1 al 30 de noviembre). Un código de Webflow guarda una sola regla, su API no tiene descuentos y
+    Klarna no los lee; por eso la campaña es como las ofertas de guías: productos propios con su
+    precio, que la regla del pedido pone en lugar de los normales.
+    - **La campaña, una vez**: `src/data/campanas.ts` (código, del 1-nov 00:00 al 1-dic 00:00 hora
+      del Este, sin incluirlo, y los cambios) y `DESCUENTO_BLACK_FRIDAY` en `src/lib/precio.ts`.
+      Cuatro productos en el snapshot, cada uno del tipo, la clase y el envío de su base: los tres
+      exámenes a −20 % (184 IgG 275.20, DUTCH Plus 462.40, GI-Advanced 449.60) y
+      `layer-session-black-friday` a 150. El modelo exige el precio exacto y el mismo tipo.
+    - **La regla**: `normalizarPedido(…, cupon, ahora)` cambia los productos solo con el código, en
+      las fechas y con al menos un examen. Corre igual en el resumen del sitio, el puente (`?cupon=`),
+      Klarna (`?cupon=` y `metadata[cupon]`) y la auditoría, que revisa cada pedido con su propia
+      fecha. Los productos de la campaña no son «vendibles»: pedidos directo no entran, y uno
+      comprado desde su página `/product/` sale como hallazgo de la auditoría.
+    - **En el checkout**: el enlace trae el código aplicado y también vale escrito (mayúsculas o no).
+      El resumen muestra los precios de la campaña, la sesión a 150 en la opción de lectura y la
+      línea «30 desayunos antiinflamatorios express · regalo · $0.00». El código de una campaña viaja
+      en la URL y nunca en la cookie `vw_caja`, para que la caja de Webflow no lo pruebe y diga que no
+      existe. Con otro código todo sigue como antes.
+    - **El recetario no es un producto**: no tiene PDF en Webflow, así que nada puede enviarlo
+      solo; un producto a 0 se podría pedir desde su URL y una línea en 0 no se probó con Klarna.
+      **Verónica lo manda a mano** a cada pedido con un examen «(Black Friday −20%)».
+    - **Verificado sin cobrar el 29-oct**: pruebas de la regla, el modelo, Klarna (también el módulo
+      generado), el puente generado y la auditoría; en el sitio con el reloj del navegador en el
+      2-nov: 184 IgG 275.20 + regalo 0 + cargo 25 = 300.20, con la sesión 450.20, en minúsculas
+      también; al quitar el código, 344 y 369; la URL lleva `cupon=BLACKFRIDAY` y la cookie solo el
+      email; con la fecha de hoy, precio normal. Falta, tras sembrar: `probar-puente` (caso Black
+      Friday, fecha fija) contra la caja real, y desde el 1-nov una sesión real de Klarna.
+    - **El 1-dic**: archivar los cuatro productos en Webflow y sacar la campaña de `campanas.ts` y del
+      snapshot.
+    - **Para revertir**: vaciar `campanas` en `src/data/campanas.ts`, regenerar y publicar puente,
+      confirmación y cobro; los productos pueden quedar (nadie los vende).
+
 ## Abiertas — para Mari y Verónica
 
 - **Privacidad y píxel de Meta** (decisión 59): `legal/privacidad` no menciona el píxel ni las
@@ -667,12 +700,10 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
 - **Impuesto** (decisión 62): el 7 % va dentro del precio y la FAQ dice «Los precios publicados ya
   incluyen impuestos». Si eso obliga a declararlo al Departamento de Ingresos de Florida, aun sobre
   servicios que Florida no grava, lo confirma su contador (supuesto sin fuente).
-- **Black Friday** (decisión 61): Santiago crea en Webflow el código `BLACKFRIDAY`, la lectura a
-  USD 150 y el recetario gratis antes del 1-nov.
-  La landing externa promete además «4 pagos sin intereses con Klarna» al precio Black Friday
-  (4 × 68.75 / 115.25 / 112.25): hoy el código no aplica con Klarna y Klarna suma 7 %. Santiago tiene
-  que hacer que el descuento valga también en Klarna antes del 1-nov; si no, se cambia el texto
-  de la landing (Mari, 2026-10-29).
+- **Black Friday** (decisiones 61 y 63): el código vale en la caja y en Klarna, sin 7 % aparte.
+  Las cuotas de la landing (4 × 68.75 / 115.25 / 112.25) no dan: son 68.80 / 115.60 / 112.40 sin el
+  cargo del laboratorio y 75.05 / 121.85 / 118.65 con él (Mari). Verónica manda el recetario a mano
+  a cada pedido de Black Friday.
 - **Exámenes**: confirmar USD 25 de cargo de laboratorio por examen.
 - **Apple Pay y Google Pay** se saltan teléfono, «¿cómo me conociste?» y el consentimiento del
   checkout: ¿se dejan las billeteras o se pide el consentimiento antes, en el sitio?

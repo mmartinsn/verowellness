@@ -36,6 +36,15 @@
     "sku": "EX-019"
   },
   {
+    "id": "184-igg-food-sensitivity-panel-black-friday",
+    "nombre": "184 IgG Food Sensitivity Panel (Black Friday −20%)",
+    "tipo": "examen",
+    "precio": 27520,
+    "impuesto": "standard-exempt",
+    "enviable": true,
+    "sku": "EX-019-BF"
+  },
+  {
     "id": "198-vegetarian-food-panel-iga-igg-igg4",
     "nombre": "198 Vegetarian Food Panel: IgA/IgG/IgG4",
     "tipo": "examen",
@@ -207,6 +216,15 @@
     "sku": "EX-010"
   },
   {
+    "id": "dutch-plus-hormonas-sexuales-adrenal-black-friday",
+    "nombre": "DUTCH Plus (hormonas sexuales, adrenal) (Black Friday −20%)",
+    "tipo": "examen",
+    "precio": 46240,
+    "impuesto": "standard-exempt",
+    "enviable": true,
+    "sku": "EX-010-BF"
+  },
+  {
     "id": "dutch-solo-hormonas",
     "nombre": "DUTCH solo hormonas",
     "tipo": "examen",
@@ -241,6 +259,15 @@
     "impuesto": "standard-exempt",
     "enviable": true,
     "sku": "EX-008"
+  },
+  {
+    "id": "gi-advanced-profile-includes-zonulin-and-h-pylori-black-friday",
+    "nombre": "GI-Advanced Profile (includes Zonulin and H. pylori) (Black Friday −20%)",
+    "tipo": "examen",
+    "precio": 44960,
+    "impuesto": "standard-exempt",
+    "enviable": true,
+    "sku": "EX-008-BF"
   },
   {
     "id": "gi-effects-3-days",
@@ -333,6 +360,15 @@
     "impuesto": "standard-exempt",
     "enviable": false,
     "sku": "ASE-LAYER-SESSION"
+  },
+  {
+    "id": "layer-session-black-friday",
+    "nombre": "Layer Session (Black Friday)",
+    "tipo": "asesoria",
+    "precio": 15000,
+    "impuesto": "standard-exempt",
+    "enviable": false,
+    "sku": "ASE-LAYER-SESSION-BF"
   },
   {
     "id": "metales-pesados-minerales",

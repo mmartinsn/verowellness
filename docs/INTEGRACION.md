@@ -89,7 +89,7 @@ veronicawellness.com (Astro)                       pago.veronicawellness.com (We
   `normalizarPedido()`, arma la sesión con `sesionKlarna()` (`src/lib/comercio/cobro.ts`: precio y
   nombre del snapshot, envío solo a EE. UU. si hay exámenes, página de gracias con la misma regla
   que la confirmación) y redirige a Stripe. El email llega en la cookie `vw_caja` de la decisión
-  56; el código de descuento no aplica (los cupones viven en Webflow). **Los pedidos con Klarna
+  56; un código de Webflow no aplica, pero el de una campaña sí (decisión 63). **Los pedidos con Klarna
   quedan en Stripe, no en Webflow**: la dimensión «Cobro» de la auditoría los lee con
   `STRIPE_LECTURA` y compara reglas y precio. `vw cobro` genera `cobro/src/generado.ts` (snapshot,
   reglas y textos en un módulo autónomo, con su `VERSION`) y `--aplicar` lo despliega;

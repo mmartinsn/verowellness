@@ -178,7 +178,11 @@ export const auditarComercio: Auditoria = async ({ conWebflow }) => {
       );
       const catalogo = catalogoDe(tabla);
       const rotos = pedidos.flatMap((p) => {
-        const diferencias = diferenciasDePedido(p.purchasedItems ?? [], catalogo);
+        const diferencias = diferenciasDePedido(
+          p.purchasedItems ?? [],
+          catalogo,
+          p.acceptedOn ? new Date(p.acceptedOn) : new Date()
+        );
         return diferencias.length ? [`pedido ${p.orderId}: ${diferencias.join(', ')}`] : [];
       });
       return rotos.length === 0

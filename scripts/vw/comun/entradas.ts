@@ -42,7 +42,7 @@ export const ENTRADAS: Record<string, Record<string, Entradas>> = {
 };
 
 export const EXPORTS_NUEVOS: Record<string, string[]> = {
-  'pedido-webflow': ['productoGravado(…)'],
+  'pedido-webflow': ['productoGravado(…)', 'campanasCheckout'],
   site: ['comercio'],
   testimonios: ['testimoniosAsesorias'],
 };

@@ -18,11 +18,18 @@ import { crearSesion } from '../stripe.ts';
 export const prerender = false;
 
 export const GET: APIRoute = async ({ url, request }) => {
-  const lineas = normalizarPedido(leerItems(url.searchParams.get('items') ?? ''), CATALOGO);
+  const cupon = url.searchParams.get('cupon') ?? '';
+  const lineas = normalizarPedido(
+    leerItems(url.searchParams.get('items') ?? ''),
+    CATALOGO,
+    cupon,
+    new Date()
+  );
   const sesion = sesionKlarna(lineas, PRODUCTOS, {
     volver: VOLVER,
     cancelar: urlDeVuelta(url.searchParams.get('desde'), VOLVER),
     email: leerTraspaso(request.headers.get('cookie') ?? '')?.email,
+    cupon,
   });
   if (!sesion) return estado('vacio', null, 400);
   const clave = claveStripe();

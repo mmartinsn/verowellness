@@ -70,7 +70,7 @@ export const auditarCobro: Auditoria = async ({ conWebflow }) => {
       const productos = catalogoCobro(tabla);
       const rotos = sesiones.flatMap((s) => {
         const problemas = [
-          ...diferenciasDePedido(itemsDeSesion(s), catalogo),
+          ...diferenciasDePedido(itemsDeSesion(s), catalogo, new Date(s.created * 1000)),
           ...[diferenciaDePrecio(s, productos)].filter((d): d is string => !!d),
         ];
         return problemas.length ? [`${s.id}: ${problemas.join(', ')}`] : [];

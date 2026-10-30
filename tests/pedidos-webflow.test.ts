@@ -58,3 +58,29 @@ test('un producto en cantidad que el sitio no ofrece se marca', () => {
     'h-pylori ×2 (el sitio arma ×1)',
   ]);
 });
+
+test('un pedido de Black Friday pasa con su fecha y se marca fuera de noviembre', () => {
+  const items = [
+    { productSlug: '184-igg-food-sensitivity-panel-black-friday', count: 1 },
+    { productSlug: 'layer-session-black-friday', count: 1 },
+    { productSlug: 'cargo-laboratorio', count: 1 },
+  ];
+  assert.deepEqual(diferenciasDePedido(items, catalogo, new Date('2026-11-15T10:00:00Z')), []);
+  assert.deepEqual(diferenciasDePedido(items, catalogo, new Date('2026-12-02T10:00:00Z')), [
+    '184-igg-food-sensitivity-panel-black-friday ×1 (el sitio arma ×0)',
+    'layer-session-black-friday ×1 (el sitio arma ×0)',
+    '184-igg-food-sensitivity-panel ×0 (el sitio arma ×1)',
+    'layer-session ×0 (el sitio arma ×1)',
+  ]);
+});
+
+test('la sesión de Black Friday comprada sola se marca aunque sea noviembre', () => {
+  assert.deepEqual(
+    diferenciasDePedido(
+      [{ productSlug: 'layer-session-black-friday', count: 1 }],
+      catalogo,
+      new Date('2026-11-15T10:00:00Z')
+    ),
+    ['layer-session-black-friday ×1 (el sitio arma ×0)', 'layer-session ×0 (el sitio arma ×1)']
+  );
+});

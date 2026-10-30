@@ -189,3 +189,38 @@ test('a<b sin espacios: inocente donde se escapa, marca donde se pinta como HTML
     [`bloque/${paso.id}.texto: marca «<b, escribe» que asesorias/proceso-pasos no puede mostrar`]
   );
 });
+
+test('un producto de Black Friday con el precio mal se nombra', () => {
+  assert.deepEqual(
+    problemas((t) => {
+      buscar(t, 'producto', '184-igg-food-sensitivity-panel-black-friday').precio = 27500;
+    }),
+    [
+      'producto/184-igg-food-sensitivity-panel-black-friday.precio: debe ser 27520 (20 % menos que 184-igg-food-sensitivity-panel)',
+    ]
+  );
+});
+
+test('la sesión de Black Friday tiene que costar menos que la normal y ser del mismo tipo', () => {
+  assert.deepEqual(
+    problemas((t) => {
+      buscar(t, 'producto', 'layer-session-black-friday').precio = 16100;
+    }),
+    ['producto/layer-session-black-friday.precio: debe ser menor que el de layer-session']
+  );
+  assert.deepEqual(
+    problemas((t) => {
+      buscar(t, 'producto', 'layer-session-black-friday').tipo = 'oferta';
+    }),
+    ['producto/layer-session-black-friday.tipo: debe ser asesoria, como layer-session']
+  );
+});
+
+test('si falta un producto de la campaña, se nombra antes de vender', () => {
+  assert.deepEqual(
+    problemas((t) => {
+      t.producto = t.producto.filter((p) => p.id !== 'layer-session-black-friday');
+    }),
+    ['producto/layer-session.-: BLACKFRIDAY pide «layer-session-black-friday», que no existe']
+  );
+});

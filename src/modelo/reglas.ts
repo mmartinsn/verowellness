@@ -1,3 +1,5 @@
+import { campanas } from '../data/campanas.ts';
+import type { Campana } from '../lib/comercio/reglas.ts';
 import { precioOferta } from '../lib/precio.ts';
 import type { RegistroLibre } from './entidad.ts';
 import { validarSitio } from './reglas-sitio.ts';
@@ -13,7 +15,10 @@ const presentaciones = [
   { entidad: 'guia', tipo: 'guia' },
 ] as const;
 
-export function validarReglas(leer: Lector): Problema[] {
+export function validarReglas(
+  leer: Lector,
+  campanasDelSitio: readonly Campana[] = campanas
+): Problema[] {
   const problemas: Problema[] = [];
   const anota = (entidad: string, id: string, campo: string, mensaje: string) =>
     problemas.push({ entidad, id, campo, mensaje });
@@ -58,6 +63,30 @@ export function validarReglas(leer: Lector): Problema[] {
         `debe ser ${precioOferta(Number(base.precio), descuento)} (${descuento} % menos que ${base.id})`
       );
   }
+
+  for (const campana of campanasDelSitio)
+    for (const cambio of campana.cambios) {
+      const base = productos.get(cambio.de);
+      if (!base) continue;
+      usa(cambio.a);
+      const nuevo = productos.get(cambio.a);
+      const precio = Number(nuevo?.precio);
+      const esperado =
+        cambio.descuento === undefined ? null : precioOferta(Number(base.precio), cambio.descuento);
+      if (!nuevo)
+        anota('producto', base.id, '-', `${campana.codigo} pide «${cambio.a}», que no existe`);
+      else if (nuevo.tipo !== base.tipo)
+        anota('producto', nuevo.id, 'tipo', `debe ser ${base.tipo}, como ${base.id}`);
+      else if (esperado !== null && precio !== esperado)
+        anota(
+          'producto',
+          nuevo.id,
+          'precio',
+          `debe ser ${esperado} (${cambio.descuento} % menos que ${base.id})`
+        );
+      else if (esperado === null && precio >= Number(base.precio))
+        anota('producto', nuevo.id, 'precio', `debe ser menor que el de ${base.id}`);
+    }
 
   for (const p of productos.values()) {
     const veces = usados.get(p.id) ?? 0;

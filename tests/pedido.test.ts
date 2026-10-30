@@ -86,3 +86,18 @@ test('lo que no está en el mapa no viaja', () => {
     []
   );
 });
+
+test('el código de una campaña viaja en la URL del puente y en la de Klarna', () => {
+  const productos = ['184-igg-food-sensitivity-panel'];
+  assert.equal(
+    new URL(urlPedido(comercio, productos, 'BLACKFRIDAY')).searchParams.get('cupon'),
+    'BLACKFRIDAY'
+  );
+  assert.equal(
+    new URL(urlKlarna(comercio, productos, '/checkout/examenes/', 'BLACKFRIDAY')).searchParams.get(
+      'cupon'
+    ),
+    'BLACKFRIDAY'
+  );
+  assert.equal(new URL(urlPedido(comercio, productos)).searchParams.has('cupon'), false);
+});

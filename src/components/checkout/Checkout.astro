@@ -16,7 +16,7 @@ import { zelle } from '../../data/oferta';
 import { desglose, TAX_RATE, usd } from '../../lib/precio';
 import { href } from '../../lib/url';
 import { comercio, legal, marca } from '../../data/site';
-import { mapaProductos, productoGravado } from '../../data/pedido-webflow';
+import { campanasCheckout, mapaProductos, productoGravado } from '../../data/pedido-webflow';
 import { terminos, casillas } from '../../data/terminos';
 import { bloque } from '../../lib/datos/bloques';
 
@@ -183,6 +183,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
   data-solo-usa={soloUsa ? '' : undefined}
   data-extras={extrasDatos ? JSON.stringify(extrasDatos) : undefined}
   data-webflow={webflow ? JSON.stringify(webflow) : undefined}
+  data-campanas={webflow ? JSON.stringify(campanasCheckout) : undefined}
 >
   <main class="checkout-main" id="main">
     <div class="mobile-progress" id="mobile-progress">
@@ -1706,6 +1707,8 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
     limpiarCupon,
   } from '../../lib/comercio/traspaso';
   import { aCentavos, desdeCentavos, impuestoCentavos } from '../../lib/precio';
+  import { campanaActiva } from '../../lib/comercio/reglas';
+  import type { CampanaCheckout } from '../../data/pedido-webflow';
   type Config = {
     cycle_type: string;
     cycle_label: string;
@@ -1723,6 +1726,11 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
     const config: Config = JSON.parse(root.dataset.config ?? '{}');
     const usd = (n: number) => `$${n.toFixed(2)}`;
     const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
+    const campanas: CampanaCheckout[] = JSON.parse(root.dataset.campanas ?? '[]');
+    const esDeCampana = (codigo: string) =>
+      campanas.some((c) => c.codigo === codigo.trim().toUpperCase());
+    // A campaign link can bring the code already applied (?cupon=, the Black Friday page outside the site).
+    let cupon = limpiarCupon(new URLSearchParams(location.search).get('cupon') ?? '');
 
     // Lab tests: the order is named after the test being paid, or counted when there are several.
     const nombrarPedido = (lista: { nombre: string }[]) => {
@@ -1770,6 +1778,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
           li.className = 'item-quitable';
           const t = document.createElement('span');
           t.textContent = `${i.nombre} · ${usd(i.precio)}`;
+          t.dataset.itemTexto = i.id;
           const x = document.createElement('button');
           x.type = 'button';
           x.className = 'item-quitar';
@@ -1832,12 +1841,33 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
     const lineas: Linea[] = [];
     let fee = 0;
     const r2 = (n: number) => Math.round(n * 100) / 100;
+    const vigente = () => (items.length ? campanaActiva(campanas, cupon, new Date()) : null);
     const recalc = () => {
+      const campana = vigente();
+      const precioItem = (i: { id: string; precio: number }) => campana?.examenes[i.id] ?? i.precio;
+      const precioLinea = (l: Linea) => (l.ref ? campana?.lectura[l.ref] : undefined) ?? l.precio;
+      const ahorro = items.reduce((t, i) => t + i.precio - precioItem(i), 0);
+      const visibles = [
+        ...lineas.map((l) => ({ nombre: l.nombre, precio: precioLinea(l) })),
+        ...(campana?.regalo ? [{ nombre: `${campana.regalo} · regalo`, precio: 0 }] : []),
+      ];
       fee = r2((extras?.feePorItem ?? 0) * items.length);
-      config.subtotal = r2(base + lineas.reduce((t, l) => t + l.precio, 0));
-      const gravable = [...items, ...lineas]
+      config.subtotal = r2(base - ahorro + lineas.reduce((t, l) => t + precioLinea(l), 0));
+      const gravable = [
+        ...items.map((i) => ({ gravado: i.gravado, precio: precioItem(i) })),
+        ...lineas.map((l) => ({ gravado: l.gravado, precio: precioLinea(l) })),
+      ]
         .filter((x) => x.gravado)
         .reduce((t, x) => t + x.precio, config.gravado ? base : 0);
+      root.querySelectorAll<HTMLElement>('[data-item-texto]').forEach((el) => {
+        const i = items.find((x) => x.id === el.dataset.itemTexto);
+        if (i) el.textContent = `${i.nombre} · ${usd(precioItem(i))}`;
+      });
+      root.querySelectorAll<HTMLInputElement>('input[name="lectura-opcion"]').forEach((input) => {
+        const o = extras?.lectura?.find((x) => x.id === input.value);
+        const precio = input.closest('label')?.querySelector('.opcion-precio');
+        if (o && precio) precio.textContent = usd(campana?.lectura[o.id] ?? o.precio);
+      });
       config.tax_amount = desdeCentavos(impuestoCentavos(aCentavos(gravable)));
       config.total = r2(config.subtotal + config.tax_amount + fee);
       root
@@ -1856,7 +1886,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
       root.querySelectorAll('[data-fee]').forEach((el) => (el.textContent = usd(fee)));
       root.querySelectorAll('[data-lineas-extra]').forEach((box) =>
         box.replaceChildren(
-          ...lineas.map((l) => {
+          ...visibles.map((l) => {
             const row = document.createElement('div');
             row.className = box.closest('.summary-card')
               ? 'summary-line extra'
@@ -1872,7 +1902,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
       );
       if (state.order) {
         Object.assign(state.order, {
-          extras: lineas.map((l) => ({ id: l.id, price: l.precio })),
+          extras: lineas.map((l) => ({ id: l.id, price: precioLinea(l) })),
           lab_fee: fee,
           subtotal: config.subtotal,
           tax_amount: config.tax_amount,
@@ -2188,15 +2218,18 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
         : {}),
     });
 
-    // Discount code: the site only carries it; Webflow's checkout checks and applies it.
-    let cupon = '';
+    // Discount code: the site carries it to Webflow's checkout, except a campaign's
+    // (src/data/campanas.ts), whose prices the order rule applies itself.
     const cuponForm = document.querySelector<HTMLFormElement>('[data-cupon-form]');
     const mostrarCupon = () => {
       cuponForm?.toggleAttribute('hidden', !!cupon);
       document.querySelector('[data-cupon-puesto]')?.toggleAttribute('hidden', !cupon);
-      document.querySelector('[data-cupon-nota]')?.toggleAttribute('hidden', !cupon);
+      document
+        .querySelector('[data-cupon-nota]')
+        ?.toggleAttribute('hidden', !cupon || esDeCampana(cupon));
       const valor = document.querySelector('[data-cupon-valor]');
       if (valor) valor.textContent = cupon;
+      recalc();
     };
     cuponForm?.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -2209,12 +2242,7 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
       cupon = '';
       mostrarCupon();
     });
-    // A campaign link can bring the code already applied (?cupon=, the Black Friday page outside the site).
-    const cuponEnlace = new URLSearchParams(location.search).get('cupon');
-    if (cuponEnlace) {
-      cupon = limpiarCupon(cuponEnlace);
-      mostrarCupon();
-    }
+    if (cupon) mostrarCupon();
 
     $('btn-pay')?.addEventListener('click', () => {
       const btn = $<HTMLButtonElement>('btn-pay')!;
@@ -2224,11 +2252,13 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
       if (webflow && state.payment_method !== 'zelle') {
         // A code typed but not applied still counts: «Aplicar» is easy to skip.
         const pendiente = cuponForm?.querySelector<HTMLInputElement>('input')?.value ?? '';
+        const codigo = cupon || limpiarCupon(pendiente);
+        const deCampana = esDeCampana(codigo) ? codigo : '';
         const valor = (id: string) =>
           (document.getElementById(id) as HTMLInputElement | null)?.value.trim() ?? '';
         document.cookie = cookieTraspaso(
           {
-            cupon: cupon || limpiarCupon(pendiente),
+            cupon: deCampana ? '' : codigo,
             email: valor('email'),
             nombre: `${valor('nombre')} ${valor('apellido')}`,
             pais: CODIGO_PAIS[valor('pais')],
@@ -2239,8 +2269,8 @@ const webflow = enWebflow ? { pago: comercio.pago, mapa: mapaProductos } : null;
         const productos = productosDe(seleccion(), webflow.mapa);
         window.location.href =
           state.payment_method === 'klarna'
-            ? urlKlarna(comercio, productos, location.pathname)
-            : urlPedido(comercio, productos);
+            ? urlKlarna(comercio, productos, location.pathname, deCampana)
+            : urlPedido(comercio, productos, deCampana);
         return;
       }
 

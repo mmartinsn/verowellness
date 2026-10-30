@@ -1,9 +1,31 @@
 <style>body{margin:0;background:#f8f6f1;color:#302f2a;font-family:'Nunito Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif}[data-vw-estado]{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center}[data-vw-estado] p{font-family:'Cormorant Garamond', 'Times New Roman', serif;font-size:28px;margin:0}[data-vw-estado] a{color:#c28263}.w-commerce-commercecartwrapper{position:absolute;left:-9999px}</style>
 <script>
 (() => {
-const CATALOGO = {"vendibles":["initial-layer-cycle","layer-session","next-layer-cycle","guia-glp1-retatrutida","guia-hormonas-30","hackear-tu-cerebro","recetario-30-desayunos","184-igg-food-gluten-related-disorders-panel","184-igg-food-sensitivity-25-comprehensive-ige-combo-panel","184-igg-food-sensitivity-50-expanded-ige-combo-panel","184-igg-food-sensitivity-panel","198-vegetarian-food-panel-iga-igg-igg4","205-igg-food-sensitivity-25-comprehensive-ige-combo-panel","205-igg-food-sensitivity-50-expanded-ige-combo-panel","240-food-panel-iga-igg-igg4","96-igg-food-gluten-related-disorders-panel","96-igg-food-sensitivity-panel","96-vegetarian-food-panel-iga-igg-igg4","all-tox","candida-albicans-en-sangre","cardiometabolic-profile","celiac-and-gluten-sensitivity-blood-spot","comprehensive-hormone-plus-profile","comprehensive-neurotransmitter-profile","comprehensive-stool-analysis-parasitology","culture-pcr-parasitology-cpp","dna-oxidative-damage","dutch-adrenal-only","dutch-plus-hormonas-sexuales-adrenal","dutch-solo-hormonas","expanded-mold-immunoreactivity-panel","findwhy-weight-control-profile","gi-advanced-profile-includes-zonulin-and-h-pylori","gi-effects-3-days","h-pylori","hepatic-detox-profile","metales-pesados-minerales","microbiology-profile","mold-mycotoxin-building","mycotoxins-panel","organic-acids","sibo-en-aliento-3h","vaginosis-profile","yeast-culture-sensitivities"],"examenes":["184-igg-food-gluten-related-disorders-panel","184-igg-food-sensitivity-25-comprehensive-ige-combo-panel","184-igg-food-sensitivity-50-expanded-ige-combo-panel","184-igg-food-sensitivity-panel","198-vegetarian-food-panel-iga-igg-igg4","205-igg-food-sensitivity-25-comprehensive-ige-combo-panel","205-igg-food-sensitivity-50-expanded-ige-combo-panel","240-food-panel-iga-igg-igg4","96-igg-food-gluten-related-disorders-panel","96-igg-food-sensitivity-panel","96-vegetarian-food-panel-iga-igg-igg4","all-tox","candida-albicans-en-sangre","cardiometabolic-profile","celiac-and-gluten-sensitivity-blood-spot","comprehensive-hormone-plus-profile","comprehensive-neurotransmitter-profile","comprehensive-stool-analysis-parasitology","culture-pcr-parasitology-cpp","dna-oxidative-damage","dutch-adrenal-only","dutch-plus-hormonas-sexuales-adrenal","dutch-solo-hormonas","expanded-mold-immunoreactivity-panel","findwhy-weight-control-profile","gi-advanced-profile-includes-zonulin-and-h-pylori","gi-effects-3-days","h-pylori","hepatic-detox-profile","metales-pesados-minerales","microbiology-profile","mold-mycotoxin-building","mycotoxins-panel","organic-acids","sibo-en-aliento-3h","vaginosis-profile","yeast-culture-sensitivities"],"guias":["guia-glp1-retatrutida","guia-hormonas-30","hackear-tu-cerebro","recetario-30-desayunos"],"cargo":"cargo-laboratorio","ofertas":[{"guia":"recetario-30-desayunos","oferta":"recetario-30-desayunos-oferta"},{"guia":"hackear-tu-cerebro","oferta":"hackear-tu-cerebro-oferta"}]};
+const CATALOGO = {"vendibles":["initial-layer-cycle","layer-session","next-layer-cycle","guia-glp1-retatrutida","guia-hormonas-30","hackear-tu-cerebro","recetario-30-desayunos","184-igg-food-gluten-related-disorders-panel","184-igg-food-sensitivity-25-comprehensive-ige-combo-panel","184-igg-food-sensitivity-50-expanded-ige-combo-panel","184-igg-food-sensitivity-panel","198-vegetarian-food-panel-iga-igg-igg4","205-igg-food-sensitivity-25-comprehensive-ige-combo-panel","205-igg-food-sensitivity-50-expanded-ige-combo-panel","240-food-panel-iga-igg-igg4","96-igg-food-gluten-related-disorders-panel","96-igg-food-sensitivity-panel","96-vegetarian-food-panel-iga-igg-igg4","all-tox","candida-albicans-en-sangre","cardiometabolic-profile","celiac-and-gluten-sensitivity-blood-spot","comprehensive-hormone-plus-profile","comprehensive-neurotransmitter-profile","comprehensive-stool-analysis-parasitology","culture-pcr-parasitology-cpp","dna-oxidative-damage","dutch-adrenal-only","dutch-plus-hormonas-sexuales-adrenal","dutch-solo-hormonas","expanded-mold-immunoreactivity-panel","findwhy-weight-control-profile","gi-advanced-profile-includes-zonulin-and-h-pylori","gi-effects-3-days","h-pylori","hepatic-detox-profile","metales-pesados-minerales","microbiology-profile","mold-mycotoxin-building","mycotoxins-panel","organic-acids","sibo-en-aliento-3h","vaginosis-profile","yeast-culture-sensitivities"],"examenes":["184-igg-food-gluten-related-disorders-panel","184-igg-food-sensitivity-25-comprehensive-ige-combo-panel","184-igg-food-sensitivity-50-expanded-ige-combo-panel","184-igg-food-sensitivity-panel","184-igg-food-sensitivity-panel-black-friday","198-vegetarian-food-panel-iga-igg-igg4","205-igg-food-sensitivity-25-comprehensive-ige-combo-panel","205-igg-food-sensitivity-50-expanded-ige-combo-panel","240-food-panel-iga-igg-igg4","96-igg-food-gluten-related-disorders-panel","96-igg-food-sensitivity-panel","96-vegetarian-food-panel-iga-igg-igg4","all-tox","candida-albicans-en-sangre","cardiometabolic-profile","celiac-and-gluten-sensitivity-blood-spot","comprehensive-hormone-plus-profile","comprehensive-neurotransmitter-profile","comprehensive-stool-analysis-parasitology","culture-pcr-parasitology-cpp","dna-oxidative-damage","dutch-adrenal-only","dutch-plus-hormonas-sexuales-adrenal","dutch-plus-hormonas-sexuales-adrenal-black-friday","dutch-solo-hormonas","expanded-mold-immunoreactivity-panel","findwhy-weight-control-profile","gi-advanced-profile-includes-zonulin-and-h-pylori","gi-advanced-profile-includes-zonulin-and-h-pylori-black-friday","gi-effects-3-days","h-pylori","hepatic-detox-profile","metales-pesados-minerales","microbiology-profile","mold-mycotoxin-building","mycotoxins-panel","organic-acids","sibo-en-aliento-3h","vaginosis-profile","yeast-culture-sensitivities"],"guias":["guia-glp1-retatrutida","guia-hormonas-30","hackear-tu-cerebro","recetario-30-desayunos"],"cargo":"cargo-laboratorio","ofertas":[{"guia":"recetario-30-desayunos","oferta":"recetario-30-desayunos-oferta"},{"guia":"hackear-tu-cerebro","oferta":"hackear-tu-cerebro-oferta"}],"campanas":[{"codigo":"BLACKFRIDAY","inicio":"2026-11-01T00:00:00-04:00","fin":"2026-12-01T00:00:00-05:00","cambios":[{"de":"184-igg-food-sensitivity-panel","a":"184-igg-food-sensitivity-panel-black-friday","descuento":20},{"de":"dutch-plus-hormonas-sexuales-adrenal","a":"dutch-plus-hormonas-sexuales-adrenal-black-friday","descuento":20},{"de":"gi-advanced-profile-includes-zonulin-and-h-pylori","a":"gi-advanced-profile-includes-zonulin-and-h-pylori-black-friday","descuento":20},{"de":"layer-session","a":"layer-session-black-friday"}],"regalo":"recetario-30-desayunos"}]};
 const VOLVER = "https://veronicawellness.com/";
 const TEXTOS = {"preparando":"Preparando tu pedido…","vacio":"No encontramos productos en tu pedido.","error":"No pudimos preparar tu pedido.","reintentar":"Intentar de nuevo","volver":"Volver a Veronica Wellness"};
+function campanaActiva                                                      (
+  campanas                          ,
+  cupon        ,
+  ahora      
+)           {
+  const codigo = cupon.trim().toUpperCase();
+  const t = ahora.getTime();
+  return (
+    campanas?.find(
+      (c) => c.codigo === codigo && Date.parse(c.inicio) <= t && t < Date.parse(c.fin)
+    ) ?? null
+  );
+}
+
+const productosDeCampana = (campanas                                )           =>
+  (campanas ?? []).flatMap((c) => c.cambios.map((cambio) => cambio.a));
+
+                        
+                   
+                   
+ 
+
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function leerItems(texto        )          {
@@ -26,7 +48,12 @@ function ofertaDisponible(productos          , catalogo          )              
   return catalogo.ofertas.find((o) => !productos.includes(o.guia)) ?? null;
 }
 
-function normalizarPedido(lineas         , catalogo          )          {
+function normalizarPedido(
+  lineas         ,
+  catalogo          ,
+  cupon = '',
+  ahora = new Date()
+)          {
   const vistos = new Set        ();
   const base = lineas.filter((l) => {
     const valido = catalogo.vendibles.includes(l.producto) && !vistos.has(l.producto);
@@ -40,7 +67,10 @@ function normalizarPedido(lineas         , catalogo          )          {
   if (oferta && pedidas.has(oferta.oferta)) salida.push({ producto: oferta.oferta, cantidad: 1 });
   const examenes = productos.filter((p) => catalogo.examenes.includes(p)).length;
   if (examenes > 0) salida.push({ producto: catalogo.cargo, cantidad: examenes });
-  return salida;
+  const campana = examenes > 0 ? campanaActiva(catalogo.campanas, cupon, ahora) : null;
+  if (!campana) return salida;
+  const cambios = new Map(campana.cambios.map((c) => [c.de, c.a]));
+  return salida.map((l) => ({ ...l, producto: cambios.get(l.producto) ?? l.producto }));
 }
 const INTENTOS = 2;
 
@@ -204,7 +234,12 @@ async function agregar(linea       ) {
 function principal() {
   const parametros = new URLSearchParams(location.search);
   const intento = Math.max(1, Math.trunc(Number(parametros.get('intento'))) || 1);
-  const lineas = normalizarPedido(leerItems(parametros.get('items') ?? ''), CATALOGO);
+  const lineas = normalizarPedido(
+    leerItems(parametros.get('items') ?? ''),
+    CATALOGO,
+    parametros.get('cupon') ?? '',
+    new Date()
+  );
   if (lineas.length === 0) {
     estado(TEXTOS.vacio, [{ texto: TEXTOS.volver, href: VOLVER }]);
     return;

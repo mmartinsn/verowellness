@@ -177,7 +177,12 @@ async function agregar(linea: Linea) {
 function principal() {
   const parametros = new URLSearchParams(location.search);
   const intento = Math.max(1, Math.trunc(Number(parametros.get('intento'))) || 1);
-  const lineas = normalizarPedido(leerItems(parametros.get('items') ?? ''), CATALOGO);
+  const lineas = normalizarPedido(
+    leerItems(parametros.get('items') ?? ''),
+    CATALOGO,
+    parametros.get('cupon') ?? '',
+    new Date()
+  );
   if (lineas.length === 0) {
     estado(TEXTOS.vacio, [{ texto: TEXTOS.volver, href: VOLVER }]);
     return;

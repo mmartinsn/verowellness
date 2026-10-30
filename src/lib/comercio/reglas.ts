@@ -3,13 +3,45 @@ export interface OfertaGuia {
   oferta: string;
 }
 
+export interface CambioCampana {
+  de: string;
+  a: string;
+  descuento?: number;
+}
+
+export interface Campana {
+  codigo: string;
+  inicio: string;
+  fin: string;
+  cambios: CambioCampana[];
+  regalo?: string;
+}
+
 export interface Catalogo {
   vendibles: string[];
   examenes: string[];
   guias: string[];
   cargo: string;
   ofertas: OfertaGuia[];
+  campanas?: Campana[];
 }
+
+export function campanaActiva<T extends Pick<Campana, 'codigo' | 'inicio' | 'fin'>>(
+  campanas: readonly T[] | undefined,
+  cupon: string,
+  ahora: Date
+): T | null {
+  const codigo = cupon.trim().toUpperCase();
+  const t = ahora.getTime();
+  return (
+    campanas?.find(
+      (c) => c.codigo === codigo && Date.parse(c.inicio) <= t && t < Date.parse(c.fin)
+    ) ?? null
+  );
+}
+
+export const productosDeCampana = (campanas: readonly Campana[] | undefined): string[] =>
+  (campanas ?? []).flatMap((c) => c.cambios.map((cambio) => cambio.a));
 
 export interface Linea {
   producto: string;
@@ -38,7 +70,12 @@ export function ofertaDisponible(productos: string[], catalogo: Catalogo): Ofert
   return catalogo.ofertas.find((o) => !productos.includes(o.guia)) ?? null;
 }
 
-export function normalizarPedido(lineas: Linea[], catalogo: Catalogo): Linea[] {
+export function normalizarPedido(
+  lineas: Linea[],
+  catalogo: Catalogo,
+  cupon = '',
+  ahora = new Date()
+): Linea[] {
   const vistos = new Set<string>();
   const base = lineas.filter((l) => {
     const valido = catalogo.vendibles.includes(l.producto) && !vistos.has(l.producto);
@@ -52,5 +89,8 @@ export function normalizarPedido(lineas: Linea[], catalogo: Catalogo): Linea[] {
   if (oferta && pedidas.has(oferta.oferta)) salida.push({ producto: oferta.oferta, cantidad: 1 });
   const examenes = productos.filter((p) => catalogo.examenes.includes(p)).length;
   if (examenes > 0) salida.push({ producto: catalogo.cargo, cantidad: examenes });
-  return salida;
+  const campana = examenes > 0 ? campanaActiva(catalogo.campanas, cupon, ahora) : null;
+  if (!campana) return salida;
+  const cambios = new Map(campana.cambios.map((c) => [c.de, c.a]));
+  return salida.map((l) => ({ ...l, producto: cambios.get(l.producto) ?? l.producto }));
 }

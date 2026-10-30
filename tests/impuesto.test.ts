@@ -2,6 +2,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { conImpuesto, desglose } from '../src/lib/precio.ts';
 import { impuestoDe } from '../src/lib/comercio/cobro.ts';
+import { productosDeCampana } from '../src/lib/comercio/reglas.ts';
+import { campanas } from '../src/data/campanas.ts';
 import { catalogoCobro } from '../scripts/vw/comercio/cobro.ts';
 import { leerSnapshot } from '../scripts/vw/comun/snapshot.ts';
 
@@ -20,8 +22,9 @@ test('ningún tipo lleva impuesto aparte: el 7 % va dentro del precio', () => {
 });
 
 test('exámenes y asesorías cuestan dólares enteros y no le piden impuesto a Webflow', () => {
+  const deCampana = new Set(productosDeCampana(campanas));
   for (const p of [...deTipo('examen'), ...deTipo('asesoria')]) {
-    assert.equal((p.precio as number) % 100, 0, `${p.id}: ${p.precio}`);
+    if (!deCampana.has(p.id)) assert.equal((p.precio as number) % 100, 0, `${p.id}: ${p.precio}`);
     assert.equal(p.impuesto, 'standard-exempt', p.id);
   }
   assert.equal(productos['initial-layer-cycle'].precio, 28800);

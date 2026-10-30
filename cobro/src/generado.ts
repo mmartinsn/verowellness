@@ -1,4 +1,4 @@
-export const VERSION = 'b3f83f7e6ea84d2f';
+export const VERSION = '971abf37db56ed1c';
 
 export const VOLVER = "https://veronicawellness.com/";
 
@@ -64,6 +64,7 @@ export const CATALOGO = {
     "184-igg-food-sensitivity-25-comprehensive-ige-combo-panel",
     "184-igg-food-sensitivity-50-expanded-ige-combo-panel",
     "184-igg-food-sensitivity-panel",
+    "184-igg-food-sensitivity-panel-black-friday",
     "198-vegetarian-food-panel-iga-igg-igg4",
     "205-igg-food-sensitivity-25-comprehensive-ige-combo-panel",
     "205-igg-food-sensitivity-50-expanded-ige-combo-panel",
@@ -82,10 +83,12 @@ export const CATALOGO = {
     "dna-oxidative-damage",
     "dutch-adrenal-only",
     "dutch-plus-hormonas-sexuales-adrenal",
+    "dutch-plus-hormonas-sexuales-adrenal-black-friday",
     "dutch-solo-hormonas",
     "expanded-mold-immunoreactivity-panel",
     "findwhy-weight-control-profile",
     "gi-advanced-profile-includes-zonulin-and-h-pylori",
+    "gi-advanced-profile-includes-zonulin-and-h-pylori-black-friday",
     "gi-effects-3-days",
     "h-pylori",
     "hepatic-detox-profile",
@@ -113,6 +116,35 @@ export const CATALOGO = {
     {
       "guia": "hackear-tu-cerebro",
       "oferta": "hackear-tu-cerebro-oferta"
+    }
+  ],
+  "campanas": [
+    {
+      "codigo": "BLACKFRIDAY",
+      "inicio": "2026-11-01T00:00:00-04:00",
+      "fin": "2026-12-01T00:00:00-05:00",
+      "cambios": [
+        {
+          "de": "184-igg-food-sensitivity-panel",
+          "a": "184-igg-food-sensitivity-panel-black-friday",
+          "descuento": 20
+        },
+        {
+          "de": "dutch-plus-hormonas-sexuales-adrenal",
+          "a": "dutch-plus-hormonas-sexuales-adrenal-black-friday",
+          "descuento": 20
+        },
+        {
+          "de": "gi-advanced-profile-includes-zonulin-and-h-pylori",
+          "a": "gi-advanced-profile-includes-zonulin-and-h-pylori-black-friday",
+          "descuento": 20
+        },
+        {
+          "de": "layer-session",
+          "a": "layer-session-black-friday"
+        }
+      ],
+      "regalo": "recetario-30-desayunos"
     }
   ]
 };
@@ -144,6 +176,13 @@ export const PRODUCTOS: CatalogoCobro = {
     "tipo": "examen",
     "nombre": "184 IgG Food Sensitivity Panel",
     "precio": 34400,
+    "enviable": true
+  },
+  "184-igg-food-sensitivity-panel-black-friday": {
+    "id": "184-igg-food-sensitivity-panel",
+    "tipo": "examen",
+    "nombre": "184 IgG Food Sensitivity Panel (Black Friday −20%)",
+    "precio": 27520,
     "enviable": true
   },
   "198-vegetarian-food-panel-iga-igg-igg4": {
@@ -279,6 +318,13 @@ export const PRODUCTOS: CatalogoCobro = {
     "precio": 57800,
     "enviable": true
   },
+  "dutch-plus-hormonas-sexuales-adrenal-black-friday": {
+    "id": "dutch-plus-hormonas-sexuales-adrenal",
+    "tipo": "examen",
+    "nombre": "DUTCH Plus (hormonas sexuales, adrenal) (Black Friday −20%)",
+    "precio": 46240,
+    "enviable": true
+  },
   "dutch-solo-hormonas": {
     "id": "dutch-solo-hormonas",
     "tipo": "examen",
@@ -305,6 +351,13 @@ export const PRODUCTOS: CatalogoCobro = {
     "tipo": "examen",
     "nombre": "GI-Advanced Profile (includes Zonulin and H. pylori)",
     "precio": 56200,
+    "enviable": true
+  },
+  "gi-advanced-profile-includes-zonulin-and-h-pylori-black-friday": {
+    "id": "gi-advanced-profile-includes-zonulin-and-h-pylori",
+    "tipo": "examen",
+    "nombre": "GI-Advanced Profile (includes Zonulin and H. pylori) (Black Friday −20%)",
+    "precio": 44960,
     "enviable": true
   },
   "gi-effects-3-days": {
@@ -380,6 +433,13 @@ export const PRODUCTOS: CatalogoCobro = {
     "tipo": "asesoria",
     "nombre": "Layer Session",
     "precio": 16100,
+    "enviable": false
+  },
+  "layer-session-black-friday": {
+    "id": "layer-session",
+    "tipo": "asesoria",
+    "nombre": "Layer Session (Black Friday)",
+    "precio": 15000,
     "enviable": false
   },
   "metales-pesados-minerales": {
@@ -504,6 +564,8 @@ export function usd(n: number): string {
 export const precioOferta = (centavos: number, descuento: number): number =>
   Math.round((centavos * (100 - descuento)) / 100);
 
+export const DESCUENTO_BLACK_FRIDAY = 20;
+
 export function desdeCentavos(centavos: number): number {
   return centavos / 100;
 }
@@ -517,13 +579,45 @@ export interface OfertaGuia {
   oferta: string;
 }
 
+export interface CambioCampana {
+  de: string;
+  a: string;
+  descuento?: number;
+}
+
+export interface Campana {
+  codigo: string;
+  inicio: string;
+  fin: string;
+  cambios: CambioCampana[];
+  regalo?: string;
+}
+
 export interface Catalogo {
   vendibles: string[];
   examenes: string[];
   guias: string[];
   cargo: string;
   ofertas: OfertaGuia[];
+  campanas?: Campana[];
 }
+
+export function campanaActiva<T extends Pick<Campana, 'codigo' | 'inicio' | 'fin'>>(
+  campanas: readonly T[] | undefined,
+  cupon: string,
+  ahora: Date
+): T | null {
+  const codigo = cupon.trim().toUpperCase();
+  const t = ahora.getTime();
+  return (
+    campanas?.find(
+      (c) => c.codigo === codigo && Date.parse(c.inicio) <= t && t < Date.parse(c.fin)
+    ) ?? null
+  );
+}
+
+export const productosDeCampana = (campanas: readonly Campana[] | undefined): string[] =>
+  (campanas ?? []).flatMap((c) => c.cambios.map((cambio) => cambio.a));
 
 export interface Linea {
   producto: string;
@@ -552,7 +646,12 @@ export function ofertaDisponible(productos: string[], catalogo: Catalogo): Ofert
   return catalogo.ofertas.find((o) => !productos.includes(o.guia)) ?? null;
 }
 
-export function normalizarPedido(lineas: Linea[], catalogo: Catalogo): Linea[] {
+export function normalizarPedido(
+  lineas: Linea[],
+  catalogo: Catalogo,
+  cupon = '',
+  ahora = new Date()
+): Linea[] {
   const vistos = new Set<string>();
   const base = lineas.filter((l) => {
     const valido = catalogo.vendibles.includes(l.producto) && !vistos.has(l.producto);
@@ -566,7 +665,10 @@ export function normalizarPedido(lineas: Linea[], catalogo: Catalogo): Linea[] {
   if (oferta && pedidas.has(oferta.oferta)) salida.push({ producto: oferta.oferta, cantidad: 1 });
   const examenes = productos.filter((p) => catalogo.examenes.includes(p)).length;
   if (examenes > 0) salida.push({ producto: catalogo.cargo, cantidad: examenes });
-  return salida;
+  const campana = examenes > 0 ? campanaActiva(catalogo.campanas, cupon, ahora) : null;
+  if (!campana) return salida;
+  const cambios = new Map(campana.cambios.map((c) => [c.de, c.a]));
+  return salida.map((l) => ({ ...l, producto: cambios.get(l.producto) ?? l.producto }));
 }
 
 export interface ProductoGracias {
@@ -720,6 +822,7 @@ export interface OpcionesCobro {
   volver: string;
   cancelar: string;
   email?: string;
+  cupon?: string;
 }
 
 export const NOMBRE_IMPUESTO = `Impuesto (${Math.round(TAX_RATE * 100)} %)`;
@@ -780,5 +883,7 @@ export function sesionKlarna(
   if (productos.some((p) => p.enviable))
     sesion.set('shipping_address_collection[allowed_countries][0]', 'US');
   if (opciones.email) sesion.set('customer_email', opciones.email);
+  const cupon = limpiarCupon(opciones.cupon ?? '');
+  if (cupon) sesion.set('metadata[cupon]', cupon);
   return sesion;
 }

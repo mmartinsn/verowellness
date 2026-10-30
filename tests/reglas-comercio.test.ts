@@ -63,3 +63,61 @@ test('con las dos guías ofertables no hay oferta', () => {
 test('productos desconocidos o repetidos se descartan', () => {
   assert.equal(pedido('ex-1,ex-1,no-existe'), 'ex-1,cargo-laboratorio');
 });
+
+const conCampana: Catalogo = {
+  ...catalogo,
+  campanas: [
+    {
+      codigo: 'BLACKFRIDAY',
+      inicio: '2026-11-01T00:00:00-04:00',
+      fin: '2026-12-01T00:00:00-05:00',
+      cambios: [
+        { de: 'ex-1', a: 'ex-1-bf', descuento: 20 },
+        { de: 'layer-session', a: 'layer-session-bf' },
+      ],
+    },
+  ],
+};
+const noviembre = new Date('2026-11-02T12:00:00-05:00');
+const enCampana = (texto: string, cupon = 'BLACKFRIDAY', ahora = noviembre) =>
+  escribirItems(normalizarPedido(leerItems(texto), conCampana, cupon, ahora));
+
+test('con el código y un examen, la campaña cambia sus productos y el cargo sigue igual', () => {
+  assert.equal(
+    enCampana('ex-1,ex-2,layer-session'),
+    'ex-1-bf,ex-2,layer-session-bf,cargo-laboratorio:2'
+  );
+});
+
+test('el código vale escrito en minúsculas o con espacios', () => {
+  assert.equal(enCampana('ex-1', ' blackFriday '), 'ex-1-bf,cargo-laboratorio');
+});
+
+test('vale del 1 de noviembre a las 00:00 al 30 de noviembre a las 23:59, hora del Este', () => {
+  assert.equal(
+    enCampana('ex-1', 'BLACKFRIDAY', new Date('2026-11-01T00:00:00-04:00')),
+    'ex-1-bf,cargo-laboratorio'
+  );
+  assert.equal(
+    enCampana('ex-1', 'BLACKFRIDAY', new Date('2026-11-30T23:59:59-05:00')),
+    'ex-1-bf,cargo-laboratorio'
+  );
+  assert.equal(
+    enCampana('ex-1', 'BLACKFRIDAY', new Date('2026-10-31T23:59:59-04:00')),
+    'ex-1,cargo-laboratorio'
+  );
+  assert.equal(
+    enCampana('ex-1', 'BLACKFRIDAY', new Date('2026-12-01T00:00:00-05:00')),
+    'ex-1,cargo-laboratorio'
+  );
+});
+
+test('sin el código o sin un examen, nada cambia', () => {
+  assert.equal(enCampana('ex-1,layer-session', 'OTRO'), 'ex-1,layer-session,cargo-laboratorio');
+  assert.equal(enCampana('ex-1', ''), 'ex-1,cargo-laboratorio');
+  assert.equal(enCampana('layer-session'), 'layer-session');
+});
+
+test('un producto de la campaña pedido directo no se vende', () => {
+  assert.equal(enCampana('ex-1-bf,layer-session-bf'), '');
+});

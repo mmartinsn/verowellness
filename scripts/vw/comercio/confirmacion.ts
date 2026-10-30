@@ -1,4 +1,6 @@
 import path from 'node:path';
+import { campanas } from '../../../src/data/campanas.ts';
+import type { Campana } from '../../../src/lib/comercio/reglas.ts';
 import {
   normalizarNombre,
   type CatalogoGracias,
@@ -12,16 +14,20 @@ export const ARCHIVO_CONFIRMACION = path.resolve('webflow', 'confirmacion.html')
 
 export const PAGINA_CONFIRMACION = 'order-confirmation';
 
-export function productoGracias(tabla: Tabla): (p: RegistroLibre) => ProductoGracias {
+export function productoGracias(
+  tabla: Tabla,
+  campanasDelSitio: Campana[] = campanas
+): (p: RegistroLibre) => ProductoGracias {
   const guiaDe = new Map<string, string>(
     tabla.guia.flatMap((g) => [
       [g.producto as string, g.id],
       ...(g.oferta ? [[g.oferta as string, g.id] as [string, string]] : []),
     ])
   );
+  const baseDe = new Map(campanasDelSitio.flatMap((c) => c.cambios.map((x) => [x.a, x.de])));
   return (p) => {
     const guia = guiaDe.get(p.id);
-    return { id: p.id, tipo: p.tipo as string, ...(guia ? { guia } : {}) };
+    return { id: baseDe.get(p.id) ?? p.id, tipo: p.tipo as string, ...(guia ? { guia } : {}) };
   };
 }
 

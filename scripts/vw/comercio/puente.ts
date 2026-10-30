@@ -1,7 +1,12 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { envolver, javascript } from './inyectable.ts';
-import type { Catalogo } from '../../../src/lib/comercio/reglas.ts';
+import { campanas } from '../../../src/data/campanas.ts';
+import {
+  productosDeCampana,
+  type Campana,
+  type Catalogo,
+} from '../../../src/lib/comercio/reglas.ts';
 import type { Tabla } from '../comun/snapshot.ts';
 import { URL_PUBLICA, WEBFLOW_IO } from '../../../src/lib/despliegue.ts';
 
@@ -27,17 +32,18 @@ const TOKENS = [
   'font-sans',
 ] as const;
 
-export function catalogoDe(tabla: Tabla): Catalogo {
+export function catalogoDe(tabla: Tabla, campanasDelSitio: Campana[] = campanas): Catalogo {
   const de = (tipo: string) => tabla.producto.filter((p) => p.tipo === tipo).map((p) => p.id);
   const ajustes = tabla.ajustes[0];
   const guias = new Map(tabla.guia.map((g) => [g.id, g]));
+  const deCampana = new Set(productosDeCampana(campanasDelSitio));
   return {
     // A guide marked «Próximamente» is not sold until it has its PDF.
     vendibles: [
       ...de('asesoria'),
       ...de('guia').filter((id) => !tabla.guia.some((g) => g.producto === id && g.proximamente)),
       ...de('examen'),
-    ],
+    ].filter((id) => !deCampana.has(id)),
     examenes: de('examen'),
     guias: de('guia'),
     cargo: ajustes.cargoLaboratorio as string,
@@ -45,6 +51,7 @@ export function catalogoDe(tabla: Tabla): Catalogo {
       guia: g,
       oferta: guias.get(g)?.oferta as string,
     })),
+    campanas: campanasDelSitio,
   };
 }
 

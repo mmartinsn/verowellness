@@ -176,3 +176,69 @@ test('el módulo generado es estable y hace lo mismo que el código del repo', a
   assert.equal(m.VOLVER, opciones.volver);
   assert.equal(m.COOKIE_TRASPASO, 'vw_caja');
 });
+
+const noviembre = new Date('2026-11-02T12:00:00-05:00');
+const sesionCampana = (items: string, ahora: Date) =>
+  sesionKlarna(normalizarPedido(leerItems(items), catalogo, 'BLACKFRIDAY', ahora), productos, {
+    ...opciones,
+    cupon: 'BLACKFRIDAY',
+  });
+
+test('Black Friday en Klarna: el examen a −20 %, la sesión a 150 y el código en la sesión', () => {
+  const s = sesionCampana('184-igg-food-sensitivity-panel,layer-session', noviembre)!;
+  assert.deepEqual(
+    lineas(s).map((l) => [l.producto, l.cantidad, l.centavos]),
+    [
+      ['184-igg-food-sensitivity-panel-black-friday', 1, 27520],
+      ['layer-session-black-friday', 1, 15000],
+      ['cargo-laboratorio', 1, 2500],
+    ]
+  );
+  assert.equal(s.get('metadata[cupon]'), 'BLACKFRIDAY');
+  assert.equal(s.get('success_url'), 'https://veronicawellness.com/gracias/examenes/?lectura=1');
+});
+
+test('Black Friday: los tres exámenes de la campaña bajan un 20 % y los demás no cambian', () => {
+  const s = sesionCampana(
+    'dutch-plus-hormonas-sexuales-adrenal,gi-advanced-profile-includes-zonulin-and-h-pylori,h-pylori',
+    noviembre
+  )!;
+  assert.deepEqual(
+    lineas(s).map((l) => [l.producto, l.centavos]),
+    [
+      ['dutch-plus-hormonas-sexuales-adrenal-black-friday', 46240],
+      ['gi-advanced-profile-includes-zonulin-and-h-pylori-black-friday', 44960],
+      ['h-pylori', productos['h-pylori'].precio],
+      ['cargo-laboratorio', 2500],
+    ]
+  );
+});
+
+test('antes de noviembre el mismo enlace cobra el precio normal', () => {
+  const s = sesionCampana(
+    '184-igg-food-sensitivity-panel,layer-session',
+    new Date('2026-10-31T23:59:00-04:00')
+  )!;
+  assert.deepEqual(
+    lineas(s).map((l) => l.centavos),
+    [34400, 16100, 2500]
+  );
+});
+
+test('un producto de Black Friday no se compra directo, ni en noviembre', () => {
+  assert.equal(catalogo.vendibles.includes('layer-session-black-friday'), false);
+  assert.equal(sesionCampana('layer-session-black-friday', noviembre), null);
+});
+
+test('el módulo generado aplica Black Friday igual que el código del repo', async () => {
+  const archivo = path.join(mkdtempSync(path.join(tmpdir(), 'vw-cobro-')), 'generado.ts');
+  writeFileSync(archivo, generarCobro(tabla, opciones.volver));
+  const m = await import(pathToFileURL(archivo).href);
+  const items = '184-igg-food-sensitivity-panel,layer-session';
+  const desdeGenerado = m.sesionKlarna(
+    m.normalizarPedido(m.leerItems(items), m.CATALOGO, 'BLACKFRIDAY', noviembre),
+    m.PRODUCTOS,
+    { ...opciones, cupon: 'BLACKFRIDAY' }
+  );
+  assert.equal(desdeGenerado.toString(), sesionCampana(items, noviembre)!.toString());
+});

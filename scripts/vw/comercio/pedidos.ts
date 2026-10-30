@@ -5,13 +5,24 @@ export interface ItemPedido {
   count: number;
 }
 
-export function diferenciasDePedido(items: ItemPedido[], catalogo: Catalogo): string[] {
+export function diferenciasDePedido(
+  items: ItemPedido[],
+  catalogo: Catalogo,
+  fecha = new Date()
+): string[] {
   const reales = new Map<string, number>();
   for (const i of items) reales.set(i.productSlug, (reales.get(i.productSlug) ?? 0) + i.count);
+  const campana = catalogo.campanas?.find((c) => c.cambios.some((x) => reales.has(x.a)));
+  const baseDe = new Map(campana?.cambios.map((x) => [x.a, x.de]) ?? []);
   const esperados = new Map(
     normalizarPedido(
-      [...reales.keys()].map((producto) => ({ producto, cantidad: 1 })),
-      catalogo
+      [...reales.keys()].map((producto) => ({
+        producto: baseDe.get(producto) ?? producto,
+        cantidad: 1,
+      })),
+      catalogo,
+      campana?.codigo ?? '',
+      fecha
     ).map((l) => [l.producto, l.cantidad])
   );
   return [...new Set([...reales.keys(), ...esperados.keys()])]

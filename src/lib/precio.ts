@@ -39,6 +39,8 @@ export function usd(n: number): string {
 export const precioOferta = (centavos: number, descuento: number): number =>
   Math.round((centavos * (100 - descuento)) / 100);
 
+export const DESCUENTO_BLACK_FRIDAY = 20;
+
 export function desdeCentavos(centavos: number): number {
   return centavos / 100;
 }

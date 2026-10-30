@@ -1,6 +1,7 @@
 import { conImpuesto, impuestoCentavos, TAX_RATE } from '../precio.ts';
 import { destinoDeProductos, type ProductoGracias } from './confirmacion.ts';
 import { escribirItems, type Linea } from './reglas.ts';
+import { limpiarCupon } from './traspaso.ts';
 
 export interface ProductoCobro extends ProductoGracias {
   nombre: string;
@@ -14,6 +15,7 @@ export interface OpcionesCobro {
   volver: string;
   cancelar: string;
   email?: string;
+  cupon?: string;
 }
 
 export const NOMBRE_IMPUESTO = `Impuesto (${Math.round(TAX_RATE * 100)} %)`;
@@ -74,5 +76,7 @@ export function sesionKlarna(
   if (productos.some((p) => p.enviable))
     sesion.set('shipping_address_collection[allowed_countries][0]', 'US');
   if (opciones.email) sesion.set('customer_email', opciones.email);
+  const cupon = limpiarCupon(opciones.cupon ?? '');
+  if (cupon) sesion.set('metadata[cupon]', cupon);
   return sesion;
 }

@@ -12,6 +12,8 @@ export interface Caso {
   carritoPrevio?: string;
   perderAddToCart?: boolean;
   sinCampoCantidad?: boolean;
+  cupon?: string;
+  ahora?: string;
 }
 
 export interface Resultado {
@@ -57,6 +59,12 @@ export const CASOS: Caso[] = [
     items: 'h-pylori,organic-acids,cardiometabolic-profile',
     sinCampoCantidad: true,
   },
+  {
+    nombre: 'Black Friday (2 de noviembre)',
+    items: '184-igg-food-sensitivity-panel,layer-session',
+    cupon: 'BLACKFRIDAY',
+    ahora: '2026-11-02T12:00:00-05:00',
+  },
 ];
 
 const CHROME = [
@@ -71,9 +79,14 @@ const FIN_PUENTE = /\}\)\(\);\r?\n<\/script>/g;
 
 const dinero = (centavos: number) => `$ ${(centavos / 100).toFixed(2)} USD`;
 
-export function esperado(tabla: Tabla, items: string) {
+export function esperado(tabla: Tabla, items: string, cupon = '', ahora?: string) {
   const precios = new Map(tabla.producto.map((p) => [p.id, p]));
-  const lineas = normalizarPedido(leerItems(items), catalogoDe(tabla));
+  const lineas = normalizarPedido(
+    leerItems(items),
+    catalogoDe(tabla),
+    cupon,
+    ahora ? new Date(ahora) : new Date()
+  );
   const subtotal = lineas.reduce(
     (n, l) => n + Number(precios.get(l.producto)!.precio) * l.cantidad,
     0
@@ -159,6 +172,13 @@ async function interceptar(pagina: Page, caso: Caso, local: string | undefined) 
 }
 
 async function preparar(pagina: Page, caso: Caso, local: string | undefined) {
+  if (caso.ahora)
+    await pagina.evaluateOnNewDocument((iso: string) => {
+      const ahora = Date.parse(iso);
+      globalThis.Date = new Proxy(Date, {
+        construct: (real, args) => Reflect.construct(real, args.length ? args : [ahora]),
+      });
+    }, caso.ahora);
   if (caso.sinCampoCantidad)
     await pagina.evaluateOnNewDocument(() => {
       if (!location.pathname.startsWith('/product/')) return;
@@ -169,8 +189,9 @@ async function preparar(pagina: Page, caso: Caso, local: string | undefined) {
   return interceptar(pagina, caso, local);
 }
 
-async function pedir(pagina: Page, base: string, items: string) {
-  await pagina.goto(`${base}/pedido?items=${encodeURIComponent(items)}`, {
+async function pedir(pagina: Page, base: string, items: string, cupon = '') {
+  const codigo = cupon ? `&cupon=${encodeURIComponent(cupon)}` : '';
+  await pagina.goto(`${base}/pedido?items=${encodeURIComponent(items)}${codigo}`, {
     waitUntil: 'domcontentloaded',
   });
   await pagina.waitForFunction(
@@ -190,7 +211,7 @@ async function correr(navegador: Browser, base: string, caso: Caso, local: strin
     if (caso.carritoPrevio) await pedir(pagina, base, caso.carritoPrevio);
     if (caso.redLenta)
       await pagina.emulateNetworkConditions({ download: 400_000, upload: 200_000, latency: 400 });
-    await pedir(pagina, base, caso.items);
+    await pedir(pagina, base, caso.items, caso.cupon);
     if (local && (inyeccion.veces === 0 || inyeccion.fallas.length))
       throw new Error(
         `el puente local no se inyectó: ${inyeccion.fallas[0] ?? 'ninguna carga de «Pedido» interceptada'}`
@@ -243,7 +264,7 @@ export async function probarPuente(
   try {
     for (let ronda = 1; ronda <= rondas; ronda++)
       for (const caso of casos) {
-        const e = esperado(tabla, caso.items);
+        const e = esperado(tabla, caso.items, caso.cupon, caso.ahora);
         try {
           const real = await correr(navegador, base, caso, local);
           const ok =

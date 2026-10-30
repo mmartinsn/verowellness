@@ -35,18 +35,24 @@ export function productosDe(seleccion: Seleccion, mapa: MapaProductos): string[]
 
 export const RUTA_COBRO = '/cobro';
 
-function urlConItems(ruta: string, comercio: Comercio, productos: string[]): URL {
+function urlConItems(ruta: string, comercio: Comercio, productos: string[], cupon = ''): URL {
   const lineas: Linea[] = [...new Set(productos)].map((producto) => ({ producto, cantidad: 1 }));
   const url = new URL(ruta, comercio.pago);
   url.searchParams.set('items', escribirItems(lineas));
+  if (cupon) url.searchParams.set('cupon', cupon);
   return url;
 }
 
-export const urlPedido = (comercio: Comercio, productos: string[]) =>
-  urlConItems('/pedido', comercio, productos).toString();
+export const urlPedido = (comercio: Comercio, productos: string[], cupon = '') =>
+  urlConItems('/pedido', comercio, productos, cupon).toString();
 
-export function urlKlarna(comercio: Comercio, productos: string[], desde: string): string {
-  const url = urlConItems(`${RUTA_COBRO}/klarna`, comercio, productos);
+export function urlKlarna(
+  comercio: Comercio,
+  productos: string[],
+  desde: string,
+  cupon = ''
+): string {
+  const url = urlConItems(`${RUTA_COBRO}/klarna`, comercio, productos, cupon);
   url.searchParams.set('desde', desde);
   return url.toString();
 }
