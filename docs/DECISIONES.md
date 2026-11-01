@@ -715,6 +715,19 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
       páginas, 16-sep) y el recetario (A4 y vertical del 17-sep) están en `Veronica_Mari`; falta
       «Cómo hackear tu cerebro» (lo tiene Mari) y que confirme cuáles son los buenos.
 
+65. **2026-11-01 — Black Friday vuelve al dominio como página independiente** (Mari: «crear una
+    page independiente indexada… montala así y conéctalo con todo»). Ajusta la decisión 61: la
+    landing vive en `/black-friday/`, sin menú, encabezado ni pie del sitio, y sin enlace desde
+    ninguna página; se indexa y está en el sitemap. Es HTML estático en `public/black-friday/`
+    (su propio diseño, no usa los layouts). La fuente sigue siendo `landing-black-friday/index.html`
+    (repo `vw-black-friday`, con las variantes vino y rosa); la copia la hace `al-sitio.py`, que
+    quita el `noindex`, pone canónica y Open Graph, enlaza el logo al inicio y deja los botones en
+    `/checkout/examenes/?examen=…&cupon=BLACKFRIDAY` en la misma pestaña (`&lectura=LAYER_SESSION`
+    si se agrega la lectura). No se montó en Webflow: Webflow es la caja (`pago.`), no el sitio.
+    - **Pendiente de Santiago**: la landing muestra 275 / 461 / 449 (redondeados a impar, Mari) y la
+      caja cobra 275.20 / 462.40 / 449.60 (decisión 63). Hay que sembrar los tres productos Black
+      Friday con esos precios.
+
 ## Abiertas — para Mari y Verónica
 
 - **Privacidad y píxel de Meta** (decisión 59): `legal/privacidad` no menciona el píxel ni las

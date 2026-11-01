@@ -1,5 +1,5 @@
 /**
- * sitemap.xml — only the pages meant to be found: home, The Method, 1:1, Exámenes, Tienda and Suplementos. Variants,
+ * sitemap.xml — only the pages meant to be found: home, The Method, 1:1, Exámenes, Tienda, Suplementos and the Black Friday page. Variants,
  * checkout, legal placeholders and 404 stay out. Declared in public/robots.txt.
  */
 import type { APIRoute } from 'astro';
@@ -13,6 +13,7 @@ const paginas = [
   '/examenes',
   '/tienda',
   '/suplementos',
+  '/black-friday',
 ];
 
 export const GET: APIRoute = ({ site }) => {
