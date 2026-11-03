@@ -728,6 +728,56 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
       caja cobra 275.20 / 462.40 / 449.60 (decisión 63). Hay que sembrar los tres productos Black
       Friday con esos precios.
 
+66. **2026-11-02 — PayPal nunca existió en la caja: el botón lo pone el script** (Santiago: «a
+    person tried to pay via paypal and didnt work»). El sitio ofrece PayPal desde el 11-oct y manda
+    a la caja de Webflow, pero ninguna página de la tienda tenía el botón. Webflow carga el SDK de
+    PayPal en cuanto la cuenta está conectada, y solo dibuja el botón sobre un nodo con
+    `data-wf-paypal-button` (`renderPaypalButtons`, en `Webflow.load`), que se agrega a mano en el
+    Designer y nadie agregó. Quien elegía PayPal caía en el formulario de tarjeta, y en Safari con
+    Apple Pay con ese botón arriba de todo: el sitio no pasa a la caja el método elegido, y Webflow
+    muestra Apple Pay o Google Pay según el navegador (se reportó como «se va a Apple Pay»). Con el
+    arreglo, PayPal queda encima de ese botón. Medido el 2-nov:
+    0 nodos en `/`, `/pedido`, `/checkout`, `/paypal-checkout` y una página de producto; 2 pedidos
+    en Webflow, los 2 con Stripe. El «Probado: Initial con PayPal» de la decisión 49 era el
+    checkout de prueba, y la compra real con PayPal nunca se hizo.
+    - **El arreglo**: `botonPaypal()` en `webflow/caja.ts` pone el nodo arriba de la columna del
+      checkout, antes de que Webflow dibuje. Va en el script y no en el Designer porque el marco y
+      la traducción de esta caja ya viven ahí, queda versionado y sale con `vw caja --aplicar`. Si
+      alguien agrega el botón nativo, el script no pone otro; en `/paypal-checkout` no pone nada.
+      Depende de un atributo interno de Webflow: si lo cambian, lo avisa `probar-puente`.
+    - **«Pay Later» aparece solo** junto a PayPal: lo agrega PayPal según la elegibilidad de la
+      cuenta y Webflow no deja quitarlo desde la caja. No es Klarna ni pasa por `cobro/`.
+    - **Verificado sin cobrar** (2-nov, con `caja.html` sustituido en la respuesta de `/checkout`
+      solo en un navegador local, sin tocar Webflow): con 184 IgG, Layer Session y `BLACKFRIDAY`
+      (450.20, con envío) el botón se dibuja una vez y sigue ahí tras los redibujos; en 390 px cabe;
+      `CheckoutRequestPayPalOrder` responde 200 con su `orderId`; PayPal abre «Let's check out with
+      VERONICA WELLNESS», así que la cuenta conectada es la suya. `/paypal-checkout` muestra el
+      pedido y «Confirmar y pagar».
+    - **Sin verificar**: de ahí en adelante hace falta una cuenta de PayPal que apruebe (el monto
+      que PayPal muestra, volver a `/paypal-checkout`, confirmar, llegar a la página de gracias).
+      Es la compra real con reembolso, ya pendiente de Santiago.
+    - **Para que no vuelva a pasar**: la auditoría no miraba la caja. Ahora tiene «caja generada al
+      día» y «caja publicada en Webflow», y `probar-puente` el caso «botón de PayPal en la caja»
+      (0/3 antes de publicar, 3/3 después).
+    - **En producción el 2-nov** (Santiago, con `!`; el clasificador negó publicar desde la sesión).
+      Primero hubo que publicar un cambio pendiente del 1-nov 03:23 UTC, seis minutos antes del
+      commit de Mari de la decisión 65, porque `vw caja --aplicar` se niega con cambios sin
+      publicar. Revisado antes: el borrador era igual a lo publicado en las 6 páginas (`GET
+/pages/{id}/dom` y código de página), CMS y productos eran el snapshot, y no había código de
+      sitio, apps, webhooks, assets ni despliegues de Cloud nuevos. Medido después, contra una copia
+      guardada: el CSS es idéntico y en las 6 páginas solo cambió la fecha de publicación, más
+      `botonPaypal()` en `/checkout`. El cambio pendiente no tuvo ningún efecto publicado.
+    - **En la caja publicada, sin inyectar nada**: `probar-puente --solo PayPal` 3/3; PayPal sale
+      arriba de Apple Pay y Google Pay, y con 184 IgG, Layer Session y `BLACKFRIDAY` (450.20) la
+      orden se crea y PayPal abre «VERONICA WELLNESS». La matriz completa da 33/36: los 11 casos
+      con montos, 3/3 cada uno, y «red lenta y carrito lleno» 0/3, porque la prueba se cae en
+      `Network.emulateNetworkConditions` antes de pedir nada (el 29-oct fallaba 2 de 3). La caja con
+      red lenta queda sin probar hasta arreglar ese caso en `probar-puente.ts`.
+    - **Queda en `/paypal-checkout`**: «Customer Information» en inglés y el fondo gris de Webflow.
+      Funciona; `vw caja` no escribe en esa página (es la versión pegada por Mari el 13-oct).
+    - **Para revertir**: quitar `botonPaypal()` y `vw caja --aplicar`; el sitio vuelve a ofrecer
+      PayPal sin botón, así que habría que quitarlo también de `metodos` en `Checkout.astro`.
+
 ## Abiertas — para Mari y Verónica
 
 - **Privacidad y píxel de Meta** (decisión 59): `legal/privacidad` no menciona el píxel ni las

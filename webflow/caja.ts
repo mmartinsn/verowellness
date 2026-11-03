@@ -7,6 +7,7 @@ import {
 
 declare const SITIO: string;
 declare const TEXTOS: { email: string; cambiar: string };
+declare const PAYPAL: Record<string, string | boolean>;
 
 const espera = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -90,6 +91,17 @@ async function aplicarCupon(codigo: string) {
   if (!resuelto) enviarCupon(codigo);
 }
 
+function botonPaypal() {
+  const columna = document.querySelector(
+    '.w-commerce-commercecheckoutformcontainer .w-commerce-commercelayoutmain'
+  );
+  if (!columna || document.querySelector('[data-wf-paypal-button]')) return;
+  const boton = document.createElement('div');
+  boton.className = 'vw-paypal';
+  boton.setAttribute('data-wf-paypal-button', JSON.stringify(PAYPAL));
+  columna.prepend(boton);
+}
+
 async function principal() {
   const datos = leerTraspaso(document.cookie);
   if (!datos) return;
@@ -110,4 +122,5 @@ async function principal() {
   rellenar(datos);
 }
 
+botonPaypal();
 principal();

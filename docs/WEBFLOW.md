@@ -38,7 +38,8 @@ indexación apagada. El sitio homónimo en plan Starter no se usa.
       de la máquina de quien siembra.
 - [x] **Pasarela** (11-oct): Stripe conectado con la cuenta que Verónica ya usa
       (`DOMINIO.md`). Webflow no tiene modo de prueba: «Enable Checkout» es lo que empieza a cobrar.
-      PayPal lo conectó Mari ese día.
+      PayPal lo conectó Mari ese día. **Conectarlo no pone el botón**: Webflow solo carga el SDK, y
+      el botón lo pone `webflow/caja.html` (DECISIONES § 66). Falta la compra real con PayPal.
 - [x] **Impuesto** (20-oct, DECISIONES § 60): el cálculo automático de EE. UU. está encendido, con
       Florida como sede (la dirección de la tienda), y Webflow no admite una tasa manual. Exámenes
       y asesorías en `standard-taxable` (Florida cobra según el condado de quien compra), guías y

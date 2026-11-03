@@ -229,6 +229,58 @@ test('la caja queda en español: textos, errores, el botón y la línea del desc
   assert.deepEqual(html.clases, ['vw-lista']);
 });
 
+test('la caja pone el botón de PayPal una vez y solo en el checkout normal', () => {
+  const correr = (conColumna: boolean, yaHayBoton: boolean) => {
+    const puestos: Map<string, string>[] = [];
+    const document = {
+      documentElement: { lang: 'en', classList: { add() {} } },
+      body: { prepend() {}, append() {} },
+      querySelector: (sel: string) => {
+        if (sel.includes('layoutmain'))
+          return conColumna
+            ? { prepend: (n: { atributos: Map<string, string> }) => puestos.push(n.atributos) }
+            : null;
+        return sel === '[data-wf-paypal-button]' && yaHayBoton ? {} : null;
+      },
+      querySelectorAll: () => [],
+      createElement: () => {
+        const atributos = new Map<string, string>();
+        return {
+          atributos,
+          append() {},
+          setAttribute: (a: string, v: string) => atributos.set(a, v),
+        };
+      },
+      createTreeWalker: () => ({ nextNode: () => null }),
+    };
+    const codigo = generarCaja()
+      .replace(/^<style>.*<\/style>\n<script>/s, '')
+      .replace(/<\/script>\s*$/, '')
+      .replace(/principal\(\);\s*\}\)\(\);\s*$/, '})();');
+    vm.runInNewContext(codigo, {
+      document,
+      NodeFilter: { SHOW_TEXT: 4 },
+      MutationObserver: class {
+        observe() {}
+      },
+      Intl,
+      location: { hostname: 'pago.veronicawellness.com' },
+    });
+    return puestos;
+  };
+  const [boton, ...resto] = correr(true, false);
+  assert.deepEqual(resto, []);
+  assert.deepEqual(JSON.parse(boton.get('data-wf-paypal-button') ?? ''), {
+    layout: 'horizontal',
+    color: 'gold',
+    shape: 'pill',
+    label: 'paypal',
+    tagline: false,
+  });
+  assert.deepEqual(correr(true, true), []);
+  assert.deepEqual(correr(false, false), []);
+});
+
 test('cada texto de la caja de Webflow tiene su traducción', () => {
   const caja = readFileSync('webflow/caja.html', 'utf8');
   assert.ok(caja.includes('Resumen del pedido'));

@@ -14,6 +14,7 @@ export interface Caso {
   sinCampoCantidad?: boolean;
   cupon?: string;
   ahora?: string;
+  conPaypal?: boolean;
 }
 
 export interface Resultado {
@@ -65,6 +66,7 @@ export const CASOS: Caso[] = [
     cupon: 'BLACKFRIDAY',
     ahora: '2026-11-02T12:00:00-05:00',
   },
+  { nombre: 'botón de PayPal en la caja', items: 'layer-session', conPaypal: true },
 ];
 
 const CHROME = [
@@ -235,6 +237,8 @@ async function correr(navegador: Browser, base: string, caso: Caso, local: strin
       },
       { timeout: 60000 }
     );
+    if (caso.conPaypal)
+      await pagina.waitForSelector('[data-wf-paypal-button] iframe', { timeout: 30000 });
     return pagina.evaluate(() => ({
       lineas: [...document.querySelectorAll('.w-commerce-commercecheckoutorderitem')].map((e) =>
         (e as HTMLElement).innerText.replace(/\s+/g, ' ').trim()

@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { leerSnapshot, type Tabla } from '../comun/snapshot.ts';
 import type { ApiWebflow } from '../webflow/api.ts';
+import { ARCHIVO_CAJA, generarCaja, PAGINA_CHECKOUT } from '../comercio/caja.ts';
 import {
   ARCHIVO_CONFIRMACION,
   generarConfirmacion,
@@ -86,6 +87,9 @@ export const auditarComercio: Auditoria = async ({ conWebflow }) => {
         ARCHIVO_CONFIRMACION,
         'confirmacion'
       )
+    )),
+    ...(await medir(C, 'caja generada al día', async () =>
+      generadoAlDia('caja generada al día', generarCaja(), ARCHIVO_CAJA, 'caja')
     ))
   );
   if (!conWebflow) return resultados;
@@ -115,6 +119,9 @@ export const auditarComercio: Auditoria = async ({ conWebflow }) => {
         ARCHIVO_CONFIRMACION,
         'confirmacion'
       )
+    )),
+    ...(await medir(C, 'caja publicada en Webflow', () =>
+      codigoPublicado(api, 'caja publicada en Webflow', PAGINA_CHECKOUT, ARCHIVO_CAJA, 'caja')
     )),
     ...(await medir(C, 'plantillas de colección en borrador', async () => {
       const productos = (await api.colecciones()).find((c) => c.slug === 'product')?.id;

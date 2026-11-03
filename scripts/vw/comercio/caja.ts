@@ -9,6 +9,14 @@ export const PAGINA_CHECKOUT = 'checkout';
 
 const TEXTOS = { email: 'Email', cambiar: 'Cambiar' };
 
+const PAYPAL = {
+  layout: 'horizontal',
+  color: 'gold',
+  shape: 'pill',
+  label: 'paypal',
+  tagline: false,
+};
+
 /** Webflow's checkout texts, as it writes them, to the site's Spanish. */
 export const ES: Record<string, string> = {
   'Pay with browser.': 'Paga con el navegador.',
@@ -113,6 +121,7 @@ body{background:${t('color-bone')};color:${t('color-charcoal')};font-family:${t(
 .w-commerce-commercelayoutcontainer{max-width:1180px;margin:0 auto}
 .w-commerce-commercelayoutsidebar{position:sticky;top:28px}
 .w-commerce-commercecartapplepaybutton{border-radius:${t('radius-pill')};min-height:50px}
+.vw-paypal{margin-bottom:14px}
 .${c}blockheader,.${c}summaryblockheader{background:transparent;border:0;padding:0 0 10px;margin:0}
 .${c}blockheader h2,.${c}summaryblockheader h2{font-family:${t('font-serif')};font-weight:500;font-size:30px;line-height:1.1;margin:0;color:${t('color-charcoal')}}
 .${c}blockheader div{font-size:13px;color:rgb(48 47 42 / .6)}
@@ -150,6 +159,7 @@ export const generarCaja = () =>
   envolver([
     `const SITIO = ${JSON.stringify(new URL(SITIO).hostname)};`,
     `const TEXTOS = ${JSON.stringify(TEXTOS)};`,
+    `const PAYPAL = ${JSON.stringify(PAYPAL)};`,
     `const ES = ${JSON.stringify(ES)};`,
     `const ES_PATRONES = ${JSON.stringify(ES_PATRONES)};`,
     `const ERRORES = ${JSON.stringify(ERRORES)};`,
