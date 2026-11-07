@@ -778,6 +778,23 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
     - **Para revertir**: quitar `botonPaypal()` y `vw caja --aplicar`; el sitio vuelve a ofrecer
       PayPal sin botón, así que habría que quitarlo también de `metodos` en `Checkout.astro`.
 
+67. **2026-11-06 — Las cuatro guías con su PDF en Webflow** (Santiago mandó los PDFs). Hasta hoy
+    solo «Vuelve a sentirte tú» tenía descarga; el 5-nov entró un pedido real con «Cómo hackear tu
+    cerebro» y «30 desayunos» (−15 %) que no entregó nada y hay que mandar a mano: Webflow no agrega
+    archivos a un pedido ya hecho.
+    - **Los archivos**: los de Santiago del 6-nov. Webflow acepta documentos de hasta 10 MB, así
+      que el recetario (15,0 MB) bajó a 9,46 MB con las fotos a 1800 px y JPEG 80, y «Hackear»
+      (10,15 MB, en el límite) a 8,44 MB con 2400 px y JPEG 85; mismas páginas, imágenes y texto
+      que el original. GLP-1 y RETA va tal cual; el de hormonas era idéntico al que ya estaba.
+    - **Dónde**: subidos a los Assets por la API (Santiago, con `!`), con los mismos bytes en la
+      CDN, y en `descarga` de las tres guías y las dos ofertas del snapshot, para que `sembrar` no
+      los borre. `vw sembrar --aplicar` el 6-nov (Santiago): 5 productos, segunda vuelta igual.
+    - **La guía anti-inflamatoria** (bonus del Initial Layer Cycle) está en los Assets y no está
+      conectada: el Initial es una asesoría y falta saber si Webflow admite una descarga ahí.
+    - **Sin verificar**: la confirmación de Webflow sigue sin bloque de descargas, así que la página
+      de gracias dice que el enlace llega al correo. Que el correo traiga los enlaces se prueba con
+      un pedido de un cupón al 100 %.
+
 ## Abiertas — para Mari y Verónica
 
 - **Privacidad y píxel de Meta** (decisión 59): `legal/privacidad` no menciona el píxel ni las

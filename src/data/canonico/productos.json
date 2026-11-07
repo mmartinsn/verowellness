@@ -285,7 +285,8 @@
     "precio": 1299,
     "impuesto": "digital-goods",
     "enviable": false,
-    "sku": "GUIA-03"
+    "sku": "GUIA-03",
+    "descarga": "https://cdn.prod.website-files.com/6ac29c3b8c31cd570fd18ee3/6aee7a83fb8db3236f011fd1_Todas-se-estan-inyectando-GLP-1-y-RETA-Veronica-Wellness.pdf"
   },
   {
     "id": "guia-hormonas-30",
@@ -323,7 +324,8 @@
     "precio": 999,
     "impuesto": "digital-goods",
     "enviable": false,
-    "sku": "GUIA-01"
+    "sku": "GUIA-01",
+    "descarga": "https://cdn.prod.website-files.com/6ac29c3b8c31cd570fd18ee3/6aee7a84edff212af1f465e2_Como-hackear-tu-cerebro-Veronica-Wellness.pdf"
   },
   {
     "id": "hackear-tu-cerebro-oferta",
@@ -332,7 +334,8 @@
     "precio": 849,
     "impuesto": "digital-goods",
     "enviable": false,
-    "sku": "GUIA-01-OFERTA"
+    "sku": "GUIA-01-OFERTA",
+    "descarga": "https://cdn.prod.website-files.com/6ac29c3b8c31cd570fd18ee3/6aee7a84edff212af1f465e2_Como-hackear-tu-cerebro-Veronica-Wellness.pdf"
   },
   {
     "id": "hepatic-detox-profile",
@@ -431,7 +434,8 @@
     "precio": 1999,
     "impuesto": "digital-goods",
     "enviable": false,
-    "sku": "GUIA-02"
+    "sku": "GUIA-02",
+    "descarga": "https://cdn.prod.website-files.com/6ac29c3b8c31cd570fd18ee3/6aee7a869e479a94b449427d_30-desayunos-antiinflamatorios-express-Veronica-Wellness.pdf"
   },
   {
     "id": "recetario-30-desayunos-oferta",
@@ -440,7 +444,8 @@
     "precio": 1699,
     "impuesto": "digital-goods",
     "enviable": false,
-    "sku": "GUIA-02-OFERTA"
+    "sku": "GUIA-02-OFERTA",
+    "descarga": "https://cdn.prod.website-files.com/6ac29c3b8c31cd570fd18ee3/6aee7a869e479a94b449427d_30-desayunos-antiinflamatorios-express-Veronica-Wellness.pdf"
   },
   {
     "id": "sibo-en-aliento-3h",
