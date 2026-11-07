@@ -793,7 +793,14 @@ razón de cada una, y lo que **no** se decidió porque le toca a Mari o a Verón
       conectada: el Initial es una asesoría y falta saber si Webflow admite una descarga ahí.
     - **Sin verificar**: la confirmación de Webflow sigue sin bloque de descargas, así que la página
       de gracias dice que el enlace llega al correo. Que el correo traiga los enlaces se prueba con
-      un pedido de un cupón al 100 %.
+      un pedido de un cupón al 100 % (lo hace Verónica).
+    - **Abierto (Mari, 6-nov: «eso tiene que redirigir a una typ que tenga anexada eso y se vea
+      bonito, con sus colores»)**: la TYP de la tienda ya está así cuando recibe los enlaces; falta
+      que le lleguen. Santiago elige entre que `cobro/` lea el pedido por el API de Webflow
+      (`downloadFiles`, comprobando el correo de la clienta) o que Mari agregue el bloque de
+      descargas en el Designer. Se decide con el pedido de prueba a la vista.
+    - **Para revertir**: quitar `descarga` de los 5 productos y `vw sembrar --aplicar`; los Assets
+      pueden quedarse (nadie los enlaza).
 
 ## Abiertas — para Mari y Verónica
 

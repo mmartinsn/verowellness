@@ -103,14 +103,16 @@ termina en ellas. Con el cobro real falta que la confirmación de pedido de Webf
   - en todos, `descargas=` con la lista JSON `[{"nombre","url"}]` de los enlaces de descarga que
     Webflow muestra para ese pedido (el nombre como lo escribe Webflow; la TYP ignora el sufijo
     «(−15%)» y los acentos al emparejar). Solo se aceptan URL `https://`.
-- [ ] **Descargas**: los PDF de las guías como descarga de cada producto digital (también en sus
-      ofertas) y la «Guía de alimentación anti-inflamatoria» como descarga del Initial Layer Cycle
-      (bonus; la TYP la busca por «anti-inflamatoria» en el nombre). **Por verificar:** que la
-      página de confirmación de Webflow exponga esos enlaces, y que un producto de servicio admita
-      una descarga; si no, el bonus necesita otra vía.
-- PDF en la carpeta «Ebook y cursos» de Mari: hackear, recetario, GLP-1 y la guía
-  anti-inflamatoria. «Vuelve a sentirte tú» salió a la venta el 18-oct con su PDF en los Assets de
-  Webflow (Mari, DECISIONES § 58).
+- [x] **Descargas de las guías** (6-nov, DECISIONES § 67): las 4 guías y sus 3 ofertas tienen su
+      PDF en los Assets y en `descarga` del snapshot. **Por verificar** con un pedido real: el
+      correo de Webflow con los enlaces.
+- [ ] **Enlaces en la página de gracias**: la confirmación de Webflow no tiene bloque de descargas,
+      así que `descargas=` va vacío y la TYP dice que el enlace llega al correo. Mari pidió el 6-nov
+      que la TYP los tenga. Vías: que `cobro/` lea el pedido por el API (`downloadFiles`) con
+      `orderId` y el correo de la clienta, o que Mari agregue el bloque en el Designer.
+- [ ] **Bonus del Initial**: la «Guía de alimentación anti-inflamatoria» está en los Assets
+      (`6aee7a87a7cb164e17c4e793_…`) y sin conectar; falta saber si un producto de servicio admite
+      una descarga.
 
 ## Dónde se edita cada página
 
